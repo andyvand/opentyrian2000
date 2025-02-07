@@ -264,11 +264,11 @@ bool _play_midi(Uint32 songnum){
 	// or continue playing for like 4+ seconds after the end; we stop it manually below
 #ifdef WITH_SDL3
     Mix_RewindMusic();
+    if (Mix_PlayMusic(midi_tracks[songnum], loops) == false)
 #else
 	Mix_RewindMusicStream(midi_tracks[songnum]);
+    if (Mix_PlayMusic(midi_tracks[songnum], loops) != 0)
 #endif
-
-	if (Mix_PlayMusic(midi_tracks[songnum], loops) != 0)
 	{
 		fprintf(stderr, "error: failed to play music: %s\n", Mix_GetError());
 		return false;
