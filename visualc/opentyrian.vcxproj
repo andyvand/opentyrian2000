@@ -78,7 +78,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(WITH_NETWORK)'=='true'">SDL3_net.lib;SDL3_mixer.lib;midiproc_shared.lib;winmm.lib;SDL3.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(WITH_NETWORK)'=='true'">SDL2_net.lib;ws2_32.lib;SDL3_mixer.lib;midiproc_shared.lib;winmm.lib;SDL3.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
     </Link>
