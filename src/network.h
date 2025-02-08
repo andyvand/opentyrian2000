@@ -28,8 +28,12 @@
 #endif
 
 #ifdef WITH_NETWORK
-#   ifdef WITH_SDL3
-#      include "SDL3_net/SDL_net.h"
+#ifndef WITH_SDL2NET
+#define WITH_SDL2NET 1
+#endif
+
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+#include "SDL3_net/SDL_net.h"
 
 SDL_FORCE_INLINE void SDLNet_Write16(Uint16 value, void *areap)
 {
@@ -82,7 +86,7 @@ extern Uint16 network_player_port, network_opponent_port;
 extern char *network_player_name, *network_opponent_name;
 
 #ifdef WITH_NETWORK
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 extern SDLNet_Datagram *packet_out_temp;
 extern SDLNet_Datagram *packet_in[], *packet_out[],
 *packet_state_in[], *packet_state_out[];

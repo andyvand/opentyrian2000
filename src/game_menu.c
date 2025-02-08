@@ -1632,7 +1632,7 @@ void JE_itemScreen(void)
 			service_SDL_events(false);
 			JE_showVGA();
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             if (packet_in[0] && SDLNet_Read16(&packet_in[0]->buf[0]) == PACKET_WAITING)
 #else
 			if (packet_in[0] && SDLNet_Read16(&packet_in[0]->data[0]) == PACKET_WAITING)

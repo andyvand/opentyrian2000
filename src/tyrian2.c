@@ -2280,7 +2280,7 @@ draw_player_shot_loop_end:
 			                  (skipLevelRequest == true) << 2 |
 			                  (nortShipRequest == true) << 3;
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             SDLNet_Write16(requests,        &packet_state_out[0]->buf[14]);
 
             SDLNet_Write16(difficultyLevel, &packet_state_out[0]->buf[16]);
@@ -2304,7 +2304,7 @@ draw_player_shot_loop_end:
 
 			if (network_state_update())
 			{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                 assert(SDLNet_Read16(&packet_state_in[0]->buf[26]) == SDLNet_Read16(&packet_state_out[network_delay]->buf[26]));
 
                 requests = SDLNet_Read16(&packet_state_in[0]->buf[14]) ^ SDLNet_Read16(&packet_state_out[network_delay]->buf[14]);
@@ -2320,7 +2320,7 @@ draw_player_shot_loop_end:
 				}
 				if (requests & 2)
 				{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                     yourInGameMenuRequest = SDLNet_Read16(&packet_state_out[network_delay]->buf[14]) & 2;
 #else
 					yourInGameMenuRequest = SDLNet_Read16(&packet_state_out[network_delay]->data[14]) & 2;
@@ -2349,7 +2349,7 @@ draw_player_shot_loop_end:
 
 				for (int i = 0; i < 2; i++)
 				{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                     if (SDLNet_Read16(&packet_state_in[0]->buf[18 + i * 2]) != SDLNet_Read16(&packet_state_out[network_delay]->buf[18 + i * 2]) || SDLNet_Read16(&packet_state_in[0]->buf[20 + i * 2]) != SDLNet_Read16(&packet_state_out[network_delay]->buf[20 + i * 2]))
 #else
 					if (SDLNet_Read16(&packet_state_in[0]->data[18 + i * 2]) != SDLNet_Read16(&packet_state_out[network_delay]->data[18 + i * 2]) || SDLNet_Read16(&packet_state_in[0]->data[20 + i * 2]) != SDLNet_Read16(&packet_state_out[network_delay]->data[20 + i * 2]))
@@ -3271,7 +3271,7 @@ void networkStartScreen(void)
 
 			network_prepare(PACKET_DETAILS);
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             SDLNet_Write16(episodeNum, &packet_out_temp->buf[4]);
             SDLNet_Write16(difficultyLevel, &packet_out_temp->buf[6]);
 #else
@@ -3301,7 +3301,7 @@ void networkStartScreen(void)
 			service_SDL_events(false);
 			JE_showVGA();
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             if (packet_in[0] && SDLNet_Read16(&packet_in[0]->buf[0]) == PACKET_DETAILS)
 #else
 			if (packet_in[0] && SDLNet_Read16(&packet_in[0]->data[0]) == PACKET_DETAILS)
@@ -3314,7 +3314,7 @@ void networkStartScreen(void)
 			SDL_Delay(16);
 		}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         JE_initEpisode(SDLNet_Read16(&packet_in[0]->buf[4]));
         difficultyLevel = SDLNet_Read16(&packet_in[0]->buf[6]);
 #else

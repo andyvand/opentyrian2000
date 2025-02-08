@@ -86,7 +86,7 @@ ifeq ($(WITH_NETWORK), true)
 ifeq ($(WITH_SDL3), true)
     SDL_CPPFLAGS := -I/c/msys64/mingw64/include
     SDL_LDFLAGS :=
-    SDL_LDLIBS := -L/c/msys64/mingw64/lib -lSDL3 -lSDL3_net
+    SDL_LDLIBS := -L/c/msys64/mingw64/lib -lSDL3 -lSDL2_net
 else
     SDL_CPPFLAGS := -I/c/msys64/mingw64/include
     SDL_LDFLAGS :=

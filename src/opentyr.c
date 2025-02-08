@@ -898,7 +898,7 @@ int main(int argc, char *argv[])
     printf("SDL version %d.%d.%d\n", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION);
 
 #ifdef WITH_NETWORK
-    printf("SDL_net version %d.%d.%d\n\n", SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION, SDL_NET_MICRO_VERSION);
+    printf("SDL_net version %d.%d\n\n", SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION);
 #endif /* WITH_NETWORK */
 #endif
 

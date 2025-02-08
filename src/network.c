@@ -33,7 +33,7 @@
 
 #include <assert.h>
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 #define SDLNet_GetError SDL_GetError
 #endif
 
@@ -69,7 +69,7 @@ char *network_player_name = empty_string,
      *network_opponent_name = empty_string;
 
 #ifdef WITH_NETWORK
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static SDLNet_DatagramSocket *socket;
 static SDLNet_Address *ip;
 
@@ -121,7 +121,7 @@ JE_boolean pauseRequest, skipLevelRequest, helpRequest, nortShipRequest;
 JE_boolean yourInGameMenuRequest, inGameMenuRequest;
 
 #ifdef WITH_NETWORK
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static void packet_copy(SDLNet_Datagram *dst, SDLNet_Datagram *src)
 {
     void *temp = dst->buf;
@@ -139,7 +139,7 @@ static void packet_copy(UDPpacket *dst, UDPpacket *src)
 }
 #endif
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static void packets_shift_up(SDLNet_Datagram **packet, int max_packets)
 #else
 static void packets_shift_up(UDPpacket **packet, int max_packets)
@@ -147,7 +147,7 @@ static void packets_shift_up(UDPpacket **packet, int max_packets)
 {
 		if (packet[0])
 		{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             SDLNet_DestroyDatagram(packet[0]);
 #else
 			SDLNet_FreePacket(packet[0]);
@@ -160,7 +160,7 @@ static void packets_shift_up(UDPpacket **packet, int max_packets)
 		packet[max_packets - 1] = NULL;
 }
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static void packets_shift_down(SDLNet_Datagram **packet, int max_packets)
 #else
 static void packets_shift_down(UDPpacket **packet, int max_packets)
@@ -168,7 +168,7 @@ static void packets_shift_down(UDPpacket **packet, int max_packets)
 {
 	if (packet[max_packets - 1])
 	{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         SDLNet_DestroyDatagram(packet[max_packets - 1]);
 #else
 		SDLNet_FreePacket(packet[max_packets - 1]);
@@ -184,7 +184,7 @@ static void packets_shift_down(UDPpacket **packet, int max_packets)
 // prepare new packet for sending
 void network_prepare(Uint16 type)
 {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_Write16(type,          &packet_out_temp->buf[0]);
     SDLNet_Write16(last_out_sync, &packet_out_temp->buf[2]);
 #else
@@ -196,7 +196,7 @@ void network_prepare(Uint16 type)
 // send packet but don't expect acknowledgment of delivery
 static bool network_send_no_ack(int len)
 {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     packet_out_temp->buflen = len;
 
     if (packet_out_temp->buf)
@@ -215,7 +215,7 @@ static bool network_send_no_ack(int len)
 #endif
             return false;
         }
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     } else {
         fprintf(stderr, "network_send_no_ack: Packet buffer is NULL (3)\n");
         return false;
@@ -233,7 +233,7 @@ bool network_send(int len)
 	Uint16 i = last_out_sync - queue_out_sync;
 	if (i < NET_PACKET_QUEUE)
 	{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         packet_out[i] = malloc(sizeof(*packet_out[i]));
 
         if (packet_out[i] != NULL)
@@ -267,7 +267,7 @@ bool network_send(int len)
 // send acknowledgment packet
 static int network_acknowledge(Uint16 sync)
 {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_Write16(PACKET_ACKNOWLEDGE, &packet_out_temp->buf[0]);
     SDLNet_Write16(sync,               &packet_out_temp->buf[2]);
 #else
@@ -315,7 +315,7 @@ int network_check(void)
 	// retry
 	if (packet_out[0] && SDL_GetTicks() - last_out_tick > NET_RETRY)
 	{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         if (packet_out[0]->buf)
         {
             packet_out[0]->addr = ip;
@@ -330,7 +330,7 @@ int network_check(void)
 #endif
                 return -1;
             }
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         } else {
             fprintf(stderr, "network_check: Packet buffer is NULL (4)\n");
             return -1;
@@ -340,13 +340,13 @@ int network_check(void)
 		last_out_tick = SDL_GetTicks();
 	}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 	switch ((int)SDLNet_ReceiveDatagram(socket, &packet_temp))
 #else
 	switch (SDLNet_UDP_Recv(socket, packet_temp))
 #endif
 	{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         case 0:
             fprintf(stderr, "SDLNet_ReceiveDatagram: %s\n", SDL_GetError());
 #else
@@ -355,15 +355,15 @@ int network_check(void)
 #endif
 			return -1;
 			break;
-#ifndef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 		case 0:
             break;
 #endif
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         case 1:
 #endif
 		default:
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             if (packet_temp->buflen >= 4)
             {
                 switch (SDLNet_Read16(&packet_temp->buf[0]))
@@ -374,13 +374,13 @@ int network_check(void)
 #endif
 				{
 					case PACKET_ACKNOWLEDGE:
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                         if ((Uint16)(SDLNet_Read16(&packet_temp->buf[2]) - last_ack_sync) < NET_PACKET_QUEUE)
 #else
 						if ((Uint16)(SDLNet_Read16(&packet_temp->data[2]) - last_ack_sync) < NET_PACKET_QUEUE)
 #endif
 						{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                             last_ack_sync = SDLNet_Read16(&packet_temp->buf[2]);
 #else
 							last_ack_sync = SDLNet_Read16(&packet_temp->data[2]);
@@ -388,7 +388,7 @@ int network_check(void)
 						}
 
 						{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                             Uint16 i = SDLNet_Read16(&packet_temp->buf[2]) - queue_out_sync;
 #else
 							Uint16 i = SDLNet_Read16(&packet_temp->data[2]) - queue_out_sync;
@@ -397,7 +397,7 @@ int network_check(void)
 							{
 								if (packet_out[i])
 								{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     SDLNet_DestroyDatagram(packet_out[i]);
 #else
 									SDLNet_FreePacket(packet_out[i]);
@@ -420,7 +420,7 @@ int network_check(void)
 						break;
 
 					case PACKET_CONNECT:
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                         queue_in_sync = SDLNet_Read16(&packet_temp->buf[2]);
 #else
 						queue_in_sync = SDLNet_Read16(&packet_temp->data[2]);
@@ -430,7 +430,7 @@ int network_check(void)
 						{
 							if (packet_in[i])
 							{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                 SDLNet_DestroyDatagram(packet_in[i]);
 #else
 								SDLNet_FreePacket(packet_in[i]);
@@ -447,7 +447,7 @@ int network_check(void)
 					case PACKET_GAME_PAUSE:
 					case PACKET_GAME_MENU:
 						{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                             Uint16 i = SDLNet_Read16(&packet_temp->buf[2]) - queue_in_sync;
 #else
 							Uint16 i = SDLNet_Read16(&packet_temp->data[2]) - queue_in_sync;
@@ -456,7 +456,7 @@ int network_check(void)
 							{
 								if (packet_in[i] == NULL)
                                 {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     packet_in[i] = malloc(sizeof(*packet_in[i]));
 
                                     if (packet_in[i] != NULL)
@@ -478,7 +478,7 @@ int network_check(void)
 							}
 						}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                         network_acknowledge(SDLNet_Read16(&packet_temp->buf[2]));
 #else
 						network_acknowledge(SDLNet_Read16(&packet_temp->data[2]));
@@ -496,7 +496,7 @@ int network_check(void)
 							network_send(4);  // PACKET_QUIT
 						}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                         network_acknowledge(SDLNet_Read16(&packet_temp->buf[2]));
 #else
 						network_acknowledge(SDLNet_Read16(&packet_temp->data[2]));
@@ -509,7 +509,7 @@ int network_check(void)
 					case PACKET_STATE:
 						// place packet in queue if within limits
 						{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                             Uint16 i = SDLNet_Read16(&packet_temp->buf[2]) - last_state_in_sync + 1;
 #else
 							Uint16 i = SDLNet_Read16(&packet_temp->data[2]) - last_state_in_sync + 1;
@@ -518,7 +518,7 @@ int network_check(void)
 							{
 								if (packet_state_in[i] == NULL)
                                 {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     packet_state_in[i] = malloc(sizeof(*packet_state_in[i]));
 
                                     if (packet_state_in[i] != NULL)
@@ -539,7 +539,7 @@ int network_check(void)
 					case PACKET_STATE_XOR:
 						// place packet in queue if within limits
 						{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                             Uint16 i = SDLNet_Read16(&packet_temp->buf[2]) - last_state_in_sync + 1;
 #else
 							Uint16 i = SDLNet_Read16(&packet_temp->data[2]) - last_state_in_sync + 1;
@@ -548,7 +548,7 @@ int network_check(void)
 							{
 								if (packet_state_in_xor[i] == NULL)
 								{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     packet_state_in_xor[i] = malloc(sizeof(*packet_state_in_xor[i]));
 
                                     if (packet_state_in_xor[i] != NULL)
@@ -562,7 +562,7 @@ int network_check(void)
 
 									packet_copy(packet_state_in_xor[i], packet_temp);
 								}
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                 else if (SDLNet_Read16(&packet_state_in_xor[i]->buf[0]) != PACKET_STATE_XOR)
                                 {
                                     for (int j = 4; j < packet_state_in_xor[i]->buflen; j++)
@@ -584,7 +584,7 @@ int network_check(void)
 					case PACKET_STATE_RESEND:
 						// resend requested state packet if still available
 						{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                             Uint16 i = last_state_out_sync - SDLNet_Read16(&packet_temp->buf[2]);
 #else
 							Uint16 i = last_state_out_sync - SDLNet_Read16(&packet_temp->data[2]);
@@ -593,7 +593,7 @@ int network_check(void)
 							{
 								if (packet_state_out[i])
 								{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     if (packet_state_out[i]->buf)
                                     {
                                         packet_state_out[i]->addr = ip;
@@ -608,7 +608,7 @@ int network_check(void)
 #endif
                                             return -1;
                                         }
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     } else {
                                         fprintf(stderr, "network_check: Packet buffer is NULL (5)\n");
                                         return -1;
@@ -620,7 +620,7 @@ int network_check(void)
 						break;
 
 					default:
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                         fprintf(stderr, "warning: bad packet %d received\n", SDLNet_Read16(&packet_temp->buf[0]));
 #else
 						fprintf(stderr, "warning: bad packet %d received\n", SDLNet_Read16(&packet_temp->data[0]));
@@ -667,7 +667,7 @@ void network_state_prepare(void)
 	}
 	else
 	{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         packet_state_out[0] = malloc(sizeof(*packet_state_out[0]));
 
         if (packet_state_out[0] != NULL)
@@ -681,7 +681,7 @@ void network_state_prepare(void)
 #endif
 	}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_Write16(PACKET_STATE, &packet_state_out[0]->buf[0]);
     SDLNet_Write16(last_state_out_sync, &packet_state_out[0]->buf[2]);
 
@@ -697,7 +697,7 @@ void network_state_prepare(void)
 // send state packet, xor packet if applicable
 int network_state_send(void)
 {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (packet_state_out[0]->buf)
     {
         packet_state_out[0]->addr = ip;
@@ -712,7 +712,7 @@ int network_state_send(void)
 #endif
             return -1;
         }
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     } else {
         fprintf(stderr, "network_state_send: Packet buffer is NULL (1)\n");
         return -1;
@@ -723,14 +723,14 @@ int network_state_send(void)
 	if (network_delay > 1 && (last_state_out_sync + 1) % network_delay == 0 && packet_state_out[network_delay - 1] != NULL)
 	{
 		packet_copy(packet_temp, packet_state_out[0]);
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         SDLNet_Write16(PACKET_STATE_XOR, &packet_temp->buf[0]);
 #else
 		SDLNet_Write16(PACKET_STATE_XOR, &packet_temp->data[0]);
 #endif
 		for (int i = 1; i < network_delay; i++)
         {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             for (int j = 4; j < packet_temp->buflen; j++)
             {
                 packet_temp->buf[j] ^= packet_state_out[i]->buf[j];
@@ -757,7 +757,7 @@ int network_state_send(void)
 #endif
                 return -1;
             }
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         } else {
             fprintf(stderr, "network_state_send: Packet buffer is NULL (2)\n");
             return -1;
@@ -794,7 +794,7 @@ bool network_state_update(void)
 		while (!packet_state_in[0])
 		{
 			// xor the packet from thin air, if possible
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             if (packet_state_in_xor[x] && SDLNet_Read16(&packet_state_in_xor[x]->buf[0]) == PACKET_STATE_XOR)
 #else
 			if (packet_state_in_xor[x] && SDLNet_Read16(&packet_state_in_xor[x]->data[0]) == PACKET_STATE_XOR)
@@ -812,7 +812,7 @@ bool network_state_update(void)
 				}
 				if (okay)
 				{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                     packet_state_in[0] = malloc(sizeof(*packet_state_in[0]));
 
                     if (packet_state_in[0] != NULL)
@@ -826,7 +826,7 @@ bool network_state_update(void)
 					packet_copy(packet_state_in[0], packet_state_in_xor[x]);
 					for (int i = 1; i <= x; i++)
                     {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                         for (int j = 4; j < packet_state_in[0]->buflen; j++)
                         {
                             packet_state_in[0]->buf[j] ^= packet_state_in[i]->buf[j];
@@ -845,7 +845,7 @@ bool network_state_update(void)
 			static Uint32 resend_tick = 0;
 			if (SDL_GetTicks() - last_state_in_tick > NET_RESEND && SDL_GetTicks() - resend_tick > NET_RESEND)
 			{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                 SDLNet_Write16(PACKET_STATE_RESEND,    &packet_out_temp->buf[0]);
                 SDLNet_Write16(last_state_in_sync - 1, &packet_out_temp->buf[2]);
 #else
@@ -867,7 +867,7 @@ bool network_state_update(void)
 			// process the current in packet against the xor queue
 			if (packet_state_in_xor[x] == NULL)
 			{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                 packet_state_in_xor[x] = malloc(sizeof(*packet_state_in_xor[x]));
 
                 if (packet_state_in_xor[x] != NULL)
@@ -881,13 +881,13 @@ bool network_state_update(void)
 
 				packet_copy(packet_state_in_xor[x], packet_state_in[0]);
 
-#ifndef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 				packet_state_in_xor[x]->status = 0;
 #endif
 			}
 			else
 			{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                 for (int j = 4; j < packet_state_in_xor[x]->buflen; j++)
                 {
                     packet_state_in_xor[x]->buf[j] ^= packet_state_in[0]->buf[j];
@@ -922,7 +922,7 @@ void network_state_reset(void)
 	{
 		if (packet_state_in[i])
 		{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             SDLNet_DestroyDatagram(packet_state_in[i]);
 #else
 			SDLNet_FreePacket(packet_state_in[i]);
@@ -935,7 +935,7 @@ void network_state_reset(void)
 	{
 		if (packet_state_in_xor[i])
 		{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             SDLNet_DestroyDatagram(packet_state_in_xor[i]);
 #else
 			SDLNet_FreePacket(packet_state_in_xor[i]);
@@ -948,7 +948,7 @@ void network_state_reset(void)
 	{
 		if (packet_state_out[i])
 		{
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             SDLNet_DestroyDatagram(packet_state_out[i]);
 #else
 			SDLNet_FreePacket(packet_state_out[i]);
@@ -965,7 +965,7 @@ void network_state_reset(void)
 // exchange game information
 int network_connect(void)
 {
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     ip = SDLNet_ResolveHostname(network_opponent_host);
 
     if (ip) {
@@ -1000,7 +1000,7 @@ int network_connect(void)
 
 connect_reset:
 	network_prepare(PACKET_CONNECT);
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 	SDLNet_Write16(NET_VERSION, &packet_out_temp->buf[4]);
 	SDLNet_Write16(network_delay,   &packet_out_temp->buf[6]);
 	SDLNet_Write16(episodes_local,  &packet_out_temp->buf[8]);
@@ -1027,7 +1027,7 @@ connect_reset:
 		// never timeout
 		last_in_tick = SDL_GetTicks();
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 		if (packet_in[0] && SDLNet_Read16(&packet_in[0]->buf[0]) == PACKET_CONNECT)
 #else
 		if (packet_in[0] && SDLNet_Read16(&packet_in[0]->data[0]) == PACKET_CONNECT)
@@ -1041,7 +1041,7 @@ connect_reset:
 	}
 
 connect_again:
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (SDLNet_Read16(&packet_in[0]->buf[4]) != NET_VERSION)
     {
         fprintf(stderr, "error: network version did not match opponent's\n");
@@ -1100,7 +1100,7 @@ connect_again:
 	{
 		service_SDL_events(false);
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         // got a duplicate packet; process it again (but why?)
         if (packet_in[0] && SDLNet_Read16(&packet_in[0]->buf[0]) == PACKET_CONNECT)
 #else
@@ -1122,7 +1122,7 @@ connect_again:
 	// there should be a better way to handle this
 	network_prepare(PACKET_CONNECT);
     
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_Write16(NET_VERSION, &packet_out_temp->buf[4]);
     SDLNet_Write16(network_delay,   &packet_out_temp->buf[6]);
     SDLNet_Write16(episodes_local,  &packet_out_temp->buf[8]);
@@ -1190,7 +1190,7 @@ void network_tyrian_halt(unsigned int err, bool attempt_sync)
 
 	fade_black(10);
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_DestroyDatagramSocket(socket);
 #endif
 
@@ -1209,7 +1209,7 @@ int network_init(void)
 		return -4;
 	}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (SDLNet_Init() == false)
 #else
 	if (SDLNet_Init() == -1)
@@ -1219,7 +1219,7 @@ int network_init(void)
 		return -1;
 	}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     socket = SDLNet_CreateDatagramSocket(NULL, network_player_port);
 #else
 	socket = SDLNet_UDP_Open(network_player_port);
@@ -1231,7 +1231,7 @@ int network_init(void)
 		return -2;
 	}
 
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     packet_temp = malloc(sizeof(*packet_temp));
 
     if (packet_temp != NULL)
