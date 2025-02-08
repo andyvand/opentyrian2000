@@ -132,6 +132,10 @@ static Uint8 channelVolume[CHANNEL_COUNT];
 #define CHANNEL_VOLUME_LEVELS 8
 
 #ifdef WITH_SDL3
+#ifdef WITH_MIDI
+static void audioMixCallback(void *userdata, Uint8 *stream, int size);
+#endif
+
 static void audioCallback(void *userdata, SDL_AudioStream *SDLstream, int add_size, int size);
 #else
 static void audioCallback(void *userdata, Uint8 *stream, int size);
@@ -157,7 +161,11 @@ bool init_midi(SDL_AudioSpec * got){
 		return false;
 	} else {
 #ifdef WITH_SDL3
-        Mix_OpenAudio(audioDevice, got);
+        if (Mix_OpenAudio(audioDevice, got) == false)
+        {
+            fprintf(stderr, "error: SDL2_mixer_ext: failed to open audio device: %s\n", Mix_GetError());
+            return false;
+        }
 #else
 		music_mixer = Mix_GetGeneralMixer();
 
@@ -171,6 +179,9 @@ bool init_midi(SDL_AudioSpec * got){
 			fprintf(stderr, "error: SDL2_mixer_ext: failed to get music_mixer: %s\n", Mix_GetError());
 			return false;
 		}
+#endif
+#ifdef WITH_SDL3
+        Mix_SetPostMix(audioMixCallback, NULL);
 #endif
 	}
 	return true;
@@ -443,18 +454,84 @@ bool restart_audio(void){
 }
 
 #ifdef WITH_SDL3
+#ifdef WITH_MIDI
+static void audioMixCallback(void *userdata, Uint8 *stream, int size)
+{
+    (void)userdata;
+    Sint16 *const samples = (Sint16 *)stream;
+    const int samplesCount = size / sizeof (Sint16);
+
+    if ((music_device & IS_MIDI_DEVICE) && !music_disabled && !music_stopped){
+        if (Mix_PlayingMusic() == 0){
+            fading_out = false;
+            time_playing = 0;
+            playing = false;
+            songlooped = false;
+        } else {
+            if (playing){
+                // get samples from the mixer
+                double factor = 1000.0;
+                double cur_position = 0.0;
+
+                cur_position = midi_tracks[song_playing] ? Mix_GetMusicPosition(midi_tracks[song_playing])  : 0;
+                cur_position *= factor;
+                
+                // check the duration of the song and see if it looped
+                bool has_loop = (bool)(midi_data[song_playing].loop_end <= midi_data[song_playing].duration);
+                #ifdef _DEBUG
+                fprintf(stderr, "cur_position: %f, time_playing: %f, duration: %d, loop_end: %d\n", cur_position, time_playing, midi_data[song_playing].duration, midi_data[song_playing].loop_end);
+                #endif
+                if (unwated_loop && !has_loop) {
+                    // this is to get around a bug in fluidsynth where it plays songs twice even if no loops are set
+                    _stop_midi();
+                    for (int i = 0; i < samplesCount; ++i)
+                        samples[i] = 0;
+                    time_playing = 0;
+                    unwated_loop = false;
+                } else if (!has_loop &&
+                    ((cur_position < time_playing) ||
+                    (cur_position >= midi_data[song_playing].duration + 100))) {
+                    unwated_loop = true; // stop it the next time
+                } else { // has loop and did loop
+                    // The reason for this is that fluidsynth doesn't recognize any form of SMF loops,
+                    // and consequentially does not loop where the original songs looped;
+                    // e.g. they start at the very beginning rather than a few positions up like most of the songs.
+                    // So, we have to do it manually.
+                    // We have to call music_mixer above first to get SDL_mixer to drive the synth and update the position,
+                    // then clear the samples and call it again.
+                    if (has_loop &&
+                    ((cur_position < time_playing) || (cur_position >= midi_data[song_playing].loop_end))) {
+                        double loop_start = ((double)midi_data[song_playing].loop_start) / factor;
+                        Mix_SetMusicPosition(loop_start);
+                        for (int i = 0; i < samplesCount; ++i)
+                        {
+                            samples[i] = 0;
+                        }
+
+                        songlooped = true;
+                    }
+                }
+                time_playing = cur_position;
+            }
+            if (!playing) {
+            }
+        }
+    }
+}
+#endif
+
 static void audioCallback(void *userdata, SDL_AudioStream *SDLstream, int add_size, int size)
 #else
 static void audioCallback(void *userdata, Uint8 *stream, int size)
 #endif
 {
-#ifdef WITH_SDL3
-    (void)add_size;
+#ifndef WITH_SDL3
+    (void)size;
 #endif
-	(void)userdata;
+    (void)userdata;
 
 #ifdef WITH_SDL3
-    Sint16 *const samples = SDL_malloc(size);
+    Sint16 *const samples = SDL_malloc(add_size);
 
     if (samples == NULL)
     {
@@ -466,6 +543,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
 
 	const int samplesCount = size / sizeof (Sint16);
 
+#ifndef WITH_SDL3
 #ifdef WITH_MIDI
 	if ((music_device & IS_MIDI_DEVICE) && !music_disabled && !music_stopped){
 		if (Mix_PlayingMusic() == 0){
@@ -479,9 +557,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
 				double factor = 1000.0;
                 double cur_position = 0.0;
 
-#ifndef WITH_SDL3
 				music_mixer(NULL, stream, size);
-#endif
 
                 cur_position = midi_tracks[song_playing] ? Mix_GetMusicPosition(midi_tracks[song_playing])  : 0;
 				cur_position *= factor;
@@ -518,9 +594,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
                             samples[i] = 0;
                         }
 
-#ifndef WITH_SDL3
 						music_mixer(NULL, stream, size);
-#endif
 
 						songlooped = true;
 					}
@@ -532,6 +606,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
 		}
 	}
 	else
+#endif
 #endif
 	if ((music_device == OPL) && !music_disabled && !music_stopped)
 	{
@@ -627,7 +702,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
     }
 
 #ifdef WITH_SDL3
-    SDL_PutAudioStreamData(SDLstream, samples, size);
+    SDL_PutAudioStreamData(SDLstream, samples, add_size);
 
     if (samples != NULL)
     {
