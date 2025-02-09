@@ -108,7 +108,7 @@ ifeq ($(WITH_NETWORK), true)
 ifeq ($(WITH_SDL3), true)
     SDL_CPPFLAGS := -I/usr/local/include -I/usr/local/include/SDL3
     SDL_LDFLAGS :=
-    SDL_LDLIBS := -L/usr/local/lib -lSDL3 -lSDL2_net
+    SDL_LDLIBS := -L/usr/local/lib -lSDL3 -lSDL3_net
 else
     SDL_CPPFLAGS := -I/usr/local/include -I/usr/local/include/SDL2
     SDL_LDFLAGS :=
@@ -180,14 +180,14 @@ $(TARGET).app: $(TARGET)
 	mkdir -p $@/Contents/Frameworks
 	cp -RLf /usr/local/lib/libMoltenVK.dylib $@/Contents/Frameworks
 	cp -RLf /usr/local/lib/libSDL3.dylib $@/Contents/Frameworks
-	cp -RLf /usr/local/lib/libSDL2_net.dylib $@/Contents/Frameworks
+	cp -RLf /usr/local/lib/libSDL3_net.dylib $@/Contents/Frameworks
 	cp -RLf /usr/local/lib/libSDL3_mixer.dylib $@/Contents/Frameworks
 	cp -Rf /usr/local/lib/libglib-2.0.0.dylib $@/Contents/Frameworks
 	cp -Rf /Library/Frameworks/FluidSynth.framework $@/Contents/Frameworks
 	$(INSTALL_NAME_TOOL) -change /usr/local/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/Versions/3/FluidSynth
 	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/Versions/3/FluidSynth @rpath/FluidSynth.framework/Versions/3/FluidSynth $@/Contents/MacOS/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/MacOS/opentyrian2000
-	$(INSTALL_NAME_TOOL) -change @rpath/libSDL2_net-2.0.1.dylib @rpath/libSDL2_net.dylib $@/Contents/MacOS/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/Contents/MacOS/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/Contents/MacOS/opentyrian2000
 	$(INSTALL) data/* $@/Contents/Resources/
 	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib $@

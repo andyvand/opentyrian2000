@@ -28,9 +28,9 @@
 #endif
 
 #ifdef WITH_NETWORK
-#ifndef WITH_SDL2NET
+/*#ifndef WITH_SDL2NET
 #define WITH_SDL2NET 1
-#endif
+#endif*/
 
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 #include "SDL3_net/SDL_net.h"

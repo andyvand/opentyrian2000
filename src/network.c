@@ -355,7 +355,7 @@ int network_check(void)
 #endif
 			return -1;
 			break;
-#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+#if !defined(WITH_SDL3) || defined(WITH_SDL2NET)
 		case 0:
             break;
 #endif
@@ -364,6 +364,11 @@ int network_check(void)
 #endif
 		default:
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+            if (packet_temp == NULL)
+            {
+                break;
+            }
+
             if (packet_temp->buflen >= 4)
             {
                 switch (SDLNet_Read16(&packet_temp->buf[0]))
@@ -881,7 +886,7 @@ bool network_state_update(void)
 
 				packet_copy(packet_state_in_xor[x], packet_state_in[0]);
 
-#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+#if !defined(WITH_SDL3) || defined(WITH_SDL2NET)
 				packet_state_in_xor[x]->status = 0;
 #endif
 			}
