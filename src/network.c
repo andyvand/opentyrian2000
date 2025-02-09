@@ -124,11 +124,6 @@ JE_boolean yourInGameMenuRequest, inGameMenuRequest;
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static void packet_copy(SDLNet_Datagram *dst, SDLNet_Datagram *src)
 {
-    if ((dst == NULL) || (src == NULL))
-    {
-        return;
-    }
-
     void *temp = dst->buf;
     memcpy(dst, src, sizeof(*dst));
     dst->buf = temp;
@@ -216,9 +211,9 @@ static bool network_send_no_ack(int len)
 
     if (packet_out_temp->buf)
     {
-        packet_out_temp->addr = ip;
+        packet_out_temp->addr = SDLNet_RefAddress(ip);
         packet_out_temp->port = network_opponent_port;
-        if (SDLNet_SendDatagram(socket, SDLNet_RefAddress(packet_out_temp->addr), packet_out_temp->port, packet_out_temp->buf, packet_out_temp->buflen) == false)
+        if (SDLNet_SendDatagram(socket, packet_out_temp->addr, packet_out_temp->port, packet_out_temp->buf, packet_out_temp->buflen) == false)
         {
             fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (3)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_out_temp->buflen);
 #else
@@ -338,9 +333,9 @@ int network_check(void)
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         if (packet_out[0]->buf)
         {
-            packet_out[0]->addr = ip;
+            packet_out[0]->addr = SDLNet_RefAddress(ip);
             packet_out[0]->port = network_opponent_port;
-            if (SDLNet_SendDatagram(socket, SDLNet_RefAddress(packet_out[0]->addr), packet_out[0]->port, packet_out[0]->buf, packet_out[0]->buflen) == false)
+            if (SDLNet_SendDatagram(socket, packet_out[0]->addr, packet_out[0]->port, packet_out[0]->buf, packet_out[0]->buflen) == false)
             {
                 fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (4)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_out[0]->buflen);
 #else
@@ -361,7 +356,8 @@ int network_check(void)
 	}
 
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
-	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp) && (packet_temp != NULL)))
+    SDLNet_Datagram *packet_temp_net = NULL;
+	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp_net) && (packet_temp != NULL)))
 #else
 	switch (SDLNet_UDP_Recv(socket, packet_temp))
 #endif
@@ -387,6 +383,8 @@ int network_check(void)
 #endif
 		default:
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+            packet_copy(packet_temp, packet_temp_net);
+
             if (packet_temp->buflen >= 4)
             {
                 switch (SDLNet_Read16(&packet_temp->buf[0]))
@@ -619,9 +617,9 @@ int network_check(void)
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     if (packet_state_out[i]->buf)
                                     {
-                                        packet_state_out[i]->addr = ip;
+                                        packet_state_out[i]->addr = SDLNet_RefAddress(ip);
                                         packet_state_out[i]->port = network_opponent_port;
-                                        if (SDLNet_SendDatagram(socket, SDLNet_RefAddress(packet_state_out[i]->addr), packet_state_out[i]->port, packet_state_out[i]->buf, packet_state_out[i]->buflen) == false)
+                                        if (SDLNet_SendDatagram(socket, packet_state_out[i]->addr, packet_state_out[i]->port, packet_state_out[i]->buf, packet_state_out[i]->buflen) == false)
                                         {
                                             fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (5)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_state_out[i]->buflen);
 #else
@@ -723,9 +721,9 @@ int network_state_send(void)
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (packet_state_out[0]->buf)
     {
-        packet_state_out[0]->addr = ip;
+        packet_state_out[0]->addr = SDLNet_RefAddress(ip);
         packet_state_out[0]->port = network_opponent_port;
-        if (SDLNet_SendDatagram(socket, SDLNet_RefAddress(packet_state_out[0]->addr), packet_state_out[0]->port, packet_state_out[0]->buf, packet_state_out[0]->buflen) == false)
+        if (SDLNet_SendDatagram(socket, packet_state_out[0]->addr, packet_state_out[0]->port, packet_state_out[0]->buf, packet_state_out[0]->buflen) == false)
         {
             fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (1)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_state_out[0]->buflen);
 #else
@@ -762,9 +760,9 @@ int network_state_send(void)
 
         if (packet_temp->buf)
         {
-            packet_temp->addr = ip;
+            packet_temp->addr = SDLNet_RefAddress(ip);
             packet_temp->port = network_opponent_port;
-            if (SDLNet_SendDatagram(socket, SDLNet_RefAddress(packet_temp->addr), packet_temp->port, packet_temp->buf, packet_temp->buflen) == false)
+            if (SDLNet_SendDatagram(socket, packet_temp->addr, packet_temp->port, packet_temp->buf, packet_temp->buflen) == false)
             {
                 fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (2)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_temp->buflen);
 #else
