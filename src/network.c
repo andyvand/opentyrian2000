@@ -387,16 +387,6 @@ int network_check(void)
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
             packet_copy(packet_temp, packet_temp_net);
 
-            if (packet_temp_net != NULL)
-            {
-                if (packet_temp_net->buf != NULL)
-                {
-                    free(packet_temp_net->buf);
-                }
-
-                free(packet_temp_net);
-            }
-
             if (packet_temp->buflen >= 4)
             {
                 switch (SDLNet_Read16(&packet_temp->buf[0]))
