@@ -357,7 +357,7 @@ int network_check(void)
 
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_Datagram *packet_temp_net = NULL;
-	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp_net) && (packet_temp != NULL)))
+	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp_net) && (packet_temp_net != NULL)))
 #else
 	switch (SDLNet_UDP_Recv(socket, packet_temp))
 #endif
