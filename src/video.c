@@ -73,18 +73,25 @@ static void scale_and_flip(SDL_Surface *);
 
 void init_video(void)
 {
-	if (SDL_WasInit(SDL_INIT_VIDEO))
-		return;
+#ifndef WITH_SDL3
+    if (SDL_WasInit(SDL_INIT_VIDEO))
+        return;
 
-#ifdef WITH_SDL3
-    if (SDL_InitSubSystem(SDL_INIT_VIDEO) == false)
-#else
-	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
-#endif
-	{
-		fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
-		exit(1);
+    if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
+    {
+        fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
+        exit(1);
     }
+#else
+    if (SDL_InitSubSystem(SDL_INIT_VIDEO) == false)
+    {
+        fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    if (SDL_WasInit(SDL_INIT_VIDEO) == false)
+        return;
+#endif
 
 	// Create the software surfaces that the game renders to. These are all 320x200x8 regardless
 	// of the window size or monitor resolution.

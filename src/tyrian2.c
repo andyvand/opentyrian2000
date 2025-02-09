@@ -655,7 +655,11 @@ void JE_main(void)
 
 start_level:
 
-	mouseSetRelative(false);
+#ifdef WITH_SDL3
+	mouseSetRelative(main_window, false);
+#else
+    mouseSetRelative(false);
+#endif
 
 	if (galagaMode)
 		twoPlayerMode = false;
@@ -749,7 +753,11 @@ start_level_first:
 		return;          // back to titlescreen
 
 	if (!play_demo)
-		mouseSetRelative(true);
+#ifdef WITH_SDL3
+		mouseSetRelative(main_window, true);
+#else
+        mouseSetRelative(true);
+#endif
 
 	fade_song();
 

@@ -25,6 +25,11 @@
 #include "opentyr.h"
 #include "video.h"
 #include "video_scale.h"
+#include "font.h"
+
+#if defined(ANDROID) || defined(__ANDROID__)
+#include "player.h"
+#endif
 
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
@@ -117,10 +122,14 @@ void init_keyboard(void)
 #endif
 }
 
+#ifdef WITH_SDL3
+void mouseSetRelative(SDL_Window *window, bool enable)
+#else
 void mouseSetRelative(bool enable)
+#endif
 {
 #ifdef WITH_SDL3
-    SDL_SetWindowRelativeMouseMode(main_window, enable && windowHasFocus);
+    SDL_SetWindowRelativeMouseMode(window, enable && windowHasFocus);
 #else
 	SDL_SetRelativeMouseMode(enable && windowHasFocus);
 #endif
@@ -143,11 +152,11 @@ void mouseGetRelativePosition(Sint32 *const out_x, Sint32 *const out_y)
 {
 	service_SDL_events(false);
 
-	scaleWindowDistanceToScreen(&mouseWindowXRelative, &mouseWindowYRelative);
+    scaleWindowDistanceToScreen(&mouseWindowXRelative, &mouseWindowYRelative);
 	*out_x = mouseWindowXRelative;
 	*out_y = mouseWindowYRelative;
 
-	mouseWindowXRelative = 0;
+    mouseWindowXRelative = 0;
 	mouseWindowYRelative = 0;
 }
 
@@ -181,22 +190,28 @@ void service_SDL_events(JE_boolean clear_new)
 #endif
 #ifdef WITH_SDL3
                 case SDL_EVENT_WINDOW_FOCUS_LOST:
+                        windowHasFocus = false;
+
+                        mouseSetRelative(SDL_GetWindowFromID(ev.window.windowID), mouseRelativeEnabled);
 #else
 				case SDL_WINDOWEVENT_FOCUS_LOST:
-#endif
-					windowHasFocus = false;
+                        windowHasFocus = false;
 
-					mouseSetRelative(mouseRelativeEnabled);
+                        mouseSetRelative(mouseRelativeEnabled);
+#endif
 					break;
 
 #ifdef WITH_SDL3
                 case SDL_EVENT_WINDOW_FOCUS_GAINED:
+                        windowHasFocus = true;
+
+                        mouseSetRelative(SDL_GetWindowFromID(ev.window.windowID), mouseRelativeEnabled);
 #else
 				case SDL_WINDOWEVENT_FOCUS_GAINED:
-#endif
-					windowHasFocus = true;
+                        windowHasFocus = true;
 
-					mouseSetRelative(mouseRelativeEnabled);
+                        mouseSetRelative(mouseRelativeEnabled);
+#endif
 					break;
 
 #ifdef WITH_SDL3
@@ -239,8 +254,7 @@ void service_SDL_events(JE_boolean clear_new)
 				lastkey_mod = ev.key.keysym.mod;
 #endif
 				keydown = true;
-
-				mouseInactive = true;
+                mouseInactive = false;
 				return;
 
 #ifdef WITH_SDL3

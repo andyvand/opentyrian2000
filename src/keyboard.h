@@ -63,7 +63,13 @@ void flush_events_buffer(void);
 void wait_input(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick);
 void wait_noinput(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick);
 void init_keyboard(void);
+
+#ifdef WITH_SDL3
+void mouseSetRelative(SDL_Window *window, bool enable);
+#else
 void mouseSetRelative(bool enable);
+#endif
+
 JE_word JE_mousePosition(JE_word *mouseX, JE_word *mouseY);
 void mouseGetRelativePosition(Sint32 *out_x, Sint32 *out_y);
 

@@ -1392,7 +1392,11 @@ JE_boolean JE_gammaCheck(void)
 
 void JE_doInGameSetup(void)
 {
+#ifdef WITH_SDL3
+    mouseSetRelative(main_window, false);
+#else
 	mouseSetRelative(false);
+#endif
 
 	haltGame = false;
 
@@ -1528,7 +1532,11 @@ void JE_doInGameSetup(void)
 
 	//skipStarShowVGA = true;
 
+#ifdef WITH_SDL3
+    mouseSetRelative(main_window, true);
+#else
 	mouseSetRelative(true);
+#endif
 }
 
 JE_boolean JE_inGameSetup(void)
@@ -3406,7 +3414,11 @@ void JE_mainKeyboardInput(void)
 
 void JE_pauseGame(void)
 {
+#ifdef WITH_SDL3
+    mouseSetRelative(main_window, false);
+#else
 	mouseSetRelative(false);
+#endif
 
 	JE_boolean done = false;
 	JE_word mouseX, mouseY;
@@ -3515,7 +3527,11 @@ void JE_pauseGame(void)
 
 	VGAScreen = temp_surface; /* side-effect of game_screen */
 
+#ifdef WITH_SDL3
+    mouseSetRelative(main_window, true);
+#else
 	mouseSetRelative(true);
+#endif
 }
 
 void JE_playerMovement(Player *this_player,
