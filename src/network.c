@@ -185,6 +185,11 @@ static void packets_shift_down(UDPpacket **packet, int max_packets)
 void network_prepare(Uint16 type)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+    if (packet_out_temp == NULL)
+    {
+        return;
+    }
+
     SDLNet_Write16(type,          &packet_out_temp->buf[0]);
     SDLNet_Write16(last_out_sync, &packet_out_temp->buf[2]);
 #else
@@ -197,6 +202,11 @@ void network_prepare(Uint16 type)
 static bool network_send_no_ack(int len)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+    if (packet_out_temp == NULL)
+    {
+        return false;
+    }
+
     packet_out_temp->buflen = len;
 
     if (packet_out_temp->buf)
@@ -268,6 +278,11 @@ bool network_send(int len)
 static int network_acknowledge(Uint16 sync)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+    if (packet_out_temp == NULL)
+    {
+        return 0;
+    }
+
     SDLNet_Write16(PACKET_ACKNOWLEDGE, &packet_out_temp->buf[0]);
     SDLNet_Write16(sync,               &packet_out_temp->buf[2]);
 #else
@@ -341,14 +356,17 @@ int network_check(void)
 	}
 
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
-	switch ((int)SDLNet_ReceiveDatagram(socket, &packet_temp))
+	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp) && (packet_temp != NULL)))
 #else
 	switch (SDLNet_UDP_Recv(socket, packet_temp))
 #endif
 	{
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         case 0:
-            fprintf(stderr, "SDLNet_ReceiveDatagram: %s\n", SDL_GetError());
+            if (packet_temp != NULL)
+            {
+                fprintf(stderr, "SDLNet_ReceiveDatagram: %s\n", SDL_GetError());
+            }
 #else
 		case -1:
             fprintf(stderr, "SDLNet_UDP_Recv: %s\n", SDL_GetError());
@@ -364,11 +382,6 @@ int network_check(void)
 #endif
 		default:
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
-            if (packet_temp == NULL)
-            {
-                break;
-            }
-
             if (packet_temp->buflen >= 4)
             {
                 switch (SDLNet_Read16(&packet_temp->buf[0]))
@@ -1128,6 +1141,11 @@ connect_again:
 	network_prepare(PACKET_CONNECT);
     
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+    if (packet_out_temp == NULL)
+    {
+        return -1;
+    }
+
     SDLNet_Write16(NET_VERSION, &packet_out_temp->buf[4]);
     SDLNet_Write16(network_delay,   &packet_out_temp->buf[6]);
     SDLNet_Write16(episodes_local,  &packet_out_temp->buf[8]);
