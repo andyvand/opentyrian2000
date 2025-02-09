@@ -131,6 +131,7 @@ void JE_mouseStart(void)
 		{
 			const Sint32 x = mouse_x - spriteInfo->x - spriteInfo->fx;
 			const Sint32 y = mouse_y - spriteInfo->y - spriteInfo->fy;
+            
 			blit_sprite2x2_clip(VGAScreen, x, y, shopSpriteSheet, spriteInfo->index);
 		}
 	 }

@@ -243,7 +243,7 @@ void loadSndFile(bool xmas)
     {
         src_len = soundSampleCount[i] & ~(src_samplesize - 1);
         dst_len = soundSampleCount[i] * len_mult;
-        
+
         cvtstream = SDL_CreateAudioStream(&cvtinspec, &cvtoutspec);
 
         if (cvtstream == NULL)

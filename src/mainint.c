@@ -3761,7 +3761,6 @@ redo:
 					button[1] |= mouse_pressed[1];
 					button[2] |= mouse_pressed[2];
 					button[3] |= mouse_pressed[3];
-
 					Sint32 mouseXR;
 					Sint32 mouseYR;
 					mouseGetRelativePosition(&mouseXR, &mouseYR);

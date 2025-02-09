@@ -27,10 +27,6 @@
 #include "video_scale.h"
 #include "font.h"
 
-#if defined(ANDROID) || defined(__ANDROID__)
-#include "player.h"
-#endif
-
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
@@ -119,6 +115,9 @@ void init_keyboard(void)
 
 #if SDL_VERSION_ATLEAST(2, 26, 0)
 	SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE, "1");
+#endif
+#ifdef WITH_SDL3
+    SDL_SetHint(SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE, "0");
 #endif
 }
 
@@ -286,24 +285,8 @@ void service_SDL_events(JE_boolean clear_new)
 				if (mouseRelativeEnabled && windowHasFocus)
 				{
 #ifdef WITH_SDL3
-                    if ((ev.motion.xrel > 0) && (ev.motion.xrel < 1))
-                    {
-                        mxrel = 1;
-                    } else if ((ev.motion.xrel < 0) && (ev.motion.xrel > 1)) {
-                        mxrel = -1;
-                    } else {
-                        mxrel = (Sint32)ev.motion.xrel;
-                    }
-
-                    if ((ev.motion.yrel > 0) && (ev.motion.yrel < 1))
-                    {
-                        myrel = 1;
-                    } else if ((ev.motion.yrel < 0) && (ev.motion.yrel > -1)) {
-                        myrel = -1;
-                    } else {
-                        myrel = (Sint32)ev.motion.yrel;
-                    }
-
+                    mxrel = (Sint32)ev.motion.xrel;
+                    myrel = (Sint32)ev.motion.yrel;
 					mouseWindowXRelative += mxrel;
 					mouseWindowYRelative += myrel;
 #else
