@@ -284,6 +284,7 @@ bool _play_midi(Uint32 songnum){
 		fprintf(stderr, "error: failed to play music: %s\n", Mix_GetError());
 		return false;
 	}
+
 #ifdef WITH_SDL3
     Mix_VolumeMusic(MIX_MAX_VOLUME); // Fix with Windows
 #endif
