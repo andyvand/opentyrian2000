@@ -86,7 +86,7 @@ ifeq ($(WITH_NETWORK), true)
 ifeq ($(WITH_SDL3), true)
     SDL_CPPFLAGS := $(shell pkg-config SDL3 --cflags) $(shell pkg-config SDL3_net --cflags)
     SDL_LDFLAGS :=
-    SDL_LDLIBS := $(shell pkg-config SDL3 --libs) $(shell pkg-config SDL2_net --libs)
+    SDL_LDLIBS := $(shell pkg-config SDL3 --libs) $(shell pkg-config SDL3_net --libs)
 else
     SDL_CPPFLAGS := $(shell pkg-config SDL2 --cflags) $(shell pkg-config SDL2_net --cflags)
     SDL_LDFLAGS :=
