@@ -657,10 +657,12 @@ int network_check(void)
 			break;
 	}
 
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (packet_temp_net != NULL)
     {
         SDLNet_DestroyDatagram(packet_temp_net);
     }
+#endif
 
 	return 0;
 }
