@@ -357,7 +357,7 @@ int network_check(void)
 
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_Datagram *packet_temp_net = malloc(sizeof(SDLNet_Datagram));
-    packet_temp->buf = malloc(NET_PACKET_SIZE);
+    packet_temp_net->buf = malloc(NET_PACKET_SIZE);
 
 	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp_net) && (packet_temp_net != NULL)))
 #else
@@ -656,6 +656,11 @@ int network_check(void)
 			}
 			break;
 	}
+
+    if (packet_temp_net != NULL)
+    {
+        SDLNet_DestroyDatagram(packet_temp_net);
+    }
 
 	return 0;
 }
