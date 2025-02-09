@@ -124,6 +124,11 @@ JE_boolean yourInGameMenuRequest, inGameMenuRequest;
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static void packet_copy(SDLNet_Datagram *dst, SDLNet_Datagram *src)
 {
+    if ((dst == NULL) || (src == NULL))
+    {
+        return;
+    }
+
     void *temp = dst->buf;
     memcpy(dst, src, sizeof(*dst));
     dst->buf = temp;
