@@ -141,9 +141,8 @@ void mouseSetRelative(bool enable)
 
 	mouseRelativeEnabled = enable;
 #else
-    (void)enable;
     (void)window;
-    mouseRelativeEnabled = false;
+    mouseRelativeEnabled = enable;
 #endif
 
 	mouseWindowXRelative = 0;
@@ -296,17 +295,7 @@ void service_SDL_events(JE_boolean clear_new)
 				if (mouseRelativeEnabled && windowHasFocus)
 				{
 #ifdef WITH_SDL3
-                    mxrel = (Sint32)ev.motion.xrel;
-                    myrel = (Sint32)ev.motion.yrel;
-					mouseWindowXRelative += mxrel;
-					mouseWindowYRelative += myrel;
-#else
-                    mouseWindowXRelative += ev.motion.xrel;
-                    mouseWindowYRelative += ev.motion.yrel;
-#endif
-                }
 #if defined(ANDROID) || defined(__ANDROID__)
-                else {
                     if (isNetworkGame)
                     {
                         mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
@@ -318,9 +307,17 @@ void service_SDL_events(JE_boolean clear_new)
 
                     mouseWindowXRelative += mxrel;
                     mouseWindowYRelative += myrel;
-
-                }
+#else
+                    mxrel = (Sint32)ev.motion.xrel;
+                    myrel = (Sint32)ev.motion.yrel;
+					mouseWindowXRelative += mxrel;
+					mouseWindowYRelative += myrel;
 #endif
+#else
+                    mouseWindowXRelative += ev.motion.xrel;
+                    mouseWindowYRelative += ev.motion.yrel;
+#endif
+                }
 
 				// Show system mouse pointer if outside screen.
 #ifdef WITH_SDL3
