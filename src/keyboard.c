@@ -27,6 +27,10 @@
 #include "video_scale.h"
 #include "font.h"
 
+#if defined(ANDROID) || defined(__ANDROID__)
+#include "player.h"
+#endif
+
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
@@ -127,6 +131,7 @@ void mouseSetRelative(SDL_Window *window, bool enable)
 void mouseSetRelative(bool enable)
 #endif
 {
+#if !defined(ANDROID) && !defined(__ANDROID__)
 #ifdef WITH_SDL3
     SDL_SetWindowRelativeMouseMode(window, enable && windowHasFocus);
 #else
@@ -134,6 +139,11 @@ void mouseSetRelative(bool enable)
 #endif
 
 	mouseRelativeEnabled = enable;
+#else
+    (void)enable;
+    (void)window;
+    mouseRelativeEnabled = false;
+#endif
 
 	mouseWindowXRelative = 0;
 	mouseWindowYRelative = 0;
@@ -293,7 +303,17 @@ void service_SDL_events(JE_boolean clear_new)
                     mouseWindowXRelative += ev.motion.xrel;
                     mouseWindowYRelative += ev.motion.yrel;
 #endif
-				}
+                }
+#if defined(ANDROID) || defined(__ANDROID__)
+                else {
+                    mxrel = mouse_x - player[0].x;
+                    myrel = mouse_y - player[0].y;
+
+                    mouseWindowXRelative += mxrel;
+                    mouseWindowYRelative += myrel;
+
+                }
+#endif
 
 				// Show system mouse pointer if outside screen.
 #ifdef WITH_SDL3
