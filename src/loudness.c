@@ -301,8 +301,8 @@ const char * get_midi_params(void){
 #else
 		return "s4;p512;";
 #endif
-	} else if (music_device == NATIVE_MIDI){
-		return "s1;";
+    } else if (music_device == NATIVE_MIDI){
+        return "s1;";
 	} else{
 		return "";
 	}
@@ -479,7 +479,7 @@ static void audioMixCallback(void *userdata, Uint8 *stream, int size)
 
                 cur_position = midi_tracks[song_playing] ? Mix_GetMusicPosition(midi_tracks[song_playing])  : 0;
                 cur_position *= factor;
-                
+
                 // check the duration of the song and see if it looped
                 bool has_loop = (bool)(midi_data[song_playing].loop_end <= midi_data[song_playing].duration);
                 #ifdef _DEBUG
@@ -565,7 +565,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
 
                 cur_position = midi_tracks[song_playing] ? Mix_GetMusicPosition(midi_tracks[song_playing])  : 0;
 				cur_position *= factor;
-                
+
 				// check the duration of the song and see if it looped
                 bool has_loop = (bool)(midi_data[song_playing].loop_end <= midi_data[song_playing].duration);
 				#ifdef _DEBUG
@@ -685,21 +685,21 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
 		while (remainingCount > 0)
         {
             Sint32 sample = *remaining * musicVolumeFactor;
-            
+
             for (size_t i = 0; i < CHANNEL_COUNT; ++i)
             {
                 if (channelSampleCount[i] > 0)
                 {
                     sample += *channelSamples[i] * sampleVolumeFactors[channelVolume[i]];
-                    
+
                     channelSamples[i] += 1;
                     channelSampleCount[i] -= 1;
                 }
             }
-            
+
             sample = FIXED_TO_INT(sample);
             *remaining = MIN(MAX(INT16_MIN, sample), INT16_MAX);
-            
+
             remaining += 1;
             remainingCount -= 1;
         }
@@ -897,7 +897,7 @@ void stop_song(void)  // FKA Player.selectSong(0)
 #else
 	SDL_LockAudioDevice(audioDevice);
 #endif
-    
+
 #ifdef WITH_MIDI
 	if (music_device & IS_MIDI_DEVICE){
 		_stop_midi();

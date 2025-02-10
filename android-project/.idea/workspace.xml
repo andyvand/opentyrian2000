@@ -17,7 +17,13 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/keyboard.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/keyboard.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libfluidsynth.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libfluidsynth.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libfluidsynth.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libfluidsynth.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libfluidsynth.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libfluidsynth.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libfluidsynth.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/x86/libfluidsynth.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libfluidsynth.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libfluidsynth.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/loudness.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/loudness.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
