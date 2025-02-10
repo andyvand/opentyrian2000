@@ -18,9 +18,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/keyboard.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/keyboard.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/mainint.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/mainint.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/mouse.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/mouse.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/nortsong.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/nortsong.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -334,8 +334,8 @@ void service_SDL_events(JE_boolean clear_new)
 
 #else
 			case SDL_MOUSEBUTTONUP:
-                bx = (Sint32)ev.button.x;
-                by = (Sint32)ev.button.y;
+                bx = ev.button.x;
+                by = ev.button.y;
 
                 mapWindowPointToScreen((Sint32 *)&bx, (Sint32 *)&by);
 #endif
@@ -348,13 +348,8 @@ void service_SDL_events(JE_boolean clear_new)
 				{
 					newmouse = true;
 					lastmouse_but = ev.button.button;
-#ifdef WITH_SDL3
                     lastmouse_x = bx;
                     lastmouse_y = by;
-#else
-					lastmouse_x = ev.button.x;
-					lastmouse_y = ev.button.y;
-#endif
 					mousedown = true;
 				}
 				else
