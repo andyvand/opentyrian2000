@@ -142,7 +142,7 @@ void mouseSetRelative(bool enable)
 	mouseRelativeEnabled = enable;
 #else
     (void)window;
-    mouseRelativeEnabled = enable;
+    mouseRelativeEnabled = enable && windowHasFocus;
 #endif
 
 	mouseWindowXRelative = 0;
