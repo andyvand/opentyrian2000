@@ -29,6 +29,7 @@
 
 #if defined(ANDROID) || defined(__ANDROID__)
 #include "player.h"
+#include "network.h"
 #endif
 
 #ifdef WITH_SDL3
@@ -306,8 +307,14 @@ void service_SDL_events(JE_boolean clear_new)
                 }
 #if defined(ANDROID) || defined(__ANDROID__)
                 else {
-                    mxrel = mouse_x - player[0].x;
-                    myrel = mouse_y - player[0].y;
+                    if (isNetworkGame)
+                    {
+                        mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
+                        myrel = mouse_y - player[thisPlayerNum ? thisPlayerNum - 1 : 0].y;
+                    } else {
+                        mxrel = mouse_x - player[0].x;
+                        myrel = mouse_y - player[0].y;
+                    }
 
                     mouseWindowXRelative += mxrel;
                     mouseWindowYRelative += myrel;
