@@ -826,7 +826,7 @@ void setupMenu(void)
 }
 
 #ifdef _WIN32
-int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nShowCmd)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nShowCmd)
 {
 	(void)hInstance;
 	(void)hPrevInstance;
