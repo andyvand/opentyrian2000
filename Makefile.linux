@@ -64,7 +64,11 @@ ifeq ($(WITH_NETWORK), true)
 endif
 
 ifeq ($(WITH_MIDI), true)
+ifeq ($(WITH_SDL3), true)
+    EXTRA_CPPFLAGS += -DWITH_MIDI
+else
     EXTRA_CPPFLAGS += -DWITH_MIDI -DNO_NATIVE_MIDI
+endif
 endif
 
 OPENTYRIAN_VERSION := $(VCS_IDREV)\

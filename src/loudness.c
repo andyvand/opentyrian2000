@@ -170,11 +170,7 @@ bool init_midi(SDL_AudioSpec * got){
 		music_mixer = Mix_GetGeneralMixer();
 
 		if (music_mixer == NULL){
-#ifdef WITH_SDL3
-            music_mixer = NULL;
-#else
 			Mix_FreeMixer();
-#endif
 
 			fprintf(stderr, "error: SDL2_mixer_ext: failed to get music_mixer: %s\n", Mix_GetError());
 			return false;
@@ -274,16 +270,19 @@ bool _play_midi(Uint32 songnum){
 	// Not setting loops to 0 for no loop because it will either loop anyway
 	// or continue playing for like 4+ seconds after the end; we stop it manually below
 #ifdef WITH_SDL3
-    Mix_RewindMusic();
     if (Mix_PlayMusic(midi_tracks[songnum], loops) == false)
 #else
 	Mix_RewindMusicStream(midi_tracks[songnum]);
     if (Mix_PlayMusic(midi_tracks[songnum], loops) != 0)
 #endif
-	{
-		fprintf(stderr, "error: failed to play music: %s\n", Mix_GetError());
-		return false;
-	}
+    {
+        fprintf(stderr, "error: failed to play music: %s\n", Mix_GetError());
+        return false;
+#ifdef WITH_SDL3
+    } else {
+        Mix_RewindMusic();
+#endif
+    }
 
 #ifdef WITH_SDL3
     Mix_VolumeMusic(MIX_MAX_VOLUME); // Fix with Windows
