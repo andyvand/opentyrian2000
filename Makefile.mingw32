@@ -146,7 +146,7 @@ ALL_LDLIBS = -lm \
 ###
 
 .PHONY : all
-all : (TARGET).exe
+all : $(TARGET).exe
 
 .PHONY : installdirs
 installdirs :
