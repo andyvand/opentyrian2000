@@ -153,7 +153,7 @@ bool init_midi(SDL_AudioSpec * got){
         fprintf(stderr, "error: SDL2_mixer_ext failed to open audio device: %s\n", Mix_GetError());
         return false;
 #endif
-	} else if (strlen(soundfont) != 0 && Mix_SetSoundFonts(soundfont) == 0) {
+	} else if ((strlen(soundfont) != 0) && Mix_SetSoundFonts(soundfont) == 0) {
 #ifndef WITH_SDL3
 		Mix_FreeMixer();
 #endif
