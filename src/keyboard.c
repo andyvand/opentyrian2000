@@ -138,12 +138,11 @@ void mouseSetRelative(bool enable)
 #else
 	SDL_SetRelativeMouseMode(enable && windowHasFocus);
 #endif
-
-	mouseRelativeEnabled = enable;
 #else
     (void)window;
-    mouseRelativeEnabled = enable && windowHasFocus;
 #endif
+
+    mouseRelativeEnabled = enable;
 
 	mouseWindowXRelative = 0;
 	mouseWindowYRelative = 0;
