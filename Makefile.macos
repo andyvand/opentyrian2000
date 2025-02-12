@@ -187,6 +187,8 @@ $(TARGET).app: $(TARGET)
 	$(INSTALL_NAME_TOOL) -change /usr/local/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/Versions/3/FluidSynth
 	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/Versions/3/FluidSynth @rpath/FluidSynth.framework/Versions/3/FluidSynth $@/Contents/MacOS/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/MacOS/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/Frameworks/libSDL3_mixer.dylib
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/Frameworks/libSDL3_net.dylib
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/Contents/MacOS/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/Contents/MacOS/opentyrian2000
 	$(INSTALL) data/* $@/Contents/Resources/
