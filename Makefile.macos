@@ -182,12 +182,19 @@ $(TARGET).app: $(TARGET)
 	cp -RLf /usr/local/lib/libSDL3.dylib $@/Contents/Frameworks
 	cp -RLf /usr/local/lib/libSDL3_net.dylib $@/Contents/Frameworks
 	cp -RLf /usr/local/lib/libSDL3_mixer.dylib $@/Contents/Frameworks
+	cp -Rf /usr/local/lib/libintl.8.dylib $@/Contents/Frameworks
 	cp -Rf /usr/local/lib/libglib-2.0.0.dylib $@/Contents/Frameworks
+	cp -Rf /usr/local/lib/libgthread-2.0.0.dylib $@/Contents/Frameworks
 	cp -Rf /Library/Frameworks/FluidSynth.framework $@/Contents/Frameworks
 	$(INSTALL_NAME_TOOL) -change /usr/local/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/Versions/3/FluidSynth
 	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/Versions/3/FluidSynth @rpath/FluidSynth.framework/Versions/3/FluidSynth $@/Contents/MacOS/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/MacOS/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change /usr/local/lib/libgthread-2.0.0.dylib @rpath/libgthread-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/Versions/3/FluidSynth
+	$(INSTALL_NAME_TOOL) -change /usr/local/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Contents/Frameworks/FluidSynth.framework/Versions/3/FluidSynth
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/Frameworks/FluidSynth.framework/Versions/3/FluidSynth
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/Frameworks/libSDL3_mixer.dylib
+	$(INSTALL_NAME_TOOL) -change /usr/local/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/libgthread-2.0.0.dylib
+	$(INSTALL_NAME_TOOL) -change /usr/local/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Contents/Frameworks/libglib-2.0.0.dylib
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/libSDL3.dylib $@/Contents/Frameworks/libSDL3_net.dylib
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/Contents/MacOS/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/Contents/MacOS/opentyrian2000
