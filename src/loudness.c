@@ -281,6 +281,7 @@ bool _play_midi(Uint32 songnum){
 #ifdef WITH_SDL3
     } else {
         Mix_RewindMusic();
+        Mix_ResumeMusic();
 #endif
     }
 
