@@ -299,6 +299,9 @@ void service_SDL_events(JE_boolean clear_new)
                     {
                         mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
                         myrel = mouse_y - player[thisPlayerNum ? thisPlayerNum - 1 : 0].y;
+                    } else if (twoPlayerMode) {
+                        mxrel = mouse_x - player[playerNumber ? playerNumber - 1 : 0].x;
+                        myrel = mouse_y - player[playerNumber ? playerNumber - 1 : 0].y;
                     } else {
                         mxrel = mouse_x - player[0].x;
                         myrel = mouse_y - player[0].y;
