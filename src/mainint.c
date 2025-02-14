@@ -3535,7 +3535,7 @@ void JE_pauseGame(void)
 }
 
 #if defined(ANDROID) || defined(__ANDROID__)
-JE_byte playerNumber = 0;
+JE_byte mousePlayerNumber = 0;
 #endif
 
 void JE_playerMovement(Player *this_player,
@@ -3762,7 +3762,7 @@ redo:
 				if ((inputDevice == 0 || inputDevice == 2) && has_mouse)
 				{
 #if defined(ANDROID) || defined(__ANDROID__)
-                    playerNumber = playerNum_;
+                    mousePlayerNumber = playerNum_;
 #endif
 
 					button[0] |= mouse_pressed[0];

@@ -131,7 +131,7 @@ bool power_up_weapon(Player *, uint port);
 void handle_got_purple_ball(Player *);
 
 #if defined(ANDROID) || defined(__ANDROID__)
-extern JE_byte playerNumber;
+extern JE_byte mousePlayerNumber;
 #endif
 
 #endif // PLAYER_H
