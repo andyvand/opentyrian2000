@@ -176,7 +176,8 @@ $(TARGET).app: $(TARGET)
 	mkdir -p $@/Contents/MacOS
 	mkdir -p $@/Contents/Resources
 	iconutil --convert icns -o $@/Contents/Resources/opentyrian2000.icns opentyrian2000.iconset
-	$(INSTALL) PkgInfo Info.plist $@/Contents/
+	$(INSTALL) PkgInfo $@/Contents/
+	$(INSTALL) Info-iOS.plist $@/Contents/Info.plist
 	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
 	mkdir -p $@/Contents/Frameworks
 	cp -Rf $(SDKROOT)/Library/Frameworks/SDL3.framework $@/Contents/Frameworks
@@ -205,7 +206,8 @@ $(TARGET).app: $(TARGET)
 	mkdir -p $@/Contents/MacOS
 	mkdir -p $@/Contents/Resources
 	iconutil --convert icns -o $@/Contents/Resources/opentyrian2000.icns opentyrian2000.iconset
-	$(INSTALL) PkgInfo Info-iOS.plist $@/Contents/Info.plist
+	$(INSTALL) PkgInfo $@/Contents/
+	$(INSTALL) Info-iOS.plist $@/Contents/Info.plist
 	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
 	mkdir -p $@/Contents/Frameworks
 	cp -Rf $(SDKROOT)/Library/Frameworks/SDL2.framework $@/Contents/Frameworks
