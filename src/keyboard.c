@@ -27,7 +27,7 @@
 #include "video_scale.h"
 #include "font.h"
 
-#if defined(ANDROID) || defined(__ANDROID__)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS)
 #include "player.h"
 #include "network.h"
 #endif
@@ -132,7 +132,7 @@ void mouseSetRelative(SDL_Window *window, bool enable)
 void mouseSetRelative(bool enable)
 #endif
 {
-#if !defined(ANDROID) && !defined(__ANDROID__)
+#if !defined(ANDROID) && !defined(__ANDROID__) || defined(IOS)
 #ifdef WITH_SDL3
     SDL_SetWindowRelativeMouseMode(window, enable && windowHasFocus);
 #else
@@ -294,7 +294,7 @@ void service_SDL_events(JE_boolean clear_new)
 				if (mouseRelativeEnabled && windowHasFocus)
 				{
 #ifdef WITH_SDL3
-#if defined(ANDROID) || defined(__ANDROID__)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS)
                     if (isNetworkGame)
                     {
                         mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;

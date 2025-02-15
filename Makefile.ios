@@ -1,0 +1,255 @@
+# BUILD SETTINGS ###############################################################
+
+ifneq ($(filter Msys Cygwin, $(shell uname -o)), )
+    PLATFORM := WIN32
+    TYRIAN_DIR = "C:\\TYRIAN"
+else
+ifneq ($(filter Darwin, $(shell uname -o)), )
+   PLATFORM := MACOS
+   TYRIAN_DIR = "/Applications/OpenTyrian2000.app/Contents/MacOS"
+else
+    PLATFORM := UNIX
+    TYRIAN_DIR = "/usr/local/bin"
+endif
+endif
+
+WITH_NETWORK := true
+WITH_MIDI := true
+WITH_SDL3 := true
+
+################################################################################
+# see https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
+################################################################################
+
+SHELL = /bin/sh
+
+################################################################################
+# Mac OS X Deployment Target Version
+################################################################################
+MACOSX_DEPLOYMENT_TARGET = 11.0
+
+################################################################################
+# Signing executable (codesign)
+################################################################################
+# CODESIGN = /usr/bin/codesign -f -s - -i com.AnV.Software.OpenTyrian2000
+CODESIGN = /usr/bin/codesign -f -s "Apple Development" -i com.AnV.Software.OpenTyrian2000
+
+CC = /usr/bin/clang
+INSTALL = /usr/bin/install
+PKG_CONFIG = /usr/local/bin/pkg-config
+INSTALL_NAME_TOOL = /usr/bin/install_name_tool
+SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk
+
+VCS_IDREV ?= `(git describe --tags || git rev-parse --short HEAD)`
+
+INSTALL_PROGRAM = $(INSTALL) -m 755
+INSTALL_DATA = $(INSTALL) -m 644
+
+APPLICATIONS = /Applications
+prefix ?= /usr/local
+exec_prefix ?= $(prefix)
+
+bindir ?= $(exec_prefix)/bin
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+docdir ?= $(datarootdir)/doc/opentyrian2000
+mandir ?= $(datarootdir)/man
+man6dir ?= $(mandir)/man6
+man6ext ?= .6
+desktopdir ?= $(datarootdir)/applications
+icondir ?= $(datarootdir)/icons
+
+# see https://www.pathname.com/fhs/pub/fhs-2.3.html
+
+gamesdir ?= $(datadir)/games
+
+###
+
+TARGET := opentyrian2000
+
+SRCS := $(wildcard src/*.c)
+OBJS := $(SRCS:src/%.c=obj/%.o) obj/macos-bundle.o
+DEPS := $(SRCS:src/%.c=obj/%.d)
+
+###
+
+ifeq ($(WITH_SDL3), true)
+    EXTRA_CPPFLAGS += -DWITH_SDL3
+endif
+
+ifeq ($(WITH_NETWORK), true)
+    EXTRA_CPPFLAGS += -DWITH_NETWORK
+endif
+
+ifeq ($(WITH_MIDI), true)
+    EXTRA_CPPFLAGS += -DWITH_MIDI
+endif
+
+ifeq ($(OS), linux)
+    EXTRA_CPPFLAGS += -DNO_NATIVE_MIDI
+endif
+
+OPENTYRIAN_VERSION := $(VCS_IDREV)\
+
+EXTRA_CPPFLAGS += -DOPENTYRIAN_VERSION="$(OPENTYRIAN_VERSION)"
+
+ifeq ($(_DEBUG), 1)
+CPPFLAGS = -D_DEBUG=1 -UNDEBUG
+CFLAGS += -arch arm64 -g3 -O0 -DIOS=1 -isysroot $(SDKROOT) -miphoneos-version-min=$(MACOSX_DEPLOYMENT_TARGET) $(EXTRA_CPPFLAGS) -Werror -pedantic -Wall -Wextra -Werror -D_DEBUG=1
+else
+CPPFLAGS = -MMD -DNDEBUG
+CFLAGS = -arch arm64 -g0 -O3 -DIOS=1 -isysroot $(SDKROOT) -miphoneos-version-min=$(MACOSX_DEPLOYMENT_TARGET) $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra -Werror
+endif
+
+LDFLAGS ?= -arch arm64 -miphoneos-version-min=11.0
+LDLIBS ?= -framework Foundation -lobjc
+libmidiconv_PC_PATH :=
+
+ifeq ($(WITH_NETWORK), true)
+ifeq ($(WITH_SDL3), true)
+    SDL_CPPFLAGS := -F$(SDKROOT)/Library/Frameworks -I$(SDKROOT)/usr/include -I$(SDKROOT)/usr/include/SDL3
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -F$(SDKROOT)/Library/Frameworks -L$(SDKROOT)/usr/lib -framework SDL3 -lSDL3_net
+else
+    SDL_CPPFLAGS := -F$(SDKROOT)/Library/Frameworks -I$(SDKROOT)/usr/include -I$(SDKROOT)/usr/include/SDL2
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -F$(SDKROOT)/Library/Frameworks -L$(SDKROOT)/usr/lib -framework SDL2 -lSDL2_net
+endif
+else
+ifeq ($(WITH_SDL3), true)
+    SDL_CPPFLAGS := -I$(SDKROOT)/usr/include -I$(SDKROOT)/usr/include/SDL3
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -F$(SDKROOT)/Library/Frameworks -L$(SDKROOT)/usr/lib -framework SDL3
+else
+    SDL_CPPFLAGS := -F$(SDKROOT)/Library/Frameworks -I$(SDKROOT)/usr/include -I$(SDKROOT)/usr/include/SDL2
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -F$(SDKROOT)/Library/Frameworks -L$(SDKROOT)/usr/lib -framework SDL2
+endif
+endif
+
+ifeq ($(WITH_MIDI), true)
+ifeq ($(WITH_SDL3), true)
+    SDL_PACKAGES := SDL3_mixer
+else
+    SDL_PACKAGES := SDL2_mixer_ext
+endif
+
+    MIDIPROC_LIBS := -L$(SDKROOT)/usr/lib -lmidiproc -F$(SDKROOT)/Library/Frameworks -framework FluidSynth
+endif
+
+ifeq ($(WITH_MIDI), true)
+    SDL_CPPFLAGS += $(shell pkg-config $(MIDIPROC_LIBS) --cflags) -I$(SDKROOT)/usr/include/midiproc
+    SDL_LDFLAGS :=
+ifeq ($(WITH_SDL3), true)
+    SDL_LDLIBS += -L$(SDKROOT)/usr/lib -lmidiproc -F$(SDKROOT)/Library/Frameworks -framework FluidSynth -framework AudioToolbox -lSDL3_mixer
+else
+    SDL_LDLIBS += -L$(SDKROOT)/usr/lib -lmidiproc -F$(SDKROOT)/Library/Frameworks -framework FluidSynth -framework AudioToolbox -lSDL2_mixer_ext
+endif
+endif
+
+# add stdc++ to the ldlibs if using midiproc
+ifneq ($(MIDIPROC_LIBS), )
+    SDL_LDLIBS += -lc++ -lc++abi
+endif
+
+ALL_CPPFLAGS = \
+	       -DTARGET_$(PLATFORM) \
+               -DTYRIAN_DIR='"$(TYRIAN_DIR)"' \
+               $(EXTRA_CPPFLAGS) \
+               $(SDL_CPPFLAGS) \
+               $(CPPFLAGS)
+ALL_CFLAGS = \
+             $(CFLAGS)
+ALL_LDFLAGS = $(SDL_LDFLAGS) \
+              $(LDFLAGS)
+ALL_LDLIBS = -lm \
+             $(SDL_LDLIBS) \
+             $(LDLIBS)
+
+###
+
+.PHONY : all
+all : $(TARGET) $(TARGET).app
+
+ifeq ($(WITH_SDL3), true)
+$(TARGET).app: $(TARGET)
+	mkdir -p $@/Contents/MacOS
+	mkdir -p $@/Contents/Resources
+	iconutil --convert icns -o $@/Contents/Resources/opentyrian2000.icns opentyrian2000.iconset
+	$(INSTALL) PkgInfo Info.plist $@/Contents/
+	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
+	mkdir -p $@/Contents/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/SDL3.framework $@/Contents/Frameworks
+	cp -RLf $(SDKROOT)/usr/lib/libSDL3_net.dylib $@/Contents/Frameworks
+	cp -RLf $(SDKROOT)/usr/lib/libSDL3_mixer.dylib $@/Contents/Frameworks
+	cp -Rf $(SDKROOT)/usr/lib/libintl.8.dylib $@/Contents/Frameworks
+	cp -Rf $(SDKROOT)/usr/lib/libglib-2.0.0.dylib $@/Contents/Frameworks
+	cp -Rf $(SDKROOT)/usr/lib/libgthread-2.0.0.dylib $@/Contents/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/FluidSynth.framework $@/Contents/Frameworks
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/FluidSynth @rpath/FluidSynth.framework/FluidSynth $@/Contents/MacOS/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/MacOS/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libgthread-2.0.0.dylib @rpath/libgthread-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/Frameworks/libSDL3_mixer.dylib
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/libgthread-2.0.0.dylib
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Contents/Frameworks/libglib-2.0.0.dylib
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/Frameworks/libSDL3_net.dylib
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/Contents/MacOS/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/Contents/MacOS/opentyrian2000
+	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib $@
+	$(INSTALL) data/* $@/Contents/Resources/
+else
+$(TARGET).app: $(TARGET)
+	mkdir -p $@/Contents/MacOS
+	mkdir -p $@/Contents/Resources
+	iconutil --convert icns -o $@/Contents/Resources/opentyrian2000.icns opentyrian2000.iconset
+	$(INSTALL) PkgInfo Info-iOS.plist $@/Contents/Info.plist
+	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
+	mkdir -p $@/Contents/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/SDL2.framework $@/Contents/Frameworks
+	cp -RLf $(SDKROOT)/usr/lib/libSDL2_net-2.0.1.dylib $@/Contents/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/FluidSynth.framework $@/Contents/Frameworks
+	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/FluidSynth @rpath/FluidSynth.framework/FluidSynth $@/Contents/MacOS/opentyrian2000
+	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib $@
+	$(INSTALL) data/* $@/Contents/Resources/
+endif
+
+.PHONY : installdirs
+installdirs :
+	mkdir -p $(DESTDIR)$(man6dir)
+
+.PHONY : install
+install : $(TARGET) installdirs
+	cp -Rf $(TARGET).app $(APPLICATIONS)/$(TARGET).app
+	$(INSTALL_DATA) linux/man/opentyrian2000.6 $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
+
+.PHONY : uninstall
+uninstall :
+	rm -Rf /Applications/$(TARGET).app
+	rm -f $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
+
+.PHONY : clean
+clean :
+	rm -f $(OBJS)
+	rm -f $(DEPS)
+	rm -f $(TARGET)
+	rm -Rf opentyrian2000.app
+
+$(TARGET) : $(OBJS)
+	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(ALL_LDLIBS)
+	$(INSTALL_NAME_TOOL) -add_rpath @executable_path/../Frameworks $@
+
+-include $(DEPS)
+
+obj/%.o : src/%.c
+	@mkdir -p "$(dir $@)"
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<
+
+obj/%.o : src/%.mm
+	@mkdir -p "$(dir $@)"
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<
+
+obj/macos-bundle.o : src/macos-bundle.mm
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<

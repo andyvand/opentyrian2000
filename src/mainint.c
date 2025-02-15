@@ -3534,7 +3534,7 @@ void JE_pauseGame(void)
 #endif
 }
 
-#if defined(ANDROID) || defined(__ANDROID__)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS)
 JE_byte mousePlayerNumber = 0;
 #endif
 
@@ -3761,7 +3761,7 @@ redo:
 				/* mouse input */
 				if ((inputDevice == 0 || inputDevice == 2) && has_mouse)
 				{
-#if defined(ANDROID) || defined(__ANDROID__)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS)
                     mousePlayerNumber = playerNum_;
 #endif
 

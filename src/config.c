@@ -789,6 +789,8 @@ const char *get_user_directory(void)
 #ifndef TARGET_WIN32
 #if defined(ANDROID) || defined(__ANDROID__)
 		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
+#elif defined(IOS)
+        snprintf(user_dir, sizeof(user_dir), "%s", getBundlePath());
 #else
 		char *xdg_config_home = getenv("XDG_CONFIG_HOME");
 		if (xdg_config_home != NULL)
