@@ -6,7 +6,7 @@ ifneq ($(filter Msys Cygwin, $(shell uname -o)), )
 else
 ifneq ($(filter Darwin, $(shell uname -o)), )
    PLATFORM := MACOS
-   TYRIAN_DIR = "/Applications/OpenTyrian2000.app/Contents/MacOS"
+   TYRIAN_DIR = "/Applications/OpenTyrian2000.app"
 else
     PLATFORM := UNIX
     TYRIAN_DIR = "/usr/local/bin"
@@ -173,49 +173,47 @@ all : $(TARGET) $(TARGET).app
 
 ifeq ($(WITH_SDL3), true)
 $(TARGET).app: $(TARGET)
-	mkdir -p $@/Contents/MacOS
-	mkdir -p $@/Contents/Resources
-	iconutil --convert icns -o $@/Contents/Resources/opentyrian2000.icns opentyrian2000.iconset
-	$(INSTALL) PkgInfo $@/Contents/
-	$(INSTALL) Info-iOS.plist $@/Contents/Info.plist
-	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
-	mkdir -p $@/Contents/Frameworks
-	cp -Rf $(SDKROOT)/Library/Frameworks/SDL3.framework $@/Contents/Frameworks
-	cp -RLf $(SDKROOT)/usr/lib/libSDL3_net.dylib $@/Contents/Frameworks
-	cp -RLf $(SDKROOT)/usr/lib/libSDL3_mixer.dylib $@/Contents/Frameworks
-	cp -Rf $(SDKROOT)/usr/lib/libintl.8.dylib $@/Contents/Frameworks
-	cp -Rf $(SDKROOT)/usr/lib/libglib-2.0.0.dylib $@/Contents/Frameworks
-	cp -Rf $(SDKROOT)/usr/lib/libgthread-2.0.0.dylib $@/Contents/Frameworks
-	cp -Rf $(SDKROOT)/Library/Frameworks/FluidSynth.framework $@/Contents/Frameworks
-	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
-	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/FluidSynth @rpath/FluidSynth.framework/FluidSynth $@/Contents/MacOS/opentyrian2000
-	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/MacOS/opentyrian2000
-	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libgthread-2.0.0.dylib @rpath/libgthread-2.0.0.dylib $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
-	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
-	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/Frameworks/FluidSynth.framework/FluidSynth
-	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/Frameworks/libSDL3_mixer.dylib
-	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Contents/Frameworks/libgthread-2.0.0.dylib
-	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Contents/Frameworks/libglib-2.0.0.dylib
-	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Contents/Frameworks/libSDL3_net.dylib
-	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/Contents/MacOS/opentyrian2000
-	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/Contents/MacOS/opentyrian2000
-	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib $@
-	$(INSTALL) data/* $@/Contents/Resources/
+	mkdir -p $@
+	$(INSTALL) iOS_Icons/* $@/
+	$(INSTALL) PkgInfo $@/
+	$(INSTALL) Info-iOS.plist $@/Info.plist
+	$(INSTALL) $(TARGET) $@/$(TARGET)
+	mkdir -p $@/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/SDL3.framework $@/Frameworks
+	cp -RLf $(SDKROOT)/usr/lib/libSDL3_net.dylib $@/Frameworks
+	cp -RLf $(SDKROOT)/usr/lib/libSDL3_mixer.dylib $@/Frameworks
+	cp -Rf $(SDKROOT)/usr/lib/libintl.8.dylib $@/Frameworks
+	cp -Rf $(SDKROOT)/usr/lib/libglib-2.0.0.dylib $@/Frameworks
+	cp -Rf $(SDKROOT)/usr/lib/libgthread-2.0.0.dylib $@/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/FluidSynth.framework $@/Frameworks
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/FluidSynth @rpath/FluidSynth.framework/FluidSynth $@/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libgthread-2.0.0.dylib @rpath/libgthread-2.0.0.dylib $@/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Frameworks/FluidSynth.framework/FluidSynth
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Frameworks/libSDL3_mixer.dylib
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libglib-2.0.0.dylib @rpath/libglib-2.0.0.dylib $@/Frameworks/libgthread-2.0.0.dylib
+	$(INSTALL_NAME_TOOL) -change /Users/andyvand/Downloads/libglib-iOS/lib/libintl.8.dylib @rpath/libintl.8.dylib $@/Frameworks/libglib-2.0.0.dylib
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Frameworks/libSDL3_net.dylib
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/opentyrian2000
+	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/opentyrian2000
+	$(CODESIGN) $@/Frameworks/*.framework $@/Frameworks/*.dylib $@
+	$(INSTALL) data/* $@/
 else
 $(TARGET).app: $(TARGET)
-	mkdir -p $@/Contents/MacOS
-	mkdir -p $@/Contents/Resources
-	iconutil --convert icns -o $@/Contents/Resources/opentyrian2000.icns opentyrian2000.iconset
-	$(INSTALL) PkgInfo $@/Contents/
-	$(INSTALL) Info-iOS.plist $@/Contents/Info.plist
-	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
-	mkdir -p $@/Contents/Frameworks
-	cp -Rf $(SDKROOT)/Library/Frameworks/SDL2.framework $@/Contents/Frameworks
-	cp -RLf $(SDKROOT)/usr/lib/libSDL2_net-2.0.1.dylib $@/Contents/Frameworks
-	cp -Rf $(SDKROOT)/Library/Frameworks/FluidSynth.framework $@/Contents/Frameworks
-	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/FluidSynth @rpath/FluidSynth.framework/FluidSynth $@/Contents/MacOS/opentyrian2000
-	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib $@
-	$(INSTALL) data/* $@/Contents/Resources/
+	mkdir -p $@
+	$(INSTALL) iOS_Icons/* $@/
+	$(INSTALL) PkgInfo $@/
+	$(INSTALL) Info-iOS.plist $@/Info.plist
+	$(INSTALL) $(TARGET) $@/$(TARGET)
+	mkdir -p $@/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/SDL2.framework $@/Frameworks
+	cp -RLf $(SDKROOT)/usr/lib/libSDL2_net-2.0.1.dylib $@/Frameworks
+	cp -Rf $(SDKROOT)/Library/Frameworks/FluidSynth.framework $@/Frameworks
+	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/FluidSynth @rpath/FluidSynth.framework/FluidSynth $@/opentyrian2000
+	$(CODESIGN) $@/Frameworks/*.framework $@/Frameworks/*.dylib $@
+	$(INSTALL) data/* $@/
 endif
 
 .PHONY : installdirs
