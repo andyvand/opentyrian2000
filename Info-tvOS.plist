@@ -17,7 +17,7 @@
 	</array>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
-		<string>WatchOS</string>
+		<string>AppleTVOS</string>
 	</array>
 	<key>UIStatusBarHidden</key>
 	<true/>
