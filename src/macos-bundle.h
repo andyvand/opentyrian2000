@@ -14,6 +14,7 @@ extern const char *getMinimumOS(void);
 extern const char *getExecutablePath(void);
 extern const char *getFrameworksPath(void);
 extern const char *getBundleID(void);
+extern const char *getHomeDir(void);
 
 #ifdef __cplusplus
 }

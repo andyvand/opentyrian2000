@@ -856,7 +856,8 @@ int main(int argc, char *argv[])
     printf("Identifier: %s\n", getBundleID());
     printf("Executable: %s\n", getExecutablePath());
     printf("Resources:  %s\n", getBundlePath());
-    printf("Frameworks: %s\n\n", getFrameworksPath());
+    printf("Frameworks: %s\n", getFrameworksPath());
+    printf("Home directory: %s\n\n", getHomeDir());
 #else
 	printf("\nWelcome to... >> %s %s <<\n\n", opentyrian_str, opentyrian_version);
 #endif

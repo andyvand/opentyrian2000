@@ -55,3 +55,8 @@ const char *getBundleID(void)
 {
     return ((const char *)[[[NSBundle mainBundle] bundleIdentifier] cStringUsingEncoding:NSUTF8StringEncoding]);
 }
+
+const char *getHomeDir(void)
+{
+    return ((const char *)[NSHomeDirectory() cStringUsingEncoding:NSUTF8StringEncoding]);
+}

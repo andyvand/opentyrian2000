@@ -199,7 +199,8 @@ $(TARGET).app: $(TARGET)
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/Contents/MacOS/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/Contents/MacOS/opentyrian2000
 	$(INSTALL) data/* $@/Contents/Resources/
-	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib $@
+	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib
+	$(CODESIGN) --entitlements opentyrian2000.entitlements $@
 else
 $(TARGET).app: $(TARGET)
 	mkdir -p $@/Contents/MacOS
@@ -215,7 +216,8 @@ $(TARGET).app: $(TARGET)
 	cp -Rf /Library/Frameworks/FluidSynth.framework $@/Contents/Frameworks
 	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/Versions/3/FluidSynth @rpath/FluidSynth.framework/Versions/3/FluidSynth $@/Contents/MacOS/opentyrian2000
 	$(INSTALL) data/* $@/Contents/Resources/
-	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib $@
+	$(CODESIGN) $@/Contents/Frameworks/*.framework $@/Contents/Frameworks/*.dylib
+	$(CODESIGN) --entitlements opentyrian2000.entitlements $@
 endif
 
 .PHONY : installdirs

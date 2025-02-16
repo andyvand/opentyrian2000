@@ -198,8 +198,9 @@ $(TARGET).app: $(TARGET)
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3.0.dylib @rpath/SDL3.framework/SDL3 $@/Frameworks/libSDL3_net.dylib
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_net.0.dylib @rpath/libSDL3_net.dylib $@/opentyrian2000
 	$(INSTALL_NAME_TOOL) -change @rpath/libSDL3_mixer.0.dylib @rpath/libSDL3_mixer.dylib $@/opentyrian2000
-	$(CODESIGN) $@/Frameworks/*.framework $@/Frameworks/*.dylib $@
 	$(INSTALL) data/* $@/
+	$(CODESIGN) $@/Frameworks/*.framework $@/Frameworks/*.dylib
+	$(CODESIGN) --entitlements opentyrian2000.entitlements $@
 else
 $(TARGET).app: $(TARGET)
 	mkdir -p $@
@@ -212,8 +213,9 @@ $(TARGET).app: $(TARGET)
 	cp -RLf $(SDKROOT)/usr/lib/libSDL2_net-2.0.1.dylib $@/Frameworks
 	cp -Rf $(SDKROOT)/Library/Frameworks/FluidSynth.framework $@/Frameworks
 	$(INSTALL_NAME_TOOL) -change FluidSynth.framework/FluidSynth @rpath/FluidSynth.framework/FluidSynth $@/opentyrian2000
-	$(CODESIGN) $@/Frameworks/*.framework $@/Frameworks/*.dylib $@
 	$(INSTALL) data/* $@/
+	$(CODESIGN) $@/Frameworks/*.framework $@/Frameworks/*.dylib
+	$(CODESIGN) --entitlements opentyrian2000.entitlements $@
 endif
 
 .PHONY : installdirs
@@ -239,7 +241,7 @@ clean :
 
 $(TARGET) : $(OBJS)
 	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(ALL_LDLIBS)
-	$(INSTALL_NAME_TOOL) -add_rpath @executable_path/../Frameworks $@
+	$(INSTALL_NAME_TOOL) -add_rpath @executable_path/Frameworks $@
 
 -include $(DEPS)
 
