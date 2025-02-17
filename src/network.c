@@ -381,7 +381,7 @@ int network_check(void)
 #endif
 		default:
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
-            if (packet_temp_net != NULL)
+            if (packet_temp_net == NULL)
             {
                 break;
             }
