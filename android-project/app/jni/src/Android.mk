@@ -1,5 +1,4 @@
 LOCAL_PATH := $(call my-dir)
-APP_ALLOW_MISSING_DEPS = true
 
 include $(CLEAR_VARS)
 
@@ -61,6 +60,11 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := opus
 LOCAL_SRC_FILES := $(LOCAL_PATH)/lib/$(APP_ABI)/libopus.so
+#LOCAL_EXPORT_C_INCLUDES :=
+include $(PREBUILT_SHARED_LIBRARY)
+
+LOCAL_MODULE := opusfile
+LOCAL_SRC_FILES := $(LOCAL_PATH)/lib/$(APP_ABI)/libopusfile.so
 #LOCAL_EXPORT_C_INCLUDES :=
 include $(PREBUILT_SHARED_LIBRARY)
 
