@@ -83,7 +83,7 @@
 #include <shellapi.h>
 #endif
 
-#ifdef IOS
+#if defined(IOS) || defined(WIN32) || defined(_WIN32)
 #include <SDL3/SDL_main.h>
 #endif
 
@@ -829,16 +829,8 @@ void setupMenu(void)
 	}
 }
 
-#ifdef _WIN32
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nShowCmd)
-{
 	(void)hInstance;
-	(void)hPrevInstance;
-	(void)cmdLine;
-	(void)nShowCmd;
-	int argc = __argc;
-	char** argv = __argv;
-#elif defined(ANDROID) || defined(__ANDROID__)
+#if defined(ANDROID) || defined(__ANDROID__)
 int SDL_main(int argc, char *argv[])
 {
 #else
