@@ -868,7 +868,7 @@
 				"INFOPLIST_FILE[sdk=appletv*]" = "../Info-tvOS.plist";
 				"INFOPLIST_FILE[sdk=iphone*]" = "../Info-iOS.plist";
 				"INFOPLIST_FILE[sdk=macosx*]" = ../Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "OpenTyrian 2000 v3.0.0";
+				INFOPLIST_KEY_CFBundleDisplayName = "OpenTyrian 2000";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (C) 2022-2025 The OpenTyrian Development Team, copyright (C) 2022-2025 Kaito Sinclaire, copyright (C) 2024-2025 AnV Software";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -937,7 +937,7 @@
 				"INFOPLIST_FILE[sdk=appletv*]" = "../Info-tvOS.plist";
 				"INFOPLIST_FILE[sdk=iphone*]" = "../Info-iOS.plist";
 				"INFOPLIST_FILE[sdk=macosx*]" = ../Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "OpenTyrian 2000 v3.0.0";
+				INFOPLIST_KEY_CFBundleDisplayName = "OpenTyrian 2000";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (C) 2022-2025 The OpenTyrian Development Team, copyright (C) 2022-2025 Kaito Sinclaire, copyright (C) 2024-2025 AnV Software";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
