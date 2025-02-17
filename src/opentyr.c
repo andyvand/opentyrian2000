@@ -83,7 +83,7 @@
 #include <shellapi.h>
 #endif
 
- defined(IOS) || defined(WIN32) || defined(_WIN32)
+#if defined(IOS) || defined(WIN32) || defined(_WIN32)
 #ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
 #endif
