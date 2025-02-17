@@ -83,8 +83,10 @@
 #include <shellapi.h>
 #endif
 
-#if defined(IOS) || defined(WIN32) || defined(_WIN32)
+ defined(IOS) || defined(WIN32) || defined(_WIN32)
+#ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
+#endif
 #endif
 
 const char *opentyrian_str = "OpenTyrian " TYRIAN_VERSION;
