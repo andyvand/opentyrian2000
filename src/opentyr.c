@@ -829,7 +829,6 @@ void setupMenu(void)
 	}
 }
 
-	(void)hInstance;
 #if defined(ANDROID) || defined(__ANDROID__)
 int SDL_main(int argc, char *argv[])
 {
