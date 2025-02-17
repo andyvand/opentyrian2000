@@ -83,6 +83,10 @@
 #include <shellapi.h>
 #endif
 
+#ifdef IOS
+#include <SDL3/SDL_main.h>
+#endif
+
 const char *opentyrian_str = "OpenTyrian " TYRIAN_VERSION;
 const char *opentyrian_version = OPENTYRIAN_VERSION;
 

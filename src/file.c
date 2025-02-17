@@ -57,15 +57,7 @@ const char *custom_data_dir = NULL;
 // finds the Tyrian data directory
 const char *data_dir(void)
 {
-#if defined(IOS)
-    const char *const dirs[] =
-    {
-        custom_data_dir,
-        getExecutablePath(),
-        "data",
-        ".",
-    };
-#elif defined(__APPLE__) & defined(__MACH__)
+#if defined(__APPLE__) & defined(__MACH__)
     const char *const dirs[] =
     {
         custom_data_dir,

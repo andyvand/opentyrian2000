@@ -132,7 +132,7 @@ void mouseSetRelative(SDL_Window *window, bool enable)
 void mouseSetRelative(bool enable)
 #endif
 {
-#if !defined(ANDROID) && !defined(__ANDROID__) || defined(IOS)
+#if !defined(ANDROID) && !defined(__ANDROID__) && !defined(IOS)
 #ifdef WITH_SDL3
     SDL_SetWindowRelativeMouseMode(window, enable && windowHasFocus);
 #else
