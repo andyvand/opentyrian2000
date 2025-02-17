@@ -853,6 +853,12 @@
 					"WITH_MIDI=1",
 					"$(inherited)",
 				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=macosx*]" = (
+					"_DEBUG=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
+					"WITH_MIDI=1",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SDK_DIR)/usr/include",
@@ -913,6 +919,11 @@
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"IOS=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
+					"WITH_MIDI=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=macosx*]" = (
 					"WITH_SDL3=1",
 					"WITH_NETWORK=1",
 					"WITH_MIDI=1",

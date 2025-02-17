@@ -312,7 +312,7 @@ bool load_midi(unsigned int song_num){
 	// This is outside of the audio lock because it can take a while
 	if (midi_tracks[song_num] == NULL){
 #ifdef WITH_SDL3
-        midi_tracks[song_num] = Mix_LoadMUS_IO(SDL_IOFromConstMem(midi_data[song_num].data, midi_data[song_num].size), true);
+        midi_tracks[song_num] = Mix_LoadMUS_IO(SDL_IOFromConstMem(midi_data[song_num].data, midi_data[song_num].size), false);
 #else
         const char * params = get_midi_params();
 		midi_tracks[song_num] = Mix_LoadMUSType_RW_ARG(SDL_RWFromConstMem(midi_data[song_num].data, midi_data[song_num].size), MUS_MID, 1, params);

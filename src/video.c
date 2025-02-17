@@ -116,11 +116,21 @@ void init_video(void)
 	// Create the window with a temporary initial size, hidden until we set up the
 	// scaler and find the true window size
 #ifdef WITH_SDL3
-    main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
+#ifdef IOS
+    main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN);
 #else
-	main_window = SDL_CreateWindow(opentyrian_str,
+    main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
+#endif
+#else
+#ifdef IOS
+    main_window = SDL_CreateWindow(opentyrian_str,
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN);
+#else
+    main_window = SDL_CreateWindow(opentyrian_str,
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
+#endif
 #endif
 
 	if (main_window == NULL)
