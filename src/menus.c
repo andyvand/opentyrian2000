@@ -85,7 +85,7 @@ bool gameplaySelect(void)
 
 			wMenuItem[i] = JE_textWidth(text, normal_font);
 			const int x = xCenter - wMenuItem[i] / 2;
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const bool selected = i == selectedIndex;
 			const bool disabled = i == MENU_ITEM_NETWORK;
@@ -135,7 +135,7 @@ bool gameplaySelect(void)
 				const int xMenuItem = xCenter - wMenuItem[i] / 2;
 				if (mouse_x >= xMenuItem && mouse_x < xMenuItem + wMenuItem[i])
 				{
-					const int yMenuItem = yMenuItems + dyMenuItems * i;
+					const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 					if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 					{
 						if (selectedIndex != i)
@@ -281,7 +281,7 @@ bool episodeSelect(void)
 			const char *const text = episode_name[i + 1];
 
 			wMenuItem[i] = JE_textWidth(text, normal_font);
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const bool selected = i == selectedIndex;
 			const bool disabled = !episodeAvail[i];
@@ -332,7 +332,7 @@ bool episodeSelect(void)
 			{
 				if (mouse_x >= xMenuItem && mouse_x < xMenuItem + wMenuItem[i])
 				{
-					const int yMenuItem = yMenuItems + dyMenuItems * i;
+					const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 					if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 					{
 						if (selectedIndex != i)
@@ -470,7 +470,7 @@ bool difficultySelect(void)
 
 			wMenuItem[i] = JE_textWidth(text, normal_font);
 			const int x = xCenter - wMenuItem[i] / 2;
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const bool selected = i == selectedIndex;
 
@@ -567,7 +567,7 @@ bool difficultySelect(void)
 				const int xMenuItem = xCenter - wMenuItem[i] / 2;
 				if (mouse_x >= xMenuItem && mouse_x < xMenuItem + wMenuItem[i])
 				{
-					const int yMenuItem = yMenuItems + dyMenuItems * i;
+					const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 					if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 					{
 						if (selectedIndex != i)
@@ -716,7 +716,7 @@ bool timedBattleSelect(void)
 
 			wMenuItem[i] = JE_textWidth(text, normal_font);
 			const int x = xCenter - wMenuItem[i] / 2;
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const bool selected = i == selectedIndex;
 
@@ -767,7 +767,7 @@ bool timedBattleSelect(void)
 				const int xMenuItem = xCenter - wMenuItem[i] / 2;
 				if (mouse_x >= xMenuItem && mouse_x < xMenuItem + wMenuItem[i])
 				{
-					const int yMenuItem = yMenuItems + dyMenuItems * i;
+					const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 					if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 					{
 						if (selectedIndex != i)

@@ -41,7 +41,7 @@ void JE_loadPals(void)
 {
 	FILE *f = dir_fopen_die(data_dir(), "palette.dat", "rb");
 	
-	palette_count = ftell_eof(f) / (256 * 3);
+	palette_count = (int)(ftell_eof(f) / (256 * 3));
 	assert(palette_count == PALETTE_COUNT);
 
 	for (int p = 0; p < palette_count; ++p)

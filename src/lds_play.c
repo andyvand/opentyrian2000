@@ -182,7 +182,7 @@ bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 	/* load patterns */
 	fseek(f, 2, SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
 	
-	unsigned int remaining = music_size - (ftell(f) - music_offset);
+	unsigned int remaining = (unsigned int)(music_size - (ftell(f) - music_offset));
 	size_t numpatterns = remaining / 2;
 
 	free(patterns);

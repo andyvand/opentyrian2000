@@ -576,7 +576,7 @@ static inline unsigned int config_get_value_count(const ConfigOption *option)
 	for (ConfigOption *_option = (option); _option != NULL; _option = NULL) \
 	for (ConfigString *_values_begin = _option->values_count == 0 ? &_option->v.value : &_option->v.values[0], \
 	                  *_values_end = _option->values_count == 0 ? _values_begin + 1 : &_option->v.values[_option->values_count], \
-	                  *_value = _values_begin; _value < _values_end; ++_value, (i) = _value - _values_begin) \
+	                  *_value = _values_begin; _value < _values_end; ++_value, (i) = (unsigned int)(_value - _values_begin)) \
 	for (const char *(string_value) = config_string_to_cstr(_value); (string_value) != NULL; (string_value) = NULL)
 
 /*!
@@ -585,7 +585,7 @@ static inline unsigned int config_get_value_count(const ConfigOption *option)
 #define foreach_remove_option_value() \
 	{ \
 		extern void config_oom(void); \
-		unsigned int _value_i = _value - _values_begin; \
+		unsigned int _value_i = (unsigned int)(_value - _values_begin); \
 		if (config_remove_value(_option, _value_i) == NULL) \
 			config_oom(); \
 		_values_begin = _option->values_count == 0 ? &_option->v.value : &_option->v.values[0]; \

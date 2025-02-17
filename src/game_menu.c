@@ -136,7 +136,7 @@ static Uint8 *playeritem_map(PlayerItems *items, uint i)
 
 JE_longint JE_cashLeft(void)
 {
-	JE_longint tempL = player[0].cash;
+	JE_longint tempL = (JE_longint)player[0].cash;
 	JE_word itemNum = *playeritem_map(&player[0].items, curSel[MENU_UPGRADES] - 2);
 
 	tempL -= JE_getCost(curSel[MENU_UPGRADES], itemNum);
@@ -547,7 +547,7 @@ void JE_itemScreen(void)
 				if (tempW < menuChoices[MENU_UPGRADE_SUB] - 1)
 				{
 					/* Get base cost for choice */
-					temp_cost = JE_getCost(curSel[MENU_UPGRADES], itemAvail[itemAvailMap[curSel[MENU_UPGRADES]-2]-1][tempW-1]);
+					temp_cost = (uint)JE_getCost(curSel[MENU_UPGRADES], itemAvail[itemAvailMap[curSel[MENU_UPGRADES]-2]-1][tempW-1]);
 				}
 				else
 				{
@@ -1830,7 +1830,7 @@ bool load_cube(int cube_slot, int cube_index)
 				char *word = &buf[word_start];
 				word_start = i + 1;
 
-				uint word_chars = strlen(word),
+				uint word_chars = (uint)strlen(word),
 				     word_width = JE_textWidth(word, TINY_FONT);
 
 				// word won't fit; no can do

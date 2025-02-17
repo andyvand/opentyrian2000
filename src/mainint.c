@@ -242,7 +242,7 @@ void JE_helpSystem(JE_byte startTopic)
 			const char *const text = topicName[i + 1];
 
 			wMenuItem[i] = JE_textWidth(text, normal_font);
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const bool selected = i == selectedIndex;
 
@@ -291,7 +291,7 @@ void JE_helpSystem(JE_byte startTopic)
 				const int xMenuItem = xCenter - wMenuItem[i] / 2;
 				if (mouse_x >= xMenuItem && mouse_x < xMenuItem + wMenuItem[i])
 				{
-					const int yMenuItem = yMenuItems + dyMenuItems * i;
+					const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 					if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 					{
 						if (selectedIndex != i)
@@ -673,7 +673,7 @@ bool JE_loadScreen(void)
 
 		for (size_t i = 0; i < menuItemsCount; ++i)
 		{
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const bool selected = i == selectedIndex;
 
@@ -791,7 +791,7 @@ bool JE_loadScreen(void)
 				{
 					for (size_t i = 0; i < menuItemsCount; ++i)
 					{
-						const int yMenuItem = yMenuItems + dyMenuItems * i;
+						const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 						if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 						{
 							if (selectedIndex != i)
@@ -973,7 +973,7 @@ JE_longint JE_getValue(JE_byte itemType, JE_word itemNum)
 		break;
 	}
 
-	return value;
+	return (JE_longint)value;
 }
 
 void JE_nextEpisode(void)
@@ -1160,15 +1160,15 @@ void JE_highScoreScreen(void)
 			snprintf(buffer, sizeof(buffer), "%s", episode_name[episodeIndex + 1]);
 
 			// Regular episode boards
-			boardOnePlayer = 10 + (episodeIndex * 2);
-			boardTwoPlayer = 11 + (episodeIndex * 2);
+			boardOnePlayer = (int)(10 + (episodeIndex * 2));
+			boardTwoPlayer = (int)(11 + (episodeIndex * 2));
 		}
 		else
 		{
 			snprintf(buffer, sizeof(buffer), "%s %s", timed_battle_name[0], timed_battle_name[episodeIndex - 4]);
 
 			// Timed Battle boards
-			boardOnePlayer = episodeIndex - 5;
+			boardOnePlayer = (int)(episodeIndex - 5);
 			boardTwoPlayer = -1;
 		}
 
@@ -1601,7 +1601,7 @@ JE_boolean JE_inGameSetup(void)
 		// Draw menu items.
 		for (size_t i = 0; i < menuItemsCount; ++i)
 		{
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const char *const name = inGameText[i];
 
@@ -1672,7 +1672,7 @@ JE_boolean JE_inGameSetup(void)
 			{
 				for (size_t i = 0; i < menuItemsCount; ++i)
 				{
-					const int yMenuItem = yMenuItems + dyMenuItems * i;
+					const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 					if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 					{
 						if (selectedIndex != i)
@@ -2060,7 +2060,7 @@ void JE_highScoreCheck(void)
 		if (timedBattleMode)
 		{
 			// timed battle score is just money
-			temp_score = player[0].cash;
+			temp_score = (Sint32)player[0].cash;
 			table = timeBattleSelection - 1;
 		}
 		else if (twoPlayerMode)
@@ -2069,13 +2069,13 @@ void JE_highScoreCheck(void)
 			if (player[0].cash < player[1].cash)
 				p = (temp_p == 0) ? 1 : 0;
 
-			temp_score = (p == 0) ? player[0].cash : player[1].cash;
+			temp_score = (p == 0) ? (Sint32)player[0].cash : (Sint32)player[1].cash;
 			++table;
 		}
 		else
 		{
 			// single player highscore includes cost of upgrades
-			temp_score = JE_totalScore(&player[0]);
+			temp_score = (Sint32)JE_totalScore(&player[0]);
 		}
 
 		int slot;
@@ -2947,7 +2947,7 @@ bool str_pop_int(char *str, int *val)
 
 	// grab the value from str
 	char *end;
-	*val = strtol(str, &end, 10);
+	*val = (int)strtol(str, &end, 10);
 
 	if (end != str)
 	{
@@ -3337,7 +3337,7 @@ void JE_mainKeyboardInput(void)
 		debugHistCount = 1;
 
 		/* YKS: clock ticks since midnight replaced by SDL_GetTicks */
-		lastDebugTime = SDL_GetTicks();
+		lastDebugTime = (Uint32)SDL_GetTicks();
 	}
 
 	/* {CHEAT-SKIP LEVEL} */
@@ -4417,8 +4417,10 @@ redo:
 					int min, max;
 
 					if (!twoPlayerMode)
-						min = 1, max = 2;
-					else
+                    {
+                        min = 1;
+                        max = 2;
+                    } else
 						min = max = playerNum_;
 
 					for (temp = min - 1; temp < max; temp++)

@@ -34,7 +34,7 @@ void JE_analyzeLevel(void)
 
 	fread_s32_die(lvlPos, lvlNum, f);
 	
-	lvlPos[lvlNum] = ftell_eof(f);
+	lvlPos[lvlNum] = (JE_longint)ftell_eof(f);
 	
 	fclose(f);
 }

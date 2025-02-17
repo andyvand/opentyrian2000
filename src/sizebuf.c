@@ -105,13 +105,13 @@ void SZ_Seek(sizebuf_t * sz, long count, int mode)
 	switch (mode)
 	{
 		case SEEK_SET:
-			sz->bufferPos = count;
+			sz->bufferPos = (unsigned int)count;
 			break;
 		case SEEK_CUR:
-			sz->bufferPos += count;
+			sz->bufferPos += (unsigned int)count;
 			break;
 		case SEEK_END:
-			sz->bufferPos = sz->bufferLen - count;
+			sz->bufferPos = (unsigned int)((sz->bufferLen - count) & 0xFFFFFFFF);
 			break;
 		default:
 			assert(false);

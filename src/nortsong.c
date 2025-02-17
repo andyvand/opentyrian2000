@@ -75,19 +75,19 @@ void setDelay2(int delay)  // FKA NortSong.frameCount2
 
 Uint32 getDelayTicks(void)  // FKA NortSong.frameCount
 {
-	Sint32 delay = target - SDL_GetTicks();
+	Sint32 delay = target - (Sint32)SDL_GetTicks();
 	return MAX(0, delay);
 }
 
 Uint32 getDelayTicks2(void)  // FKA NortSong.frameCount2
 {
-	Sint32 delay = target2 - SDL_GetTicks();
+	Sint32 delay = target2 - (Sint32)SDL_GetTicks();
 	return MAX(0, delay);
 }
 
 void wait_delay(void)
 {
-	Sint32 delay = target - SDL_GetTicks();
+	Sint32 delay = target - (Sint32)SDL_GetTicks();
 	if (delay > 0)
 		SDL_Delay(delay);
 }
@@ -98,7 +98,7 @@ void service_wait_delay(void)
 	{
 		service_SDL_events(false);
 
-		Sint32 delay = target - SDL_GetTicks();
+		Sint32 delay = target - (Sint32)SDL_GetTicks();
 		if (delay <= 0)
 			return;
 
@@ -119,7 +119,7 @@ void wait_delayorinput(void)
 			return;
 		}
 
-		Sint32 delay = target - SDL_GetTicks();
+		Sint32 delay = target - (Sint32)SDL_GetTicks();
 		if (delay <= 0)
 			return;
 
@@ -146,7 +146,7 @@ void loadSndFile(bool xmas)
 
 	// Determine end of last sound.
 	fseek(f, 0, SEEK_END);
-	sfxPositions[sfxCount] = ftell(f);
+	sfxPositions[sfxCount] = (Uint32)ftell(f);
 
 	// Read samples.
 	for (size_t i = 0; i < sfxCount; ++i)
@@ -181,7 +181,7 @@ void loadSndFile(bool xmas)
 
 	// Determine end of last sound.
 	fseek(f, 0, SEEK_END);
-	voicePositions[voiceCount] = ftell(f);
+	voicePositions[voiceCount] = (Uint32)ftell(f);
 
 	for (size_t vi = 0; vi < voiceCount; ++vi)
 	{
@@ -242,7 +242,7 @@ void loadSndFile(bool xmas)
     for (size_t i = 0; i < SOUND_COUNT; ++i)
     {
         src_len = soundSampleCount[i] & ~(src_samplesize - 1);
-        dst_len = soundSampleCount[i] * len_mult;
+        dst_len = (int)((soundSampleCount[i] * len_mult) & 0xFFFFFFFF);
 
         cvtstream = SDL_CreateAudioStream(&cvtinspec, &cvtoutspec);
 

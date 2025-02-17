@@ -226,7 +226,7 @@ void poll_joystick(int j)
 	
 	// if new input, reset press-repeat delay
 	if (joystick[j].input_pressed)
-		joystick[j].joystick_delay = SDL_GetTicks() + joystick_repeat_delay;
+		joystick[j].joystick_delay = (Uint32)(SDL_GetTicks() + joystick_repeat_delay);
 }
 
 // updates all joystick states

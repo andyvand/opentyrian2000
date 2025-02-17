@@ -53,7 +53,7 @@ void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 		fread_u16_die(&temp, 1, f);
 
 		fread_s32_die(pcxpos, PCX_NUM, f);
-		pcxpos[PCX_NUM] = ftell_eof(f);
+		pcxpos[PCX_NUM] = (JE_longint)ftell_eof(f);
 	}
 
 	unsigned int size = pcxpos[PCXnumber + 1] - pcxpos[PCXnumber];

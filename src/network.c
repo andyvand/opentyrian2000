@@ -268,7 +268,7 @@ bool network_send(int len)
 
 	if (network_is_sync())
     {
-        last_out_tick = SDL_GetTicks();
+        last_out_tick = (Uint32)SDL_GetTicks();
     }
 
 	return temp;
@@ -323,7 +323,7 @@ int network_check(void)
 			network_prepare(PACKET_KEEP_ALIVE);
 			network_send_no_ack(4);
 
-			keep_alive_tick = SDL_GetTicks();
+			keep_alive_tick = (Uint32)SDL_GetTicks();
 		}
 	}
 
@@ -352,24 +352,20 @@ int network_check(void)
         }
 #endif
 
-		last_out_tick = SDL_GetTicks();
+		last_out_tick = (Uint32)SDL_GetTicks();
 	}
 
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     SDLNet_Datagram *packet_temp_net = malloc(sizeof(SDLNet_Datagram));
     packet_temp_net->buf = malloc(NET_PACKET_SIZE);
 
-	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp_net) && (packet_temp_net != NULL)))
+	switch ((int)(SDLNet_ReceiveDatagram(socket, &packet_temp_net)))
 #else
 	switch (SDLNet_UDP_Recv(socket, packet_temp))
 #endif
 	{
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         case 0:
-            if (packet_temp != NULL)
-            {
-                fprintf(stderr, "SDLNet_ReceiveDatagram: %s\n", SDL_GetError());
-            }
 #else
 		case -1:
             fprintf(stderr, "SDLNet_UDP_Recv: %s\n", SDL_GetError());
@@ -385,6 +381,11 @@ int network_check(void)
 #endif
 		default:
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
+            if (packet_temp_net != NULL)
+            {
+                break;
+            }
+
             packet_copy(packet_temp, packet_temp_net);
 
             if (packet_temp->buflen >= 4)
@@ -439,7 +440,7 @@ int network_check(void)
 							queue_out_sync++;
 						}
 
-						last_in_tick = SDL_GetTicks();
+						last_in_tick = (Uint32)SDL_GetTicks();
 						break;
 
 					case PACKET_CONNECT:
@@ -509,7 +510,7 @@ int network_check(void)
 						// fall through
 
 					case PACKET_KEEP_ALIVE:
-						last_in_tick = SDL_GetTicks();
+						last_in_tick = (Uint32)SDL_GetTicks();
 						break;
 
 					case PACKET_QUIT:
@@ -885,7 +886,7 @@ bool network_state_update(void)
 
 				network_send_no_ack(4);  // PACKET_RESEND
 
-				resend_tick = SDL_GetTicks();
+				resend_tick = (Uint32)SDL_GetTicks();
 			}
 
 			if (network_check() == 0)
@@ -931,7 +932,7 @@ bool network_state_update(void)
 			}
 		}
 
-		last_state_in_tick = SDL_GetTicks();
+		last_state_in_tick = (Uint32)SDL_GetTicks();
 	}
 
 	return 1;
@@ -988,7 +989,7 @@ void network_state_reset(void)
 		}
 	}
 
-	last_state_in_tick = SDL_GetTicks();
+	last_state_in_tick = (Uint32)SDL_GetTicks();
 }
 
 // attempt to punch through firewall by firing off UDP packets at the opponent
@@ -1043,7 +1044,7 @@ connect_reset:
 	SDLNet_Write16(thisPlayerNum,   &packet_out_temp->data[10]);
 	strlcpy((char *)&packet_out_temp->data[12], network_player_name, packet_out_temp->len);
 #endif
-	network_send(12 + strlen(network_player_name) + 1); // PACKET_CONNECT
+	network_send((int)(12 + strlen(network_player_name) + 1)); // PACKET_CONNECT
 
 	// until opponent sends connect packet
 	while (true)
@@ -1055,7 +1056,7 @@ connect_reset:
 			network_tyrian_halt(0, false);
 
 		// never timeout
-		last_in_tick = SDL_GetTicks();
+		last_in_tick = (Uint32)SDL_GetTicks();
 
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 		if (packet_in[0] && SDLNet_Read16(&packet_in[0]->buf[0]) == PACKET_CONNECT)
@@ -1171,7 +1172,7 @@ connect_again:
 	strlcpy((char *)&packet_out_temp->data[12], network_player_name, packet_out_temp->len);
 #endif
 
-	network_send(12 + strlen(network_player_name) + 1); // PACKET_CONNECT
+	network_send((int)(12 + strlen(network_player_name) + 1)); // PACKET_CONNECT
 
 	connected = true;
 

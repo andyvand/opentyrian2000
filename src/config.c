@@ -304,7 +304,7 @@ bool load_opentyrian_config(void)
 			{
 				if (strcmp(music_device_name, music_device_names[i]) == 0)
 				{
-					music_device = i;
+					music_device = (MusicDevice)i;
 					break;
 				}
 			}
@@ -437,8 +437,8 @@ void JE_saveGame(JE_byte slot, const char *name)
 	else
 		playeritems_to_pitems(saveFiles[slot-1].lastItems, &player[0].last_items, 0);
 	
-	saveFiles[slot-1].score  = player[0].cash;
-	saveFiles[slot-1].score2 = player[1].cash;
+	saveFiles[slot-1].score  = (JE_longint)player[0].cash;
+	saveFiles[slot-1].score2 = (JE_longint)player[1].cash;
 	
 	memcpy(&saveFiles[slot-1].levelName, &lastLevelName, sizeof(lastLevelName));
 	saveFiles[slot-1].cubes  = lastCubeMax;

@@ -251,7 +251,7 @@ void convert_midi_data(void){
 		midi_data[i].loop_start = MIDPROC_Container_GetLoopBeginTimestamp(midi_container, 0, false);
 		midi_data[i].loop_end = MIDPROC_Container_GetLoopEndTimestamp(midi_container, 0, false);
 		midi_data[i].track_count = MIDPROC_Container_GetTrackCount(midi_container);
-		midi_data[i].subsong_count = MIDPROC_Container_GetSubSongCount(midi_container);
+		midi_data[i].subsong_count = (Uint32)MIDPROC_Container_GetSubSongCount(midi_container);
 		MIDPROC_Container_Delete(midi_container);
 
 		free(buf);
@@ -763,7 +763,7 @@ void load_music(void)  // FKA NortSong.loadSong
 
 		fread_u32_die(song_offset, song_count, music_file);
 
-		song_offset[song_count] = ftell_eof(music_file);
+		song_offset[song_count] = (Uint32)ftell_eof(music_file);
 #ifdef WITH_MIDI
 		convert_midi_data();
 #endif

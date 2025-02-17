@@ -829,7 +829,7 @@ void JE_loadMainShapeTables(const char *shpfile)
 	
 	fseek(f, 0, SEEK_END);
 	for (unsigned int i = shpNumb; i < COUNTOF(shpPos); ++i)
-		shpPos[i] = ftell(f);
+		shpPos[i] = (JE_longint)ftell(f);
 	
 	int i;
 	// fonts, interface, option sprites

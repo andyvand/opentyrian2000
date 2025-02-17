@@ -2105,7 +2105,7 @@ draw_player_shot_loop_end:
 	}
 
 	/*-------      DEbug      ---------*/
-	debugTime = SDL_GetTicks();
+	debugTime = (Uint32)SDL_GetTicks();
 	tempW = lastmouse_but;
 
 	if (debug)
@@ -3423,7 +3423,7 @@ bool titleScreen(void)
 
 				wMenuItem[i] = JE_textWidth(text, normal_font);
 				const int x = xCenter - wMenuItem[i] / 2;
-				const int y = yMenuItems + hMenuItem * i;
+				const int y = (const int)(yMenuItems + hMenuItem * i);
 
 				draw_font_hv(VGAScreen, x - 1, y - 1, menuText[i], normal_font, left_aligned, 15, -10);
 				draw_font_hv(VGAScreen, x + 1, y + 1, menuText[i], normal_font, left_aligned, 15, -10);
@@ -3445,7 +3445,7 @@ bool titleScreen(void)
 		memcpy(VGAScreen->pixels, VGAScreen2->pixels, VGAScreen->pitch * VGAScreen->h);
 
 		// Highlight selected menu item.
-		draw_font_hv(VGAScreen, VGAScreen->w / 2, yMenuItems + hMenuItem * selectedIndex, menuText[selectedIndex], normal_font, centered, 15, -1);
+		draw_font_hv(VGAScreen, VGAScreen->w / 2, (int)(yMenuItems + hMenuItem * selectedIndex), menuText[selectedIndex], normal_font, centered, 15, -1);
 
 		service_SDL_events(true);
 
@@ -3453,7 +3453,7 @@ bool titleScreen(void)
 		JE_showVGA();
 		JE_mouseReplace();
 
-		const Uint32 idleStartTick = SDL_GetTicks();
+		const Uint32 idleStartTick = (const Uint32)SDL_GetTicks();
 
 		bool mouseMoved = false;
 		do
@@ -3491,7 +3491,7 @@ bool titleScreen(void)
 				const int xMenuItem = xCenter - wMenuItem[i] / 2;
 				if (mouse_x >= xMenuItem && mouse_x < xMenuItem + wMenuItem[i])
 				{
-					const int yMenuItem = yMenuItems + hMenuItem * i;
+					const int yMenuItem = (const int)(yMenuItems + hMenuItem * i);
 					if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 					{
 						if (selectedIndex != i)
@@ -3604,7 +3604,7 @@ bool titleScreen(void)
 						{
 							fade_black(10);
 
-							if (newSuperArcadeGame(i))
+							if (newSuperArcadeGame((unsigned int)i))
 								return true;
 
 							restart = true;

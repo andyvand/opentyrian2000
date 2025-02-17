@@ -293,7 +293,7 @@ void setupMenu(void)
 
 			const MenuItem *const menuItem = &menuItems[i];
 
-			const int y = yMenuItems + dyMenuItems * i;
+			const int y = (const int)(yMenuItems + dyMenuItems * i);
 
 			const bool selected = i == *selectedMenuItemIndex;
 			const bool disabled = currentPicker != MENU_ITEM_NONE && !selected;
@@ -355,7 +355,7 @@ void setupMenu(void)
 			const MenuItem *selectedMenuItem = &menuItems[*selectedMenuItemIndex];
 			const size_t pickerItemsCount = selectedMenuItem->getPickerItemsCount();
 
-			const int hPicker = dyPickerItem * pickerItemsCount - dyPickerItemPadding;
+			const int hPicker = (const int)(dyPickerItem * pickerItemsCount - dyPickerItemPadding);
 			yPicker = MIN(yPicker, 200 - 10 - (hPicker + 5 + 2));
 
 			JE_rectangle(VGAScreen, xMenuItemValue - 5, yPicker- 3, xMenuItemValue + wMenuItemValue + 5 - 1, yPicker + hPicker + 3 - 1, 248);
@@ -418,7 +418,7 @@ void setupMenu(void)
 				{
 					for (size_t i = 0; i < menuItemsCount; ++i)
 					{
-						const int yMenuItem = yMenuItems + dyMenuItems * i;
+						const int yMenuItem = (const int)(yMenuItems + dyMenuItems * i);
 						if (mouse_y >= yMenuItem && mouse_y < yMenuItem + hMenuItem)
 						{
 							if (*selectedMenuItemIndex != i)
@@ -707,7 +707,7 @@ void setupMenu(void)
 				{
 					for (size_t i = 0; i < pickerItemsCount; ++i)
 					{
-						const int yPickerItem = yPicker + dyPickerItem * i;
+						const int yPickerItem = (const int)(yPicker + dyPickerItem * i);
 
 						if (mouse_y >= yPickerItem && mouse_y < yPickerItem + hPickerItem)
 						{
@@ -800,7 +800,7 @@ void setupMenu(void)
 					if (pickerSelectedIndex != scaler)
 					{
 						const int oldScaler = scaler;
-						if (!init_scaler(pickerSelectedIndex) &&  // try new scaler
+						if (!init_scaler((unsigned int)pickerSelectedIndex) &&  // try new scaler
 							!init_scaler(oldScaler))              // revert on fail
 						{
 							exit(EXIT_FAILURE);
@@ -810,12 +810,12 @@ void setupMenu(void)
 				}
 				case MENU_ITEM_SCALING_MODE:
 				{
-					scaling_mode = pickerSelectedIndex;
+					scaling_mode = (ScalingMode)pickerSelectedIndex;
 					break;
 				}
 				case MENU_ITEM_MUSIC_DEVICE:
 				{
-					music_device = pickerSelectedIndex;
+					music_device = (MusicDevice)pickerSelectedIndex;
 					restart_audio();
 					break;
 				}
