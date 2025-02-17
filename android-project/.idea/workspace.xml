@@ -10,15 +10,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1a287b6-2434-4fbe-9286-3a846b759ec3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/keyboard.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/keyboard.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/mainint.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/mainint.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/player.h" beforeDir="false" afterPath="$PROJECT_DIR$/../src/player.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/Application.mk" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/Application.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_audio.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_audio.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_gpu.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_gpu.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_guid.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_guid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_hints.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_hints.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_mouse.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_mouse.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_oldnames.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_oldnames.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_platform_defines.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_platform_defines.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_process.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_process.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_rect.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_rect.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_revision.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_revision.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_surface.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_surface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_test_common.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_test_common.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_thread.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_thread.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_tray.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_tray.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_version.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_version.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_vulkan.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_vulkan.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/build_config/SDL_build_config_ios.h" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/build_config/SDL_build_config_ios.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/include/build_config/SDL_revision.h.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/include/build_config/SDL_revision.h.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libSDL3.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libSDL3.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libSDL3.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libSDL3.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libSDL3.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libSDL3.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libSDL3.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/x86/libSDL3.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libSDL3.so" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libSDL3.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/libsdl/app/SDLActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/libsdl/app/SDLActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

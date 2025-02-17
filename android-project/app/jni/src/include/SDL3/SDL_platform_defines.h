@@ -166,7 +166,7 @@
     #define TARGET_OS_IPHONE 0
 #endif
 #ifndef TARGET_OS_TV
-    #define TARGET_OS_TV 0
+    #define TARGET_OS_TV 1
 #endif
 #ifndef TARGET_OS_SIMULATOR
     #define TARGET_OS_SIMULATOR 0
@@ -221,9 +221,6 @@
  */
 #define SDL_PLATFORM_MACOS 1
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED < 1070
-    #error SDL for macOS only supports deploying on 10.7 and above.
-#endif /* MAC_OS_X_VERSION_MIN_REQUIRED < 1070 */
 #endif /* TARGET_OS_IPHONE */
 #endif /* defined(__APPLE__) */
 
@@ -471,8 +468,6 @@
  * \since This macro is available since SDL 3.2.0.
  */
 #define SDL_PLATFORM_3DS 1
-
-#undef __3DS__
 #endif
 
 #endif /* SDL_platform_defines_h_ */

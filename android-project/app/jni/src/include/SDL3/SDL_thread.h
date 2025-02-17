@@ -57,30 +57,6 @@
 extern "C" {
 #endif
 
-#ifdef SDL_WIKI_DOCUMENTATION_SECTION
-
-/**
- * A generic function pointer.
- *
- * In theory, generic function pointers should use this, instead of `void *`,
- * since some platforms could treat code addresses differently than data
- * addresses. Although in current times no popular platforms make this
- * distinction, it is more correct and portable to use the correct type for a
- * generic pointer.
- *
- * If for some reason you need to force this typedef to be an actual `void *`,
- * perhaps to work around a compiler or existing code, you can define
- * `SDL_FUNCTION_POINTER_IS_VOID_POINTER` before including any SDL headers.
- *
- * \since This datatype is available since SDL 3.2.0.
- */
-typedef void (*SDL_FunctionPointer)(void);
-#elif defined(SDL_FUNCTION_POINTER_IS_VOID_POINTER)
-typedef void *SDL_FunctionPointer;
-#else
-typedef void (*SDL_FunctionPointer)(void);
-#endif
-
 /**
  * The SDL thread object.
  *
@@ -163,7 +139,7 @@ typedef enum SDL_ThreadState
  *
  * \since This datatype is available since SDL 3.2.0.
  */
-typedef int (SDLCALL * SDL_ThreadFunction) (void *data);
+typedef int (SDLCALL *SDL_ThreadFunction) (void *data);
 
 
 #ifdef SDL_WIKI_DOCUMENTATION_SECTION
@@ -336,6 +312,31 @@ extern SDL_DECLSPEC SDL_Thread * SDLCALL SDL_CreateThreadWithProperties(SDL_Prop
 #  ifndef SDL_EndThreadFunction
 #    define SDL_EndThreadFunction NULL
 #  endif
+#endif
+
+/* This is a generic function pointer which should be cast to the type you expect */
+#ifdef SDL_WIKI_DOCUMENTATION_SECTION
+
+/**
+ * A generic function pointer.
+ *
+ * In theory, generic function pointers should use this, instead of `void *`,
+ * since some platforms could treat code addresses differently than data
+ * addresses. Although in current times no popular platforms make this
+ * distinction, it is more correct and portable to use the correct type for a
+ * generic pointer.
+ *
+ * If for some reason you need to force this typedef to be an actual `void *`,
+ * perhaps to work around a compiler or existing code, you can define
+ * `SDL_FUNCTION_POINTER_IS_VOID_POINTER` before including any SDL headers.
+ *
+ * \since This datatype is available since SDL 3.2.0.
+ */
+typedef void (*SDL_FunctionPointer)(void);
+#elif defined(SDL_FUNCTION_POINTER_IS_VOID_POINTER)
+typedef void *SDL_FunctionPointer;
+#else
+typedef void (*SDL_FunctionPointer)(void);
 #endif
 
 #ifndef SDL_WIKI_DOCUMENTATION_SECTION

@@ -23,6 +23,7 @@
  * Definitions to ease transition from SDL2 code
  */
 
+#if 0
 #ifndef SDL_oldnames_h_
 #define SDL_oldnames_h_
 
@@ -1325,3 +1326,4 @@
 #endif /* SDL_ENABLE_OLD_NAMES */
 
 #endif /* SDL_oldnames_h_ */
+#endif
