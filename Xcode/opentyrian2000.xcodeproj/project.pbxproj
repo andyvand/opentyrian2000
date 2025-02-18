@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB56213F2D649E1200D08ECA /* opentyrian2000.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB7844F12D6498F7001DA650 /* opentyrian2000.xcassets */; };
+		AB5703632D64C2F00034CD1E /* ../opentyrian2000.icns in Resources */ = {isa = PBXBuildFile; fileRef = AB5703622D64C2F00034CD1E /* ../opentyrian2000.icns */; platformFilters = (macos, ); };
 		AB5C56E92D63372C00ED8B7A /* mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56AE2D63372C00ED8B7A /* mouse.c */; };
 		AB5C56EA2D63372C00ED8B7A /* destruct.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56892D63372C00ED8B7A /* destruct.c */; };
 		AB5C56EB2D63372C00ED8B7A /* shots.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56CE2D63372C00ED8B7A /* shots.c */; };
@@ -313,6 +314,7 @@
 
 /* Begin PBXFileReference section */
 		AB260F162D648C7800ACFF45 /* icon_2320x720.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_2320x720.png; sourceTree = "<group>"; };
+		AB5703622D64C2F00034CD1E /* ../opentyrian2000.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ../opentyrian2000.icns; sourceTree = "<group>"; };
 		AB5C567E2D63372C00ED8B7A /* animlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = animlib.h; sourceTree = "<group>"; };
 		AB5C567F2D63372C00ED8B7A /* animlib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = animlib.c; sourceTree = "<group>"; };
 		AB5C56802D63372C00ED8B7A /* arg_parse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = arg_parse.h; sourceTree = "<group>"; };
@@ -781,6 +783,7 @@
 				ABC59E632D647C6500A29357 /* libSDL3_mixer.0.dylib */,
 				ABC59E642D647C6500A29357 /* libSDL3_net.0.dylib */,
 				ABC59E612D647C4000A29357 /* SDL3.framework */,
+				AB5703622D64C2F00034CD1E /* ../opentyrian2000.icns */,
 				AB7844F12D6498F7001DA650 /* opentyrian2000.xcassets */,
 				ABD61EEA2D648B10005B5155 /* ../AppleTV_Icons */,
 				AB7C22F52D63389E00D102B5 /* ../iOS_Icons */,
@@ -1052,6 +1055,7 @@
 				AB7C22E92D63386000D102B5 /* tyrianc.shp in Resources */,
 				AB7C22EA2D63386000D102B5 /* user1.shp in Resources */,
 				AB7C22EB2D63386000D102B5 /* user2.shp in Resources */,
+				AB5703632D64C2F00034CD1E /* ../opentyrian2000.icns in Resources */,
 				AB7C22EC2D63386000D102B5 /* voices.snd in Resources */,
 				AB7C22ED2D63386000D102B5 /* voicesc.snd in Resources */,
 			);
@@ -1310,7 +1314,7 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YZAQ856TTM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDK_DIR)/Library/Frameworks",
 					"$(inherited)",
@@ -1324,11 +1328,29 @@
 					"WITH_MIDI=1",
 					"$(inherited)",
 				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=appletv*]" = (
+					"_DEBUG=1",
+					"IOS=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphone*]" = (
+					"_DEBUG=1",
+					"IOS=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
+				);
 				"GCC_PREPROCESSOR_DEFINITIONS[sdk=macosx*]" = (
 					"_DEBUG=1",
 					"WITH_SDL3=1",
 					"WITH_NETWORK=1",
 					"WITH_MIDI=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=xr*]" = (
+					"_DEBUG=1",
+					"IOS=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1387,7 +1409,7 @@
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YZAQ856TTM;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDK_DIR)/Library/Frameworks",
 					"$(inherited)",
@@ -1399,10 +1421,25 @@
 					"WITH_NETWORK=1",
 					"WITH_MIDI=1",
 				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=appletv*]" = (
+					"IOS=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphone*]" = (
+					"IOS=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
+				);
 				"GCC_PREPROCESSOR_DEFINITIONS[sdk=macosx*]" = (
 					"WITH_SDL3=1",
 					"WITH_NETWORK=1",
 					"WITH_MIDI=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=xr*]" = (
+					"IOS=1",
+					"WITH_SDL3=1",
+					"WITH_NETWORK=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (

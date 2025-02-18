@@ -7,9 +7,6 @@
       "size" : "1280x768"
     },
     {
-      "filename" : "App Icon.imagestack"
-    },
-    {
       "filename" : "AppIcons.imagestack",
       "idiom" : "tv",
       "role" : "primary-app-icon",
