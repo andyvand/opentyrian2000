@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB260F172D648C7800ACFF45 /* icon_2320x720.png in Resources */ = {isa = PBXBuildFile; fileRef = AB260F162D648C7800ACFF45 /* icon_2320x720.png */; };
-		AB260F182D648C8B00ACFF45 /* icon_2320x720.png in Resources */ = {isa = PBXBuildFile; fileRef = AB260F162D648C7800ACFF45 /* icon_2320x720.png */; platformFilters = (tvos, ); };
+		AB56213F2D649E1200D08ECA /* opentyrian2000.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB7844F12D6498F7001DA650 /* opentyrian2000.xcassets */; };
 		AB5C56E92D63372C00ED8B7A /* mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56AE2D63372C00ED8B7A /* mouse.c */; };
 		AB5C56EA2D63372C00ED8B7A /* destruct.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56892D63372C00ED8B7A /* destruct.c */; };
 		AB5C56EB2D63372C00ED8B7A /* shots.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56CE2D63372C00ED8B7A /* shots.c */; };
@@ -59,7 +58,7 @@
 		AB5C57192D63372C00ED8B7A /* jukebox.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C569B2D63372C00ED8B7A /* jukebox.c */; };
 		AB5C571A2D63372C00ED8B7A /* mtrand.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56B02D63372C00ED8B7A /* mtrand.c */; };
 		AB5C571B2D63372C00ED8B7A /* menus.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56AC2D63372C00ED8B7A /* menus.c */; };
-		AB6A08F72D63493700CD0932 /* ../opentyrian2000.icns in Resources */ = {isa = PBXBuildFile; fileRef = AB6A08F62D63493700CD0932 /* ../opentyrian2000.icns */; platformFilters = (macos, ); };
+		AB7844F22D6498F7001DA650 /* opentyrian2000.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB7844F12D6498F7001DA650 /* opentyrian2000.xcassets */; platformFilters = (tvos, ); };
 		AB7C229A2D63380100D102B5 /* SDL3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7C22992D63380100D102B5 /* SDL3.framework */; };
 		AB7C229C2D63380600D102B5 /* libSDL3_net.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7C229B2D63380600D102B5 /* libSDL3_net.0.dylib */; };
 		AB7C229E2D63380A00D102B5 /* libSDL3_mixer.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7C229D2D63380A00D102B5 /* libSDL3_mixer.0.dylib */; };
@@ -149,10 +148,6 @@
 		AB7C22FB2D6338C100D102B5 /* AppIcon76x76@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F32D63389E00D102B5 /* AppIcon76x76@2x~ipad.png */; platformFilters = (ios, xros, ); };
 		AB7C22FC2D6338C100D102B5 /* AppIcon76x76~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F42D63389E00D102B5 /* AppIcon76x76~ipad.png */; platformFilters = (ios, xros, ); };
 		AB7C22FE2D63391500D102B5 /* libmidiproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7C22FD2D63391500D102B5 /* libmidiproc.a */; };
-		AB9F62DD2D648B550055E165 /* icon_400x240.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE82D648B10005B5155 /* icon_400x240.png */; };
-		AB9F62DE2D648B550055E165 /* icon_800x480.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE92D648B10005B5155 /* icon_800x480.png */; };
-		AB9F62DF2D648B5D0055E165 /* icon_400x240.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE82D648B10005B5155 /* icon_400x240.png */; platformFilters = (tvos, ); };
-		AB9F62E02D648B5D0055E165 /* icon_800x480.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE92D648B10005B5155 /* icon_800x480.png */; platformFilters = (tvos, ); };
 		ABC59DCD2D6476A900A29357 /* animlib.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C567F2D63372C00ED8B7A /* animlib.c */; };
 		ABC59DCE2D6476A900A29357 /* arg_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56812D63372C00ED8B7A /* arg_parse.c */; };
 		ABC59DCF2D6476A900A29357 /* backgrnd.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56832D63372C00ED8B7A /* backgrnd.c */; };
@@ -497,7 +492,7 @@
 		AB5C57642D63375D00ED8B7A /* user2.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = user2.shp; sourceTree = "<group>"; };
 		AB5C57652D63375D00ED8B7A /* voices.snd */ = {isa = PBXFileReference; lastKnownFileType = file; path = voices.snd; sourceTree = "<group>"; };
 		AB5C57662D63375D00ED8B7A /* voicesc.snd */ = {isa = PBXFileReference; lastKnownFileType = file; path = voicesc.snd; sourceTree = "<group>"; };
-		AB6A08F62D63493700CD0932 /* ../opentyrian2000.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ../opentyrian2000.icns; sourceTree = "<group>"; };
+		AB7844F12D6498F7001DA650 /* opentyrian2000.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = opentyrian2000.xcassets; sourceTree = "<group>"; };
 		AB7C22992D63380100D102B5 /* SDL3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL3.framework; path = Library/Frameworks/SDL3.framework; sourceTree = SDKROOT; };
 		AB7C229B2D63380600D102B5 /* libSDL3_net.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL3_net.0.dylib; path = usr/lib/libSDL3_net.0.dylib; sourceTree = SDKROOT; };
 		AB7C229D2D63380A00D102B5 /* libSDL3_mixer.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL3_mixer.0.dylib; path = usr/lib/libSDL3_mixer.0.dylib; sourceTree = SDKROOT; };
@@ -786,7 +781,7 @@
 				ABC59E632D647C6500A29357 /* libSDL3_mixer.0.dylib */,
 				ABC59E642D647C6500A29357 /* libSDL3_net.0.dylib */,
 				ABC59E612D647C4000A29357 /* SDL3.framework */,
-				AB6A08F62D63493700CD0932 /* ../opentyrian2000.icns */,
+				AB7844F12D6498F7001DA650 /* opentyrian2000.xcassets */,
 				ABD61EEA2D648B10005B5155 /* ../AppleTV_Icons */,
 				AB7C22F52D63389E00D102B5 /* ../iOS_Icons */,
 				AB5C57672D63375D00ED8B7A /* ../data */,
@@ -893,8 +888,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB9F62DD2D648B550055E165 /* icon_400x240.png in Resources */,
-				AB9F62DE2D648B550055E165 /* icon_800x480.png in Resources */,
+				AB56213F2D649E1200D08ECA /* opentyrian2000.xcassets in Resources */,
 				ABC59E0E2D6476DA00A29357 /* cubetxt1.dat in Resources */,
 				ABC59E0F2D6476DA00A29357 /* cubetxt2.dat in Resources */,
 				ABC59E102D6476DA00A29357 /* cubetxt3.dat in Resources */,
@@ -905,7 +899,6 @@
 				ABC59E152D6476DA00A29357 /* demo.3 in Resources */,
 				ABC59E162D6476DA00A29357 /* demo.4 in Resources */,
 				ABC59E172D6476DA00A29357 /* demo.5 in Resources */,
-				AB260F172D648C7800ACFF45 /* icon_2320x720.png in Resources */,
 				ABC59E182D6476DA00A29357 /* levels1.dat in Resources */,
 				ABC59E192D6476DA00A29357 /* levels2.dat in Resources */,
 				ABC59E1A2D6476DA00A29357 /* levels3.dat in Resources */,
@@ -978,10 +971,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB260F182D648C8B00ACFF45 /* icon_2320x720.png in Resources */,
-				AB9F62DF2D648B5D0055E165 /* icon_400x240.png in Resources */,
-				AB9F62E02D648B5D0055E165 /* icon_800x480.png in Resources */,
-				AB6A08F72D63493700CD0932 /* ../opentyrian2000.icns in Resources */,
+				AB7844F22D6498F7001DA650 /* opentyrian2000.xcassets in Resources */,
 				AB7C22F62D6338C100D102B5 /* AppIcon57x57.png in Resources */,
 				AB7C22F72D6338C100D102B5 /* AppIcon57x57@2x.png in Resources */,
 				AB7C22F82D6338C100D102B5 /* AppIcon60x60@2x.png in Resources */,
@@ -1190,12 +1180,14 @@
 		ABC59DCB2D64765B00A29357 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = opentyrian2000;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcons;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = AppIcons;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3.0.0;
-				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = YZAQ856TTM;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDK_DIR)/Library/Frameworks",
 					"$(inherited)",
@@ -1235,6 +1227,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
 				PRODUCT_NAME = opentyrian2000;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1246,12 +1239,14 @@
 		ABC59DCC2D64765B00A29357 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = opentyrian2000;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcons;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = AppIcons;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3.0.0;
-				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = YZAQ856TTM;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDK_DIR)/Library/Frameworks",
 					"$(inherited)",
@@ -1288,6 +1283,7 @@
 				MARKETING_VERSION = 3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
 				PRODUCT_NAME = opentyrian2000;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1303,16 +1299,18 @@
 					arm64,
 					x86_64,
 				);
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=appletv*]" = AppIcons;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
+				"ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME[sdk=appletv*]" = AppIcons;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = ../opentyrian2000.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=appletv*]" = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = YZAQ856TTM;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDK_DIR)/Library/Frameworks",
 					"$(inherited)",
@@ -1362,6 +1360,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos macosx xrsimulator xros";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1377,16 +1376,18 @@
 					arm64,
 					x86_64,
 				);
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=appletv*]" = AppIcons;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
+				"ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME[sdk=appletv*]" = AppIcons;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = ../opentyrian2000.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=appletv*]" = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = YZAQ856TTM;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDK_DIR)/Library/Frameworks",
 					"$(inherited)",
@@ -1432,6 +1433,7 @@
 				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos macosx xrsimulator xros";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
