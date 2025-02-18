@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB260F172D648C7800ACFF45 /* icon_2320x720.png in Resources */ = {isa = PBXBuildFile; fileRef = AB260F162D648C7800ACFF45 /* icon_2320x720.png */; };
+		AB260F182D648C8B00ACFF45 /* icon_2320x720.png in Resources */ = {isa = PBXBuildFile; fileRef = AB260F162D648C7800ACFF45 /* icon_2320x720.png */; platformFilters = (tvos, ); };
 		AB5C56E92D63372C00ED8B7A /* mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56AE2D63372C00ED8B7A /* mouse.c */; };
 		AB5C56EA2D63372C00ED8B7A /* destruct.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56892D63372C00ED8B7A /* destruct.c */; };
 		AB5C56EB2D63372C00ED8B7A /* shots.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56CE2D63372C00ED8B7A /* shots.c */; };
@@ -139,14 +141,150 @@
 		AB7C22EB2D63386000D102B5 /* user2.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57642D63375D00ED8B7A /* user2.shp */; };
 		AB7C22EC2D63386000D102B5 /* voices.snd in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57652D63375D00ED8B7A /* voices.snd */; };
 		AB7C22ED2D63386000D102B5 /* voicesc.snd in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57662D63375D00ED8B7A /* voicesc.snd */; };
-		AB7C22F62D6338C100D102B5 /* AppIcon57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EE2D63389E00D102B5 /* AppIcon57x57.png */; platformFilters = (ios, tvos, xros, ); };
-		AB7C22F72D6338C100D102B5 /* AppIcon57x57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EF2D63389E00D102B5 /* AppIcon57x57@2x.png */; platformFilters = (ios, tvos, xros, ); };
-		AB7C22F82D6338C100D102B5 /* AppIcon60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F02D63389E00D102B5 /* AppIcon60x60@2x.png */; platformFilters = (ios, tvos, xros, ); };
-		AB7C22F92D6338C100D102B5 /* AppIcon72x72@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F12D63389E00D102B5 /* AppIcon72x72@2x~ipad.png */; platformFilters = (ios, tvos, xros, ); };
-		AB7C22FA2D6338C100D102B5 /* AppIcon72x72~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F22D63389E00D102B5 /* AppIcon72x72~ipad.png */; platformFilters = (ios, tvos, xros, ); };
-		AB7C22FB2D6338C100D102B5 /* AppIcon76x76@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F32D63389E00D102B5 /* AppIcon76x76@2x~ipad.png */; platformFilters = (ios, tvos, xros, ); };
-		AB7C22FC2D6338C100D102B5 /* AppIcon76x76~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F42D63389E00D102B5 /* AppIcon76x76~ipad.png */; platformFilters = (ios, tvos, xros, ); };
+		AB7C22F62D6338C100D102B5 /* AppIcon57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EE2D63389E00D102B5 /* AppIcon57x57.png */; platformFilters = (ios, xros, ); };
+		AB7C22F72D6338C100D102B5 /* AppIcon57x57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EF2D63389E00D102B5 /* AppIcon57x57@2x.png */; platformFilters = (ios, xros, ); };
+		AB7C22F82D6338C100D102B5 /* AppIcon60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F02D63389E00D102B5 /* AppIcon60x60@2x.png */; platformFilters = (ios, xros, ); };
+		AB7C22F92D6338C100D102B5 /* AppIcon72x72@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F12D63389E00D102B5 /* AppIcon72x72@2x~ipad.png */; platformFilters = (ios, xros, ); };
+		AB7C22FA2D6338C100D102B5 /* AppIcon72x72~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F22D63389E00D102B5 /* AppIcon72x72~ipad.png */; platformFilters = (ios, xros, ); };
+		AB7C22FB2D6338C100D102B5 /* AppIcon76x76@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F32D63389E00D102B5 /* AppIcon76x76@2x~ipad.png */; platformFilters = (ios, xros, ); };
+		AB7C22FC2D6338C100D102B5 /* AppIcon76x76~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F42D63389E00D102B5 /* AppIcon76x76~ipad.png */; platformFilters = (ios, xros, ); };
 		AB7C22FE2D63391500D102B5 /* libmidiproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7C22FD2D63391500D102B5 /* libmidiproc.a */; };
+		AB9F62DD2D648B550055E165 /* icon_400x240.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE82D648B10005B5155 /* icon_400x240.png */; };
+		AB9F62DE2D648B550055E165 /* icon_800x480.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE92D648B10005B5155 /* icon_800x480.png */; };
+		AB9F62DF2D648B5D0055E165 /* icon_400x240.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE82D648B10005B5155 /* icon_400x240.png */; platformFilters = (tvos, ); };
+		AB9F62E02D648B5D0055E165 /* icon_800x480.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD61EE92D648B10005B5155 /* icon_800x480.png */; platformFilters = (tvos, ); };
+		ABC59DCD2D6476A900A29357 /* animlib.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C567F2D63372C00ED8B7A /* animlib.c */; };
+		ABC59DCE2D6476A900A29357 /* arg_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56812D63372C00ED8B7A /* arg_parse.c */; };
+		ABC59DCF2D6476A900A29357 /* backgrnd.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56832D63372C00ED8B7A /* backgrnd.c */; };
+		ABC59DD02D6476A900A29357 /* config.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56852D63372C00ED8B7A /* config.c */; };
+		ABC59DD12D6476A900A29357 /* config_file.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56872D63372C00ED8B7A /* config_file.c */; };
+		ABC59DD22D6476A900A29357 /* destruct.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56892D63372C00ED8B7A /* destruct.c */; };
+		ABC59DD32D6476A900A29357 /* editship.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C568B2D63372C00ED8B7A /* editship.c */; };
+		ABC59DD42D6476A900A29357 /* episodes.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C568D2D63372C00ED8B7A /* episodes.c */; };
+		ABC59DD52D6476A900A29357 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C568F2D63372C00ED8B7A /* file.c */; };
+		ABC59DD62D6476A900A29357 /* font.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56912D63372C00ED8B7A /* font.c */; };
+		ABC59DD72D6476A900A29357 /* fonthand.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56932D63372C00ED8B7A /* fonthand.c */; };
+		ABC59DD82D6476A900A29357 /* game_menu.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56952D63372C00ED8B7A /* game_menu.c */; };
+		ABC59DD92D6476A900A29357 /* helptext.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56972D63372C00ED8B7A /* helptext.c */; };
+		ABC59DDA2D6476A900A29357 /* joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56992D63372C00ED8B7A /* joystick.c */; };
+		ABC59DDB2D6476A900A29357 /* jukebox.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C569B2D63372C00ED8B7A /* jukebox.c */; };
+		ABC59DDC2D6476A900A29357 /* keyboard.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C569D2D63372C00ED8B7A /* keyboard.c */; };
+		ABC59DDD2D6476A900A29357 /* lds_play.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C569F2D63372C00ED8B7A /* lds_play.c */; };
+		ABC59DDE2D6476A900A29357 /* loudness.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56A12D63372C00ED8B7A /* loudness.c */; };
+		ABC59DDF2D6476A900A29357 /* lvllib.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56A32D63372C00ED8B7A /* lvllib.c */; };
+		ABC59DE02D6476A900A29357 /* lvlmast.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56A52D63372C00ED8B7A /* lvlmast.c */; };
+		ABC59DE12D6476A900A29357 /* macos-bundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56A82D63372C00ED8B7A /* macos-bundle.mm */; };
+		ABC59DE22D6476A900A29357 /* mainint.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56AA2D63372C00ED8B7A /* mainint.c */; };
+		ABC59DE32D6476A900A29357 /* menus.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56AC2D63372C00ED8B7A /* menus.c */; };
+		ABC59DE42D6476A900A29357 /* mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56AE2D63372C00ED8B7A /* mouse.c */; };
+		ABC59DE52D6476A900A29357 /* mtrand.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56B02D63372C00ED8B7A /* mtrand.c */; };
+		ABC59DE62D6476A900A29357 /* musmast.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56B22D63372C00ED8B7A /* musmast.c */; };
+		ABC59DE72D6476A900A29357 /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56B42D63372C00ED8B7A /* network.c */; };
+		ABC59DE82D6476A900A29357 /* nortsong.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56B62D63372C00ED8B7A /* nortsong.c */; };
+		ABC59DE92D6476A900A29357 /* nortvars.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56B82D63372C00ED8B7A /* nortvars.c */; };
+		ABC59DEA2D6476A900A29357 /* opentyr.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56BA2D63372C00ED8B7A /* opentyr.c */; };
+		ABC59DEB2D6476A900A29357 /* opl.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56BF2D63372C00ED8B7A /* opl.c */; };
+		ABC59DEC2D6476A900A29357 /* palette.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56C12D63372C00ED8B7A /* palette.c */; };
+		ABC59DED2D6476A900A29357 /* params.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56C32D63372C00ED8B7A /* params.c */; };
+		ABC59DEE2D6476A900A29357 /* pcxload.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56C52D63372C00ED8B7A /* pcxload.c */; };
+		ABC59DEF2D6476A900A29357 /* pcxmast.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56C72D63372C00ED8B7A /* pcxmast.c */; };
+		ABC59DF02D6476A900A29357 /* picload.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56C92D63372C00ED8B7A /* picload.c */; };
+		ABC59DF12D6476A900A29357 /* player.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56CB2D63372C00ED8B7A /* player.c */; };
+		ABC59DF22D6476A900A29357 /* shots.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56CE2D63372C00ED8B7A /* shots.c */; };
+		ABC59DF32D6476A900A29357 /* sizebuf.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56D02D63372C00ED8B7A /* sizebuf.c */; };
+		ABC59DF42D6476A900A29357 /* sndmast.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56D22D63372C00ED8B7A /* sndmast.c */; };
+		ABC59DF52D6476A900A29357 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56D42D63372C00ED8B7A /* sprite.c */; };
+		ABC59DF62D6476A900A29357 /* starlib.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56D62D63372C00ED8B7A /* starlib.c */; };
+		ABC59DF72D6476A900A29357 /* tyrian2.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56D82D63372C00ED8B7A /* tyrian2.c */; };
+		ABC59DF82D6476A900A29357 /* varz.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56DA2D63372C00ED8B7A /* varz.c */; };
+		ABC59DF92D6476A900A29357 /* vga_palette.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56DC2D63372C00ED8B7A /* vga_palette.c */; };
+		ABC59DFA2D6476A900A29357 /* vga256d.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56DE2D63372C00ED8B7A /* vga256d.c */; };
+		ABC59DFB2D6476A900A29357 /* video.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56E02D63372C00ED8B7A /* video.c */; };
+		ABC59DFC2D6476A900A29357 /* video_scale.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56E22D63372C00ED8B7A /* video_scale.c */; };
+		ABC59DFD2D6476A900A29357 /* video_scale_hqNx.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56E32D63372C00ED8B7A /* video_scale_hqNx.c */; };
+		ABC59DFE2D6476A900A29357 /* xmas.c in Sources */ = {isa = PBXBuildFile; fileRef = AB5C56E52D63372C00ED8B7A /* xmas.c */; };
+		ABC59E002D6476B400A29357 /* SDL3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC59DFF2D6476B400A29357 /* SDL3.framework */; };
+		ABC59E022D6476B900A29357 /* libSDL3_mixer.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC59E012D6476B900A29357 /* libSDL3_mixer.0.dylib */; };
+		ABC59E042D6476C100A29357 /* libSDL3_net.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC59E032D6476C100A29357 /* libSDL3_net.0.dylib */; };
+		ABC59E062D6476C700A29357 /* libmidiproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC59E052D6476C700A29357 /* libmidiproc.a */; };
+		ABC59E0E2D6476DA00A29357 /* cubetxt1.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C571C2D63375D00ED8B7A /* cubetxt1.dat */; };
+		ABC59E0F2D6476DA00A29357 /* cubetxt2.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C571D2D63375D00ED8B7A /* cubetxt2.dat */; };
+		ABC59E102D6476DA00A29357 /* cubetxt3.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C571E2D63375D00ED8B7A /* cubetxt3.dat */; };
+		ABC59E112D6476DA00A29357 /* cubetxt4.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C571F2D63375D00ED8B7A /* cubetxt4.dat */; };
+		ABC59E122D6476DA00A29357 /* cubetxt5.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57202D63375D00ED8B7A /* cubetxt5.dat */; };
+		ABC59E132D6476DA00A29357 /* demo.1 in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57212D63375D00ED8B7A /* demo.1 */; };
+		ABC59E142D6476DA00A29357 /* demo.2 in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57222D63375D00ED8B7A /* demo.2 */; };
+		ABC59E152D6476DA00A29357 /* demo.3 in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57232D63375D00ED8B7A /* demo.3 */; };
+		ABC59E162D6476DA00A29357 /* demo.4 in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57242D63375D00ED8B7A /* demo.4 */; };
+		ABC59E172D6476DA00A29357 /* demo.5 in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57252D63375D00ED8B7A /* demo.5 */; };
+		ABC59E182D6476DA00A29357 /* levels1.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57262D63375D00ED8B7A /* levels1.dat */; };
+		ABC59E192D6476DA00A29357 /* levels2.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57272D63375D00ED8B7A /* levels2.dat */; };
+		ABC59E1A2D6476DA00A29357 /* levels3.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57282D63375D00ED8B7A /* levels3.dat */; };
+		ABC59E1B2D6476DA00A29357 /* levels4.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57292D63375D00ED8B7A /* levels4.dat */; };
+		ABC59E1C2D6476DA00A29357 /* levels5.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C572A2D63375D00ED8B7A /* levels5.dat */; };
+		ABC59E1D2D6476DA00A29357 /* music.mus in Resources */ = {isa = PBXBuildFile; fileRef = AB5C572B2D63375D00ED8B7A /* music.mus */; };
+		ABC59E1E2D6476DA00A29357 /* newsh'.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C572C2D63375D00ED8B7A /* newsh'.shp */; };
+		ABC59E1F2D6476DA00A29357 /* newsh(.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C572D2D63375D00ED8B7A /* newsh(.shp */; };
+		ABC59E202D6476DA00A29357 /* newsh@.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C572E2D63375D00ED8B7A /* newsh@.shp */; };
+		ABC59E212D6476DA00A29357 /* newsh#.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C572F2D63375D00ED8B7A /* newsh#.shp */; };
+		ABC59E222D6476DA00A29357 /* newsh%.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57302D63375D00ED8B7A /* newsh%.shp */; };
+		ABC59E232D6476DA00A29357 /* newsh^.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57312D63375D00ED8B7A /* newsh^.shp */; };
+		ABC59E242D6476DA00A29357 /* newsh~.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57322D63375D00ED8B7A /* newsh~.shp */; };
+		ABC59E252D6476DA00A29357 /* newsh$.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57332D63375D00ED8B7A /* newsh$.shp */; };
+		ABC59E262D6476DA00A29357 /* newsh0.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57342D63375D00ED8B7A /* newsh0.shp */; };
+		ABC59E272D6476DA00A29357 /* newsh1.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57352D63375D00ED8B7A /* newsh1.shp */; };
+		ABC59E282D6476DA00A29357 /* newsh2.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57362D63375D00ED8B7A /* newsh2.shp */; };
+		ABC59E292D6476DA00A29357 /* newsh3.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57372D63375D00ED8B7A /* newsh3.shp */; };
+		ABC59E2A2D6476DA00A29357 /* newsh4.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57382D63375D00ED8B7A /* newsh4.shp */; };
+		ABC59E2B2D6476DA00A29357 /* newsh5.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57392D63375D00ED8B7A /* newsh5.shp */; };
+		ABC59E2C2D6476DA00A29357 /* newsh6.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C573A2D63375D00ED8B7A /* newsh6.shp */; };
+		ABC59E2D2D6476DA00A29357 /* newsh7.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C573B2D63375D00ED8B7A /* newsh7.shp */; };
+		ABC59E2E2D6476DA00A29357 /* newsh8.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C573C2D63375D00ED8B7A /* newsh8.shp */; };
+		ABC59E2F2D6476DA00A29357 /* newsh9.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C573D2D63375D00ED8B7A /* newsh9.shp */; };
+		ABC59E302D6476DA00A29357 /* newsha.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C573E2D63375D00ED8B7A /* newsha.shp */; };
+		ABC59E312D6476DA00A29357 /* newshb.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C573F2D63375D00ED8B7A /* newshb.shp */; };
+		ABC59E322D6476DA00A29357 /* newshc.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57402D63375D00ED8B7A /* newshc.shp */; };
+		ABC59E332D6476DA00A29357 /* newshd.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57412D63375D00ED8B7A /* newshd.shp */; };
+		ABC59E342D6476DA00A29357 /* newshe.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57422D63375D00ED8B7A /* newshe.shp */; };
+		ABC59E352D6476DA00A29357 /* newshf.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57432D63375D00ED8B7A /* newshf.shp */; };
+		ABC59E362D6476DA00A29357 /* newshg.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57442D63375D00ED8B7A /* newshg.shp */; };
+		ABC59E372D6476DA00A29357 /* newshh.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57452D63375D00ED8B7A /* newshh.shp */; };
+		ABC59E382D6476DA00A29357 /* newshi.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57462D63375D00ED8B7A /* newshi.shp */; };
+		ABC59E392D6476DA00A29357 /* newshj.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57472D63375D00ED8B7A /* newshj.shp */; };
+		ABC59E3A2D6476DA00A29357 /* newshk.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57482D63375D00ED8B7A /* newshk.shp */; };
+		ABC59E3B2D6476DA00A29357 /* newshl.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57492D63375D00ED8B7A /* newshl.shp */; };
+		ABC59E3C2D6476DA00A29357 /* newshm.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C574A2D63375D00ED8B7A /* newshm.shp */; };
+		ABC59E3D2D6476DA00A29357 /* newshn.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C574B2D63375D00ED8B7A /* newshn.shp */; };
+		ABC59E3E2D6476DA00A29357 /* newsho.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C574C2D63375D00ED8B7A /* newsho.shp */; };
+		ABC59E3F2D6476DA00A29357 /* newshp.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C574D2D63375D00ED8B7A /* newshp.shp */; };
+		ABC59E402D6476DA00A29357 /* newshr.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C574E2D63375D00ED8B7A /* newshr.shp */; };
+		ABC59E412D6476DA00A29357 /* newshs.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C574F2D63375D00ED8B7A /* newshs.shp */; };
+		ABC59E422D6476DA00A29357 /* newsht.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57502D63375D00ED8B7A /* newsht.shp */; };
+		ABC59E432D6476DA00A29357 /* newshu.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57512D63375D00ED8B7A /* newshu.shp */; };
+		ABC59E442D6476DA00A29357 /* newshv.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57522D63375D00ED8B7A /* newshv.shp */; };
+		ABC59E452D6476DA00A29357 /* palette.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57532D63375D00ED8B7A /* palette.dat */; };
+		ABC59E462D6476DA00A29357 /* shapes).dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57542D63375D00ED8B7A /* shapes).dat */; };
+		ABC59E472D6476DA00A29357 /* shapesw.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57552D63375D00ED8B7A /* shapesw.dat */; };
+		ABC59E482D6476DA00A29357 /* shapesx.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57562D63375D00ED8B7A /* shapesx.dat */; };
+		ABC59E492D6476DA00A29357 /* shapesy.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57572D63375D00ED8B7A /* shapesy.dat */; };
+		ABC59E4A2D6476DA00A29357 /* shapesz.dat in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57582D63375D00ED8B7A /* shapesz.dat */; };
+		ABC59E4B2D6476DA00A29357 /* tyrian.hdt in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57592D63375D00ED8B7A /* tyrian.hdt */; };
+		ABC59E4C2D6476DA00A29357 /* tyrian.pic in Resources */ = {isa = PBXBuildFile; fileRef = AB5C575A2D63375D00ED8B7A /* tyrian.pic */; };
+		ABC59E4D2D6476DA00A29357 /* tyrian.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C575B2D63375D00ED8B7A /* tyrian.shp */; };
+		ABC59E4E2D6476DA00A29357 /* tyrian.snd in Resources */ = {isa = PBXBuildFile; fileRef = AB5C575C2D63375D00ED8B7A /* tyrian.snd */; };
+		ABC59E4F2D6476DA00A29357 /* tyrian1.lvl in Resources */ = {isa = PBXBuildFile; fileRef = AB5C575D2D63375D00ED8B7A /* tyrian1.lvl */; };
+		ABC59E502D6476DA00A29357 /* tyrian2.lvl in Resources */ = {isa = PBXBuildFile; fileRef = AB5C575E2D63375D00ED8B7A /* tyrian2.lvl */; };
+		ABC59E512D6476DA00A29357 /* tyrian3.lvl in Resources */ = {isa = PBXBuildFile; fileRef = AB5C575F2D63375D00ED8B7A /* tyrian3.lvl */; };
+		ABC59E522D6476DA00A29357 /* tyrian4.lvl in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57602D63375D00ED8B7A /* tyrian4.lvl */; };
+		ABC59E532D6476DA00A29357 /* tyrian5.lvl in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57612D63375D00ED8B7A /* tyrian5.lvl */; };
+		ABC59E542D6476DA00A29357 /* tyrianc.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57622D63375D00ED8B7A /* tyrianc.shp */; };
+		ABC59E552D6476DA00A29357 /* user1.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57632D63375D00ED8B7A /* user1.shp */; };
+		ABC59E562D6476DA00A29357 /* user2.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57642D63375D00ED8B7A /* user2.shp */; };
+		ABC59E572D6476DA00A29357 /* voices.snd in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57652D63375D00ED8B7A /* voices.snd */; };
+		ABC59E582D6476DA00A29357 /* voicesc.snd in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57662D63375D00ED8B7A /* voicesc.snd */; };
+		ABC59E622D647C4000A29357 /* SDL3.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ABC59E612D647C4000A29357 /* SDL3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ABC59E652D647C6500A29357 /* libSDL3_mixer.0.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ABC59E632D647C6500A29357 /* libSDL3_mixer.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		ABC59E662D647C6500A29357 /* libSDL3_net.0.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ABC59E642D647C6500A29357 /* libSDL3_net.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -163,9 +301,23 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ABC59E592D6476E100A29357 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ABC59E652D647C6500A29357 /* libSDL3_mixer.0.dylib in Embed Frameworks */,
+				ABC59E662D647C6500A29357 /* libSDL3_net.0.dylib in Embed Frameworks */,
+				ABC59E622D647C4000A29357 /* SDL3.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AB260F162D648C7800ACFF45 /* icon_2320x720.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_2320x720.png; sourceTree = "<group>"; };
 		AB5C567E2D63372C00ED8B7A /* animlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = animlib.h; sourceTree = "<group>"; };
 		AB5C567F2D63372C00ED8B7A /* animlib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = animlib.c; sourceTree = "<group>"; };
 		AB5C56802D63372C00ED8B7A /* arg_parse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = arg_parse.h; sourceTree = "<group>"; };
@@ -357,10 +509,31 @@
 		AB7C22F32D63389E00D102B5 /* AppIcon76x76@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon76x76@2x~ipad.png"; sourceTree = "<group>"; };
 		AB7C22F42D63389E00D102B5 /* AppIcon76x76~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AppIcon76x76~ipad.png"; sourceTree = "<group>"; };
 		AB7C22FD2D63391500D102B5 /* libmidiproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmidiproc.a; path = usr/lib/libmidiproc.a; sourceTree = SDKROOT; };
+		ABC59DB82D64765900A29357 /* opentyrian2000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = opentyrian2000.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABC59DFF2D6476B400A29357 /* SDL3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL3.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.2.sdk/Library/Frameworks/SDL3.framework; sourceTree = DEVELOPER_DIR; };
+		ABC59E012D6476B900A29357 /* libSDL3_mixer.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL3_mixer.0.dylib; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.2.sdk/usr/lib/libSDL3_mixer.0.dylib; sourceTree = DEVELOPER_DIR; };
+		ABC59E032D6476C100A29357 /* libSDL3_net.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL3_net.0.dylib; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.2.sdk/usr/lib/libSDL3_net.0.dylib; sourceTree = DEVELOPER_DIR; };
+		ABC59E052D6476C700A29357 /* libmidiproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmidiproc.a; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS18.2.sdk/usr/lib/libmidiproc.a; sourceTree = DEVELOPER_DIR; };
+		ABC59E612D647C4000A29357 /* SDL3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL3.framework; path = Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/Library/Frameworks/SDL3.framework; sourceTree = DEVELOPER_DIR; };
+		ABC59E632D647C6500A29357 /* libSDL3_mixer.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL3_mixer.0.dylib; path = Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/lib/libSDL3_mixer.0.dylib; sourceTree = DEVELOPER_DIR; };
+		ABC59E642D647C6500A29357 /* libSDL3_net.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL3_net.0.dylib; path = Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/lib/libSDL3_net.0.dylib; sourceTree = DEVELOPER_DIR; };
+		ABD61EE82D648B10005B5155 /* icon_400x240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_400x240.png; sourceTree = "<group>"; };
+		ABD61EE92D648B10005B5155 /* icon_800x480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_800x480.png; sourceTree = "<group>"; };
 		ABDCE5902D6336C400710FC5 /* opentyrian2000.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = opentyrian2000.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		ABC59DB52D64765900A29357 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABC59E062D6476C700A29357 /* libmidiproc.a in Frameworks */,
+				ABC59E042D6476C100A29357 /* libSDL3_net.0.dylib in Frameworks */,
+				ABC59E022D6476B900A29357 /* libSDL3_mixer.0.dylib in Frameworks */,
+				ABC59E002D6476B400A29357 /* SDL3.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABDCE58D2D6336C400710FC5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -571,6 +744,10 @@
 		AB7C22982D63380100D102B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ABC59E052D6476C700A29357 /* libmidiproc.a */,
+				ABC59E032D6476C100A29357 /* libSDL3_net.0.dylib */,
+				ABC59E012D6476B900A29357 /* libSDL3_mixer.0.dylib */,
+				ABC59DFF2D6476B400A29357 /* SDL3.framework */,
 				AB7C22FD2D63391500D102B5 /* libmidiproc.a */,
 				AB7C229D2D63380A00D102B5 /* libSDL3_mixer.0.dylib */,
 				AB7C229B2D63380600D102B5 /* libSDL3_net.0.dylib */,
@@ -593,10 +770,24 @@
 			path = ../iOS_Icons;
 			sourceTree = "<group>";
 		};
+		ABD61EEA2D648B10005B5155 /* ../AppleTV_Icons */ = {
+			isa = PBXGroup;
+			children = (
+				ABD61EE82D648B10005B5155 /* icon_400x240.png */,
+				ABD61EE92D648B10005B5155 /* icon_800x480.png */,
+				AB260F162D648C7800ACFF45 /* icon_2320x720.png */,
+			);
+			path = ../AppleTV_Icons;
+			sourceTree = "<group>";
+		};
 		ABDCE5872D6336C400710FC5 = {
 			isa = PBXGroup;
 			children = (
+				ABC59E632D647C6500A29357 /* libSDL3_mixer.0.dylib */,
+				ABC59E642D647C6500A29357 /* libSDL3_net.0.dylib */,
+				ABC59E612D647C4000A29357 /* SDL3.framework */,
 				AB6A08F62D63493700CD0932 /* ../opentyrian2000.icns */,
+				ABD61EEA2D648B10005B5155 /* ../AppleTV_Icons */,
 				AB7C22F52D63389E00D102B5 /* ../iOS_Icons */,
 				AB5C57672D63375D00ED8B7A /* ../data */,
 				AB5C56E62D63372C00ED8B7A /* ../src */,
@@ -609,6 +800,7 @@
 			isa = PBXGroup;
 			children = (
 				ABDCE5902D6336C400710FC5 /* opentyrian2000.app */,
+				ABC59DB82D64765900A29357 /* opentyrian2000.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -616,6 +808,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		ABC59DB72D64765900A29357 /* opentyrian2000-ATVSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ABC59DCA2D64765B00A29357 /* Build configuration list for PBXNativeTarget "opentyrian2000-ATVSimulator" */;
+			buildPhases = (
+				ABC59DB42D64765900A29357 /* Sources */,
+				ABC59DB52D64765900A29357 /* Frameworks */,
+				ABC59DB62D64765900A29357 /* Resources */,
+				ABC59E592D6476E100A29357 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "opentyrian2000-ATVSimulator";
+			packageProductDependencies = (
+			);
+			productName = "opentyrian2000-ATV";
+			productReference = ABC59DB82D64765900A29357 /* opentyrian2000.app */;
+			productType = "com.apple.product-type.application";
+		};
 		ABDCE58F2D6336C400710FC5 /* opentyrian2000 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = ABDCE5A82D6336C500710FC5 /* Build configuration list for PBXNativeTarget "opentyrian2000" */;
@@ -643,8 +855,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					New,
+				);
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					ABC59DB72D64765900A29357 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					ABDCE58F2D6336C400710FC5 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -665,15 +883,104 @@
 			projectRoot = "";
 			targets = (
 				ABDCE58F2D6336C400710FC5 /* opentyrian2000 */,
+				ABC59DB72D64765900A29357 /* opentyrian2000-ATVSimulator */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		ABC59DB62D64765900A29357 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB9F62DD2D648B550055E165 /* icon_400x240.png in Resources */,
+				AB9F62DE2D648B550055E165 /* icon_800x480.png in Resources */,
+				ABC59E0E2D6476DA00A29357 /* cubetxt1.dat in Resources */,
+				ABC59E0F2D6476DA00A29357 /* cubetxt2.dat in Resources */,
+				ABC59E102D6476DA00A29357 /* cubetxt3.dat in Resources */,
+				ABC59E112D6476DA00A29357 /* cubetxt4.dat in Resources */,
+				ABC59E122D6476DA00A29357 /* cubetxt5.dat in Resources */,
+				ABC59E132D6476DA00A29357 /* demo.1 in Resources */,
+				ABC59E142D6476DA00A29357 /* demo.2 in Resources */,
+				ABC59E152D6476DA00A29357 /* demo.3 in Resources */,
+				ABC59E162D6476DA00A29357 /* demo.4 in Resources */,
+				ABC59E172D6476DA00A29357 /* demo.5 in Resources */,
+				AB260F172D648C7800ACFF45 /* icon_2320x720.png in Resources */,
+				ABC59E182D6476DA00A29357 /* levels1.dat in Resources */,
+				ABC59E192D6476DA00A29357 /* levels2.dat in Resources */,
+				ABC59E1A2D6476DA00A29357 /* levels3.dat in Resources */,
+				ABC59E1B2D6476DA00A29357 /* levels4.dat in Resources */,
+				ABC59E1C2D6476DA00A29357 /* levels5.dat in Resources */,
+				ABC59E1D2D6476DA00A29357 /* music.mus in Resources */,
+				ABC59E1E2D6476DA00A29357 /* newsh'.shp in Resources */,
+				ABC59E1F2D6476DA00A29357 /* newsh(.shp in Resources */,
+				ABC59E202D6476DA00A29357 /* newsh@.shp in Resources */,
+				ABC59E212D6476DA00A29357 /* newsh#.shp in Resources */,
+				ABC59E222D6476DA00A29357 /* newsh%.shp in Resources */,
+				ABC59E232D6476DA00A29357 /* newsh^.shp in Resources */,
+				ABC59E242D6476DA00A29357 /* newsh~.shp in Resources */,
+				ABC59E252D6476DA00A29357 /* newsh$.shp in Resources */,
+				ABC59E262D6476DA00A29357 /* newsh0.shp in Resources */,
+				ABC59E272D6476DA00A29357 /* newsh1.shp in Resources */,
+				ABC59E282D6476DA00A29357 /* newsh2.shp in Resources */,
+				ABC59E292D6476DA00A29357 /* newsh3.shp in Resources */,
+				ABC59E2A2D6476DA00A29357 /* newsh4.shp in Resources */,
+				ABC59E2B2D6476DA00A29357 /* newsh5.shp in Resources */,
+				ABC59E2C2D6476DA00A29357 /* newsh6.shp in Resources */,
+				ABC59E2D2D6476DA00A29357 /* newsh7.shp in Resources */,
+				ABC59E2E2D6476DA00A29357 /* newsh8.shp in Resources */,
+				ABC59E2F2D6476DA00A29357 /* newsh9.shp in Resources */,
+				ABC59E302D6476DA00A29357 /* newsha.shp in Resources */,
+				ABC59E312D6476DA00A29357 /* newshb.shp in Resources */,
+				ABC59E322D6476DA00A29357 /* newshc.shp in Resources */,
+				ABC59E332D6476DA00A29357 /* newshd.shp in Resources */,
+				ABC59E342D6476DA00A29357 /* newshe.shp in Resources */,
+				ABC59E352D6476DA00A29357 /* newshf.shp in Resources */,
+				ABC59E362D6476DA00A29357 /* newshg.shp in Resources */,
+				ABC59E372D6476DA00A29357 /* newshh.shp in Resources */,
+				ABC59E382D6476DA00A29357 /* newshi.shp in Resources */,
+				ABC59E392D6476DA00A29357 /* newshj.shp in Resources */,
+				ABC59E3A2D6476DA00A29357 /* newshk.shp in Resources */,
+				ABC59E3B2D6476DA00A29357 /* newshl.shp in Resources */,
+				ABC59E3C2D6476DA00A29357 /* newshm.shp in Resources */,
+				ABC59E3D2D6476DA00A29357 /* newshn.shp in Resources */,
+				ABC59E3E2D6476DA00A29357 /* newsho.shp in Resources */,
+				ABC59E3F2D6476DA00A29357 /* newshp.shp in Resources */,
+				ABC59E402D6476DA00A29357 /* newshr.shp in Resources */,
+				ABC59E412D6476DA00A29357 /* newshs.shp in Resources */,
+				ABC59E422D6476DA00A29357 /* newsht.shp in Resources */,
+				ABC59E432D6476DA00A29357 /* newshu.shp in Resources */,
+				ABC59E442D6476DA00A29357 /* newshv.shp in Resources */,
+				ABC59E452D6476DA00A29357 /* palette.dat in Resources */,
+				ABC59E462D6476DA00A29357 /* shapes).dat in Resources */,
+				ABC59E472D6476DA00A29357 /* shapesw.dat in Resources */,
+				ABC59E482D6476DA00A29357 /* shapesx.dat in Resources */,
+				ABC59E492D6476DA00A29357 /* shapesy.dat in Resources */,
+				ABC59E4A2D6476DA00A29357 /* shapesz.dat in Resources */,
+				ABC59E4B2D6476DA00A29357 /* tyrian.hdt in Resources */,
+				ABC59E4C2D6476DA00A29357 /* tyrian.pic in Resources */,
+				ABC59E4D2D6476DA00A29357 /* tyrian.shp in Resources */,
+				ABC59E4E2D6476DA00A29357 /* tyrian.snd in Resources */,
+				ABC59E4F2D6476DA00A29357 /* tyrian1.lvl in Resources */,
+				ABC59E502D6476DA00A29357 /* tyrian2.lvl in Resources */,
+				ABC59E512D6476DA00A29357 /* tyrian3.lvl in Resources */,
+				ABC59E522D6476DA00A29357 /* tyrian4.lvl in Resources */,
+				ABC59E532D6476DA00A29357 /* tyrian5.lvl in Resources */,
+				ABC59E542D6476DA00A29357 /* tyrianc.shp in Resources */,
+				ABC59E552D6476DA00A29357 /* user1.shp in Resources */,
+				ABC59E562D6476DA00A29357 /* user2.shp in Resources */,
+				ABC59E572D6476DA00A29357 /* voices.snd in Resources */,
+				ABC59E582D6476DA00A29357 /* voicesc.snd in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABDCE58E2D6336C400710FC5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB260F182D648C8B00ACFF45 /* icon_2320x720.png in Resources */,
+				AB9F62DF2D648B5D0055E165 /* icon_400x240.png in Resources */,
+				AB9F62E02D648B5D0055E165 /* icon_800x480.png in Resources */,
 				AB6A08F72D63493700CD0932 /* ../opentyrian2000.icns in Resources */,
 				AB7C22F62D6338C100D102B5 /* AppIcon57x57.png in Resources */,
 				AB7C22F72D6338C100D102B5 /* AppIcon57x57@2x.png in Resources */,
@@ -763,6 +1070,63 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		ABC59DB42D64765900A29357 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ABC59DCD2D6476A900A29357 /* animlib.c in Sources */,
+				ABC59DCE2D6476A900A29357 /* arg_parse.c in Sources */,
+				ABC59DCF2D6476A900A29357 /* backgrnd.c in Sources */,
+				ABC59DD02D6476A900A29357 /* config.c in Sources */,
+				ABC59DD12D6476A900A29357 /* config_file.c in Sources */,
+				ABC59DD22D6476A900A29357 /* destruct.c in Sources */,
+				ABC59DD32D6476A900A29357 /* editship.c in Sources */,
+				ABC59DD42D6476A900A29357 /* episodes.c in Sources */,
+				ABC59DD52D6476A900A29357 /* file.c in Sources */,
+				ABC59DD62D6476A900A29357 /* font.c in Sources */,
+				ABC59DD72D6476A900A29357 /* fonthand.c in Sources */,
+				ABC59DD82D6476A900A29357 /* game_menu.c in Sources */,
+				ABC59DD92D6476A900A29357 /* helptext.c in Sources */,
+				ABC59DDA2D6476A900A29357 /* joystick.c in Sources */,
+				ABC59DDB2D6476A900A29357 /* jukebox.c in Sources */,
+				ABC59DDC2D6476A900A29357 /* keyboard.c in Sources */,
+				ABC59DDD2D6476A900A29357 /* lds_play.c in Sources */,
+				ABC59DDE2D6476A900A29357 /* loudness.c in Sources */,
+				ABC59DDF2D6476A900A29357 /* lvllib.c in Sources */,
+				ABC59DE02D6476A900A29357 /* lvlmast.c in Sources */,
+				ABC59DE12D6476A900A29357 /* macos-bundle.mm in Sources */,
+				ABC59DE22D6476A900A29357 /* mainint.c in Sources */,
+				ABC59DE32D6476A900A29357 /* menus.c in Sources */,
+				ABC59DE42D6476A900A29357 /* mouse.c in Sources */,
+				ABC59DE52D6476A900A29357 /* mtrand.c in Sources */,
+				ABC59DE62D6476A900A29357 /* musmast.c in Sources */,
+				ABC59DE72D6476A900A29357 /* network.c in Sources */,
+				ABC59DE82D6476A900A29357 /* nortsong.c in Sources */,
+				ABC59DE92D6476A900A29357 /* nortvars.c in Sources */,
+				ABC59DEA2D6476A900A29357 /* opentyr.c in Sources */,
+				ABC59DEB2D6476A900A29357 /* opl.c in Sources */,
+				ABC59DEC2D6476A900A29357 /* palette.c in Sources */,
+				ABC59DED2D6476A900A29357 /* params.c in Sources */,
+				ABC59DEE2D6476A900A29357 /* pcxload.c in Sources */,
+				ABC59DEF2D6476A900A29357 /* pcxmast.c in Sources */,
+				ABC59DF02D6476A900A29357 /* picload.c in Sources */,
+				ABC59DF12D6476A900A29357 /* player.c in Sources */,
+				ABC59DF22D6476A900A29357 /* shots.c in Sources */,
+				ABC59DF32D6476A900A29357 /* sizebuf.c in Sources */,
+				ABC59DF42D6476A900A29357 /* sndmast.c in Sources */,
+				ABC59DF52D6476A900A29357 /* sprite.c in Sources */,
+				ABC59DF62D6476A900A29357 /* starlib.c in Sources */,
+				ABC59DF72D6476A900A29357 /* tyrian2.c in Sources */,
+				ABC59DF82D6476A900A29357 /* varz.c in Sources */,
+				ABC59DF92D6476A900A29357 /* vga_palette.c in Sources */,
+				ABC59DFA2D6476A900A29357 /* vga256d.c in Sources */,
+				ABC59DFB2D6476A900A29357 /* video.c in Sources */,
+				ABC59DFC2D6476A900A29357 /* video_scale.c in Sources */,
+				ABC59DFD2D6476A900A29357 /* video_scale_hqNx.c in Sources */,
+				ABC59DFE2D6476A900A29357 /* xmas.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ABDCE58C2D6336C400710FC5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -823,6 +1187,115 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		ABC59DCB2D64765B00A29357 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = opentyrian2000;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3.0.0;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = YZAQ856TTM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDK_DIR)/Library/Frameworks",
+					"$(inherited)",
+					"$(SDKROOT)$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=appletvsimulator*]" = (
+					/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/Library/Frameworks,
+					"$(inherited)",
+					"$(SDKROOT)$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG=1",
+					"IOS=1",
+					WITH_SDL3,
+					"WITH_NETWORK=1",
+					"WITH_MIDI=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_DIR)/usr/include",
+					"$(SDK_DIR)/usr/include/midiproc",
+				);
+				"HEADER_SEARCH_PATHS[sdk=appletvsimulator*]" = (
+					/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/include,
+					/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/include/midiproc,
+				);
+				INFOPLIST_FILE = "../Info-tvOS.plist";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SDK_DIR)/usr/lib";
+				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = /Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/lib;
+				MARKETING_VERSION = 3.0;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
+				PRODUCT_NAME = opentyrian2000;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		ABC59DCC2D64765B00A29357 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = opentyrian2000;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3.0.0;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = YZAQ856TTM;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDK_DIR)/Library/Frameworks",
+					"$(inherited)",
+					"$(SDKROOT)$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=appletvsimulator*]" = (
+					/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/Library/Frameworks,
+					"$(inherited)",
+					"$(SDKROOT)$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"IOS=1",
+					WITH_SDL3,
+					"WITH_NETWORK=1",
+					"WITH_MIDI=1",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SDK_DIR)/usr/include",
+					"$(SDK_DIR)/usr/include/midiproc",
+				);
+				"HEADER_SEARCH_PATHS[sdk=appletvsimulator*]" = (
+					/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/include,
+					/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/include/midiproc,
+				);
+				INFOPLIST_FILE = "../Info-tvOS.plist";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SDK_DIR)/usr/lib";
+				"LIBRARY_SEARCH_PATHS[sdk=appletvsimulator*]" = /Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk/usr/lib;
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
+				PRODUCT_NAME = opentyrian2000;
+				SDKROOT = appletvos;
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
 		ABDCE5A92D6336C500710FC5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1086,6 +1559,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		ABC59DCA2D64765B00A29357 /* Build configuration list for PBXNativeTarget "opentyrian2000-ATVSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABC59DCB2D64765B00A29357 /* Debug */,
+				ABC59DCC2D64765B00A29357 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		ABDCE58B2D6336C400710FC5 /* Build configuration list for PBXProject "opentyrian2000" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

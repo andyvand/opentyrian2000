@@ -2,58 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSHighResolutionCapable</key>
-	<string>True</string>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string>opentyrian2000</string>
-	<key>CFBundleSupportedPlatforms</key>
-	<array>
-		<string>AppleTVOS</string>
-	</array>
-	<key>UIStatusBarHidden</key>
-	<true/>
-	<key>UIRequiresFullScreen</key>
-	<true/>
-	<key>CFBundleGetInfoString</key>
-	<string>OpenTyrian 2000 v3.0.0, Copyright (C) 2022-2025 The OpenTyrian Development Team, copyright (C) 2022-2025 Kaito Sinclaire, copyright (C) 2024-2025 AnV Software</string>
+	<key></key>
+	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>AppIcon57x57.png</string>
-		<string>AppIcon57x57@2x.png</string>
-		<string>AppIcon60x60@2x.png</string>
-		<string>AppIcon72x72@2x~ipad.png</string>
-		<string>AppIcon72x72~ipad.png</string>
-		<string>AppIcon76x76@2x~ipad.png</string>
-		<string>AppIcon76x76~ipad.png</string>
+		<string>icon_420x240.png</string>
+		<string>icon_800x480.png</string>
 	</array>
-	<key>CFBundleIdentifier</key>
-	<string>com.AnV.Software.OpenTyrian2000</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>arm64</string>
-		<string>armv7</string>
-	</array>
-	<key>CFBundleShortVersionString</key>
-	<string>3.0.0</string>
-	<key>CFBundleSignature</key>
-	<string>OTYR</string>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.games</string>
-	<key>CFBundleDisplayName</key>
-	<string>OpenTyrian 2000 v3.0.0</string>
-	<key>CFBundleVersion</key>
-	<string>3.0.0</string>
-	<key>CFBundleName</key>
-	<string>OpenTyrian 2000</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright (C) 2022-2025 The OpenTyrian Development Team, copyright (C) 2022-2025 Kaito Sinclaire, copyright (C) 2024-2025 AnV Software</string>
-	<key>LSMinimumSystemVersion</key>
-	<string>11.0</string>
+	<key>UILaunchImageFile</key>
+	<string>icon_2320x720.png</string>
 </dict>
 </plist>
