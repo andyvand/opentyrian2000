@@ -37,7 +37,7 @@
 		<string>iPhoneOS</string>
 	</array>
 	<key>LSMinimumSystemVersion</key>
-	<string>11.0</string>
+	<string>1.0</string>
 	<key>NSHighResolutionCapable</key>
 	<string>True</string>
 </dict>
