@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -867,6 +867,7 @@
 				};
 			};
 			buildConfigurationList = ABDCE58B2D6336C400710FC5 /* Build configuration list for PBXProject "opentyrian2000" */;
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -875,7 +876,6 @@
 			);
 			mainGroup = ABDCE5872D6336C400710FC5;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = ABDCE5912D6336C400710FC5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
