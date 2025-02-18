@@ -139,13 +139,13 @@
 		AB7C22EB2D63386000D102B5 /* user2.shp in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57642D63375D00ED8B7A /* user2.shp */; };
 		AB7C22EC2D63386000D102B5 /* voices.snd in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57652D63375D00ED8B7A /* voices.snd */; };
 		AB7C22ED2D63386000D102B5 /* voicesc.snd in Resources */ = {isa = PBXBuildFile; fileRef = AB5C57662D63375D00ED8B7A /* voicesc.snd */; };
-		AB7C22F62D6338C100D102B5 /* AppIcon57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EE2D63389E00D102B5 /* AppIcon57x57.png */; platformFilters = (ios, tvos, ); };
-		AB7C22F72D6338C100D102B5 /* AppIcon57x57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EF2D63389E00D102B5 /* AppIcon57x57@2x.png */; platformFilters = (ios, tvos, ); };
-		AB7C22F82D6338C100D102B5 /* AppIcon60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F02D63389E00D102B5 /* AppIcon60x60@2x.png */; platformFilters = (ios, tvos, ); };
-		AB7C22F92D6338C100D102B5 /* AppIcon72x72@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F12D63389E00D102B5 /* AppIcon72x72@2x~ipad.png */; platformFilters = (ios, tvos, ); };
-		AB7C22FA2D6338C100D102B5 /* AppIcon72x72~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F22D63389E00D102B5 /* AppIcon72x72~ipad.png */; platformFilters = (ios, tvos, ); };
-		AB7C22FB2D6338C100D102B5 /* AppIcon76x76@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F32D63389E00D102B5 /* AppIcon76x76@2x~ipad.png */; platformFilters = (ios, tvos, ); };
-		AB7C22FC2D6338C100D102B5 /* AppIcon76x76~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F42D63389E00D102B5 /* AppIcon76x76~ipad.png */; platformFilters = (ios, tvos, ); };
+		AB7C22F62D6338C100D102B5 /* AppIcon57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EE2D63389E00D102B5 /* AppIcon57x57.png */; platformFilters = (ios, tvos, xros, ); };
+		AB7C22F72D6338C100D102B5 /* AppIcon57x57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22EF2D63389E00D102B5 /* AppIcon57x57@2x.png */; platformFilters = (ios, tvos, xros, ); };
+		AB7C22F82D6338C100D102B5 /* AppIcon60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F02D63389E00D102B5 /* AppIcon60x60@2x.png */; platformFilters = (ios, tvos, xros, ); };
+		AB7C22F92D6338C100D102B5 /* AppIcon72x72@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F12D63389E00D102B5 /* AppIcon72x72@2x~ipad.png */; platformFilters = (ios, tvos, xros, ); };
+		AB7C22FA2D6338C100D102B5 /* AppIcon72x72~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F22D63389E00D102B5 /* AppIcon72x72~ipad.png */; platformFilters = (ios, tvos, xros, ); };
+		AB7C22FB2D6338C100D102B5 /* AppIcon76x76@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F32D63389E00D102B5 /* AppIcon76x76@2x~ipad.png */; platformFilters = (ios, tvos, xros, ); };
+		AB7C22FC2D6338C100D102B5 /* AppIcon76x76~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7C22F42D63389E00D102B5 /* AppIcon76x76~ipad.png */; platformFilters = (ios, tvos, xros, ); };
 		AB7C22FE2D63391500D102B5 /* libmidiproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB7C22FD2D63391500D102B5 /* libmidiproc.a */; };
 /* End PBXBuildFile section */
 
@@ -868,6 +868,7 @@
 				"INFOPLIST_FILE[sdk=appletv*]" = "../Info-tvOS.plist";
 				"INFOPLIST_FILE[sdk=iphone*]" = "../Info-iOS.plist";
 				"INFOPLIST_FILE[sdk=macosx*]" = ../Info.plist;
+				"INFOPLIST_FILE[sdk=xr*]" = "../Info-VisionOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "OpenTyrian 2000";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (C) 2022-2025 The OpenTyrian Development Team, copyright (C) 2022-2025 Kaito Sinclaire, copyright (C) 2024-2025 AnV Software";
@@ -888,10 +889,11 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos macosx";
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos macosx xrsimulator xros";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 11.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -937,6 +939,7 @@
 				"INFOPLIST_FILE[sdk=appletv*]" = "../Info-tvOS.plist";
 				"INFOPLIST_FILE[sdk=iphone*]" = "../Info-iOS.plist";
 				"INFOPLIST_FILE[sdk=macosx*]" = ../Info.plist;
+				"INFOPLIST_FILE[sdk=xr*]" = "../Info-VisionOS.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "OpenTyrian 2000";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright (C) 2022-2025 The OpenTyrian Development Team, copyright (C) 2022-2025 Kaito Sinclaire, copyright (C) 2024-2025 AnV Software";
@@ -956,10 +959,11 @@
 				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AnV.Software.opentyrian2000;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos macosx";
+				SUPPORTED_PLATFORMS = "appletvsimulator appletvos iphonesimulator iphoneos macosx xrsimulator xros";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 11.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Release;
 		};
