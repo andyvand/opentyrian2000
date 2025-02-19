@@ -24,7 +24,7 @@
 #include "video.h"
 #include "vga256d.h"
 
-#if defined(TARGET_GP2X) || defined(TARGET_DINGUX)
+#if defined(TARGET_GP2X) || defined(TARGET_DINGUX) || defined(APPLETV)
 bool has_mouse = false;
 #else
 bool has_mouse = true;

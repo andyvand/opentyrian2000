@@ -749,6 +749,9 @@
 				AB7C229D2D63380A00D102B5 /* libSDL3_mixer.0.dylib */,
 				AB7C229B2D63380600D102B5 /* libSDL3_net.0.dylib */,
 				AB7C22992D63380100D102B5 /* SDL3.framework */,
+				ABC59E632D647C6500A29357 /* libSDL3_mixer.0.dylib */,
+				ABC59E642D647C6500A29357 /* libSDL3_net.0.dylib */,
+				ABC59E612D647C4000A29357 /* SDL3.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -780,9 +783,6 @@
 		ABDCE5872D6336C400710FC5 = {
 			isa = PBXGroup;
 			children = (
-				ABC59E632D647C6500A29357 /* libSDL3_mixer.0.dylib */,
-				ABC59E642D647C6500A29357 /* libSDL3_net.0.dylib */,
-				ABC59E612D647C4000A29357 /* SDL3.framework */,
 				AB5703622D64C2F00034CD1E /* ../opentyrian2000.icns */,
 				AB7844F12D6498F7001DA650 /* opentyrian2000.xcassets */,
 				ABD61EEA2D648B10005B5155 /* ../AppleTV_Icons */,
@@ -1187,6 +1187,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcons;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = AppIcons;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -1207,8 +1208,7 @@
 					"IOS=1",
 					WITH_SDL3,
 					"WITH_NETWORK=1",
-					"WITH_MIDI=1",
-					"$(inherited)",
+					"APPLETV=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1246,6 +1246,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcons;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = AppIcons;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -1265,7 +1266,7 @@
 					"IOS=1",
 					WITH_SDL3,
 					"WITH_NETWORK=1",
-					"WITH_MIDI=1",
+					"APPLETV=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1333,6 +1334,7 @@
 					"IOS=1",
 					"WITH_SDL3=1",
 					"WITH_NETWORK=1",
+					"APPLETV=1",
 				);
 				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphone*]" = (
 					"_DEBUG=1",
@@ -1368,8 +1370,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1425,6 +1427,7 @@
 					"IOS=1",
 					"WITH_SDL3=1",
 					"WITH_NETWORK=1",
+					"APPLETV=1",
 				);
 				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphone*]" = (
 					"IOS=1",
@@ -1457,8 +1460,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

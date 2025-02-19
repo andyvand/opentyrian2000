@@ -37,7 +37,11 @@ const char *const scaling_mode_names[ScalingMode_MAX] = {
 };
 
 int fullscreen_display;
+#if defined(IOS) || defined(ANDROID) || defined(__ANDROID__)
+ScalingMode scaling_mode = SCALE_ASPECT_8_5;
+#else
 ScalingMode scaling_mode = SCALE_INTEGER;
+#endif
 static SDL_Rect last_output_rect = { 0, 0, vga_width, vga_height };
 
 SDL_Surface *VGAScreen, *VGAScreenSeg;
