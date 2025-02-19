@@ -28,12 +28,14 @@
 #define WITH_NETWORK 1
 #endif
 
+#ifndef WITH_SDL3
 #ifndef WITH_MIDI
 #define WITH_MIDI 1
 #endif
 
 #ifndef NO_NATIVE_MIDI
 #define NO_NATIVE_MIDI 1
+#endif
 #endif
 #endif
 
