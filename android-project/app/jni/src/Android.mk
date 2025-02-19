@@ -63,6 +63,8 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/lib/$(APP_ABI)/libopus.so
 #LOCAL_EXPORT_C_INCLUDES :=
 include $(PREBUILT_SHARED_LIBRARY)
 
+include $(CLEAR_VARS)
+
 LOCAL_MODULE := opusfile
 LOCAL_SRC_FILES := $(LOCAL_PATH)/lib/$(APP_ABI)/libopusfile.so
 #LOCAL_EXPORT_C_INCLUDES :=

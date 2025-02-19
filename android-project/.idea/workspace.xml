@@ -11,7 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c1a287b6-2434-4fbe-9286-3a846b759ec3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcodeproj/project.xcworkspace/xcuserdata/andyvand.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcodeproj/project.xcworkspace/xcuserdata/andyvand.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/Android.mk" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/Android.mk" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
