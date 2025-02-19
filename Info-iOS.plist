@@ -40,5 +40,7 @@
 	<string>11.0</string>
 	<key>NSHighResolutionCapable</key>
 	<string>True</string>
+	<key>UIStatusBarHidden</key>
+	<true/>
 </dict>
 </plist>

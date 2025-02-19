@@ -303,7 +303,7 @@ void reinit_fullscreen(int new_display)
 		{
 			reinit_fullscreen(-1);
 			return;
-		}
+        }
 	}
 }
 
@@ -361,7 +361,7 @@ bool init_scaler(unsigned int new_scaler)
 		// to resize to exactly match the scaler's output dimensions.
 		SDL_SetWindowSize(main_window, w, h);
 		window_center_in_display(window_get_display_index());
-	}
+    }
 
 	switch (bpp)
 	{
