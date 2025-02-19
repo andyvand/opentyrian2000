@@ -129,6 +129,9 @@ void jukebox(void)  // FKA Setup.jukeboxGo
 		{
 			switch (lastkey_scan)
 			{
+#ifdef APPLETV
+            case SDL_SCANCODE_RETURN:
+#endif
 			case SDL_SCANCODE_ESCAPE: // quit jukebox
 			case SDL_SCANCODE_Q:
 				trigger_quit = true;
@@ -166,7 +169,9 @@ void jukebox(void)  // FKA Setup.jukeboxGo
 				play_song((song_playing > 0 ? song_playing : MUSIC_NUM) - 1);
 				stopped = false;
 				break;
+#ifndef APPLETV
 			case SDL_SCANCODE_RETURN:
+#endif
 			case SDL_SCANCODE_RIGHT:
 			case SDL_SCANCODE_DOWN:
 				play_song((song_playing + 1) % MUSIC_NUM);
