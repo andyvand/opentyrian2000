@@ -61,6 +61,15 @@ extern "C" {
      (SDL_NET_MAJOR_VERSION > X || SDL_NET_MINOR_VERSION >= Y) && \
      (SDL_NET_MAJOR_VERSION > X || SDL_NET_MINOR_VERSION > Y || SDL_NET_MICRO_VERSION >= Z))
 
+/**
+ * A variable setting the default IP value to "IPv4" or "IPv6"
+ *
+ * This hint should be set before creating a socket bound to a NULL address
+ * and before resolving a hostname.
+ *
+ * \since This hint is available since SDL_net 3.0.0
+ */
+#define SDL_NET_HINT_IP_DEFAULT_VERSION "SDL_NET_HINT_IP_DEFAULT_VERSION"
 
 /**
  * This function gets the version of the dynamically linked SDL_net library.
@@ -123,7 +132,7 @@ typedef struct SDLNet_Address SDLNet_Address;  /**< Opaque struct that deals wit
 /**
  * Resolve a human-readable hostname.
  *
- * SDL_net doesn't operate on human-readable hostnames (like "www.libsdl.org")
+ * SDL_net doesn't operate on human-readable hostnames (like `www.libsdl.org`
  * but on computer-readable addresses. This function converts from one to the
  * other. This process is known as "resolving" an address.
  *
@@ -564,8 +573,8 @@ typedef struct SDLNet_Server SDLNet_Server;   /**< a listen socket, internally. 
  *
  * \param addr the _local_ address to listen for connections on, or NULL.
  * \param port the port on the local address to listen for connections on.
- * \returns a new SDLNet_StreamSocket, pending connection, or NULL on error;
- *          call SDL_GetError() for details.
+ * \returns a new SDLNet_Server, or NULL on error; call SDL_GetError() for
+ *          details.
  *
  * \threadsafety It is safe to call this function from any thread.
  *
@@ -758,7 +767,8 @@ extern SDL_DECLSPEC bool SDLCALL SDLNet_WriteToStreamSocket(SDLNet_StreamSocket 
  * other networking failures occurred), this function will report failure by
  * returning -1. Stream sockets only report failure for unrecoverable
  * conditions; once a stream socket fails, you should assume it is no longer
- * usable and should destroy it with SDL_DestroyStreamSocket().
+ * usable and should destroy it with
+ * [SDLNet_DestroyStreamSocket()](SDLNet_DestroyStreamSocket).
  *
  * \param sock the stream socket to query.
  * \returns number of bytes still pending transmission, -1 on failure; call
