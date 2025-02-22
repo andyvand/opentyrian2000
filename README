@@ -33,7 +33,8 @@ Currently OpenTyrian2000 does not have an arena; as such, networked games must
 be initiated manually via the command line simultaneously by both players.
 
 syntax:
-  opentyrian2000 --net HOSTNAME --net-player-name NAME --net-player-number NUM
+  opentyrian2000 --net-type ipv4 --net HOSTNAME --net-player-name NAME --net-player-number NUM
+  opentyrian2000 --net-type ipv6 --net HOSTNAME --net-player-name NAME --net-player-number NUM
 
 where HOSTNAME is the IP address of your opponent, NUM is either 1 or 2
 depending on which ship you intend to pilot, and NAME is your alias
