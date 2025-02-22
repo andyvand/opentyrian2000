@@ -10,84 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1a287b6-2434-4fbe-9286-3a846b759ec3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Info-tvOS.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../Info-tvOS.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Back.imagestacklayer/Content.imageset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Back.imagestacklayer/Content.imageset/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Back.imagestacklayer/Content.imageset/icon_400x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Back.imagestacklayer/Content.imageset/icon_400x240.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Back.imagestacklayer/Content.imageset/icon_800x480.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Back.imagestacklayer/Content.imageset/icon_800x480.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Back.imagestacklayer/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Back.imagestacklayer/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Front.imagestacklayer/Content.imageset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Front.imagestacklayer/Content.imageset/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Front.imagestacklayer/Content.imageset/icon_400x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Front.imagestacklayer/Content.imageset/icon_400x240.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Front.imagestacklayer/Content.imageset/icon_800x480.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Front.imagestacklayer/Content.imageset/icon_800x480.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Front.imagestacklayer/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Front.imagestacklayer/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Middle.imagestacklayer/Content.imageset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Middle.imagestacklayer/Content.imageset/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Middle.imagestacklayer/Content.imageset/icon_400x240.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Middle.imagestacklayer/Content.imageset/icon_400x240.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Middle.imagestacklayer/Content.imageset/icon_800x480.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Middle.imagestacklayer/Content.imageset/icon_800x480.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/App Icon.imagestack/Middle.imagestacklayer/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcassets/AppIcons.brandassets/AppIcon.imagestack/Middle.imagestacklayer/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcodeproj/project.xcworkspace/xcuserdata/andyvand.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcodeproj/project.xcworkspace/xcuserdata/andyvand.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.10.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/Android.mk" beforeDir="false" afterPath="$PROJECT_DIR$/app/jni/src/Android.mk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libFLAC.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libSDL3_mixer.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libfluidsynth.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libgme.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libmidiproc_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libmpg123.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libogg.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libopus.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libopusfile.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libwavpack.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/arm64-v8a/libxmp.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libFLAC.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libSDL3_mixer.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libfluidsynth.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libgme.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libmidiproc_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libmpg123.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libogg.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libopus.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libopusfile.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libwavpack.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/armeabi-v7a/libxmp.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libFLAC.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libSDL3_mixer.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libfluidsynth.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libgme.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libmidiproc_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libmpg123.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libogg.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libopus.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libopusfile.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libwavpack.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/riscv64/libxmp.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libFLAC.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libSDL3_mixer.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libfluidsynth.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libgme.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libmidiproc_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libmpg123.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libogg.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libopus.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libopusfile.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libwavpack.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86/libxmp.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libFLAC.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libSDL3_mixer.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libfluidsynth.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libgme.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libmidiproc_shared.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libmpg123.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libogg.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libopus.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libopusfile.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libwavpack.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/jni/src/lib/x86_64/libxmp.so" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/opentyr.h" beforeDir="false" afterPath="$PROJECT_DIR$/../src/opentyr.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -281,11 +211,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/build.gradle</url>
-          <line>22</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/app/jni/src/include/SDL3/SDL_oldnames.h</url>
           <line>1317</line>

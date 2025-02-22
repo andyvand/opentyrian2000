@@ -5,7 +5,7 @@ use File::Basename;
 
 my $dirname = dirname(__FILE__);
 
-my $VERSION="2.2.0";
+my $VERSION="3.0.0";
 my $INSTALL_PREFIX="/tmp/opentyrian2000";
 my $CTL_FILENAME="$INSTALL_PREFIX/DEBIAN/control";
 my $ARCH="amd64";
