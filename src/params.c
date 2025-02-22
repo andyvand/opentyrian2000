@@ -99,7 +99,7 @@ void JE_paramCheck(int argc, char *argv[])
 			       "  -j, --no-joystick            Disable joystick/gamepad input\n"
 			       "  -x, --no-xmas                Disable Christmas mode\n\n"
 			       "  -t, --data=DIR               Set Tyrian data directory\n\n"
-			       "  -n, --net=HOST[:PORT]        Start a networked game\n"
+			       "  -n, --net=HOST               Start a networked game\n"
 			       "  --net-player-name=NAME       Sets local player name in a networked game\n"
 			       "  --net-player-number=NUMBER   Sets local player number in a networked game\n"
 			       "                               (1 or 2)\n"
@@ -141,29 +141,8 @@ void JE_paramCheck(int argc, char *argv[])
 			
 		case 'n':
 			isNetworkGame = true;
-			
-			intptr_t temp = (intptr_t)strchr(option.arg, ':');
-			if (temp)
-			{
-				temp -= (intptr_t)option.arg;
-
-				int temp_port = atoi(&option.arg[temp + 1]);
-				if (temp_port > 0 && temp_port < 49152)
-					network_opponent_port = temp_port;
-				else
-				{
-					fprintf(stderr, "%s: error: invalid network port number\n", argv[0]);
-					exit(EXIT_FAILURE);
-				}
-
-				network_opponent_host = malloc(temp + 1);
-				SDL_strlcpy(network_opponent_host, option.arg, temp + 1);
-			}
-			else
-			{
-				network_opponent_host = malloc(strlen(option.arg) + 1);
-				strlcpy(network_opponent_host, option.arg, strlen(option.arg) + 1);
-			}
+            network_opponent_host = malloc(strlen(option.arg) + 1);
+            strlcpy(network_opponent_host, option.arg, strlen(option.arg) + 1);
 			break;
 
 		case 256: // --net-player-name
