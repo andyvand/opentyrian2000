@@ -905,9 +905,9 @@ int main(int argc, char *argv[])
 #if defined(__APPLE__) && defined(__MACH__)
     printf("%s\n\n", getCopyRight());
 #else
-	printf("Copyright (C) 2022-2024 The OpenTyrian Development Team\n");
-	printf("Copyright (C) 2022-2024 Kaito Sinclaire\n");
-    printf("Copyright (C) 2024 AnV Software\n\n");
+	printf("Copyright (C) 2022-2025 The OpenTyrian Development Team\n");
+	printf("Copyright (C) 2022-2025 Kaito Sinclaire\n");
+    printf("Copyright (C) 2024-2025 AnV Software\n\n");
 #endif
 
 	printf("This program comes with ABSOLUTELY NO WARRANTY.\n");

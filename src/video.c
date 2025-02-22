@@ -38,7 +38,7 @@ const char *const scaling_mode_names[ScalingMode_MAX] = {
 
 int fullscreen_display;
 #if defined(IOS) || defined(ANDROID) || defined(__ANDROID__)
-ScalingMode scaling_mode = SCALE_ASPECT_8_5;
+ScalingMode scaling_mode = SCALE_ASPECT_4_3;
 #else
 ScalingMode scaling_mode = SCALE_INTEGER;
 #endif
