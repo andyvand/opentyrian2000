@@ -34,7 +34,7 @@
 	<string>OTYR</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
-		<string>iPhoneOS</string>
+		<string>XROS</string>
 	</array>
 	<key>LSMinimumSystemVersion</key>
 	<string>1.0</string>
