@@ -97,7 +97,7 @@ extern const char *opentyrian_version;
 
 void setupMenu(void);
 
-#if defined(__linux__) || defined(VITA)
+#if defined(__linux__) || defined(VITA) || defined(PSP)
 #ifndef strlcpy
 #define strlcpy SDL_strlcpy
 #endif /* strlcpy */

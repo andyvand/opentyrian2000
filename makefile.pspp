@@ -1,0 +1,30 @@
+TARGET = opentyrian2000
+#PSPSDK=$(c:\games\psp\pspsdk\bin\psp-config.exe --pspsdk-path)
+PSPDEV = /opt/pspdev
+PSPSDK = $(PSPDEV)/psp/sdk/
+PSPBIN = $(PSPDEV)/bin
+SDL_CONFIG = echo
+PSP_EBOOT_PIC1 = PIC1.png
+PSP_EBOOT_ICON = ICON0.png
+
+PSP_FW_VERSION=600
+BUILD_PRX = 1
+
+OBJS = src/animlib.o src/arg_parse.o src/backgrnd.o src/config.o src/config_file.o src/destruct.o src/editship.o src/episodes.o src/file.o src/font.o src/fonthand.o src/game_menu.o src/helptext.o src/joystick.o src/jukebox.o src/keyboard.o src/lds_play.o src/loudness.o src/lvllib.o src/lvlmast.o src/mainint.o src/menus.o src/mouse.o src/mtrand.o src/musmast.o src/network.o src/nortsong.o src/nortvars.o src/opentyr.o src/opl.o src/palette.o src/params.o src/pcxload.o src/pcxmast.o src/picload.o src/player.o src/shots.o src/sizebuf.o src/sndmast.o src/sprite.o src/starlib.o src/tyrian2.o src/varz.o src/vga256d.o src/vga_palette.o src/video.o src/video_scale.o src/video_scale_hqNx.o src/xmas.o
+
+
+INCDIR = 
+CFLAGS = -O3  -G0 -Wall -g -I$(PSPDEV)/psp/include -DPSP -DPSP8 -DWITH_SDL3=1 -std=c99
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -fsingle-precision-constant -mno-check-zero-division -ffast-math -funsafe-math-optimizations -fpeel-loops
+ASFLAGS = $(CFLAGS)
+
+LIBDIR =
+LDFLAGS =
+
+#LIBS = -lstdc++  -lSDL_mixer  -lvorbisidec   -lSDL_image -lpng -lz -ljpeg  -lSDL_gfx -lm -L/usr/local/pspdev/psp/lib -lSDL  -lGL -lpspvfpu -L/usr/local/pspdev/psp/sdk/lib -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpsputility -lpspkernel -lpspnet_inet -lpspirkeyb -lpsppower
+
+LIBS = -lSDL3 -lstdc++ -lvorbisidec -lpng -lz -ljpeg -lGL -lSDL_gfx -lm -lm -lGL -lpspvfpu -Lc:/games/psp/pspsdk/psp/sdk/lib -lpspirkeyb -lpsppower -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpspgum -lpsputility -lpspkernel -lpspnet_inet -lGL  -lpsprtc   -lpspvfpu  -lpsppower -lpspvram -lpspvramalloc
+EXTRA_TARGETS = EBOOT.PBP
+PSP_EBOOT_TITLE = OpenTyrian PSP+
+
+include $(PSPSDK)/lib/build.mak 
