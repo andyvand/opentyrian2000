@@ -172,13 +172,14 @@ void service_SDL_events(JE_boolean clear_new)
 {
 	SDL_Event ev;
 #ifdef WITH_SDL3
-    Sint32 bx = 0;
-    Sint32 by = 0;
     Sint32 mx = 0;
     Sint32 my = 0;
     Sint32 mxrel = 0;
     Sint32 myrel = 0;
 #endif
+
+    Sint32 bx = 0;
+    Sint32 by = 0;
 
 	if (clear_new)
 	{
@@ -285,8 +286,6 @@ void service_SDL_events(JE_boolean clear_new)
 			case SDL_MOUSEMOTION:
                 mouse_x = ev.motion.x;
                 mouse_y = ev.motion.y;
-                mxrel = 0;
-                myrel = 0;
 #endif
 
 				mapWindowPointToScreen(&mouse_x, &mouse_y);
