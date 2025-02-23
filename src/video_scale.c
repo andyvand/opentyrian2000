@@ -45,6 +45,7 @@ const struct Scalers scalers[] =
 {
 	{ 1 * vga_width, 1 * vga_height, nn_16,      nn_32,      "None" },
 	{ 2 * vga_width, 2 * vga_height, nn_16,      nn_32,      "2x" },
+#ifndef VITA
 	{ 2 * vga_width, 2 * vga_height, scale2x_16, scale2x_32, "Scale2x" },
 	{ 2 * vga_width, 2 * vga_height, NULL,       hq2x_32,    "hq2x" },
 	{ 3 * vga_width, 3 * vga_height, nn_16,      nn_32,      "3x" },
@@ -52,7 +53,10 @@ const struct Scalers scalers[] =
 	{ 3 * vga_width, 3 * vga_height, NULL,       hq3x_32,    "hq3x" },
 	{ 4 * vga_width, 4 * vga_height, nn_16,      nn_32,      "4x" },
 	{ 4 * vga_width, 4 * vga_height, NULL,       hq4x_32,    "hq4x" },
+#endif
 };
+
+
 const uint scalers_count = COUNTOF(scalers);
 
 void set_scaler_by_name(const char *name)

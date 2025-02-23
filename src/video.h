@@ -30,6 +30,14 @@
 #define vga_width 320
 #define vga_height 200
 
+#ifdef VITA
+typedef enum {
+    SCALE_INTEGER,
+    SCALE_FIT,
+    SCALE_FULLSCREEN,
+    ScalingMode_MAX
+} ScalingMode;
+#else
 typedef enum {
 	SCALE_CENTER,
 	SCALE_INTEGER,
@@ -37,6 +45,7 @@ typedef enum {
 	SCALE_ASPECT_4_3,
 	ScalingMode_MAX
 } ScalingMode;
+#endif
 
 extern const char *const scaling_mode_names[ScalingMode_MAX];
 

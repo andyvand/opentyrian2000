@@ -130,7 +130,7 @@ void calc_purple_balls_needed(Player *);
 bool power_up_weapon(Player *, uint port);
 void handle_got_purple_ball(Player *);
 
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA)
 extern JE_byte mousePlayerNumber;
 #endif
 

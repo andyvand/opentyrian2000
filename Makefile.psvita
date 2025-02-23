@@ -1,0 +1,60 @@
+PHONY := all package clean
+
+DATE := $(shell date +%y-%m-%d)
+
+CC := arm-vita-eabi-gcc
+CXX := arm-vita-eabi-g++
+STRIP := arm-vita-eabi-strip
+
+PROJECT_TITLE := OpenTyrian2000
+PROJECT_TITLEID := OPTIRYAN2000
+PROJECT := OpenTyrian2000
+
+
+
+CFLAGS  = -Wl,-q -Wall -O3 -DWITH_SDL3=1 -MMD -pedantic -Wall -Wextra \
+			-Wno-missing-field-initializers -Wno-unused-parameter \
+			-ftree-vectorize -mword-relocations -fomit-frame-pointer -ffast-math \
+			-march=armv7-a -mtune=cortex-a9 -mfpu=neon -mfloat-abi=hard \
+			-DVITA -DTARGET_UNIX -std=c99 -I./src -I$(VITASDK)/arm-vita-eabi/include
+#-DVDEBUG
+
+OBJS := src/animlib.o src/arg_parse.o src/backgrnd.o src/config.o src/config_file.o src/destruct.o src/editship.o src/episodes.o src/file.o src/font.o src/fonthand.o src/game_menu.o src/helptext.o src/joystick.o src/jukebox.o src/keyboard.o src/keyboard_vita.o src/lds_play.o src/loudness.o src/lvllib.o src/lvlmast.o src/mainint.o src/menus.o src/mouse.o src/mtrand.o src/musmast.o src/network.o src/nortsong.o src/nortvars.o src/opentyr.o src/opl.o src/palette.o src/params.o src/pcxload.o src/pcxmast.o src/picload.o src/player.o src/shots.o src/sizebuf.o src/sndmast.o src/sprite.o src/starlib.o src/tyrian2.o src/varz.o src/vga256d.o src/vga_palette.o src/video_vita.o src/video_scale.o src/video_scale_hqNx.o src/xmas.o
+
+all: package
+
+package: $(PROJECT).vpk
+
+$(PROJECT).vpk: eboot.bin param.sfo
+	rm -rf vpk && mkdir -p vpk/sce_sys/livearea/contents
+	cp eboot.bin vpk/
+	cp param.sfo vpk/sce_sys/
+	cp vita/icon0.png vpk/sce_sys/
+	cp vita/template.xml vpk/sce_sys/livearea/contents/
+	cp vita/bg.png vpk/sce_sys/livearea/contents/
+	cp vita/startup.png vpk/sce_sys/livearea/contents/
+	cp -r data vpk/data
+	cd vpk && zip -r ../$(PROJECT)-$(DATE).vpk . && cd ..
+	
+eboot.bin: $(PROJECT).velf
+	vita-make-fself -s $(PROJECT).velf eboot.bin
+
+param.sfo:
+	vita-mksfoex -s TITLE_ID="$(PROJECT_TITLEID)" "$(PROJECT_TITLE)" param.sfo
+
+$(PROJECT).velf: $(PROJECT).elf
+	$(STRIP) -g $<
+	vita-elf-create $< $@
+
+$(PROJECT).elf: $(OBJS)
+	$(CC) -Wl,-q -o $@ $^ $(LIBS)
+
+$(OBJ_DIRS):
+	mkdir -p $@
+
+out/%.o : src/%.c | $(OBJ_DIRS)
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+clean:
+	rm -f $(PROJECT).velf $(PROJECT).elf $(PROJECT).vpk param.sfo eboot.bin $(OBJS)
+	rm -rf vpk

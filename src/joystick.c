@@ -421,7 +421,14 @@ void reset_joystick_assignments(int j)
 				joystick[j].assignment[a][1].x_axis = (a == 1 || a == 3);
 				joystick[j].assignment[a][1].negative_axis = (a == 0 || a == 3);
 			}
+#ifdef VITA
+            static const char remap[4] = { 8, 9, 6, 7 }; // maps to correct button (UP, RIGHT, DOWN, LEFT)
+
+            joystick[j].assignment[a][1].type = BUTTON;
+            joystick[j].assignment[a][1].num = remap[a];
+#endif
 		}
+#ifndef VITA
 		else
 		{
 #ifdef WITH_SDL3
@@ -434,8 +441,29 @@ void reset_joystick_assignments(int j)
 				joystick[j].assignment[a][0].num = a - 4;
 			}
 		}
+#endif
 	}
-	
+
+#ifdef VITA
+    joystick[j].assignment[4][0].type = BUTTON;
+    joystick[j].assignment[4][0].num = 2; // X (fire)
+
+    joystick[j].assignment[5][0].type = BUTTON;
+    joystick[j].assignment[5][0].num = 1; // O (change fire)
+
+    joystick[j].assignment[6][0].type = BUTTON;
+    joystick[j].assignment[6][0].num = 4; // L (left sidekick)
+
+    joystick[j].assignment[7][0].type = BUTTON;
+    joystick[j].assignment[7][0].num = 5; // R (right sidekick)
+
+    joystick[j].assignment[8][0].type = BUTTON;
+    joystick[j].assignment[8][0].num = 10; // SELECT (menu)
+
+    joystick[j].assignment[9][0].type = BUTTON;
+    joystick[j].assignment[9][0].num = 11; // START (pause)
+#endif
+
 	joystick[j].analog = false;
 	joystick[j].sensitivity = 5;
 	joystick[j].threshold = 5;

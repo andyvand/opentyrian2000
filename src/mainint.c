@@ -55,6 +55,10 @@
 #include <ctype.h>
 #include <string.h>
 
+#ifdef VITA
+#include "keyboard_vita.h"
+#endif
+
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 #define snprintf sprintf_s
 #endif
@@ -2120,6 +2124,14 @@ void JE_highScoreCheck(void)
 
 				JE_barShade(VGAScreen, 65, 55, 255, 155);
 
+#ifdef VITA
+                char *str = keyboard_vita_get("Enter your name", 29);
+                if(str != NULL) {
+                    strcpy(stemp, str);
+                } else {
+                    cancel = true;
+                }
+#else
 				do
 				{
 					service_SDL_events(true);
@@ -2231,6 +2243,7 @@ void JE_highScoreCheck(void)
 						}
 					}
 				} while (!quit);
+#endif
 
 				// Timed Battle mode doesn't allow cancelling, so we ignore it
 				if (!cancel || timedBattleMode)
@@ -2989,6 +3002,15 @@ void JE_operation(JE_byte slot)
 
 		JE_barShade(VGAScreen, 65, 55, 255, 155);
 
+#ifdef VITA
+        char *str = keyboard_vita_get("Enter a name", 20);
+        if(str != NULL) {
+            JE_saveGame(slot, str);
+            JE_playSampleNum(S_SELECT);
+        } else {
+            JE_playSampleNum(S_SPRING);
+        }
+#else
 		bool quit = false;
 		while (!quit)
 		{
@@ -3088,6 +3110,7 @@ void JE_operation(JE_byte slot)
 				}
 			}
 		}
+#endif
 	}
 
 	wait_noinput(false, true, false);
@@ -3534,7 +3557,7 @@ void JE_pauseGame(void)
 #endif
 }
 
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA)
 JE_byte mousePlayerNumber = 0;
 #endif
 
@@ -3761,7 +3784,7 @@ redo:
 				/* mouse input */
 				if ((inputDevice == 0 || inputDevice == 2) && has_mouse)
 				{
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA)
                     mousePlayerNumber = playerNum_;
 #endif
 

@@ -45,6 +45,13 @@
 #include <SDL2/SDL_types.h>
 #endif
 
+#ifdef VITA
+#ifdef VDEBUG
+#include <psp2shell.h>
+#define printf psp2shell_print
+#endif
+#endif
+
 #include <math.h>
 #include <stdbool.h>
 
@@ -90,7 +97,7 @@ extern const char *opentyrian_version;
 
 void setupMenu(void);
 
-#ifdef __linux__
+#if defined(__linux__) || defined(VITA)
 #ifndef strlcpy
 #define strlcpy SDL_strlcpy
 #endif /* strlcpy */

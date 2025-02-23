@@ -83,7 +83,11 @@
 #include <shellapi.h>
 #endif
 
-#if defined(IOS) || defined(WIN32) || defined(_WIN32)
+#ifdef VITA
+#include <psp2/kernel/processmgr.h>
+#endif
+
+#if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA)
 #ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
 #endif
@@ -847,6 +851,13 @@ int main(int argc, char *argv[])
 
 	mt_srand(time(NULL));
 
+#ifdef VITA
+#ifdef VDEBUG
+    psp2shell_init(3333);
+    sceKernelDelayThread(1000*1000*5);
+#endif
+#endif
+
 #if defined(__APPLE__) && defined(__MACH__)
     printf("\nWelcome to... >> %s v%s <<\n\n", getBundleName(), getBundleVersion());
 
@@ -1051,6 +1062,13 @@ int main(int argc, char *argv[])
 	}
 
 	JE_tyrianHalt(0);
+
+#ifdef VITA
+#ifdef VDEBUG
+    psp2shell_exit();
+#endif
+    sceKernelExitProcess(0);
+#endif
 
 	return 0;
 }

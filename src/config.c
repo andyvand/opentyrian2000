@@ -43,6 +43,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef VITA
+#include <psp2/io/stat.h>
+#endif
+
 #if defined(__APPLE__) & defined(__MACH__)
 #include "macos-bundle.h"
 
@@ -230,7 +234,11 @@ bool load_opentyrian_config(void)
 {
 	// defaults
 	fullscreen_display = -1;
+#ifdef VITA
+    set_scaler_by_name("None");
+#else
 	set_scaler_by_name("Scale2x");
+#endif
 	memcpy(keySettings, defaultKeySettings, sizeof(keySettings));
 	memcpy(mouseSettings, defaultMouseSettings, sizeof(mouseSettings));
 	
@@ -355,7 +363,11 @@ bool save_opentyrian_config(void)
 	}
 
 #ifndef TARGET_WIN32
+#ifdef VITA
+    sceIoMkdir(get_user_directory(), 0777);
+#else
 	mkdir(get_user_directory(), 0700);
+#endif
 #else
 	mkdir(get_user_directory());
 #endif
@@ -794,6 +806,8 @@ const char *get_user_directory(void)
 #ifndef TARGET_WIN32
 #if defined(ANDROID) || defined(__ANDROID__)
 		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
+#elif defined(VITA)
+    return "ux0:data/opentyrian2000/";
 #elif defined(__APPLE__) && defined(__MACH__)
         snprintf(user_dir, sizeof(user_dir), "%s", getHomeDir());
 #else

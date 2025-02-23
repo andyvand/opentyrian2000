@@ -57,7 +57,9 @@ const char *custom_data_dir = NULL;
 // finds the Tyrian data directory
 const char *data_dir(void)
 {
-#if defined(__APPLE__) & defined(__MACH__)
+#ifdef VITA
+    return "app0:data/";
+#elif defined(__APPLE__) & defined(__MACH__)
     const char *const dirs[] =
     {
         custom_data_dir,
@@ -91,6 +93,7 @@ const char *data_dir(void)
 	};
 #endif
 
+#ifndef VITA
 	static const char *dir = NULL;
 
 	if (dir != NULL)
@@ -115,6 +118,7 @@ const char *data_dir(void)
 		dir = "";
 
 	return dir;
+#endif
 }
 
 // prepend directory and fopen
