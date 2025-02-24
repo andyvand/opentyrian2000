@@ -807,7 +807,7 @@ const char *get_user_directory(void)
 #if defined(ANDROID) || defined(__ANDROID__)
 		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
 #elif defined(VITA)
-    return "ux0:data/opentyrian2000/";
+        snprintf(user_dir, sizeof(user_dir), "ux0:data");
 #elif defined(__APPLE__) && defined(__MACH__)
         snprintf(user_dir, sizeof(user_dir), "%s", getHomeDir());
 #else
