@@ -1,7 +1,9 @@
-#ifdef VITA
 
 #include <string.h>
 #include <stdbool.h>
+
+#ifdef VITA
+
 #include <psp2/types.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/message_dialog.h>
@@ -180,4 +182,4 @@ char *keyboard_vita_get(char *title, int maxLen) {
 	return NULL;
 }
 
-#endif
+#endif /* VITA */

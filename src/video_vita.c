@@ -1,5 +1,3 @@
-#ifdef VITA
-
 /*
  * OpenTyrian: A modern cross-platform port of Tyrian
  * Copyright (C) 2007-2009  The OpenTyrian Development Team
@@ -23,6 +21,9 @@
 #include "palette.h"
 #include "video.h"
 #include "video_scale.h"
+
+#ifdef VITA
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
