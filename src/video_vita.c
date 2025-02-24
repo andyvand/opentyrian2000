@@ -64,7 +64,10 @@ SDL_PixelFormat *main_window_tex_format = NULL;
 
 SDL_Window* main_window; // "used" by keyboard.c
 
+#if 0
 void show_splash();
+#endif
+
 vita2d_texture *vitaTexture;
 Uint8 *vitaData;
 
@@ -169,7 +172,9 @@ void init_video( void )
 	fpsinit();
 #endif
 	
+#if 0
 	show_splash();
+#endif
 }
 
 void JE_showVGA( void ) 
@@ -263,6 +268,7 @@ void map_window_to_screen_pos(int* inout_x, int* inout_y) {
 	*inout_y = (*inout_y - last_output_rect.y) * VGAScreen->h / last_output_rect.h;
 }
 
+#if 0
 void show_splash() {
 	
 	int alpha = 1;
@@ -296,6 +302,7 @@ void show_splash() {
 		vita2d_swap_buffers();
 	}
 }
+#endif
 
 /** Maps a specified point in window coordinates to game screen coordinates. */
 void mapWindowPointToScreen(Sint32 *const inout_x, Sint32 *const inout_y)
