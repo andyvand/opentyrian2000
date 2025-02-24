@@ -299,6 +299,10 @@ void push_joysticks_as_keyboard(void)
 // initializes SDL joystick system and loads assignments for joysticks found
 void init_joysticks(void)
 {
+#ifdef WITH_SDL3
+    SDL_JoystickID *joyIDs = NULL;
+#endif
+
 	if (ignore_joystick)
 		return;
 	
@@ -314,7 +318,7 @@ void init_joysticks(void)
 	}
 	
 #ifdef WITH_SDL3
-    SDL_GetJoysticks(&joysticks);
+    joyIDs = SDL_GetJoysticks(&joysticks);
 #else
     SDL_JoystickEventState(SDL_IGNORE);
 
@@ -328,7 +332,7 @@ void init_joysticks(void)
 		memset(&joystick[j], 0, sizeof(*joystick));
 
 #ifdef WITH_SDL3
-        joystick[j].handle = SDL_OpenJoystick(j);
+        joystick[j].handle = SDL_OpenJoystick(joyIDs[j]);
 #else
 		joystick[j].handle = SDL_JoystickOpen(j);
 #endif
