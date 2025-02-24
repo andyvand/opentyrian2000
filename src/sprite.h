@@ -30,6 +30,10 @@
 #include <assert.h>
 #include <stdio.h>
 
+#ifdef PSP
+#include <pspiofilemgr.h>
+#endif
+
 #define FONT_SHAPES       0
 #define SMALL_FONT_SHAPES 1
 #define TINY_FONT         2
@@ -80,7 +84,13 @@ static inline Uint16 get_sprite_height(unsigned int table, unsigned int index)
 }
 
 void load_sprites_file(unsigned int table, const char *filename);
+
+#ifdef PSP
+void load_sprites(unsigned int table, SceUID f);
+#else
 void load_sprites(unsigned int table, FILE *f);
+#endif
+
 void free_sprites(unsigned int table);
 
 void blit_sprite(SDL_Surface *, int x, int y, unsigned int table, unsigned int index); // JE_newDrawCShapeNum
@@ -119,7 +129,13 @@ extern Sprite2_array spriteSheet12;  // fka shapesW2
 extern Sprite2_array spriteSheetT2000; // fka shapesT2k
 
 void JE_loadCompShapes(Sprite2_array *, char s);
+
+#ifdef PSP
+void JE_loadCompShapesB(Sprite2_array *, SceUID f);
+#else
 void JE_loadCompShapesB(Sprite2_array *, FILE *f);
+#endif
+
 void free_sprite2s(Sprite2_array *);
 
 void blit_sprite2(SDL_Surface *, int x, int y, Sprite2_array, unsigned int index);

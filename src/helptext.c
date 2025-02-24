@@ -29,6 +29,10 @@
 #include <assert.h>
 #include <string.h>
 
+#ifdef PSP
+#include <pspiofilemgr.h>
+#endif
+
 const JE_byte menuHelp[MENU_MAX][11] = /* [1..maxmenu, 1..11] */
 {
 	{  1, 34,  2,  3,  4,  5,                  0, 0, 0, 0, 0 },
@@ -96,6 +100,36 @@ static void decrypt_string(char *s, size_t len)
 	}
 }
 
+#ifdef PSP
+void read_encrypted_pascal_string(char *s, size_t size, SceUID f)
+{
+    Uint8 len;
+    char buffer[255];
+
+    fread_u8_die(&len, 1, f);
+    fread_die(buffer, 1, len, f);
+
+    if (size == 0)
+        return;
+
+    decrypt_string(buffer, len);
+
+    //assert(len < size);
+
+    len = MIN(len, size - 1);
+    memcpy(s, buffer, len);
+    s[len] = '\0';
+}
+
+void skip_pascal_string(SceUID f)
+{
+    Uint8 len;
+    char buffer[255];
+
+    fread_u8_die(&len, 1, f);
+    fread_die(buffer, 1, len, f);
+}
+#else
 void read_encrypted_pascal_string(char *s, size_t size, FILE *f)
 {
 	Uint8 len;
@@ -124,6 +158,7 @@ void skip_pascal_string(FILE *f)
 	fread_u8_die(&len, 1, f);
 	fread_die(buffer, 1, len, f);
 }
+#endif
 
 void JE_helpBox(SDL_Surface *screen,  int x, int y, const char *message, unsigned int boxwidth)
 {
@@ -190,7 +225,12 @@ void JE_loadHelpText(void)
 	const unsigned int menuInt_entries[MENU_MAX + 1] = { -1, 7, 9, 9, -1, -1, 11, -1, -1, -1, 6, 4, 7, 7, 5, 6 };
 	const unsigned int setup_entries[10] = {10, 5, 4, 4, 5, 7, 7, 21, 3, 3};
 	
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), "tyrian.hdt", "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), "tyrian.hdt", "rb");
+#endif
+
 	fread_s32_die(&episode1DataLoc, 1, f);
 
 	/*Online Help*/
@@ -449,5 +489,9 @@ void JE_loadHelpText(void)
 	for (unsigned int i = 0; i < COUNTOF(superTyrianText); ++i)
 		read_encrypted_pascal_string(superTyrianText[i], sizeof(superTyrianText[i]), f);
 
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }

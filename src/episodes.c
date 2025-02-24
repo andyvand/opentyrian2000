@@ -64,19 +64,31 @@ JE_boolean jumpBackToEpisode1;
 
 void JE_loadItemDat(void)
 {
+#ifdef PSP
+    SceUID f;
+#else
 	FILE *f = NULL;
-	
+#endif
+
 	if (episodeNum <= 3)
 	{
 		f = dir_fopen_die(data_dir(), "tyrian.hdt", "rb");
 		fread_s32_die(&episode1DataLoc, 1, f);
+#ifdef PSP
+        sceIoLseek(f, episode1DataLoc, SEEK_SET);
+#else
 		fseek(f, episode1DataLoc, SEEK_SET);
+#endif
 	}
 	else
 	{
 		// episode 4 stores item data in the level file
 		f = dir_fopen_die(data_dir(), levelFile, "rb");
+#ifdef PSP
+        sceIoLseek(f, lvlPos[lvlNum-1], SEEK_SET);
+#else
 		fseek(f, lvlPos[lvlNum-1], SEEK_SET);
+#endif
 	}
 
 	JE_word itemNum[7]; /* [1..7] */
@@ -232,8 +244,12 @@ void JE_loadItemDat(void)
 			fread_u16_die(&enemyDat[i].eenemydie,     1, f);
 		}
 	}
-	
+
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }
 
 void JE_initEpisode(JE_byte newEpisode)

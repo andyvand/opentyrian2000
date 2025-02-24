@@ -39,8 +39,12 @@ Palette colors;
 
 void JE_loadPals(void)
 {
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), "palette.dat", "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), "palette.dat", "rb");
-	
+#endif
+
 	palette_count = (int)(ftell_eof(f) / (256 * 3));
 	assert(palette_count == PALETTE_COUNT);
 
@@ -62,7 +66,11 @@ void JE_loadPals(void)
 		}
 	}
 	
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }
 
 void set_palette(Palette colors, unsigned int first_color, unsigned int last_color)

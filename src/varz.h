@@ -253,7 +253,12 @@ extern JE_byte displayTime;
 
 extern bool play_demo, record_demo, stopped_demo;
 extern Uint8 demo_num;
+
+#ifdef PSP
+extern SceUID demo_file;
+#else
 extern FILE *demo_file;
+#endif
 
 extern Uint8 demo_keys;
 extern Uint16 demo_keys_wait;

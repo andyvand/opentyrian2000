@@ -787,6 +787,275 @@ static bool parse_field(char *buffer, size_t *index, size_t *start, size_t *leng
 	return true;
 }
 
+#ifdef PSP
+bool config_parse(Config *config, SceUID file)
+{
+    assert(config != NULL);
+    assert(file > 0);
+    
+    config_init(config);
+    
+    ConfigSection *section = NULL;
+    ConfigOption *option = NULL;
+    
+    size_t buffer_cap = 128;
+    char *buffer = malloc(buffer_cap * sizeof(char));
+    if (buffer == NULL)
+        config_oom();
+    size_t buffer_end = 1;
+    buffer[buffer_end - 1] = '\0';
+    
+    for (size_t line = 0, next_line = 0; ; line = next_line)
+    {
+        /* find beginning of next line */
+        while (next_line < buffer_end)
+        {
+            char c = buffer[next_line];
+            
+            if (c == '\0' && next_line == buffer_end - 1)
+            {
+                if (line > 0)
+                {
+                    /* shift to front */
+                    memmove(&buffer[0], &buffer[line], buffer_end - line);
+                    buffer_end -= line;
+                    next_line -= line;
+                    line = 0;
+                }
+                else if (buffer_end > 1)
+                {
+                    /* need larger capacity */
+                    buffer_cap *= 2;
+                    char *new_buffer = realloc(buffer, buffer_cap * sizeof(char));
+                    if (new_buffer == NULL)
+                        config_oom();
+                    buffer = new_buffer;
+                }
+
+                size_t read = sceIoRead(file, &buffer[buffer_end - 1], sizeof(char) * (buffer_cap - buffer_end));
+
+                if (read == 0)
+                    break;
+                
+                buffer_end += read;
+                buffer[buffer_end - 1] = '\0';
+            }
+            else
+            {
+                ++next_line;
+                
+                if (c == '\n' || c == '\r')
+                    break;
+            }
+        }
+        
+        /* if at end of file */
+        if (next_line == line)
+            break;
+        
+        size_t i = line;
+        
+        Directive directive = match_directive(buffer, &i);
+        
+        switch (directive)
+        {
+        case INVALID_DIRECTIVE:
+            continue;
+        case SECTION_DIRECTIVE:
+            {
+                size_t type_start;
+                size_t type_length;
+                
+                if (!parse_field(buffer, &i, &type_start, &type_length))
+                    continue;
+                
+                size_t name_start;
+                size_t name_length;
+                
+                bool has_name = parse_field(buffer, &i, &name_start, &name_length);
+                
+                section = config_add_section_len(config,
+                        &buffer[type_start], type_length,
+                        has_name ? &buffer[name_start] : NULL, has_name ? name_length : 0);
+                if (section == NULL)
+                    config_oom();
+                option = NULL;
+            }
+            break;
+        case ITEM_DIRECTIVE:
+        case LIST_DIRECTIVE:
+            {
+                if (section == NULL)
+                    continue;
+                
+                size_t key_start;
+                size_t key_length;
+                
+                if (!parse_field(buffer, &i, &key_start, &key_length))
+                    continue;
+                
+                size_t value_start;
+                size_t value_length;
+                
+                if (!parse_field(buffer, &i, &value_start, &value_length))
+                    continue;
+                
+                if (directive == ITEM_DIRECTIVE)
+                {
+                    option = config_set_option_len(section,
+                            &buffer[key_start], key_length,
+                            &buffer[value_start], value_length);
+                }
+                else
+                {
+                    if (option == NULL || !string_equal_len(&option->key, &buffer[key_start], key_length))
+                        option = config_get_or_set_option_len(section,
+                                &buffer[key_start], key_length,
+                                NULL, 0);
+                    if (option != NULL)
+                        option = config_add_value_len(option,
+                                &buffer[value_start], value_length);
+                }
+                if (option == NULL)
+                    config_oom();
+            }
+            break;
+        }
+        
+        assert(i <= next_line);
+    }
+    
+    free(buffer);
+    
+    return config;
+}
+
+/* config writer */
+
+static void write_field(const ConfigString *field, SceUID file)
+{
+    sceIoWrite(file, "\'", 1);
+    
+    char buffer[128];
+    size_t o = 0;
+    
+    for (const char *ci = config_string_to_cstr(field); *ci != '\0'; ++ci)
+    {
+        char c = *ci;
+        
+        size_t l;
+        switch (c)
+        {
+            case '\t':
+            case '\n':
+            case '\r':
+            case '\'':
+            case '\\':
+                l = 2;
+                break;
+            default:
+                l = (c >= ' ' && c <= '~') ? 1 : 4;
+                break;
+        }
+        
+        if (o + l > COUNTOF(buffer))
+        {
+            sceIoWrite(file, buffer, sizeof(*buffer) * o);
+            o = 0;
+        }
+        
+        switch (l)
+        {
+            case 1:
+                buffer[o++] = c;
+                break;
+            case 2:
+                switch (c)
+                {
+                    case '\t':
+                        buffer[o++] = '\\';
+                        buffer[o++] = 't';
+                        break;
+                    case '\n':
+                        buffer[o++] = '\\';
+                        buffer[o++] = 'n';
+                        break;
+                    case '\r':
+                        buffer[o++] = '\\';
+                        buffer[o++] = 'r';
+                        break;
+                    case '\'':
+                    case '\\':
+                        buffer[o++] = '\\';
+                        buffer[o++] = c;
+                        break;
+                }
+                break;
+            case 4:
+                buffer[o++] = '\\';
+                buffer[o++] = 'x';
+                char n = (c >> 4) & 0x0f;
+                buffer[o++] = (n < 10 ? '0' : ('a' - 10)) + n;
+                n = c & 0x0f;
+                buffer[o++] = (n < 10 ? '0' : ('a' - 10)) + n;
+                break;
+        }
+    }
+    
+    if (o > 0)
+        sceIoWrite(file, buffer, sizeof(*buffer) * o);
+    
+    sceIoWrite(file, "\'", 1);
+}
+
+void config_write(const Config *config, SceUID file)
+{
+    assert(config != NULL);
+    assert(file > 0);
+    
+    for (unsigned int s = 0; s < config->sections_count; ++s)
+    {
+        ConfigSection *section = &config->sections[s];
+        
+        sceIoWrite(file, "section ", 8);
+        write_field(&section->type, file);
+        if (config_string_to_cstr(&section->name) != NULL)
+        {
+            sceIoWrite(file, " ", 1);
+            write_field(&section->name, file);
+        }
+        sceIoWrite(file, "\n", 1);
+        
+        for (unsigned int o = 0; o < section->options_count; ++o)
+        {
+            ConfigOption *option = &section->options[o];
+            
+            if (option->values_count == 0 && config_string_to_cstr(&option->v.value) != NULL)
+            {
+                sceIoWrite(file, "\titem ", 6);
+                write_field(&option->key, file);
+                sceIoWrite(file, " ", 1);
+                write_field(&option->v.value, file);
+                sceIoWrite(file, "\n", 1);
+            }
+            else
+            {
+                ConfigString *values_end = &option->v.values[option->values_count];
+                for (ConfigString *value = &option->v.values[0]; value < values_end; ++value)
+                {
+                    sceIoWrite(file, "\tlist ", 6);
+                    write_field(&option->key, file);
+                    sceIoWrite(file, " ", 1);
+                    write_field(value, file);
+                    sceIoWrite(file, "\n", 1);
+                }
+            }
+        }
+        
+        sceIoWrite(file, "\n", 1);
+    }
+}
+#else
 bool config_parse(Config *config, FILE *file)
 {
 	assert(config != NULL);
@@ -1054,3 +1323,4 @@ void config_write(const Config *config, FILE *file)
 		fputc('\n', file);
 	}
 }
+#endif

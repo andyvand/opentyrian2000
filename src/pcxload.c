@@ -39,10 +39,14 @@
 void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 {
 	Uint8 *s = VGAScreen->pixels; /* 8-bit specific */
-	
-	FILE *f = dir_fopen_die(data_dir(), file, "rb");
-	
+
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), file, "rb");
+    sceIoLseek(f, -769, SEEK_END);
+#else
+    FILE *f = dir_fopen_die(data_dir(), file, "rb");
 	fseek(f, -769, SEEK_END);
+#endif
 
 	Uint8 temp;
 	fread_u8_die(&temp, 1, f);
@@ -58,8 +62,12 @@ void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 		}
 	}
 	
+#ifdef PSP
+    sceIoLseek(f, 128, SEEK_SET);
+#else
 	fseek(f, 128, SEEK_SET);
-	
+#endif
+
 	for (int i = 0; i < 320 * 200; )
 	{
 		Uint8 p;
@@ -83,5 +91,9 @@ void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 		}
 	}
 	
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }

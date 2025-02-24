@@ -28,13 +28,21 @@ JE_word lvlNum;
 
 void JE_analyzeLevel(void)
 {
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), levelFile, "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), levelFile, "rb");
-	
+#endif
+
 	fread_u16_die(&lvlNum, 1, f);
 
 	fread_s32_die(lvlPos, lvlNum, f);
 	
 	lvlPos[lvlNum] = (JE_longint)ftell_eof(f);
-	
+
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }

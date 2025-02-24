@@ -76,9 +76,15 @@ void JE_decryptShips(void)
 
 void JE_loadExtraShapes(void)
 {
+#ifdef PSP
+    SceUID f = dir_fopen(get_user_directory(), "newsh$.shp", "rb");
+    
+    if (f > 0)
+#else
 	FILE *f = dir_fopen(get_user_directory(), "newsh$.shp", "rb");
 	
 	if (f)
+#endif
 	{
 		extraAvail = true;
 		extraShapeSize = ftell_eof(f) - sizeof(extraShips);
@@ -86,6 +92,10 @@ void JE_loadExtraShapes(void)
 		fread_die(extraShapes, extraShapeSize, 1, f);
 		fread_die(extraShips, sizeof(extraShips), 1, f);
 		JE_decryptShips();
+#ifdef PSP
+        sceIoClose(f);
+#else
 		fclose(f);
+#endif
 	}
 }

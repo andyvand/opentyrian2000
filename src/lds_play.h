@@ -23,10 +23,18 @@
 
 #include <stdio.h>
 
+#ifdef PSP
+#include <pspiofilemgr.h>
+#endif
+
 extern bool playing, songlooped;
 
 int lds_update(void);
+#ifdef PSP
+bool lds_load(SceUID f, unsigned int music_offset, unsigned int music_size);
+#else
 bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size);
+#endif
 void lds_free(void);
 void lds_rewind(void);
 void lds_fade(Uint8 speed);

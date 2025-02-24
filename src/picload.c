@@ -42,7 +42,11 @@ void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 {
 	PCXnumber--;
 
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), "tyrian.pic", "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), "tyrian.pic", "rb");
+#endif
 
 	static bool first = true;
 	if (first)
@@ -59,9 +63,19 @@ void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 	unsigned int size = pcxpos[PCXnumber + 1] - pcxpos[PCXnumber];
 	Uint8 *buffer = malloc(size);
 
+#ifdef PSP
+    sceIoLseek(f, pcxpos[PCXnumber], SEEK_SET);
+#else
 	fseek(f, pcxpos[PCXnumber], SEEK_SET);
+#endif
+
 	fread_u8_die(buffer, size, f);
-	fclose(f);
+
+#ifdef PSP
+    sceIoClose(f);
+#else
+    fclose(f);
+#endif
 
 	Uint8 *p = buffer;
 	Uint8 *s; /* screen pointer, 8-bit specific */

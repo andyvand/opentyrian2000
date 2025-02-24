@@ -59,14 +59,26 @@ void load_sprites_file(unsigned int table, const char *filename)
 {
 	free_sprites(table);
 	
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), filename, "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), filename, "rb");
-	
+#endif
+
 	load_sprites(table, f);
-	
+
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }
 
+#ifdef PSP
+void load_sprites(unsigned int table, SceUID f)
+#else
 void load_sprites(unsigned int table, FILE *f)
+#endif
 {
 	free_sprites(table);
 	
@@ -493,17 +505,29 @@ void JE_loadCompShapes(Sprite2_array *sprite2s, char s)
 
 	char buffer[20];
 	snprintf(buffer, sizeof(buffer), "newsh%c.shp", tolower((unsigned char)s));
-	
+
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), buffer, "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), buffer, "rb");
+#endif
 	
 	sprite2s->size = ftell_eof(f);
 	
 	JE_loadCompShapesB(sprite2s, f);
 	
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }
 
+#ifdef PSP
+void JE_loadCompShapesB(Sprite2_array *sprite2s, SceUID f)
+#else
 void JE_loadCompShapesB(Sprite2_array *sprite2s, FILE *f)
+#endif
 {
 	assert(sprite2s->data == NULL);
 
@@ -817,8 +841,12 @@ void JE_loadMainShapeTables(const char *shpfile)
 {
 	enum { SHP_NUM = 13 };
 	
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), shpfile, "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), shpfile, "rb");
-	
+#endif
+
 	JE_word shpNumb;
 	JE_longint shpPos[SHP_NUM + 1]; // +1 for storing file length
 	
@@ -827,15 +855,26 @@ void JE_loadMainShapeTables(const char *shpfile)
 	
 	fread_s32_die(shpPos, shpNumb, f);
 	
+#ifdef PSP
+    int sPos = sceIoLseek(f, 0, SEEK_END);
+    for (unsigned int i = shpNumb; i < COUNTOF(shpPos); ++i)
+        shpPos[i] = (JE_longint)sPos;
+#else
 	fseek(f, 0, SEEK_END);
 	for (unsigned int i = shpNumb; i < COUNTOF(shpPos); ++i)
 		shpPos[i] = (JE_longint)ftell(f);
-	
+#endif
+
 	int i;
 	// fonts, interface, option sprites
 	for (i = 0; i < 7; i++)
 	{
+#ifdef PSP
+        sceIoLseek(f, shpPos[i], SEEK_SET);
+#else
 		fseek(f, shpPos[i], SEEK_SET);
+#endif
+
 		load_sprites(i, f);
 	}
 	
@@ -868,7 +907,11 @@ void JE_loadMainShapeTables(const char *shpfile)
 	spriteSheetT2000.size = shpPos[i + 1] - shpPos[i];
 	JE_loadCompShapesB(&spriteSheetT2000, f);
 	
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 }
 
 void free_main_shape_tables(void)

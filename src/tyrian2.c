@@ -683,8 +683,13 @@ start_level:
 	{
 		if (demo_file)
 		{
+#ifdef PSP
+            sceIoClose(demo_file);
+            demo_file = 0;
+#else
 			fclose(demo_file);
-			demo_file = NULL;
+            demo_file = NULL;
+#endif
 		}
 
 		if (play_demo)
@@ -2489,7 +2494,11 @@ new_game:
 	{
 		do
 		{
+#ifdef PSP
+            SceUID ep_f = dir_fopen_die(data_dir(), episode_file, "rb");
+#else
 			FILE *ep_f = dir_fopen_die(data_dir(), episode_file, "rb");
+#endif
 
 			jumpSection = false;
 			loadLevelOk = false;
@@ -2512,7 +2521,11 @@ new_game:
 			{
 				if (gameLoaded)
 				{
+#ifdef PSP
+                    sceIoClose(ep_f);
+#else
 					fclose(ep_f);
+#endif
 
 					if (mainLevel == 0)  // if quit itemscreen
 						return;          // back to title screen
@@ -3083,8 +3096,11 @@ new_game:
 
 			} while (!(loadLevelOk || jumpSection));
 
+#ifdef PSP
+            sceIoClose(ep_f);
+#else
 			fclose(ep_f);
-
+#endif
 		} while (!loadLevelOk);
 	}
 
@@ -3093,8 +3109,13 @@ new_game:
 	else
 		fade_black(50);
 
+#ifdef PSP
+    SceUID level_f = dir_fopen_die(data_dir(), levelFile, "rb");
+    sceIoLseek(level_f, lvlPos[(lvlFileNum-1) * 2], SEEK_SET);
+#else
 	FILE *level_f = dir_fopen_die(data_dir(), levelFile, "rb");
 	fseek(level_f, lvlPos[(lvlFileNum-1) * 2], SEEK_SET);
+#endif
 
 	JE_char char_mapFile;
 	JE_char char_shapeFile;
@@ -3137,7 +3158,11 @@ new_game:
 
 	/* Read Shapes.DAT */
 	snprintf(tempStr, sizeof(tempStr), "shapes%c.dat", tolower((unsigned char)char_shapeFile));
+#ifdef PSP
+    SceUID shpFile = dir_fopen_die(data_dir(), tempStr, "rb");
+#else
 	FILE *shpFile = dir_fopen_die(data_dir(), tempStr, "rb");
+#endif
 
 	for (int z = 0; z < 600; z++)
 	{
@@ -3209,7 +3234,11 @@ new_game:
 		}
 	}
 
+#ifdef PSP
+    sceIoClose(shpFile);
+#else
 	fclose(shpFile);
+#endif
 
 	fread_u8_die(mapBuf, 14 * 300, level_f);
 	bufLoc = 0;              /* MAP NUMBER 1 */
@@ -3244,7 +3273,11 @@ new_game:
 		}
 	}
 
+#ifdef PSP
+    sceIoClose(level_f);
+#else
 	fclose(level_f);
+#endif
 
 	/* Note: The map data is automatically calculated with the correct mapsh
 	value and then the pointer is calculated using the formula (MAPSH-1)*168.

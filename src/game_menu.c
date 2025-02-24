@@ -44,6 +44,10 @@
 
 #include <assert.h>
 
+#ifdef PSP
+#include <pspiofilemgr.h>
+#endif
+
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 #define snprintf sprintf_s
 #endif
@@ -1774,7 +1778,11 @@ void load_cubes(void)
 
 bool load_cube(int cube_slot, int cube_index)
 {
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), cube_file, "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), cube_file, "rb");
+#endif
 
 	char buf[256];
 
@@ -1874,7 +1882,11 @@ bool load_cube(int cube_slot, int cube_index)
 		}
 	}
 
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 
 	return true;
 }
@@ -2674,7 +2686,7 @@ void JE_drawScore(void)
 	char cl[24];
 	if (curMenu == MENU_UPGRADE_SUB)
 	{
-		snprintf(cl, sizeof(cl), "%d", JE_cashLeft());
+		snprintf(cl, sizeof(cl), "%d", (int)JE_cashLeft());
 		JE_textShade(VGAScreen, 65, 173, cl, 1, 6, DARKEN);
 	}
 }

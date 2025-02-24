@@ -2154,7 +2154,7 @@ void JE_highScoreCheck(void)
 						JE_textShade(VGAScreen, 60, 55, miscText[53], 11, 4, FULL_SHADE);
 					}
 
-					snprintf(buffer, sizeof(buffer), "%s %d", miscText[37], temp_score);
+					snprintf(buffer, sizeof(buffer), "%s %d", miscText[37], (int)temp_score);
 					JE_textShade(VGAScreen, 70, 70, buffer, 11, 4, FULL_SHADE);
 
 					do
@@ -2267,7 +2267,7 @@ void JE_highScoreCheck(void)
 				{
 					if (i != slot)
 					{
-						snprintf(buffer, sizeof(buffer), "~#%d:~  %d", i+1, t2kHighScores[table][i].score);
+						snprintf(buffer, sizeof(buffer), "~#%d:~  %d", i+1, (int)t2kHighScores[table][i].score);
 						JE_textShade(VGAScreen,  20, (i * 12) + 65, buffer, 15, 0, FULL_SHADE);
 						JE_textShade(VGAScreen, 150, (i * 12) + 65, t2kHighScores[table][i].playerName, 15, 2, FULL_SHADE);
 					}
@@ -2277,7 +2277,7 @@ void JE_highScoreCheck(void)
 
 				fade_palette(colors, 15, 0, 255);
 
-				snprintf(buffer, sizeof(buffer), "~#%d:~  %d", slot+1, t2kHighScores[table][slot].score);
+				snprintf(buffer, sizeof(buffer), "~#%d:~  %d", slot+1, (int)t2kHighScores[table][slot].score);
 
 				frameCountMax = 6;
 				textGlowFont = TINY_FONT;
@@ -2438,7 +2438,15 @@ bool replay_demo_keys(void)
 		fread_u8(temp2, 2, demo_file);
 		demo_keys_wait = (temp2[0] << 8) | temp2[1];
 
+#ifdef PSP
+        int cur_loc = sceIoLseek(demo_file, 0, SEEK_CUR);
+        int end_loc = sceIoLseek(demo_file, 0, SEEK_END);
+        sceIoLseek(demo_file, cur_loc, SEEK_SET);
+
+        if (cur_loc == end_loc)
+#else
 		if (feof(demo_file))
+#endif
 		{
 			// no more keys
 			return false;
@@ -2577,12 +2585,20 @@ void JE_playCredits(void)
 	play_song(8);
 
 	// load credits text
+#ifdef PSP
+    SceUID f = dir_fopen_die(data_dir(), "tyrian.cdt", "rb");
+#else
 	FILE *f = dir_fopen_die(data_dir(), "tyrian.cdt", "rb");
+#endif
 	for (lines = 0; lines < lines_max; ++lines)
 	{
 		read_encrypted_pascal_string(credstr[lines], sizeof(credstr[lines]), f);
 	}
+#ifdef PSP
+    sceIoClose(f);
+#else
 	fclose(f);
+#endif
 
 	memcpy(colors, palettes[6-1], sizeof(colors));
 	JE_clr256(VGAScreen);

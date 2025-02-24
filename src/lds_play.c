@@ -96,11 +96,19 @@ static Uint16 numpatch, numposi, mainvolume;
 
 bool playing, songlooped;
 
+#ifdef PSP
+bool lds_load(SceUID f, unsigned int music_offset, unsigned int music_size)
+#else
 bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
+#endif
 {
 	SoundBank *sb;
 	
+#ifdef PSP
+    sceIoLseek(f, music_offset, SEEK_SET);
+#else
 	fseek(f, music_offset, SEEK_SET);
+#endif
 
 	/* load header */
 	fread_u8_die(&mode, 1, f);
@@ -180,9 +188,16 @@ bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 	}
 	
 	/* load patterns */
+#ifdef PSP
+    sceIoLseek(f, 2, SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
+
+    unsigned int remaining = (unsigned int)(music_size - (sceIoLseek(f, 0, SEEK_CUR) - music_offset));
+#else
 	fseek(f, 2, SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
 	
 	unsigned int remaining = (unsigned int)(music_size - (ftell(f) - music_offset));
+#endif
+
 	size_t numpatterns = remaining / 2;
 
 	free(patterns);
