@@ -834,7 +834,7 @@ const char *get_user_directory(void)
 #elif defined(VITA)
         snprintf(user_dir, sizeof(user_dir), "ux0:data/opentyrian2000");
 #elif defined(PSP)
-        snprintf(user_dir, sizeof(user_dir), ".");
+        snprintf(user_dir, sizeof(user_dir), "ms0:/PSP/GAME/opentyrian2000/data");
 #elif defined(__APPLE__) && defined(__MACH__)
         snprintf(user_dir, sizeof(user_dir), "%s", getHomeDir());
 #else
