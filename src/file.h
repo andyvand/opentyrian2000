@@ -209,7 +209,7 @@ static inline void fread_bool_die(bool *buffer, FILE *stream)
 // 8-bit fread
 static inline size_t fread_u8(Uint8 *buffer, size_t count, FILE *stream)
 {
-	return sceIoRead(buffer, sizeof(Uint8) * count, stream);
+	return fread(buffer, sizeof(Uint8), count, stream);
 }
 
 // 8-bit fread that dies if read fails

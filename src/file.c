@@ -64,7 +64,7 @@ const char *data_dir(void)
 #if defined(VITA)
     return "app0:data/";
 #elif defined(PSP)
-    return "ms0:/PSP/GAME/opentyrian2000/data";
+    return "data";
 #elif defined(__APPLE__) & defined(__MACH__)
     const char *const dirs[] =
     {
