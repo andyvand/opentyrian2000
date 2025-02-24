@@ -1,3 +1,5 @@
+#ifdef VITA
+
 #include <string.h>
 #include <stdbool.h>
 #include <psp2/types.h>
@@ -177,3 +179,5 @@ char *keyboard_vita_get(char *title, int maxLen) {
 	
 	return NULL;
 }
+
+#endif

@@ -1,3 +1,5 @@
+#ifdef VITA
+
 /*
  * OpenTyrian: A modern cross-platform port of Tyrian
  * Copyright (C) 2007-2009  The OpenTyrian Development Team
@@ -307,3 +309,5 @@ void scaleWindowDistanceToScreen(Sint32 *const inout_x, Sint32 *const inout_y)
     *inout_x = (2 * *inout_x + 1) * VGAScreen->w / (2 * last_output_rect.w);
     *inout_y = (2 * *inout_y + 1) * VGAScreen->h / (2 * last_output_rect.h);
 }
+
+#endif
