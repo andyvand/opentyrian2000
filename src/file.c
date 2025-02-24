@@ -57,8 +57,10 @@ const char *custom_data_dir = NULL;
 // finds the Tyrian data directory
 const char *data_dir(void)
 {
-#ifdef VITA
+#if defined(VITA)
     return "app0:data/";
+#elif defined(PSP)
+    return "data";
 #elif defined(__APPLE__) & defined(__MACH__)
     const char *const dirs[] =
     {
@@ -93,7 +95,7 @@ const char *data_dir(void)
 	};
 #endif
 
-#ifndef VITA
+#if !defined(VITA) && !defined(PSP)
 	static const char *dir = NULL;
 
 	if (dir != NULL)

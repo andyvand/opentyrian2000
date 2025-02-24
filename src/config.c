@@ -243,8 +243,8 @@ bool load_opentyrian_config(void)
 	memcpy(mouseSettings, defaultMouseSettings, sizeof(mouseSettings));
 	
 	Config *config = &opentyrian_config;
-	
 	FILE *file = dir_fopen_warn(get_user_directory(), "opentyrian.cfg", "r");
+
 	if (file == NULL)
 		return false;
 
@@ -386,7 +386,7 @@ bool save_opentyrian_config(void)
 
 	config_set_string_option(section, "music_device", music_device_names[music_device]);
 	config_set_string_option(section, "soundfont", soundfont);
-	
+
 	FILE *file = dir_fopen(get_user_directory(), "opentyrian.cfg", "w");
 	if (file == NULL)
 		return false;
@@ -803,11 +803,13 @@ const char *get_user_directory(void)
 	
 	if (strlen(user_dir) == 0)
 	{
-#ifndef TARGET_WIN32
+#if !defined(TARGET_WIN32)
 #if defined(ANDROID) || defined(__ANDROID__)
 		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
 #elif defined(VITA)
         snprintf(user_dir, sizeof(user_dir), "ux0:data/opentyrian2000");
+#elif defined(PSP)
+        snprintf(user_dir, sizeof(user_dir), "data");
 #elif defined(__APPLE__) && defined(__MACH__)
         snprintf(user_dir, sizeof(user_dir), "%s", getHomeDir());
 #else
@@ -1205,7 +1207,7 @@ void JE_saveConfiguration(void)
 #else
 	mkdir(get_user_directory());
 #endif
-	
+
 	f = dir_fopen_warn(get_user_directory(), "tyrian.sav", "wb");
 	if (f != NULL)
 	{
@@ -1265,7 +1267,7 @@ void JE_saveConfiguration(void)
 	}
 	
 	JE_decryptSaveTemp();
-	
+
 	f = dir_fopen_warn(get_user_directory(), "tyrian.cfg", "wb");
 	if (f != NULL)
 	{

@@ -3,7 +3,6 @@ TARGET = opentyrian2000
 PSPDEV = /opt/pspdev
 PSPSDK = $(PSPDEV)/psp/sdk/
 PSPBIN = $(PSPDEV)/bin
-SDL_CONFIG = echo
 PSP_EBOOT_PIC1 = PIC1.png
 PSP_EBOOT_ICON = ICON0.png
 
@@ -14,16 +13,16 @@ OBJS = src/animlib.o src/arg_parse.o src/backgrnd.o src/config.o src/config_file
 
 
 INCDIR = 
-CFLAGS = -O3  -G0 -Wall -g -I$(PSPDEV)/psp/include -DPSP -DPSP8 -DWITH_SDL3=1 -std=c99
-CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -fsingle-precision-constant -mno-check-zero-division -ffast-math -funsafe-math-optimizations -fpeel-loops
+CFLAGS = -O3  -G0 -Wall -g -I$(PSPDEV)/psp/include -DPSP=1 -DPSP8=1 -DWITH_SDL3=1
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =
 LDFLAGS =
 
-#LIBS = -lstdc++  -lSDL_mixer  -lvorbisidec   -lSDL_image -lpng -lz -ljpeg  -lSDL_gfx -lm -L/usr/local/pspdev/psp/lib -lSDL  -lGL -lpspvfpu -L/usr/local/pspdev/psp/sdk/lib -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpsputility -lpspkernel -lpspnet_inet -lpspirkeyb -lpsppower
+LIBS = $(shell pkg-config $(PSPDEV)/psp/lib/pkgconfig/sdl3.pc --libs)
 
-LIBS = -lSDL3 -lstdc++ -lvorbisidec -lpng -lz -ljpeg -lGL -lSDL_gfx -lm -lm -lGL -lpspvfpu -Lc:/games/psp/pspsdk/psp/sdk/lib -lpspirkeyb -lpsppower -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpspgum -lpsputility -lpspkernel -lpspnet_inet -lGL  -lpsprtc   -lpspvfpu  -lpsppower -lpspvram -lpspvramalloc
+#LIBS = -lSDL3 -lstdc++ -lvorbisidec -lpng -lz -ljpeg -lSDL_gfx -lm -lm -lGL -lpspvfpu -Lc:/games/psp/pspsdk/psp/sdk/lib -lpspirkeyb -lpsppower -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpspgum -lpsputility -lpspkernel -lpspnet_inet -lGL -lpsprtc   -lpspvfpu  -lpsppower -lpspvram -lpspvramalloc
+
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = OpenTyrian2000 PSP+
 

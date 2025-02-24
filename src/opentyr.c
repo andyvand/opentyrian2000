@@ -87,7 +87,7 @@
 #include <psp2/kernel/processmgr.h>
 #endif
 
-#if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA)
+#if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA) || defined(PSP)
 #ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
 #endif
