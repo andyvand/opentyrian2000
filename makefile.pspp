@@ -25,6 +25,6 @@ LDFLAGS =
 
 LIBS = -lSDL3 -lstdc++ -lvorbisidec -lpng -lz -ljpeg -lGL -lSDL_gfx -lm -lm -lGL -lpspvfpu -Lc:/games/psp/pspsdk/psp/sdk/lib -lpspirkeyb -lpsppower -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpspgum -lpsputility -lpspkernel -lpspnet_inet -lGL  -lpsprtc   -lpspvfpu  -lpsppower -lpspvram -lpspvramalloc
 EXTRA_TARGETS = EBOOT.PBP
-PSP_EBOOT_TITLE = OpenTyrian PSP+
+PSP_EBOOT_TITLE = OpenTyrian2000 PSP+
 
 include $(PSPSDK)/lib/build.mak 
