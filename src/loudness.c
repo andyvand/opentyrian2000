@@ -178,6 +178,8 @@ bool init_midi(SDL_AudioSpec * got){
 #endif
 #ifdef WITH_SDL3
         Mix_SetPostMix(audioMixCallback, NULL);
+        Mix_AllocateChannels(2);
+        Mix_ReserveChannels(2);
 #endif
 	}
 	return true;
