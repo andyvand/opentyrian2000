@@ -13,7 +13,7 @@ OBJS = src/animlib.o src/arg_parse.o src/backgrnd.o src/config.o src/config_file
 
 
 INCDIR = 
-CFLAGS = -O3  -G0 -Wall -g -I$(PSPDEV)/psp/include -DPSP=1 -DPSP8=1 -DWITH_SDL3=1
+CFLAGS = -Os -g0 -Wall -I$(PSPDEV)/psp/include -DPSP=1 -DPSP8=1 -DWITH_SDL3=1 -std=c99
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =
