@@ -377,7 +377,7 @@ bool save_opentyrian_config(void)
 	}
 
 #ifndef TARGET_WIN32
-#ifdef VITA
+#if defined(VITA) || defined(PSP)
     sceIoMkdir(get_user_directory(), 0777);
 #else
 	mkdir(get_user_directory(), 0700);
