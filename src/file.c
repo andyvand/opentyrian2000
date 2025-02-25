@@ -61,10 +61,22 @@ const char *custom_data_dir = NULL;
 // finds the Tyrian data directory
 const char *data_dir(void)
 {
+    static const char *dir = NULL;
+
 #if defined(VITA)
-    return "app0:data/";
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        "app0:data/",
+        ".",
+    };
 #elif defined(PSP)
-    return "ms0:\\PSP\\GAME\\opentyrian2000\\data";
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        "ms0:/PSP/GAME/opentyrian2000/data",
+        ".",
+    };
 #elif defined(__APPLE__) & defined(__MACH__)
     const char *const dirs[] =
     {
@@ -99,9 +111,6 @@ const char *data_dir(void)
 	};
 #endif
 
-#if !defined(VITA) && !defined(PSP)
-	static const char *dir = NULL;
-
 	if (dir != NULL)
 		return dir;
 
@@ -110,10 +119,17 @@ const char *data_dir(void)
 		if (dirs[i] == NULL)
 			continue;
 
+#ifdef PSP
+        SceUID f = dir_fopen(dirs[i], "tyrian1.lvl", "rb");
+        if (f > 0)
+        {
+            sceIoClose(f);
+#else
 		FILE *f = dir_fopen(dirs[i], "tyrian1.lvl", "rb");
 		if (f)
 		{
 			fclose(f);
+#endif
 
 			dir = dirs[i];
 			break;
@@ -124,7 +140,6 @@ const char *data_dir(void)
 		dir = "";
 
 	return dir;
-#endif
 }
 
 // prepend directory and fopen
