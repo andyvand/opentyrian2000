@@ -64,7 +64,7 @@ const char *data_dir(void)
 #if defined(VITA)
     return "app0:data/";
 #elif defined(PSP)
-    return "ms0:/PSP/GAME/opentyrian2000/data";
+    return "ms0:\\PSP\\GAME\\opentyrian2000\\data";
 #elif defined(__APPLE__) & defined(__MACH__)
     const char *const dirs[] =
     {
@@ -134,7 +134,7 @@ SceUID dir_fopen(const char *dir, const char *file, const char *mode)
     SceUID rv;
     int rm = 0;
     char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
-    snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s/%s", dir, file);
+    snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s\\%s", dir, file);
 
     for (int i = 0; i < strlen(mode); i++)
     {
