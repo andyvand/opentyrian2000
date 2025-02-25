@@ -75,6 +75,8 @@ const char *data_dir(void)
     {
         custom_data_dir,
         "ms0:/PSP/GAME/opentyrian2000/data",
+        "umd0:/data",
+        "/data",
         ".",
     };
 #elif defined(__APPLE__) & defined(__MACH__)
