@@ -149,7 +149,7 @@ SceUID dir_fopen(const char *dir, const char *file, const char *mode)
     SceUID rv;
     int rm = 0;
     char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
-    snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s\\%s", dir, file);
+    snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s/%s", dir, file);
 
     for (int i = 0; i < strlen(mode); i++)
     {
