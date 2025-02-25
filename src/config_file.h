@@ -31,10 +31,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef PSP
-#include <pspiofilemgr.h>
-#endif
-
 #ifndef COMPILE_TIME_ASSERT
 /*!
  * \brief Cause compile error if compile-time computable condition fails.
@@ -215,25 +211,6 @@ extern void config_init(Config *config);
  */
 extern void config_deinit(Config *config);
 
-#ifdef PSP
-/*!
- * \brief Parse a configuration from a file.
- *
- * \param[in] config the uninitialized configuration
- * \param[in] file the file handle
- * \return whether parsing succeeded
- */
-extern bool config_parse(Config *config, SceUID file);
-
-/*!
- * \brief Write a configuration to a file.
- *
- * \param[in] config the configuration
- * \param[in] file the file handle
- * \return void
- */
-extern void config_write(const Config *config, SceUID file);
-#else
 /*!
  * \brief Parse a configuration from a file.
  *
@@ -251,7 +228,6 @@ extern bool config_parse(Config *config, FILE *file);
  * \return void
  */
 extern void config_write(const Config *config, FILE *file);
-#endif
 
 /* config section accessors/manipulators -- by type, name */
 

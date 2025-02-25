@@ -43,6 +43,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef PSP
+#include <pspiofilemgr.h>
+#endif
+
 #ifdef VITA
 #include <psp2/io/stat.h>
 #endif
@@ -243,24 +247,14 @@ bool load_opentyrian_config(void)
 	memcpy(mouseSettings, defaultMouseSettings, sizeof(mouseSettings));
 	
 	Config *config = &opentyrian_config;
-#ifdef PSP
-    SceUID file = dir_fopen_warn(get_user_directory(), "opentyrian.cfg", "r");
-
-    if (file < 0)
-#else
 	FILE *file = dir_fopen_warn(get_user_directory(), "opentyrian.cfg", "r");
 
 	if (file == NULL)
-#endif
 		return false;
 
 	if (!config_parse(config, file))
 	{
-#ifdef PSP
-        sceIoClose(file);
-#else
 		fclose(file);
-#endif
 		
 		return false;
 	}
@@ -339,11 +333,7 @@ bool load_opentyrian_config(void)
 		
 	}
 
-#ifdef PSP
-    sceIoClose(file);
-#else
 	fclose(file);
-#endif
 
 	return true;
 }
@@ -401,27 +391,16 @@ bool save_opentyrian_config(void)
 	config_set_string_option(section, "music_device", music_device_names[music_device]);
 	config_set_string_option(section, "soundfont", soundfont);
 
-#ifdef PSP
-    SceUID file = dir_fopen(get_user_directory(), "opentyrian.cfg", "w");
-    if (file < 0)
-#else
 	FILE *file = dir_fopen(get_user_directory(), "opentyrian.cfg", "w");
 	if (file == NULL)
-#endif
 		return false;
 
 	config_write(config, file);
 	
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
-#ifndef PSP
 	fsync(fileno(file));
 #endif
-#endif
-#ifdef PSP
-    sceIoClose(file);
-#else
 	fclose(file);
-#endif
 	
 	return true;
 }
@@ -871,21 +850,13 @@ bool configuration_loaded = false;
 
 void JE_loadConfiguration(void)
 {
-#ifdef PSP
-    SceUID fi;
-#else
 	FILE *fi;
-#endif
 	int z;
 	JE_byte *p;
 	int y;
 	
 	fi = dir_fopen_warn(get_user_directory(), "tyrian.cfg", "rb");
-#ifdef PSP
-    if (fi > 0 && ftell_eof(fi) == 28)
-#else
 	if (fi && ftell_eof(fi) == 28)
-#endif
 	{
 		background2 = 0;
 		fread_bool_die(&background2, fi);
@@ -911,11 +882,7 @@ void JE_loadConfiguration(void)
 
 		fread_u8_die(dosKeySettings, 8, fi);
 		
-#ifdef PSP
-        sceIoClose(fi);
-#else
 		fclose(fi);
-#endif
 	}
 	else
 	{
@@ -944,12 +911,7 @@ void JE_loadConfiguration(void)
 	fi = dir_fopen_warn(get_user_directory(), "tyrian.sav", "rb");
 	if (fi)
 	{
-#ifdef PSP
-        sceIoLseek(fi, 0, PSP_SEEK_SET);
-#else
 		fseek(fi, 0, SEEK_SET);
-#endif
-
 		fread_die(saveTemp, 1, sizeof(saveTemp), fi);
 		JE_decryptSaveTemp();
 
@@ -1074,12 +1036,7 @@ void JE_loadConfiguration(void)
 				t2kHighScores[z][y].score = SDL_SwapLE32(t2kHighScores[z][y].score);
 #endif
 
-#ifdef PSP
-                sceIoLseek(fi, 4, PSP_SEEK_CUR);
-#else
 				fseek(fi, 4, SEEK_CUR); // Unknown long int that seems to have no effect
-#endif
-
 				fread_u8_die(&len, 1, fi);
 
 				fread_die(t2kHighScores[z][y].playerName, 1, 29, fi);
@@ -1088,11 +1045,7 @@ void JE_loadConfiguration(void)
 			}
 		}
 
-#ifdef PSP
-        sceIoClose(fi);
-#else
 		fclose(fi);
-#endif
 	}
 	else
 	{
@@ -1156,11 +1109,7 @@ void JE_loadConfiguration(void)
 
 void JE_saveConfiguration(void)
 {
-#ifdef PSP
-    SceUID f;
-#else
 	FILE *f;
-#endif
 	JE_byte *p;
 	int z;
 
@@ -1264,11 +1213,7 @@ void JE_saveConfiguration(void)
 
 	f = dir_fopen_warn(get_user_directory(), "tyrian.sav", "wb");
     
-#ifdef PSP
-    if (f > 0)
-#else
 	if (f != NULL)
-#endif
 	{
 		fwrite_die(saveTemp, 1, sizeof(saveTemp), f);
 
@@ -1320,25 +1265,15 @@ void JE_saveConfiguration(void)
 		}
 
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
-#ifndef PSP
 		fsync(fileno(f));
 #endif
-#endif
-#ifdef PSP
-        sceIoClose(f);
-#else
 		fclose(f);
-#endif
 	}
 	
 	JE_decryptSaveTemp();
 
 	f = dir_fopen_warn(get_user_directory(), "tyrian.cfg", "wb");
-#ifdef PSP
-    if (f > 0)
-#else
 	if (f != NULL)
-#endif
 	{
 		fwrite_bool_die(&background2, f);
 		fwrite_u8_die(&gameSpeed, 1, f);
@@ -1362,15 +1297,9 @@ void JE_saveConfiguration(void)
 		fwrite_u8_die(dosKeySettings, 8, f);
 		
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
-#ifndef PSP
 		fsync(fileno(f));
 #endif
-#endif
-#ifdef PSP
-        sceIoClose(f);
-#else
 		fclose(f);
-#endif
 	}
 	
 	save_opentyrian_config();

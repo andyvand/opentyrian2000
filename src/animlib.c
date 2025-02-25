@@ -74,12 +74,7 @@ anim_LargePageHeader_t CurrentPageHeader;
 anim_FileHeader_t FileHeader;
 
 unsigned int Curlpnum;
-
-#ifdef PSP
-SceUID InFile;
-#else
 FILE * InFile;
-#endif
 
 /*** Function decs ***/
 int JE_playRunSkipDump(Uint8 *, unsigned int);
@@ -110,22 +105,12 @@ int JE_loadPage(unsigned int pagenumber)
 	 * Pages repeat their headers for some reason.  They then have two bytes of
 	 * padding followed by a word for every record.  THEN the data starts.
 	 */
-#ifdef PSP
-    sceIoLseek(InFile, ANIM_OFFSET + (pagenumber * ANI_PAGE_SIZE), PSP_SEEK_SET);
-#else
 	fseek(InFile, ANIM_OFFSET + (pagenumber * ANI_PAGE_SIZE), SEEK_SET);
-#endif
-
 	fread_u16_die(&CurrentPageHeader.baseRecord, 1, InFile);
 	fread_u16_die(&CurrentPageHeader.nRecords,   1, InFile);
 	fread_u16_die(&CurrentPageHeader.nBytes,     1, InFile);
 
-#ifdef PSP
-    sceIoLseek(InFile, 2, PSP_SEEK_CUR);
-#else
-	fseek(InFile, 2, SEEK_CUR);
-#endif
-
+    fseek(InFile, 2, SEEK_CUR);
 	fread_u16_die(CurrentPageRecordSizes, CurrentPageHeader.nRecords, InFile);
 
 	/* What remains is the 'compressed' data */
@@ -233,11 +218,7 @@ int JE_loadAnim(const char *filename)
 
 	Curlpnum = -1;
 	InFile = dir_fopen(data_dir(), filename, "rb");
-#ifdef PSP
-    if (InFile < 0)
-#else
 	if (InFile == NULL)
-#endif
 		return -1;
 
 	fileSize = ftell_eof(InFile);
@@ -245,11 +226,7 @@ int JE_loadAnim(const char *filename)
 	{
 		/* We don't know the exact size our file should be yet,
 		 * but we do know it should be way more than this */
-#ifdef PSP
-        sceIoClose(InFile);
-#else
 		fclose(InFile);
-#endif
 		return -1;
 	}
 
@@ -261,11 +238,7 @@ int JE_loadAnim(const char *filename)
 	 */
 
 	fread_die(&temp, 1, 4, InFile); /* The ID, should equal "LPF " */
-#ifdef PSP
-    sceIoLseek(InFile, 2, PSP_SEEK_CUR);
-#else
 	fseek(InFile, 2, SEEK_CUR); /* skip over this word */
-#endif
 
 	fread_u16_die(&FileHeader.nlps,     1, InFile); /* Number of pages */
 	fread_u32_die(&FileHeader.nRecords, 1, InFile); /* Number of records */
@@ -274,20 +247,12 @@ int JE_loadAnim(const char *filename)
 	    FileHeader.nlps == 0  || FileHeader.nRecords == 0 ||
 	    FileHeader.nlps > 256 || FileHeader.nRecords > 65535)
 	{
-#ifdef PSP
-        sceIoClose(InFile);
-#else
 		fclose(InFile);
-#endif
 		return -1;
 	}
 
 	/* Read in headers */
-#ifdef PSP
-    sceIoLseek(InFile, PAGEHEADER_OFFSET, PSP_SEEK_SET);
-#else
 	fseek(InFile, PAGEHEADER_OFFSET, SEEK_SET);
-#endif
 
 	for (i = 0; i < FileHeader.nlps; i++)
 	{
@@ -303,20 +268,12 @@ int JE_loadAnim(const char *filename)
 	  + PageHeader[FileHeader.nlps-1].nBytes
 	  + PageHeader[FileHeader.nlps-1].nRecords * 2 + 8)
 	{
-#ifdef PSP
-        sceIoClose(InFile);
-#else
 		fclose(InFile);
-#endif
 		return -1;
 	}
 
 	/* Now read in the palette. */
-#ifdef PSP
-    sceIoLseek(InFile, PALETTE_OFFSET, PSP_SEEK_SET);
-#else
 	fseek(InFile, PALETTE_OFFSET, SEEK_SET);
-#endif
 
 	for (i = 0; i < 256; i++)
 	{
@@ -334,11 +291,7 @@ int JE_loadAnim(const char *filename)
 
 void JE_closeAnim(void)
 {
-#ifdef PSP
-    sceIoClose(InFile);
-#else
 	fclose(InFile);
-#endif
 }
 
 /* RunSkipDump decompresses the video.  There are three operations, run, skip,

@@ -129,12 +129,7 @@ void wait_delayorinput(void)
 
 void loadSndFile(bool xmas)
 {
-#ifdef PSP
-    SceUID f;
-#else
 	FILE *f;
-#endif
-
 	f = dir_fopen_die(data_dir(), "tyrian.snd", "rb");
 
 	Uint16 sfxCount;
@@ -149,12 +144,8 @@ void loadSndFile(bool xmas)
 	fread_u32_die(sfxPositions, sfxCount, f);
 
 	// Determine end of last sound.
-#ifdef PSP
-    sfxPositions[sfxCount] = (Uint32)sceIoLseek(f, 0, PSP_SEEK_END);
-#else
 	fseek(f, 0, SEEK_END);
 	sfxPositions[sfxCount] = (Uint32)ftell(f);
-#endif
 
 	// Read samples.
 	for (size_t i = 0; i < sfxCount; ++i)
@@ -167,22 +158,11 @@ void loadSndFile(bool xmas)
 
 		free(soundSamples[i]);
 		soundSamples[i] = malloc(soundSampleCount[i]);
-
-#ifdef PSP
-        sceIoLseek(f, sfxPositions[i], PSP_SEEK_SET);
-#else
 		fseek(f, sfxPositions[i], SEEK_SET);
-#endif
-
 		fread_u8_die((Uint8 *)soundSamples[i], soundSampleCount[i], f);
 	}
 
-#ifdef PSP
-    sceIoClose(f);
-#else
 	fclose(f);
-#endif
-
 	f = dir_fopen_die(data_dir(), xmas ? "voicesc.snd" : "voices.snd", "rb");
 
 	Uint16 voiceCount;
@@ -197,12 +177,8 @@ void loadSndFile(bool xmas)
 	fread_u32_die(voicePositions, voiceCount, f);
 
 	// Determine end of last sound.
-#ifdef PSP
-    voicePositions[voiceCount] = (Uint32)sceIoLseek(f, 0, PSP_SEEK_END);
-#else
 	fseek(f, 0, SEEK_END);
     voicePositions[voiceCount] = (Uint32)ftell(f);
-#endif
 
 	for (size_t vi = 0; vi < voiceCount; ++vi)
 	{
@@ -221,24 +197,13 @@ void loadSndFile(bool xmas)
 
 		free(soundSamples[i]);
 		soundSamples[i] = malloc(soundSampleCount[i]);
-
-#ifdef PSP
-        sceIoLseek(f, voicePositions[vi], PSP_SEEK_SET);
-#else
 		fseek(f, voicePositions[vi], SEEK_SET);
-#endif
-        
 		fread_u8_die((Uint8 *)soundSamples[i], soundSampleCount[i], f);
 	}
 
-#ifdef PSP
-    sceIoClose(f);
-#else
 	fclose(f);
-#endif
 
 	// Convert samples to output sample format and rate.
-
 #ifdef WITH_SDL3
     SDL_AudioStream *cvtstream = NULL;
     SDL_AudioSpec cvtinspec;

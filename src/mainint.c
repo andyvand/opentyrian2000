@@ -2438,15 +2438,7 @@ bool replay_demo_keys(void)
 		fread_u8(temp2, 2, demo_file);
 		demo_keys_wait = (temp2[0] << 8) | temp2[1];
 
-#ifdef PSP
-        int cur_loc = sceIoLseek(demo_file, 0, PSP_SEEK_CUR);
-        int end_loc = sceIoLseek(demo_file, 0, PSP_SEEK_END);
-        sceIoLseek(demo_file, cur_loc, PSP_SEEK_SET);
-
-        if (cur_loc >= end_loc)
-#else
 		if (feof(demo_file))
-#endif
 		{
 			// no more keys
 			return false;
@@ -2585,20 +2577,12 @@ void JE_playCredits(void)
 	play_song(8);
 
 	// load credits text
-#ifdef PSP
-    SceUID f = dir_fopen_die(data_dir(), "tyrian.cdt", "rb");
-#else
 	FILE *f = dir_fopen_die(data_dir(), "tyrian.cdt", "rb");
-#endif
 	for (lines = 0; lines < lines_max; ++lines)
 	{
 		read_encrypted_pascal_string(credstr[lines], sizeof(credstr[lines]), f);
 	}
-#ifdef PSP
-    sceIoClose(f);
-#else
 	fclose(f);
-#endif
 
 	memcpy(colors, palettes[6-1], sizeof(colors));
 	JE_clr256(VGAScreen);

@@ -221,12 +221,7 @@ JE_byte displayTime;
 bool play_demo = false, record_demo = false, stopped_demo = false;
 Uint8 demo_num = 0;
 
-#ifdef PSP
-SceUID demo_file;
-#else
 FILE *demo_file = NULL;
-#endif
-
 Uint8 demo_keys;
 Uint16 demo_keys_wait;
 

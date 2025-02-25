@@ -47,6 +47,10 @@
 #include <pspiofilemgr.h>
 #endif
 
+#ifdef VITA
+#include <psp2/io/fcntl.h>
+#endif
+
 #if defined(ANDROID) || defined(__ANDROID__)
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
@@ -121,18 +125,10 @@ const char *data_dir(void)
 		if (dirs[i] == NULL)
 			continue;
 
-#ifdef PSP
-        SceUID f = dir_fopen(dirs[i], "tyrian1.lvl", "rb");
-        if (f > 0)
-        {
-            sceIoClose(f);
-#else
 		FILE *f = dir_fopen(dirs[i], "tyrian1.lvl", "rb");
 		if (f)
 		{
 			fclose(f);
-#endif
-
 			dir = dirs[i];
 			break;
 		}
@@ -145,131 +141,6 @@ const char *data_dir(void)
 }
 
 // prepend directory and fopen
-#ifdef PSP
-SceUID dir_fopen(const char *dir, const char *file, const char *mode)
-{
-    SceUID rv;
-    int rm = 0;
-    char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
-    snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s/%s", dir, file);
-
-    for (int i = 0; i < strlen(mode); i++)
-    {
-        if (mode[i] == 'r')
-        {
-            rm |= PSP_O_RDONLY;
-        } else if (mode[i] == 'w') {
-            rm |= PSP_O_WRONLY|PSP_O_CREAT;
-        }
-    }
-
-    rv = sceIoOpen(path, rm, 0777);
-
-    free(path);
-
-    return rv;
-}
-
-SceUID dir_fopen_warn(const char *dir, const char *file, const char *mode)
-{
-    SceUID f = dir_fopen(dir, file, mode);
-#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
-    char err[256];
-#endif
-
-    if (f < 0)
-    {
-#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
-        strerror_s(err, sizeof(err), errno);
-        fprintf(stderr, "warning: faile to open '%s': %s\n", file, err);
-#else
-        fprintf(stderr, "warning: failed to open '%s': %s\n", file, strerror(errno));
-#endif
-    }
-
-    return f;
-}
-
-// die when dir_fopen fails
-SceUID dir_fopen_die(const char *dir, const char *file, const char *mode)
-{
-    SceUID f = dir_fopen(dir, file, mode);
-#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
-    char err[256];
-#endif
-
-    if (f < 0)
-    {
-#if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
-        strerror_s(err, sizeof(err), errno);
-        fprintf(stderr, "error: failed to open '%s': %s\n", file, err);
-#else
-        fprintf(stderr, "error: failed to open '%s': %s\n", file, strerror(errno));
-#endif
-        fprintf(stderr, "error: One or more of the required Tyrian " TYRIAN_VERSION " data files could not be found.\n"
-                        "       Please read the README file.\n");
-        JE_tyrianHalt(1);
-    }
-
-    return f;
-}
-
-// check if file can be opened for reading
-bool dir_file_exists(const char *dir, const char *file)
-{
-    SceUID f = dir_fopen(dir, file, "rb");
-    if (f < 0)
-        sceIoClose(f);
-    return (f < 0);
-}
-
-// returns end-of-file position
-long ftell_eof(SceUID f)
-{
-    long pos = sceIoLseek(f, 0, PSP_SEEK_CUR);
-    long size = sceIoLseek(f, 0, PSP_SEEK_END);
-
-    sceIoLseek(f, pos, PSP_SEEK_SET);
-
-    return size;
-}
-
-#ifndef HANDLE_RESULT
-#define HANDLE_RESULT 1
-#endif
-
-void fread_die(void *buffer, size_t size, size_t count, SceUID stream)
-{
-    size_t result = sceIoRead(stream, buffer, size * count);
-
-#ifdef HANDLE_RESULT
-    if (result != count)
-    {
-        fprintf(stderr, "error: An unexpected problem occurred while reading from a file.\n");
-        SDL_Quit();
-        exit(EXIT_FAILURE);
-    }
-#else
-    fprintf(stderr, "fread_die - size=%llu.\n", (unsigned long long)result);
-#endif
-}
-
-void fwrite_die(const void *buffer, size_t size, size_t count, SceUID stream)
-{
-    size_t result = sceIoWrite(stream, buffer, size * count);
-    
-#ifdef HANDLE_RESULT
-    if (result != count)
-    {
-        fprintf(stderr, "error: An unexpected problem occurred while writing to a file.\n");
-        SDL_Quit();
-        exit(EXIT_FAILURE);
-    }
-#else
-    fprintf(stderr, "fwrite_die - size=%llu.\n", (unsigned long long)result);
-#endif
-}
-#else
 FILE *dir_fopen(const char *dir, const char *file, const char *mode)
 {
 	char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
@@ -389,4 +260,3 @@ void fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
     fprintf(stderr, "fwrite_die - size=%llu.\n", (unsigned long long)result);
 #endif
 }
-#endif

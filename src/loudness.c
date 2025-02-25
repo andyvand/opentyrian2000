@@ -119,11 +119,7 @@ static int samplesPerLdsUpdateFrac;
 static int samplesUntilLdsUpdate = 0;
 static int samplesUntilLdsUpdateFrac = 0;
 
-#ifdef PSP
-static SceUID music_file;
-#else
 static FILE *music_file = NULL;
-#endif
 
 static Uint32 *song_offset;
 static Uint16 song_count = 0;
@@ -760,11 +756,7 @@ void deinit_audio(void)
 
 void load_music(void)  // FKA NortSong.loadSong
 {
-#ifdef PSP
-    if (music_file <= 0)
-#else
 	if (music_file == NULL)
-#endif
 	{
 		music_file = dir_fopen_die(data_dir(), "music.mus", "rb");
 

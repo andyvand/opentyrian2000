@@ -44,10 +44,6 @@
 
 #include <assert.h>
 
-#ifdef PSP
-#include <pspiofilemgr.h>
-#endif
-
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 #define snprintf sprintf_s
 #endif
@@ -1778,12 +1774,7 @@ void load_cubes(void)
 
 bool load_cube(int cube_slot, int cube_index)
 {
-#ifdef PSP
-    SceUID f = dir_fopen_die(data_dir(), cube_file, "rb");
-#else
 	FILE *f = dir_fopen_die(data_dir(), cube_file, "rb");
-#endif
-
 	char buf[256];
 
 	// seek to the cube
@@ -1882,11 +1873,7 @@ bool load_cube(int cube_slot, int cube_index)
 		}
 	}
 
-#ifdef PSP
-    sceIoClose(f);
-#else
 	fclose(f);
-#endif
 
 	return true;
 }

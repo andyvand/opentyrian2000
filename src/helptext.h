@@ -29,10 +29,6 @@
 
 #include <stdio.h>
 
-#ifdef PSP
-#include <pspiofilemgr.h>
-#endif
-
 #define MENU_MAX 15
 
 #define DESTRUCT_MODES 5
@@ -80,14 +76,8 @@ extern char orderingInfo[6][32];
 extern char superTyrianText[6][64];
 extern char menuInt[MENU_MAX+1][11][18];
 
-#ifdef PSP
-void read_encrypted_pascal_string(char *s, size_t size, SceUID f);
-void skip_pascal_string(SceUID f);
-#else
 void read_encrypted_pascal_string(char *s, size_t size, FILE *f);
 void skip_pascal_string(FILE *f);
-#endif
-
 void JE_helpBox(SDL_Surface *screen, int x, int y, const char *message, unsigned int boxwidth);
 void JE_HBox(SDL_Surface *screen, int x, int y, unsigned int  messagenum, unsigned int boxwidth);
 void JE_loadHelpText(void);
