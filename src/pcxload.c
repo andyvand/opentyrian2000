@@ -42,7 +42,7 @@ void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 
 #ifdef PSP
     SceUID f = dir_fopen_die(data_dir(), file, "rb");
-    sceIoLseek(f, -769, SEEK_END);
+    sceIoLseek(f, -769, PSP_SEEK_END);
 #else
     FILE *f = dir_fopen_die(data_dir(), file, "rb");
 	fseek(f, -769, SEEK_END);
@@ -63,7 +63,7 @@ void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 	}
 	
 #ifdef PSP
-    sceIoLseek(f, 128, SEEK_SET);
+    sceIoLseek(f, 128, PSP_SEEK_SET);
 #else
 	fseek(f, 128, SEEK_SET);
 #endif

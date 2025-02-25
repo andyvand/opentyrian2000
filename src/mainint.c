@@ -2439,11 +2439,11 @@ bool replay_demo_keys(void)
 		demo_keys_wait = (temp2[0] << 8) | temp2[1];
 
 #ifdef PSP
-        int cur_loc = sceIoLseek(demo_file, 0, SEEK_CUR);
-        int end_loc = sceIoLseek(demo_file, 0, SEEK_END);
-        sceIoLseek(demo_file, cur_loc, SEEK_SET);
+        int cur_loc = sceIoLseek(demo_file, 0, PSP_SEEK_CUR);
+        int end_loc = sceIoLseek(demo_file, 0, PSP_SEEK_END);
+        sceIoLseek(demo_file, cur_loc, PSP_SEEK_SET);
 
-        if (cur_loc == end_loc)
+        if (cur_loc >= end_loc)
 #else
 		if (feof(demo_file))
 #endif

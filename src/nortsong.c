@@ -150,7 +150,7 @@ void loadSndFile(bool xmas)
 
 	// Determine end of last sound.
 #ifdef PSP
-    sfxPositions[sfxCount] = (Uint32)sceIoLseek(f, 0, SEEK_END);
+    sfxPositions[sfxCount] = (Uint32)sceIoLseek(f, 0, PSP_SEEK_END);
 #else
 	fseek(f, 0, SEEK_END);
 	sfxPositions[sfxCount] = (Uint32)ftell(f);
@@ -169,7 +169,7 @@ void loadSndFile(bool xmas)
 		soundSamples[i] = malloc(soundSampleCount[i]);
 
 #ifdef PSP
-        sceIoLseek(f, sfxPositions[i], SEEK_SET);
+        sceIoLseek(f, sfxPositions[i], PSP_SEEK_SET);
 #else
 		fseek(f, sfxPositions[i], SEEK_SET);
 #endif
@@ -198,7 +198,7 @@ void loadSndFile(bool xmas)
 
 	// Determine end of last sound.
 #ifdef PSP
-    voicePositions[voiceCount] = (Uint32)sceIoLseek(f, 0, SEEK_END);
+    voicePositions[voiceCount] = (Uint32)sceIoLseek(f, 0, PSP_SEEK_END);
 #else
 	fseek(f, 0, SEEK_END);
     voicePositions[voiceCount] = (Uint32)ftell(f);
@@ -223,7 +223,7 @@ void loadSndFile(bool xmas)
 		soundSamples[i] = malloc(soundSampleCount[i]);
 
 #ifdef PSP
-        sceIoLseek(f, voicePositions[vi], SEEK_SET);
+        sceIoLseek(f, voicePositions[vi], PSP_SEEK_SET);
 #else
 		fseek(f, voicePositions[vi], SEEK_SET);
 #endif

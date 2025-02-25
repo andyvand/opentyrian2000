@@ -226,10 +226,10 @@ bool dir_file_exists(const char *dir, const char *file)
 // returns end-of-file position
 long ftell_eof(SceUID f)
 {
-    long pos = sceIoLseek32(f, 0, SEEK_CUR);
-    long size = sceIoLseek(f, 0, SEEK_END);
+    long pos = sceIoLseek(f, 0, PSP_SEEK_CUR);
+    long size = sceIoLseek(f, 0, PSP_SEEK_END);
 
-    sceIoLseek(f, pos, SEEK_SET);
+    sceIoLseek(f, pos, PSP_SEEK_SET);
 
     return size;
 }

@@ -75,7 +75,7 @@ void JE_loadItemDat(void)
 		f = dir_fopen_die(data_dir(), "tyrian.hdt", "rb");
 		fread_s32_die(&episode1DataLoc, 1, f);
 #ifdef PSP
-        sceIoLseek(f, episode1DataLoc, SEEK_SET);
+        sceIoLseek(f, episode1DataLoc, PSP_SEEK_SET);
 #else
 		fseek(f, episode1DataLoc, SEEK_SET);
 #endif
@@ -85,7 +85,7 @@ void JE_loadItemDat(void)
 		// episode 4 stores item data in the level file
 		f = dir_fopen_die(data_dir(), levelFile, "rb");
 #ifdef PSP
-        sceIoLseek(f, lvlPos[lvlNum-1], SEEK_SET);
+        sceIoLseek(f, lvlPos[lvlNum-1], PSP_SEEK_SET);
 #else
 		fseek(f, lvlPos[lvlNum-1], SEEK_SET);
 #endif

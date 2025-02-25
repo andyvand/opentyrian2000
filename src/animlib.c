@@ -111,7 +111,7 @@ int JE_loadPage(unsigned int pagenumber)
 	 * padding followed by a word for every record.  THEN the data starts.
 	 */
 #ifdef PSP
-    sceIoLseek(InFile, ANIM_OFFSET + (pagenumber * ANI_PAGE_SIZE), SEEK_SET);
+    sceIoLseek(InFile, ANIM_OFFSET + (pagenumber * ANI_PAGE_SIZE), PSP_SEEK_SET);
 #else
 	fseek(InFile, ANIM_OFFSET + (pagenumber * ANI_PAGE_SIZE), SEEK_SET);
 #endif
@@ -121,7 +121,7 @@ int JE_loadPage(unsigned int pagenumber)
 	fread_u16_die(&CurrentPageHeader.nBytes,     1, InFile);
 
 #ifdef PSP
-    sceIoLseek(InFile, 2, SEEK_CUR);
+    sceIoLseek(InFile, 2, PSP_SEEK_CUR);
 #else
 	fseek(InFile, 2, SEEK_CUR);
 #endif
@@ -262,7 +262,7 @@ int JE_loadAnim(const char *filename)
 
 	fread_die(&temp, 1, 4, InFile); /* The ID, should equal "LPF " */
 #ifdef PSP
-    sceIoLseek(InFile, 2, SEEK_CUR);
+    sceIoLseek(InFile, 2, PSP_SEEK_CUR);
 #else
 	fseek(InFile, 2, SEEK_CUR); /* skip over this word */
 #endif
@@ -284,7 +284,7 @@ int JE_loadAnim(const char *filename)
 
 	/* Read in headers */
 #ifdef PSP
-    sceIoLseek(InFile, PAGEHEADER_OFFSET, SEEK_SET);
+    sceIoLseek(InFile, PAGEHEADER_OFFSET, PSP_SEEK_SET);
 #else
 	fseek(InFile, PAGEHEADER_OFFSET, SEEK_SET);
 #endif
@@ -313,7 +313,7 @@ int JE_loadAnim(const char *filename)
 
 	/* Now read in the palette. */
 #ifdef PSP
-    sceIoLseek(InFile, PALETTE_OFFSET, SEEK_SET);
+    sceIoLseek(InFile, PALETTE_OFFSET, PSP_SEEK_SET);
 #else
 	fseek(InFile, PALETTE_OFFSET, SEEK_SET);
 #endif

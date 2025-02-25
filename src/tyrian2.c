@@ -3111,7 +3111,7 @@ new_game:
 
 #ifdef PSP
     SceUID level_f = dir_fopen_die(data_dir(), levelFile, "rb");
-    sceIoLseek(level_f, lvlPos[(lvlFileNum-1) * 2], SEEK_SET);
+    sceIoLseek(level_f, lvlPos[(lvlFileNum-1) * 2], PSP_SEEK_SET);
 #else
 	FILE *level_f = dir_fopen_die(data_dir(), levelFile, "rb");
 	fseek(level_f, lvlPos[(lvlFileNum-1) * 2], SEEK_SET);

@@ -64,7 +64,7 @@ void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 	Uint8 *buffer = malloc(size);
 
 #ifdef PSP
-    sceIoLseek(f, pcxpos[PCXnumber], SEEK_SET);
+    sceIoLseek(f, pcxpos[PCXnumber], PSP_SEEK_SET);
 #else
 	fseek(f, pcxpos[PCXnumber], SEEK_SET);
 #endif

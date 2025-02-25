@@ -105,7 +105,7 @@ bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 	SoundBank *sb;
 	
 #ifdef PSP
-    sceIoLseek(f, music_offset, SEEK_SET);
+    sceIoLseek(f, music_offset, PSP_SEEK_SET);
 #else
 	fseek(f, music_offset, SEEK_SET);
 #endif
@@ -189,9 +189,9 @@ bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 	
 	/* load patterns */
 #ifdef PSP
-    sceIoLseek(f, 2, SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
+    sceIoLseek(f, 2, PSP_SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
 
-    unsigned int remaining = (unsigned int)(music_size - (sceIoLseek(f, 0, SEEK_CUR) - music_offset));
+    unsigned int remaining = (unsigned int)(music_size - (sceIoLseek(f, 0, PSP_SEEK_CUR) - music_offset));
 #else
 	fseek(f, 2, SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
 	

@@ -856,7 +856,7 @@ void JE_loadMainShapeTables(const char *shpfile)
 	fread_s32_die(shpPos, shpNumb, f);
 	
 #ifdef PSP
-    int sPos = sceIoLseek(f, 0, SEEK_END);
+    int sPos = sceIoLseek(f, 0, PSP_SEEK_END);
     for (unsigned int i = shpNumb; i < COUNTOF(shpPos); ++i)
         shpPos[i] = (JE_longint)sPos;
 #else
@@ -870,7 +870,7 @@ void JE_loadMainShapeTables(const char *shpfile)
 	for (i = 0; i < 7; i++)
 	{
 #ifdef PSP
-        sceIoLseek(f, shpPos[i], SEEK_SET);
+        sceIoLseek(f, shpPos[i], PSP_SEEK_SET);
 #else
 		fseek(f, shpPos[i], SEEK_SET);
 #endif

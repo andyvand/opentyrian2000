@@ -945,7 +945,7 @@ void JE_loadConfiguration(void)
 	if (fi)
 	{
 #ifdef PSP
-        sceIoLseek(fi, 0, SEEK_SET);
+        sceIoLseek(fi, 0, PSP_SEEK_SET);
 #else
 		fseek(fi, 0, SEEK_SET);
 #endif
@@ -1075,7 +1075,7 @@ void JE_loadConfiguration(void)
 #endif
 
 #ifdef PSP
-                sceIoLseek(fi, 4, SEEK_CUR);
+                sceIoLseek(fi, 4, PSP_SEEK_CUR);
 #else
 				fseek(fi, 4, SEEK_CUR); // Unknown long int that seems to have no effect
 #endif
