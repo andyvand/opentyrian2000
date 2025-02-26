@@ -5,7 +5,7 @@ plugins {
 def buildWithCMake = project.hasProperty('BUILD_WITH_CMAKE');
 
 android {
-    namespace "org.libsdl.app"
+    namespace "org.libsdl.opentyrian"
     compileSdkVersion 35
     defaultConfig {
         minSdkVersion 21
