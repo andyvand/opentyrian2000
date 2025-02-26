@@ -895,6 +895,8 @@ int main(int argc, char *argv[])
     _printf("ARM64\n");
 #elif defined(__mips__)
     _printf("MIPS\n");
+#elif defined(__mips64__)
+    _printf("MIPS64\n");
 #else
     _printf("Unknown\n");
 #endif
