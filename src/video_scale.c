@@ -189,6 +189,7 @@ void nn_16(SDL_Surface *src_surface, SDL_Texture *dst_texture)
 	SDL_UnlockTexture(dst_texture);
 }
 
+#ifndef VITA
 void scale2x_32(SDL_Surface *src_surface, SDL_Texture *dst_texture)
 {
 	Uint8 *src = src_surface->pixels, *src_temp;
@@ -468,3 +469,4 @@ void scale3x_16(SDL_Surface *src_surface, SDL_Texture *dst_texture)
 
 	SDL_UnlockTexture(dst_texture);
 }
+#endif
