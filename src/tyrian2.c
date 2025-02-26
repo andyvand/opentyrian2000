@@ -173,7 +173,7 @@ inline static void blit_enemy(SDL_Surface *surface, unsigned int i, signed int x
 {
 	if (enemy[i].sprite2s == NULL)
 	{
-		fprintf(stderr, "warning: enemy %d sprite missing\n", i);
+		_fprintf(stderr, "warning: enemy %d sprite missing\n", i);
 		return;
 	}
 	
@@ -4009,7 +4009,7 @@ uint JE_makeEnemy(struct JE_SingleEnemyType *enemy, Uint16 eDatI, Sint16 uniqueS
 		enemy->sprite2s = sprite2s;
 	else
 		// Use shape table value from previous enemy that occupied the enemy slot. (Ex. APPROACH.)
-		fprintf(stderr, "warning: ignoring sprite from unloaded shape table %d\n", shapeTableI);
+		_fprintf(stderr, "warning: ignoring sprite from unloaded shape table %d\n", shapeTableI);
 
 	enemy->enemydatofs = &enemyDat[eDatI];
 
@@ -4547,7 +4547,7 @@ void JE_eventSystem(void)
 	case 16:
 		if (eventRec[eventLoc-1].eventdat > 9)
 		{
-			fprintf(stderr, "warning: event 16: bad event data\n");
+			_fprintf(stderr, "warning: event 16: bad event data\n");
 		}
 		else
 		{
@@ -5286,7 +5286,7 @@ void JE_eventSystem(void)
 		break;
 
 	default:
-		fprintf(stderr, "warning: ignoring unknown event %d\n", eventRec[eventLoc-1].eventtype);
+		_fprintf(stderr, "warning: ignoring unknown event %d\n", eventRec[eventLoc-1].eventtype);
 		break;
 	}
 

@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include "arg_parse.h"
+#include "opentyr.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -166,10 +167,10 @@ static int parse_short_opt(int argc, const char *const argv[], const Options *op
 	switch (option->value)
 	{
 	case INVALID_OPTION:
-		fprintf(stderr, "%s: invalid option -- '%c'\n", argv[0], argv[option->argn][offset]);
+		_fprintf(stderr, "%s: invalid option -- '%c'\n", argv[0], argv[option->argn][offset]);
 		break;
 	case OPTION_MISSING_ARG:
-		fprintf(stderr, "%s: option requires an argument -- '%c'\n", argv[0], argv[option->argn][offset]);
+		_fprintf(stderr, "%s: option requires an argument -- '%c'\n", argv[0], argv[option->argn][offset]);
 		break;
 	}
 	
@@ -236,13 +237,13 @@ static int parse_long_opt(int argc, const char *const argv[], const Options *opt
 	switch (option->value)
 	{
 	case INVALID_OPTION:
-		fprintf(stderr, "%s: unrecognized option '%s'\n", argv[0], argv[option->argn]);
+		_fprintf(stderr, "%s: unrecognized option '%s'\n", argv[0], argv[option->argn]);
 		break;
 	case AMBIGUOUS_OPTION:
-		fprintf(stderr, "%s: option '%s' is ambiguous\n", argv[0], argv[option->argn]);
+		_fprintf(stderr, "%s: option '%s' is ambiguous\n", argv[0], argv[option->argn]);
 		break;
 	case OPTION_MISSING_ARG:
-		fprintf(stderr, "%s: option '%s' requires an argument\n", argv[0], argv[option->argn]);
+		_fprintf(stderr, "%s: option '%s' requires an argument\n", argv[0], argv[option->argn]);
 		break;
 	}
 	

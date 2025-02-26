@@ -312,7 +312,7 @@ void init_joysticks(void)
 	if (SDL_InitSubSystem(SDL_INIT_JOYSTICK))
 #endif
 	{
-		fprintf(stderr, "warning: failed to initialize joystick system: %s\n", SDL_GetError());
+		_fprintf(stderr, "warning: failed to initialize joystick system: %s\n", SDL_GetError());
 		ignore_joystick = true;
 		return;
 	}
@@ -340,12 +340,12 @@ void init_joysticks(void)
 		if (joystick[j].handle != NULL)
 		{
 #ifdef WITH_SDL3
-            printf("joystick detected: %s ", SDL_GetJoystickName(joystick[j].handle));
+            _fprintf(stdout, "joystick detected: %s ", SDL_GetJoystickName(joystick[j].handle));
 #else
-			printf("joystick detected: %s ", SDL_JoystickName(joystick[j].handle));
+			_fprintf(stdout, "joystick detected: %s ", SDL_JoystickName(joystick[j].handle));
 #endif
 
-			printf("(%d axes, %d buttons, %d hats)\n",
+			_fprintf(stdout, "(%d axes, %d buttons, %d hats)\n",
 #ifdef WITH_SDL3
                    SDL_GetNumJoystickAxes(joystick[j].handle),
                    SDL_GetNumJoystickButtons(joystick[j].handle),
@@ -362,7 +362,7 @@ void init_joysticks(void)
 	}
 	
 	if (joysticks == 0)
-		printf("no joysticks detected\n");
+		_fprintf(stdout, "no joysticks detected\n");
 }
 
 // deinitializes SDL joystick system and saves joystick assignments

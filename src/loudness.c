@@ -147,24 +147,24 @@ static void load_song(unsigned int song_num);
 #ifdef WITH_MIDI
 bool init_midi(SDL_AudioSpec * got){
 	if (!Mix_Init(MIX_INIT_MID)){
-		fprintf(stderr, "error: SDL2_mixer_ext failed to init: %s\n", Mix_GetError());
+		_fprintf(stderr, "error: SDL2_mixer_ext failed to init: %s\n", Mix_GetError());
 		return false;
 #ifndef WITH_SDL3
     } else if (Mix_InitMixer(got, SDL_FALSE) != 0) {
-        fprintf(stderr, "error: SDL2_mixer_ext failed to open audio device: %s\n", Mix_GetError());
+        _fprintf(stderr, "error: SDL2_mixer_ext failed to open audio device: %s\n", Mix_GetError());
         return false;
 #endif
 	} else if ((strlen(soundfont) != 0) && Mix_SetSoundFonts(soundfont) == 0) {
 #ifndef WITH_SDL3
 		Mix_FreeMixer();
 #endif
-		fprintf(stderr, "error: SDL2_mixer_ext failed to set soundfont: %s\n", Mix_GetError());
+		_fprintf(stderr, "error: SDL2_mixer_ext failed to set soundfont: %s\n", Mix_GetError());
 		return false;
 	} else {
 #ifdef WITH_SDL3
         if (Mix_OpenAudio(audioDevice, got) == false)
         {
-            fprintf(stderr, "error: SDL2_mixer_ext: failed to open audio device: %s\n", Mix_GetError());
+            _fprintf(stderr, "error: SDL2_mixer_ext: failed to open audio device: %s\n", Mix_GetError());
             return false;
         }
 #else
@@ -173,7 +173,7 @@ bool init_midi(SDL_AudioSpec * got){
 		if (music_mixer == NULL){
 			Mix_FreeMixer();
 
-			fprintf(stderr, "error: SDL2_mixer_ext: failed to get music_mixer: %s\n", Mix_GetError());
+			_fprintf(stderr, "error: SDL2_mixer_ext: failed to get music_mixer: %s\n", Mix_GetError());
 			return false;
 		}
 #endif
@@ -234,7 +234,7 @@ void convert_midi_data(void){
 		HMIDIContainer midi_container = MIDPROC_Container_Create();
 		if (!MIDPROC_Process(buf, size, "lds", midi_container))
 		{
-			fprintf(stderr, "warning: failed to process song %d\n", i + 1);
+			_fprintf(stderr, "warning: failed to process song %d\n", i + 1);
 			MIDPROC_Container_Delete(midi_container);
 			free(buf);
 			continue;
@@ -244,7 +244,7 @@ void convert_midi_data(void){
 		midi_data[i].size = (Uint32)midi_data_size;
 		if (midi_data[i].size == 0)
 		{
-			fprintf(stderr, "warning: failed to process song %d\n", i + 1);
+			_fprintf(stderr, "warning: failed to process song %d\n", i + 1);
 			continue;
 		}
 
@@ -279,7 +279,7 @@ bool _play_midi(Uint32 songnum){
     if (Mix_PlayMusic(midi_tracks[songnum], loops) != 0)
 #endif
     {
-        fprintf(stderr, "error: failed to play music: %s\n", Mix_GetError());
+        _fprintf(stderr, "error: failed to play music: %s\n", Mix_GetError());
         return false;
 #ifdef WITH_SDL3
     } else {
@@ -323,7 +323,7 @@ bool load_midi(unsigned int song_num){
 
 		if (midi_tracks[song_num] == NULL)
 		{
-			fprintf(stderr, "error: failed to load music: %s\n", Mix_GetError());
+			_fprintf(stderr, "error: failed to load music: %s\n", Mix_GetError());
 			return false;
 		}
 	}
@@ -372,7 +372,7 @@ bool init_audio(void)
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO))
 #endif
 	{
-		fprintf(stderr, "error: failed to initialize SDL audio: %s\n", SDL_GetError());
+		_fprintf(stderr, "error: failed to initialize SDL audio: %s\n", SDL_GetError());
 		audio_disabled = true;
 		return false;
 	}
@@ -398,14 +398,14 @@ bool init_audio(void)
     {
 #endif
 
-		fprintf(stderr, "error: SDL failed to open audio device: %s\n", SDL_GetError());
+		_fprintf(stderr, "error: SDL failed to open audio device: %s\n", SDL_GetError());
 		audio_disabled = true;
 		return false;
 	}
 #ifdef WITH_MIDI
 	if (music_device & IS_MIDI_DEVICE){
 		if (!init_midi(&got)) {
-			fprintf(stderr, "error: failed to initialize midi, falling back to OPL...\n");
+			_fprintf(stderr, "error: failed to initialize midi, falling back to OPL...\n");
 			music_device = OPL;
 		}
 	}
@@ -486,7 +486,7 @@ static void audioMixCallback(void *userdata, Uint8 *stream, int size)
                 // check the duration of the song and see if it looped
                 bool has_loop = (bool)(midi_data[song_playing].loop_end <= midi_data[song_playing].duration);
                 #ifdef _DEBUG
-                fprintf(stderr, "cur_position: %f, time_playing: %f, duration: %d, loop_end: %d\n", cur_position, time_playing, midi_data[song_playing].duration, midi_data[song_playing].loop_end);
+                _fprintf(stderr, "cur_position: %f, time_playing: %f, duration: %d, loop_end: %d\n", cur_position, time_playing, midi_data[song_playing].duration, midi_data[song_playing].loop_end);
                 #endif
                 if (unwated_loop && !has_loop) {
                     // this is to get around a bug in fluidsynth where it plays songs twice even if no loops are set
@@ -572,7 +572,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
 				// check the duration of the song and see if it looped
                 bool has_loop = (bool)(midi_data[song_playing].loop_end <= midi_data[song_playing].duration);
 				#ifdef _DEBUG
-				fprintf(stderr, "cur_position: %f, time_playing: %f, duration: %d, loop_end: %d\n", cur_position, time_playing, midi_data[song_playing].duration, midi_data[song_playing].loop_end);
+				_fprintf(stderr, "cur_position: %f, time_playing: %f, duration: %d, loop_end: %d\n", cur_position, time_playing, midi_data[song_playing].duration, midi_data[song_playing].loop_end);
                 #endif
 				if (unwated_loop && !has_loop) {
 					// this is to get around a bug in fluidsynth where it plays songs twice even if no loops are set
@@ -782,7 +782,7 @@ static void load_song(unsigned int song_num)  // FKA NortSong.loadSong
 	}
 	else
 	{
-		fprintf(stderr, "warning: failed to load song %d\n", song_num + 1);
+		_fprintf(stderr, "warning: failed to load song %d\n", song_num + 1);
 	}
 }
 
@@ -792,7 +792,7 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 {
 	if (song_num >= song_count)
 	{
-		fprintf(stderr, "warning: song %d does not exist\n", song_num + 1);
+		_fprintf(stderr, "warning: song %d does not exist\n", song_num + 1);
 		return;
 	}
 	if (audio_disabled)

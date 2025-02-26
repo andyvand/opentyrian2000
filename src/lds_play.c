@@ -106,7 +106,7 @@ bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 	fread_u8_die(&mode, 1, f);
 	if (mode > 2)
 	{
-		fprintf(stderr, "error: failed to load music\n");
+		_fprintf(stderr, "error: failed to load music\n");
 		return false;
 	}
 	fread_u16_die(&speed,   1, f);

@@ -87,7 +87,7 @@ void JE_paramCheck(int argc, char *argv[])
 		case INVALID_OPTION:
 		case AMBIGUOUS_OPTION:
 		case OPTION_MISSING_ARG:
-			fprintf(stderr, "Try `%s --help' for more information.\n", argv[0]);
+			_fprintf(stderr, "Try `%s --help' for more information.\n", argv[0]);
 			exit(EXIT_FAILURE);
 			break;
 			
@@ -157,7 +157,7 @@ void JE_paramCheck(int argc, char *argv[])
 				thisPlayerNum = temp;
 			else
 			{
-				fprintf(stderr, "%s: error: invalid network player number\n", argv[0]);
+				_fprintf(stderr, "%s: error: invalid network player number\n", argv[0]);
 				exit(EXIT_FAILURE);
 			}
 			break;
@@ -168,7 +168,7 @@ void JE_paramCheck(int argc, char *argv[])
             {
                 SDL_SetHint(SDL_NET_HINT_IP_DEFAULT_VERSION, option.arg);
             } else {
-                fprintf(stderr, "%s: error: invalid network type\n", option.arg);
+                _fprintf(stderr, "%s: error: invalid network type\n", option.arg);
                 exit(EXIT_FAILURE);
             }
             break;
@@ -180,7 +180,7 @@ void JE_paramCheck(int argc, char *argv[])
 				network_player_port = temp;
 			else
 			{
-				fprintf(stderr, "%s: error: invalid network port number\n", argv[0]);
+				_fprintf(stderr, "%s: error: invalid network port number\n", argv[0]);
 				exit(EXIT_FAILURE);
 			}
 			break;
@@ -197,7 +197,7 @@ void JE_paramCheck(int argc, char *argv[])
 				network_delay = 1 + temp;
 			else
 			{
-				fprintf(stderr, "%s: error: invalid network delay value\n", argv[0]);
+				_fprintf(stderr, "%s: error: invalid network delay value\n", argv[0]);
 				exit(EXIT_FAILURE);
 			}
 			break;

@@ -170,9 +170,9 @@ FILE *dir_fopen_warn(const char *dir, const char *file, const char *mode)
 	{
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 		strerror_s(err, sizeof(err), errno);
-		fprintf(stderr, "warning: faile to open '%s': %s\n", file, err);
+		_fprintf(stderr, "warning: faile to open '%s': %s\n", file, err);
 #else
-		fprintf(stderr, "warning: failed to open '%s': %s\n", file, strerror(errno));
+		_fprintf(stderr, "warning: failed to open '%s': %s\n", file, strerror(errno));
 #endif
 	}
 
@@ -191,11 +191,11 @@ FILE *dir_fopen_die(const char *dir, const char *file, const char *mode)
 	{
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 		strerror_s(err, sizeof(err), errno);
-		fprintf(stderr, "error: failed to open '%s': %s\n", file, err);
+		_fprintf(stderr, "error: failed to open '%s': %s\n", file, err);
 #else
-		fprintf(stderr, "error: failed to open '%s': %s\n", file, strerror(errno));
+		_fprintf(stderr, "error: failed to open '%s': %s\n", file, strerror(errno));
 #endif
-		fprintf(stderr, "error: One or more of the required Tyrian " TYRIAN_VERSION " data files could not be found.\n"
+		_fprintf(stderr, "error: One or more of the required Tyrian " TYRIAN_VERSION " data files could not be found.\n"
 		                "       Please read the README file.\n");
 		JE_tyrianHalt(1);
 	}
@@ -236,12 +236,12 @@ void fread_die(void *buffer, size_t size, size_t count, FILE *stream)
 #ifdef HANDLE_RESULT
 	if (result != count)
 	{
-		fprintf(stderr, "error: An unexpected problem occurred while reading from a file.\n");
+		_fprintf(stderr, "error: An unexpected problem occurred while reading from a file.\n");
 		SDL_Quit();
 		exit(EXIT_FAILURE);
 	}
 #else
-    fprintf(stderr, "fread_die - size=%llu.\n", (unsigned long long)result);
+    _fprintf(stderr, "fread_die - size=%llu.\n", (unsigned long long)result);
 #endif
 }
 
@@ -252,11 +252,11 @@ void fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
 #ifdef HANDLE_RESULT
 	if (result != count)
 	{
-		fprintf(stderr, "error: An unexpected problem occurred while writing to a file.\n");
+		_fprintf(stderr, "error: An unexpected problem occurred while writing to a file.\n");
 		SDL_Quit();
 		exit(EXIT_FAILURE);
 	}
 #else
-    fprintf(stderr, "fwrite_die - size=%llu.\n", (unsigned long long)result);
+    _fprintf(stderr, "fwrite_die - size=%llu.\n", (unsigned long long)result);
 #endif
 }

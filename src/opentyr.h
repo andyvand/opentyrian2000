@@ -52,6 +52,21 @@
 #endif
 #endif
 
+#ifdef PSP
+#ifdef _DEBUG
+#include <pspdebug.h>
+
+#define _printf pspDebugScreenPrintf
+#define _fprintf(X, ...) if ((X == stderr) || (X == stdout)) { pspDebugScreenPrintf(__VA_ARGS__); }  else { fprintf(X, __VA_ARGS__); }
+#else
+#define _printf printf
+#define _fprintf fprintf
+#endif
+#else
+#define _printf printf
+#define _fprintf fprintf
+#endif
+
 #include <math.h>
 #include <stdbool.h>
 

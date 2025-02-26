@@ -215,19 +215,19 @@ static bool network_send_no_ack(int len)
         packet_out_temp->port = network_opponent_port;
         if (SDLNet_SendDatagram(socket, packet_out_temp->addr, packet_out_temp->port, packet_out_temp->buf, packet_out_temp->buflen) == false)
         {
-            fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (3)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_out_temp->buflen);
+            _fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (3)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_out_temp->buflen);
 #else
             packet_out_temp->len = len;
 
         if (!SDLNet_UDP_Send(socket, 0, packet_out_temp))
         {
-            fprintf(stderr, "SDLNet_UDP_Send: %s (3)\n", SDL_GetError());
+            _fprintf(stderr, "SDLNet_UDP_Send: %s (3)\n", SDL_GetError());
 #endif
             return false;
         }
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     } else {
-        fprintf(stderr, "network_send_no_ack: Packet buffer is NULL (3)\n");
+        _fprintf(stderr, "network_send_no_ack: Packet buffer is NULL (3)\n");
         return false;
     }
 #endif
@@ -260,7 +260,7 @@ bool network_send(int len)
 	else
 	{
 		// connection is probably bad now
-		fprintf(stderr, "warning: outbound packet queue overflow\n");
+		_fprintf(stderr, "warning: outbound packet queue overflow\n");
 		return false;
 	}
 
@@ -337,17 +337,17 @@ int network_check(void)
             packet_out[0]->port = network_opponent_port;
             if (SDLNet_SendDatagram(socket, packet_out[0]->addr, packet_out[0]->port, packet_out[0]->buf, packet_out[0]->buflen) == false)
             {
-                fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (4)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_out[0]->buflen);
+                _fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (4)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_out[0]->buflen);
 #else
             if (!SDLNet_UDP_Send(socket, 0, packet_out[0]))
             {
-                fprintf(stderr, "SDLNet_UDP_Send: %s (4)\n", SDL_GetError());
+                _fprintf(stderr, "SDLNet_UDP_Send: %s (4)\n", SDL_GetError());
 #endif
                 return -1;
             }
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         } else {
-            fprintf(stderr, "network_check: Packet buffer is NULL (4)\n");
+            _fprintf(stderr, "network_check: Packet buffer is NULL (4)\n");
             return -1;
         }
 #endif
@@ -368,7 +368,7 @@ int network_check(void)
         case 0:
 #else
 		case -1:
-            fprintf(stderr, "SDLNet_UDP_Recv: %s\n", SDL_GetError());
+            _fprintf(stderr, "SDLNet_UDP_Recv: %s\n", SDL_GetError());
 #endif
 			return -1;
 			break;
@@ -624,17 +624,17 @@ int network_check(void)
                                         packet_state_out[i]->port = network_opponent_port;
                                         if (SDLNet_SendDatagram(socket, packet_state_out[i]->addr, packet_state_out[i]->port, packet_state_out[i]->buf, packet_state_out[i]->buflen) == false)
                                         {
-                                            fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (5)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_state_out[i]->buflen);
+                                            _fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (5)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_state_out[i]->buflen);
 #else
                                         if (!SDLNet_UDP_Send(socket, 0, packet_state_out[i]))
                                         {
-                                            fprintf(stderr, "SDLNet_UDP_Send: %s (5)\n", SDL_GetError());
+                                            _fprintf(stderr, "SDLNet_UDP_Send: %s (5)\n", SDL_GetError());
 #endif
                                             return -1;
                                         }
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
                                     } else {
-                                        fprintf(stderr, "network_check: Packet buffer is NULL (5)\n");
+                                        _fprintf(stderr, "network_check: Packet buffer is NULL (5)\n");
                                         return -1;
                                     }
 #endif
@@ -645,9 +645,9 @@ int network_check(void)
 
 					default:
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
-                        fprintf(stderr, "warning: bad packet %d received\n", SDLNet_Read16(&packet_temp->buf[0]));
+                        _fprintf(stderr, "warning: bad packet %d received\n", SDLNet_Read16(&packet_temp->buf[0]));
 #else
-						fprintf(stderr, "warning: bad packet %d received\n", SDLNet_Read16(&packet_temp->data[0]));
+						_fprintf(stderr, "warning: bad packet %d received\n", SDLNet_Read16(&packet_temp->data[0]));
 #endif
 						return 0;
 						break;
@@ -694,7 +694,7 @@ void network_state_prepare(void)
 {
 	if (packet_state_out[0])
 	{
-		fprintf(stderr, "warning: state packet overwritten (previous packet remains unsent)\n");
+		_fprintf(stderr, "warning: state packet overwritten (previous packet remains unsent)\n");
 	}
 	else
 	{
@@ -735,17 +735,17 @@ int network_state_send(void)
         packet_state_out[0]->port = network_opponent_port;
         if (SDLNet_SendDatagram(socket, packet_state_out[0]->addr, packet_state_out[0]->port, packet_state_out[0]->buf, packet_state_out[0]->buflen) == false)
         {
-            fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (1)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_state_out[0]->buflen);
+            _fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (1)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_state_out[0]->buflen);
 #else
         if (!SDLNet_UDP_Send(socket, 0, packet_state_out[0]))
         {
-            fprintf(stderr, "SDLNet_UDP_Send: %s (1)\n", SDL_GetError());
+            _fprintf(stderr, "SDLNet_UDP_Send: %s (1)\n", SDL_GetError());
 #endif
             return -1;
         }
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     } else {
-        fprintf(stderr, "network_state_send: Packet buffer is NULL (1)\n");
+        _fprintf(stderr, "network_state_send: Packet buffer is NULL (1)\n");
         return -1;
     }
 #endif
@@ -774,7 +774,7 @@ int network_state_send(void)
             packet_temp->port = network_opponent_port;
             if (SDLNet_SendDatagram(socket, packet_temp->addr, packet_temp->port, packet_temp->buf, packet_temp->buflen) == false)
             {
-                fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (2)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_temp->buflen);
+                _fprintf(stderr, "SDLNet_SendDatagram: %s, host: %s, port: %d, length: %d (2)\n", SDL_GetError(), SDLNet_GetAddressString(ip), network_opponent_port, packet_temp->buflen);
 #else
             for (int j = 4; j < packet_temp->len; j++)
             {
@@ -784,13 +784,13 @@ int network_state_send(void)
 
             if (!SDLNet_UDP_Send(socket, 0, packet_temp))
             {
-                fprintf(stderr, "SDLNet_UDP_Send: %s (2)\n", SDL_GetError());
+                _fprintf(stderr, "SDLNet_UDP_Send: %s (2)\n", SDL_GetError());
 #endif
                 return -1;
             }
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
         } else {
-            fprintf(stderr, "network_state_send: Packet buffer is NULL (2)\n");
+            _fprintf(stderr, "network_state_send: Packet buffer is NULL (2)\n");
             return -1;
         }
 #endif
@@ -1007,7 +1007,7 @@ int network_connect(void)
     }
 
     if (!ip) {
-        fprintf(stderr, "network_connect: Resolve host name failed! %s", SDL_GetError());
+        _fprintf(stderr, "network_connect: Resolve host name failed! %s", SDL_GetError());
         return -1;
     }
 #else
@@ -1075,17 +1075,17 @@ connect_again:
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (SDLNet_Read16(&packet_in[0]->buf[4]) != NET_VERSION)
     {
-        fprintf(stderr, "error: network version did not match opponent's\n");
+        _fprintf(stderr, "error: network version did not match opponent's\n");
         network_tyrian_halt(4, true);
     }
     if (SDLNet_Read16(&packet_in[0]->buf[6]) != network_delay)
     {
-        fprintf(stderr, "error: network delay did not match opponent's\n");
+        _fprintf(stderr, "error: network delay did not match opponent's\n");
         network_tyrian_halt(5, true);
     }
     if (SDLNet_Read16(&packet_in[0]->buf[10]) == thisPlayerNum)
     {
-        fprintf(stderr, "error: player number conflicts with opponent's\n");
+        _fprintf(stderr, "error: player number conflicts with opponent's\n");
         network_tyrian_halt(6, true);
     }
 
@@ -1100,17 +1100,17 @@ connect_again:
 #else
 	if (SDLNet_Read16(&packet_in[0]->data[4]) != NET_VERSION)
 	{
-		fprintf(stderr, "error: network version did not match opponent's\n");
+		_fprintf(stderr, "error: network version did not match opponent's\n");
 		network_tyrian_halt(4, true);
 	}
 	if (SDLNet_Read16(&packet_in[0]->data[6]) != network_delay)
 	{
-		fprintf(stderr, "error: network delay did not match opponent's\n");
+		_fprintf(stderr, "error: network delay did not match opponent's\n");
 		network_tyrian_halt(5, true);
 	}
 	if (SDLNet_Read16(&packet_in[0]->data[10]) == thisPlayerNum)
 	{
-		fprintf(stderr, "error: player number conflicts with opponent's\n");
+		_fprintf(stderr, "error: player number conflicts with opponent's\n");
 		network_tyrian_halt(6, true);
 	}
 
@@ -1241,7 +1241,7 @@ int network_init(void)
 
 	if (network_delay * 2 > NET_PACKET_QUEUE - 2)
 	{
-		fprintf(stderr, "error: network delay would overflow packet queue\n");
+		_fprintf(stderr, "error: network delay would overflow packet queue\n");
 		return -4;
 	}
 
@@ -1251,7 +1251,7 @@ int network_init(void)
 	if (SDLNet_Init() == -1)
 #endif
 	{
-		fprintf(stderr, "error: SDLNet_Init: %s\n", SDLNet_GetError());
+		_fprintf(stderr, "error: SDLNet_Init: %s\n", SDLNet_GetError());
 		return -1;
 	}
 
@@ -1263,7 +1263,7 @@ int network_init(void)
 
 	if (!socket)
 	{
-		fprintf(stderr, "error: SDLNet_UDP_Open: %s\n", SDLNet_GetError());
+		_fprintf(stderr, "error: SDLNet_UDP_Open: %s\n", SDLNet_GetError());
 		return -2;
 	}
 
@@ -1290,7 +1290,7 @@ int network_init(void)
 
 	if (!packet_temp || !packet_out_temp)
 	{
-		fprintf(stderr, "SDLNet_AllocPacket: %s\n", SDLNet_GetError());
+		_fprintf(stderr, "SDLNet_AllocPacket: %s\n", SDLNet_GetError());
 		return -3;
 	}
 

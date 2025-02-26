@@ -87,6 +87,10 @@
 #include <psp2/kernel/processmgr.h>
 #endif
 
+#ifdef PSP
+#include <pspdebug.h>
+#endif
+
 #if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA) || defined(PSP)
 #ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
@@ -858,37 +862,45 @@ int main(int argc, char *argv[])
 #endif
 #endif
 
-#if defined(__APPLE__) && defined(__MACH__)
-    printf("\nWelcome to... >> %s v%s <<\n\n", getBundleName(), getBundleVersion());
-
-    printf("Identifier: %s\n", getBundleID());
-    printf("Executable: %s\n", getExecutablePath());
-    printf("Resources:  %s\n", getBundlePath());
-    printf("Frameworks: %s\n", getFrameworksPath());
-    printf("Home directory: %s\n\n", getHomeDir());
-#else
-	printf("\nWelcome to... >> %s %s <<\n\n", opentyrian_str, opentyrian_version);
+#ifdef PSP
+#ifdef _DEBUG
+    pspDebugScreenInit();
+#endif
 #endif
 
-    printf("Current architecture: ");
+#if defined(__APPLE__) && defined(__MACH__)
+    _printf("\nWelcome to... >> %s v%s <<\n\n", getBundleName(), getBundleVersion());
+
+    _printf("Identifier: %s\n", getBundleID());
+    _printf("Executable: %s\n", getExecutablePath());
+    _printf("Resources:  %s\n", getBundlePath());
+    _printf("Frameworks: %s\n", getFrameworksPath());
+    _printf("Home directory: %s\n\n", getHomeDir());
+#else
+	_printf("\nWelcome to... >> %s %s <<\n\n", opentyrian_str, opentyrian_version);
+#endif
+
+    _printf("Current architecture: ");
 #if defined(__i386__) || defined(_M_IX86)
-    printf("I386\n");
+    _printf("I386\n");
 #elif defined(__x86_64__) || defined(_M_AMD64)
-    printf("X86_64\n");
+    _printf("X86_64\n");
 #elif defined(__ppc__) || defined(_M_PPC)
-    printf("PPC\n");
+    _printf("PPC\n");
 #elif defined(__ppc64__) || defined(_M_PPC64)
-    printf("PPC64\n");
+    _printf("PPC64\n");
 #elif defined(__arm__) || defined(_M_ARM)
-    printf("ARM\n");
+    _printf("ARM\n");
 #elif defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM64) || defined(_M_ARM64EC)
-    printf("ARM64\n");
+    _printf("ARM64\n");
+#elif defined(__mips__)
+    _printf("MIPS\n");
 #else
-    printf("Unknown\n");
+    _printf("Unknown\n");
 #endif
 
 #if defined(__APPLE__) && defined(__MACH__)
-    printf("Minimum OS version: %s\n", getMinimumOS());
+    _printf("Minimum OS version: %s\n", getMinimumOS());
 #endif
 
 #ifndef WITH_SDL3
@@ -898,32 +910,32 @@ int main(int argc, char *argv[])
     sdlnetver = SDLNet_Linked_Version();
 #endif
 
-    printf("SDL version %d.%d.%d\n", sdlver.major, sdlver.minor, sdlver.patch);
+    _printf("SDL version %d.%d.%d\n", sdlver.major, sdlver.minor, sdlver.patch);
 
 #ifdef WITH_NETWORK
-    printf("SDL_net version %d.%d.%d\n\n", sdlnetver->major, sdlnetver->minor, sdlnetver->patch);
+    _printf("SDL_net version %d.%d.%d\n\n", sdlnetver->major, sdlnetver->minor, sdlnetver->patch);
 #endif /* WITH_NETWORK */
 #else
-    printf("SDL version %d.%d.%d\n", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION);
+    _printf("SDL version %d.%d.%d\n", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION);
 
 #ifdef WITH_NETWORK
-    printf("SDL_net version %d.%d\n\n", SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION);
+    _printf("SDL_net version %d.%d\n\n", SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION);
 #endif /* WITH_NETWORK */
 #endif
 
-    printf("\n");
+    _printf("\n");
 
 #if defined(__APPLE__) && defined(__MACH__)
-    printf("%s\n\n", getCopyRight());
+    _printf("%s\n\n", getCopyRight());
 #else
-	printf("Copyright (C) 2022-2025 The OpenTyrian Development Team\n");
-	printf("Copyright (C) 2022-2025 Kaito Sinclaire\n");
-    printf("Copyright (C) 2024-2025 AnV Software\n\n");
+	_printf("Copyright (C) 2022-2025 The OpenTyrian Development Team\n");
+	_printf("Copyright (C) 2022-2025 Kaito Sinclaire\n");
+    _printf("Copyright (C) 2024-2025 AnV Software\n\n");
 #endif
 
-	printf("This program comes with ABSOLUTELY NO WARRANTY.\n");
-	printf("This is free software, and you are welcome to redistribute it\n");
-	printf("under certain conditions.  See the file COPYING for details.\n\n");
+	_printf("This program comes with ABSOLUTELY NO WARRANTY.\n");
+	_printf("This is free software, and you are welcome to redistribute it\n");
+	_printf("under certain conditions.  See the file COPYING for details.\n\n");
 
 #ifdef WITH_SDL3
     if (SDL_Init(0) == false)
@@ -931,15 +943,16 @@ int main(int argc, char *argv[])
 	if (SDL_Init(0))
 #endif
 	{
-		printf("Failed to initialize SDL: %s\n", SDL_GetError());
+		_printf("Failed to initialize SDL: %s\n", SDL_GetError());
 		return -1;
-	}
+    }
 
 	// Note for this reorganization:
 	// Tyrian 2000 requires help text to be loaded before the configuration,
 	// because the default high score names are stored in help text
 
-	JE_paramCheck(argc, (char **)argv);
+
+    JE_paramCheck(argc, (char **)argv);
 
 	if (!override_xmas) // arg handler may override
 		xmas = xmas_time();
@@ -954,13 +967,12 @@ int main(int argc, char *argv[])
 	init_video();
 	init_keyboard();
 	init_joysticks();
-	printf("assuming mouse detected\n"); // SDL can't tell us if there isn't one
 
 	if (xmas && (!dir_file_exists(data_dir(), "tyrianc.shp") || !dir_file_exists(data_dir(), "voicesc.snd")))
 	{
 		xmas = false;
 
-		fprintf(stderr, "warning: Christmas is missing.\n");
+		_fprintf(stderr, "warning: Christmas is missing.\n");
 	}
 
 	JE_loadPals();
@@ -981,7 +993,7 @@ int main(int argc, char *argv[])
 
 	if (!audio_disabled)
 	{
-		printf("initializing SDL audio...\n");
+		_printf("initializing SDL audio...\n");
 
 		init_audio();
 
@@ -991,11 +1003,11 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		printf("audio disabled\n");
+		_printf("audio disabled\n");
 	}
 
 	if (record_demo)
-		printf("demo recording enabled (input limited to keyboard)\n");
+		_printf("demo recording enabled (input limited to keyboard)\n");
 
 	JE_loadExtraShapes();  /*Editship*/
 
@@ -1007,7 +1019,7 @@ int main(int argc, char *argv[])
 			network_tyrian_halt(3, false);
 		}
 #else
-		fprintf(stderr, "OpenTyrian was compiled without networking support.");
+		_fprintf(stderr, "OpenTyrian was compiled without networking support.");
 		JE_tyrianHalt(5);
 #endif
 	}

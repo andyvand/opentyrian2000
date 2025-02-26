@@ -754,7 +754,7 @@ void JE_decryptSaveTemp(void)
 	if (saveTemp[SAVE_FILE_SIZE] != y)
 	{
 		correct = false;
-		printf("Failed additive checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE], y);
+		_printf("Failed additive checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE], y);
 	}
 
 	y = 0;
@@ -765,7 +765,7 @@ void JE_decryptSaveTemp(void)
 	if (saveTemp[SAVE_FILE_SIZE+1] != y)
 	{
 		correct = false;
-		printf("Failed subtractive checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE+1], y);
+		_printf("Failed subtractive checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE+1], y);
 	}
 
 	y = 1;
@@ -776,7 +776,7 @@ void JE_decryptSaveTemp(void)
 	if (saveTemp[SAVE_FILE_SIZE+2] != y)
 	{
 		correct = false;
-		printf("Failed multiplicative checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE+2], y);
+		_printf("Failed multiplicative checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE+2], y);
 	}
 
 	y = 0;
@@ -787,13 +787,13 @@ void JE_decryptSaveTemp(void)
 	if (saveTemp[SAVE_FILE_SIZE+3] != y)
 	{
 		correct = false;
-		printf("Failed XOR'd checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE+3], y);
+		_printf("Failed XOR'd checksum: %d vs %d\n", saveTemp[SAVE_FILE_SIZE+3], y);
 	}
 
 	/* Barf and die if save file doesn't validate */
 	if (!correct)
 	{
-		fprintf(stderr, "Error reading save file!\n");
+		_fprintf(stderr, "Error reading save file!\n");
 		exit(255);
 	}
 
@@ -886,7 +886,7 @@ void JE_loadConfiguration(void)
 	}
 	else
 	{
-		printf("\nInvalid or missing TYRIAN.CFG! Continuing using defaults.\n\n");
+		_printf("\nInvalid or missing TYRIAN.CFG! Continuing using defaults.\n\n");
 		
 		soundEffects = 1;
 		memcpy(&dosKeySettings, &defaultDosKeySettings, sizeof(dosKeySettings));

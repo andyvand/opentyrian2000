@@ -243,7 +243,7 @@ void loadSndFile(bool xmas)
 
         if (cvtstream == NULL)
         {
-            fprintf(stderr, "error: Failed to make audio converter stream: %s\n", SDL_GetError());
+            _fprintf(stderr, "error: Failed to make audio converter stream: %s\n", SDL_GetError());
 
             for (int i = 0; i < SOUND_COUNT; ++i)
                 soundSampleCount[i] = 0;
@@ -257,7 +257,7 @@ void loadSndFile(bool xmas)
         
         if (cvtdata == NULL)
         {
-            fprintf(stderr, "error: Failed to allocate memory for audio converter\n");
+            _fprintf(stderr, "error: Failed to allocate memory for audio converter\n");
             
             for (int i = 0; i < SOUND_COUNT; ++i)
                 soundSampleCount[i] = 0;
@@ -268,7 +268,7 @@ void loadSndFile(bool xmas)
         if ((SDL_PutAudioStreamData(cvtstream, soundSamples[i], src_len) == false) ||
             (SDL_FlushAudioStream(cvtstream) == false))
         {
-            fprintf(stderr, "error: Failed to load sound samples: %s\n", SDL_GetError());
+            _fprintf(stderr, "error: Failed to load sound samples: %s\n", SDL_GetError());
 
             for (int i = 0; i < SOUND_COUNT; ++i)
                 soundSampleCount[i] = 0;
@@ -280,7 +280,7 @@ void loadSndFile(bool xmas)
         
         if (real_dst_len < 0)
         {
-            fprintf(stderr, "error: Failed to save sound samples: %s\n", SDL_GetError());
+            _fprintf(stderr, "error: Failed to save sound samples: %s\n", SDL_GetError());
             
             for (int i = 0; i < SOUND_COUNT; ++i)
                 soundSampleCount[i] = 0;
@@ -308,7 +308,7 @@ void loadSndFile(bool xmas)
 	SDL_AudioCVT cvt;
 	if (SDL_BuildAudioCVT(&cvt, AUDIO_S8, 1, 11025, AUDIO_S16SYS, 1, audioSampleRate) < 0)
 	{
-		fprintf(stderr, "error: Failed to build audio converter: %s\n", SDL_GetError());
+		_fprintf(stderr, "error: Failed to build audio converter: %s\n", SDL_GetError());
 
 		for (int i = 0; i < SOUND_COUNT; ++i)
 			soundSampleCount[i] = 0;
@@ -329,7 +329,7 @@ void loadSndFile(bool xmas)
 
 		if (SDL_ConvertAudio(&cvt))
 		{
-			fprintf(stderr, "error: Failed to convert audio: %s\n", SDL_GetError());
+			_fprintf(stderr, "error: Failed to convert audio: %s\n", SDL_GetError());
 
 			soundSampleCount[i] = 0;
 
@@ -349,7 +349,7 @@ void loadSndFile(bool xmas)
 	return;
 
 die:
-	fprintf(stderr, "error: Unexpected data was read from a file.\n");
+	_fprintf(stderr, "error: Unexpected data was read from a file.\n");
 	SDL_Quit();
 	exit(EXIT_FAILURE);
 }

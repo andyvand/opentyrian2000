@@ -83,18 +83,20 @@ void init_video(void)
 
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
     {
-        fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
+        _fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
         exit(1);
     }
 #else
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) == false)
     {
-        fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
+        _fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
         exit(1);
     }
 
     if (SDL_WasInit(SDL_INIT_VIDEO) == false)
+    {
         return;
+    }
 #endif
 
 	// Create the software surfaces that the game renders to. These are all 320x200x8 regardless
@@ -139,7 +141,7 @@ void init_video(void)
 
 	if (main_window == NULL)
 	{
-		fprintf(stderr, "error: failed to create window: %s\n", SDL_GetError());
+		_fprintf(stderr, "error: failed to create window: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 
@@ -185,7 +187,7 @@ static void init_renderer(void)
 
 	if (main_window_renderer == NULL)
 	{
-		fprintf(stderr, "error: failed to create renderer: %s\n", SDL_GetError());
+		_fprintf(stderr, "error: failed to create renderer: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 }
@@ -228,7 +230,7 @@ static void init_texture(void)
 
 	if (main_window_texture == NULL)
 	{
-		fprintf(stderr, "error: failed to create scaler texture %dx%dx%s: %s\n", scaler_w, scaler_h, SDL_GetPixelFormatName(format), SDL_GetError());
+		_fprintf(stderr, "error: failed to create scaler texture %dx%dx%s: %s\n", scaler_w, scaler_h, SDL_GetPixelFormatName(format), SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 }
