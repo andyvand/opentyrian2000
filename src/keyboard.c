@@ -277,7 +277,6 @@ void service_SDL_events(JE_boolean clear_new)
 				return;
 
 #ifdef WITH_SDL3
-            case SDL_EVENT_FINGER_MOTION:
             case SDL_EVENT_MOUSE_MOTION:
                 mx = (Sint32)ev.motion.x;
                 my = (Sint32)ev.motion.y;
@@ -344,7 +343,6 @@ void service_SDL_events(JE_boolean clear_new)
 				break;
 
 #ifdef WITH_SDL3
-            case SDL_EVENT_FINGER_DOWN:
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
 #else
 			case SDL_MOUSEBUTTONDOWN:
@@ -353,7 +351,6 @@ void service_SDL_events(JE_boolean clear_new)
 
 				// fall through
 #ifdef WITH_SDL3
-            case SDL_EVENT_FINGER_UP:
             case SDL_EVENT_MOUSE_BUTTON_UP:
                 bx = (Sint32)ev.button.x;
                 by = (Sint32)ev.button.y;
