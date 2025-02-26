@@ -30,10 +30,12 @@
 static void nn_32(SDL_Surface *src_surface, SDL_Texture *dst_texture);
 static void nn_16(SDL_Surface *src_surface, SDL_Texture *dst_texture);
 
+#ifndef VITA
 static void scale2x_32(SDL_Surface *src_surface, SDL_Texture *dst_texture);
 static void scale2x_16(SDL_Surface *src_surface, SDL_Texture *dst_texture);
 static void scale3x_32(SDL_Surface *src_surface, SDL_Texture *dst_texture);
 static void scale3x_16(SDL_Surface *src_surface, SDL_Texture *dst_texture);
+#endif
 
 void hq2x_32(SDL_Surface *src_surface, SDL_Texture *dst_texture);
 void hq3x_32(SDL_Surface *src_surface, SDL_Texture *dst_texture);
