@@ -216,11 +216,6 @@ void loadSndFile(bool xmas)
     void *cvtdata = NULL;
     size_t maxSampleSize = 0;
 
-    for (size_t i = 0; i < SOUND_COUNT; ++i)
-    {
-        maxSampleSize = MAX(maxSampleSize, soundSampleCount[i]);
-    }
-
     cvtinspec.format = SDL_AUDIO_S8;
     cvtinspec.channels = 1;
     cvtinspec.freq = 11025;
@@ -232,6 +227,13 @@ void loadSndFile(bool xmas)
     if (11025 < audioSampleRate) {
         const double mult = ((double)audioSampleRate / (double)11025);
         len_mult *= (int)SDL_ceil(mult);
+    }
+
+    len_mult *= 2; // S8 to S16
+
+    for (size_t i = 0; i < SOUND_COUNT; ++i)
+    {
+        maxSampleSize = MAX(maxSampleSize, soundSampleCount[i]);
     }
 
     src_samplesize = (SDL_AUDIO_BITSIZE(cvtinspec.format) / 8) * cvtinspec.channels;
