@@ -182,10 +182,10 @@ static void init_renderer(void)
 #ifdef WITH_SDL3
     main_window_renderer = SDL_CreateRenderer(main_window, NULL);
 #else
-	main_window_renderer = SDL_CreateRenderer(main_window, -1, 0);
+    main_window_renderer = SDL_CreateRenderer(main_window, -1, 0);
 #endif
 
-	if (main_window_renderer == NULL)
+    if (main_window_renderer == NULL)
 	{
 		_fprintf(stderr, "error: failed to create renderer: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);

@@ -13,6 +13,7 @@ OBJS = src/animlib.o src/arg_parse.o src/backgrnd.o src/config.o src/config_file
 
 
 INCDIR = 
+#CFLAGS = -Os -g0 -Wall -I$(PSPDEV)/psp/include -DPSP=1 -DPSP8=1 -std=c99
 CFLAGS = -Os -g0 -Wall -I$(PSPDEV)/psp/include -DPSP=1 -DPSP8=1 -DWITH_SDL3=1 -std=c99
 ASFLAGS = $(CFLAGS)
 
@@ -20,6 +21,7 @@ LIBDIR =
 LDFLAGS =
 
 LIBS = $(shell pkg-config $(PSPDEV)/psp/lib/pkgconfig/sdl3.pc --libs)
+#LIBS = -lSDL2main -lSDL2 -lm -lGL -lpspvram -lpspaudio -lpspvfpu -lpspdisplay -lpspgu -lpspge -lpsphprm -lpspctrl -lpsppower
 
 #LIBS = -lSDL3 -lstdc++ -lvorbisidec -lpng -lz -ljpeg -lSDL_gfx -lm -lm -lGL -lpspvfpu -Lc:/games/psp/pspsdk/psp/sdk/lib -lpspirkeyb -lpsppower -lpspdebug -lpspgu -lpspctrl -lpspge -lpspdisplay -lpsphprm -lpspsdk -lpsprtc -lpspaudio -lc -lpspuser -lpspgum -lpsputility -lpspkernel -lpspnet_inet -lGL -lpsprtc   -lpspvfpu  -lpsppower -lpspvram -lpspvramalloc
 
