@@ -217,7 +217,9 @@ void loadSndFile(bool xmas)
     size_t maxSampleSize = 0;
 
     for (size_t i = 0; i < SOUND_COUNT; ++i)
-        
+    {
+        maxSampleSize = MAX(maxSampleSize, soundSampleCount[i]);
+    }
 
     cvtinspec.format = SDL_AUDIO_S8;
     cvtinspec.channels = 1;
