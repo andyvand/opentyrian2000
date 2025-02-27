@@ -74,6 +74,13 @@ const char *data_dir(void)
         "app0:data/",
         ".",
     };
+#elif defined(__3DS__)
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        "data",
+        ".",
+    };
 #elif defined(PSP)
     const char *const dirs[] =
     {

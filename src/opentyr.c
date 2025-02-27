@@ -91,7 +91,7 @@
 #include <pspdebug.h>
 #endif
 
-#if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA) || defined(PSP)
+#if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA) || defined(PSP) || defined(__3DS__)
 #ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
 #endif
