@@ -43,12 +43,12 @@ OpenTyrian2000 uses UDP port 1333 for multiplayer, but in most cases players
 will not need to open any ports because OpenTyrian2000 makes use of UDP hole
 punching.
 
-Note that Network play has not been tested for OpenTyrian2000.
+Note that Network play has been tested using both SDL2_net and SDL3_net.
 
 == Links =======================================================================
 
 * For OpenTyrian2000
-project: https://github.com/KScl/opentyrian2000
+project: https://github.com/andyvand/opentyrian2000
 
 * For OpenTyrian
 project: https://github.com/opentyrian/opentyrian
