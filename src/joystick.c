@@ -425,14 +425,14 @@ void reset_joystick_assignments(int j)
 				joystick[j].assignment[a][1].x_axis = (a == 1 || a == 3);
 				joystick[j].assignment[a][1].negative_axis = (a == 0 || a == 3);
 			}
-#ifdef VITA
+#if defined(VITA) || defined(PSP)
             static const char remap[4] = { 8, 9, 6, 7 }; // maps to correct button (UP, RIGHT, DOWN, LEFT)
 
             joystick[j].assignment[a][1].type = BUTTON;
             joystick[j].assignment[a][1].num = remap[a];
 #endif
 		}
-#ifndef VITA
+#if !defined(VITA) && !defined(PSP)
 		else
 		{
 #ifdef WITH_SDL3
@@ -448,7 +448,7 @@ void reset_joystick_assignments(int j)
 #endif
 	}
 
-#ifdef VITA
+#if defined(VITA) || defined(PSP)
     joystick[j].assignment[4][0].type = BUTTON;
     joystick[j].assignment[4][0].num = 2; // X (fire)
 
