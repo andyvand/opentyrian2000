@@ -37,7 +37,7 @@ const char *const scaling_mode_names[ScalingMode_MAX] = {
 };
 
 int fullscreen_display;
-#if defined(IOS) || defined(ANDROID) || defined(__ANDROID__) || defined(__3DS__)
+#if defined(IOS) || defined(ANDROID) || defined(__ANDROID__) || defined(__3DS__) || defined(PSP)
 ScalingMode scaling_mode = SCALE_ASPECT_4_3;
 #else
 ScalingMode scaling_mode = SCALE_INTEGER;
