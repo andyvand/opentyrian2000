@@ -61,7 +61,7 @@
 #endif
 
 #ifdef WITH_NETWORK
-#ifdef WITH_SDL3
+#if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 #include <SDL3_net/SDL_net.h>
 #else
 #include <SDL2/SDL_net.h>

@@ -10,9 +10,9 @@ PROJECT_TITLE := OpenTyrian2000
 PROJECT_TITLEID := OPTIRYAN2000
 PROJECT := OpenTyrian2000
 
-LIBS = -lpthread -lSDL3 -lpib -lSceTouch_stub -lSceCamera_stub -lSceMotion_stub -lSceAudioIn_stub -lSceTouchForDriver_stub -lSceHid_stub_weak -lSceHidForDriver_stub_weak -lvita2d -lSceDisplay_stub -lSceGxm_stub -lSceSysmodule_stub -lSceCtrl_stub -lScePgf_stub -lSceNetCtl_stub -lSceNet_stub -lScePower_stub -lSceKernelBootimage_stub -lSceKernelBootimage_stub -lSceKernelDmacMgr_stub -lSceKernelDmacMgr_stub -lSceKernelModulemgr_stub -lSceKernelModulemgr_stub -lSceKernelSuspendForDriver_stub -lSceKernelSuspendForDriver_stub -lSceKernelThreadMgr_stub -lSceKernelThreadMgr_stub -lSceKernelUtilsForDriver_stub -lSceKernelUtilsForDriver_stub -lSceCommonDialog_stub -lSceAppUtil_stub -lSceAudio_stub -lSceAppMgr_stub -llibScePiglet_stub -lSceShaccCg_stub -ltaihen_stub -lpng -lz -lm -lc
+LIBS = -lpthread -lSDL3 -lSDL2_net -lpib -lSceTouch_stub -lSceCamera_stub -lSceMotion_stub -lSceAudioIn_stub -lSceTouchForDriver_stub -lSceHid_stub_weak -lSceHidForDriver_stub_weak -lvita2d -lSceDisplay_stub -lSceGxm_stub -lSceSysmodule_stub -lSceCtrl_stub -lScePgf_stub -lSceNetCtl_stub -lSceNet_stub -lScePower_stub -lSceKernelBootimage_stub -lSceKernelBootimage_stub -lSceKernelDmacMgr_stub -lSceKernelDmacMgr_stub -lSceKernelModulemgr_stub -lSceKernelModulemgr_stub -lSceKernelSuspendForDriver_stub -lSceKernelSuspendForDriver_stub -lSceKernelThreadMgr_stub -lSceKernelThreadMgr_stub -lSceKernelUtilsForDriver_stub -lSceKernelUtilsForDriver_stub -lSceCommonDialog_stub -lSceAppUtil_stub -lSceAudio_stub -lSceAppMgr_stub -llibScePiglet_stub -lSceShaccCg_stub -ltaihen_stub -lpng -lz -lm -lc
 
-CFLAGS  = -Wl,-q -Wall -O3 -DWITH_SDL3=1 -MMD -pedantic -Wall -Wextra \
+CFLAGS  = -Wl,-q -Wall -O3 -DWITH_SDL3=1 -DWITH_NETWORK=1 -DWITH_SDL2NET=1 -MMD -pedantic -Wall -Wextra \
 			-Wno-missing-field-initializers -Wno-unused-parameter \
 			-ftree-vectorize -mword-relocations -fomit-frame-pointer -ffast-math \
 			-march=armv7-a -mtune=cortex-a9 -mfpu=neon -mfloat-abi=hard \
