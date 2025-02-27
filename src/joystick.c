@@ -466,6 +466,24 @@ void reset_joystick_assignments(int j)
 
     joystick[j].assignment[9][0].type = BUTTON;
     joystick[j].assignment[9][0].num = 11; // START (pause)
+#elif defined(__3DS__)
+    joystick[j].assignment[4][0].type = BUTTON;
+    joystick[j].assignment[4][0].num = 10; // X (fire)
+
+    joystick[j].assignment[5][0].type = BUTTON;
+    joystick[j].assignment[5][0].num = 11; // Y (change fire)
+
+    joystick[j].assignment[6][0].type = BUTTON;
+    joystick[j].assignment[6][0].num = 0; // A (left sidekick)
+
+    joystick[j].assignment[7][0].type = BUTTON;
+    joystick[j].assignment[7][0].num = 1; // B (right sidekick)
+
+    joystick[j].assignment[8][0].type = BUTTON;
+    joystick[j].assignment[8][0].num = 2; // back (menu)
+
+    joystick[j].assignment[9][0].type = BUTTON;
+    joystick[j].assignment[9][0].num = 3; // START (pause)
 #endif
 
 	joystick[j].analog = false;
