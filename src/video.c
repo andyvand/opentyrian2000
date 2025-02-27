@@ -37,7 +37,7 @@ const char *const scaling_mode_names[ScalingMode_MAX] = {
 };
 
 int fullscreen_display;
-#if defined(IOS) || defined(ANDROID) || defined(__ANDROID__)
+#if defined(IOS) || defined(ANDROID) || defined(__ANDROID__) || defined(__3DS__)
 ScalingMode scaling_mode = SCALE_ASPECT_4_3;
 #else
 ScalingMode scaling_mode = SCALE_INTEGER;
@@ -122,7 +122,7 @@ void init_video(void)
 	// Create the window with a temporary initial size, hidden until we set up the
 	// scaler and find the true window size
 #ifdef WITH_SDL3
-#ifdef IOS
+#if defined(IOS) || defined(__3DS__)
     main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN);
 #else
     main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
