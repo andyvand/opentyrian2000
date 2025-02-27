@@ -2,12 +2,12 @@
 .SUFFIXES:
 #---------------------------------------------------------------------------------
 
-ifeq ($(strip $(DEVKITPRO)),)
-$(error "Please set DEVKITPRO in your environment. export DEVKITPRO=<path to>/devkitpro")
+ifeq ($(strip $(DEVKITARM)),)
+$(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
 TOPDIR ?= $(CURDIR)
-include $(DEVKITPRO)/libnx/switch_rules
+include $(DEVKITARM)/3ds_rules
 
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
@@ -26,8 +26,8 @@ include $(DEVKITPRO)/libnx/switch_rules
 # ICON is the filename of the icon (.jpg), relative to the project folder.
 #   If not set, it attempts to use one of the following (in this order):
 #     - <Project name>.jpg
-#     - icon.jpg
-#     - <libnx folder>/default_icon.jpg
+#     - icon.png
+#     - <libnx folder>/default_icon.png
 #---------------------------------------------------------------------------------
 APP_TITLE	:=	Open Tyrian 2000 $(VERSION)
 APP_AUTHOR	:=	AnV Software
@@ -43,21 +43,21 @@ TYRIAN_DIR  :=  tyrian
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH		:=	-march=armv8-a -mtp=soft -fPIE
+ARCH		:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 CFLAGS		:=	-g -Wall -O2 \
-				-ffast-math \
+				-mword-relocations -ffunction-sections \
 				$(ARCH) $(DEFINES)
-CFLAGS  	+=	-D__SWITCH__ -DWITH_MIDI=1 $(INCLUDE) -I$(DEVKITPRO)/portlibs/switch/include/midiproc `sdl2-config --cflags` -DTYRIAN_DIR='"$(TYRIAN_DIR)"' -DHG_REV='"v$(APP_VERSION)"'
+CFLAGS  	+=	-D__3DS__ -DWITH_SDL3=1 $(INCLUDE) -I$(DEVKITARM)/../portlibs/switch/include -DTYRIAN_DIR='"$(TYRIAN_DIR)"' -DHG_REV='"v$(APP_VERSION)"'
 CXXFLAGS	:=  $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS		:=	-g $(ARCH)
-LDFLAGS		:=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
-LIBS		:= -lSDL2_mixer_ext -lmidiproc -lfluidlite -lmpg123 -lgme -lopusfile -lopus -lvorbisfile -lvorbis -logg -ltimidity_sdl2 -lOPNMIDI -lEDMIDI -lADLMIDI -lmodplug -lwavpack -lxmp -lzlib -lSDL2 -lSDL2main -lEGL -lGLESv2 -ldrm_nouveau -lglapi -lnx -lstdc++ -lm
+LDFLAGS		:=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+LIBS		:= -lSDL3 -lstdc++ -lctru -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #--------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(LIBNX)
+LIBDIRS	:= $(PORTLIBS) $(CTRULIB)
 
 
 #---------------------------------------------------------------------------------
@@ -78,6 +78,9 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
+PICAFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.v.pica)))
+SHLISTFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.shlist)))
+GFXFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.t3s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
 
 #---------------------------------------------------------------------------------
@@ -94,8 +97,29 @@ else
 endif
 #---------------------------------------------------------------------------------
 
+ifeq ($(GFXBUILD),$(BUILD))
+#---------------------------------------------------------------------------------
+export T3XFILES :=  $(GFXFILES:.t3s=.t3x)
+#---------------------------------------------------------------------------------
+else
+#---------------------------------------------------------------------------------
+export ROMFS_T3XFILES	:=	$(patsubst %.t3s, $(GFXBUILD)/%.t3x, $(GFXFILES))
+export T3XHFILES		:=	$(patsubst %.t3s, $(BUILD)/%.h, $(GFXFILES))
+#---------------------------------------------------------------------------------
+endif
+
+export OFILES_SOURCES 	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+
+export OFILES_BIN	:=	$(addsuffix .o,$(BINFILES)) \
+			$(PICAFILES:.v.pica=.shbin.o) $(SHLISTFILES:.shlist=.shbin.o) \
+			$(addsuffix .o,$(T3XFILES))
+
 export OFILES	:=	$(addsuffix .o,$(BINFILES)) \
 			$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+
+export HFILES	:=	$(PICAFILES:.v.pica=_shbin.h) $(SHLISTFILES:.shlist=_shbin.h) \
+			$(addsuffix .h,$(subst .,_,$(BINFILES))) \
+			$(GFXFILES:.t3s=.h)
 
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 			$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
@@ -103,47 +127,63 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-export BUILD_EXEFS_SRC := $(TOPDIR)/$(EXEFS_SRC)
+export _3DSXDEPS	:=	$(if $(NO_SMDH),,$(OUTPUT).smdh)
 
 ifeq ($(strip $(ICON)),)
 	icons := $(wildcard *.jpg)
 	ifneq (,$(findstring $(TARGET).jpg,$(icons)))
 		export APP_ICON := $(TOPDIR)/$(TARGET).jpg
 	else
-		ifneq (,$(findstring icon.jpg,$(icons)))
-			export APP_ICON := $(TOPDIR)/icon.jpg
+		ifneq (,$(findstring icon.png,$(icons)))
+			export APP_ICON := $(TOPDIR)/icon.png
 		endif
 	endif
 else
 	export APP_ICON := $(TOPDIR)/$(ICON)
 endif
 
+ifeq ($(strip $(NO_SMDH)),)
+	export _3DSXFLAGS += --smdh=$(CURDIR)/$(TARGET).smdh
+endif
+
+ifneq ($(ROMFS),)
+	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
+endif
+
 ifeq ($(strip $(NO_ICON)),)
 	export NROFLAGS += --icon=$(APP_ICON)
-endif
-
-ifeq ($(strip $(NO_NACP)),)
-	export NROFLAGS += --nacp=$(CURDIR)/$(TARGET).nacp
-endif
-
-ifneq ($(APP_TITLEID),)
-	export NACPFLAGS += --titleid=$(APP_TITLEID)
 endif
 
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
-all: $(BUILD)
+all: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile.3DS
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile.switch
+	@mkdir -p $@
+
+ifneq ($(GFXBUILD),$(BUILD))
+$(GFXBUILD):
+	@mkdir -p $@
+endif
+
+ifneq ($(DEPSDIR),$(BUILD))
+$(DEPSDIR):
+	@mkdir -p $@
+endif
 
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).pfs0 $(TARGET).nso $(TARGET).nro $(TARGET).nacp $(TARGET).elf
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(GFXBUILD)
 
+#---------------------------------------------------------------------------------
+$(GFXBUILD)/%.t3x	$(BUILD)/%.h	:	%.t3s
+#---------------------------------------------------------------------------------
+	@echo $(notdir $<)
+	@tex3ds -i $< -H $(BUILD)/$*.h -d $(DEPSDIR)/$*.d -o $(GFXBUILD)/$*.t3x
 
 #---------------------------------------------------------------------------------
 else
@@ -154,25 +194,42 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-all	:	$(OUTPUT).pfs0 $(OUTPUT).nro
+all	:	$(OUTPUT).3dsx
 
-$(OUTPUT).pfs0	:	$(OUTPUT).nso
+$(OUTPUT).elf	:	$(OFILES)
 
-$(OUTPUT).nso	:	$(OUTPUT).elf
+#---------------------------------------------------------------------------------
+# main targets
+#---------------------------------------------------------------------------------
+$(OUTPUT).3dsx	:	$(OUTPUT).elf $(_3DSXDEPS)
 
-$(OUTPUT).nro	:	$(OUTPUT).elf $(OUTPUT).nacp
+$(OFILES_SOURCES) : $(HFILES)
 
 $(OUTPUT).elf	:	$(OFILES)
 
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data
 #---------------------------------------------------------------------------------
-%.bin.o	:	%.bin
+%.bin.o	%_bin.h :	%.bin
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
 
--include $(DEPENDS)
+#---------------------------------------------------------------------------------
+.PRECIOUS	:	%.t3x %.shbin
+#---------------------------------------------------------------------------------
+%.t3x.o	%_t3x.h :	%.t3x
+#---------------------------------------------------------------------------------
+	$(SILENTMSG) $(notdir $<)
+	$(bin2o)
+
+#---------------------------------------------------------------------------------
+%.shbin.o %_shbin.h : %.shbin
+#---------------------------------------------------------------------------------
+	$(SILENTMSG) $(notdir $<)
+	$(bin2o)
+
+-include $(DEPSDIR)/*.d
 
 #---------------------------------------------------------------------------------------
 endif
