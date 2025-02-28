@@ -48,8 +48,10 @@ SDL_Surface *VGAScreen, *VGAScreenSeg;
 SDL_Surface *VGAScreen2;
 SDL_Surface *game_screen;
 
+#ifndef WITH_SDL
 SDL_Window *main_window = NULL;
 static SDL_Renderer *main_window_renderer = NULL;
+#endif
 
 #ifdef WITH_SDL3
 #if defined(ANDROID) || defined(__ANDROID__)
@@ -61,7 +63,9 @@ const SDL_PixelFormatDetails *main_window_tex_format = NULL;
 SDL_PixelFormat *main_window_tex_format = NULL;
 #endif
 
+#ifndef WITH_SDL
 static SDL_Texture *main_window_texture = NULL;
+#endif
 
 static ScalerFunction scaler_function;
 
@@ -73,8 +77,181 @@ static void deinit_texture(void);
 static int window_get_display_index(void);
 static void window_center_in_display(int display_index);
 static void calc_dst_render_rect(SDL_Surface *src_surface, SDL_Rect *dst_rect);
-static void scale_and_flip(SDL_Surface *);
 
+#ifndef WITH_SDL
+static void scale_and_flip(SDL_Surface *);
+#endif
+
+#ifdef WITH_SDL
+bool set_scaling_mode_by_name(const char *name)
+{
+    for (int i = 0; i < ScalingMode_MAX; ++i)
+    {
+         if (strcmp(name, scaling_mode_names[i]) == 0)
+         {
+             scaling_mode = i;
+             return true;
+         }
+    }
+    return false;
+}
+
+void init_video( void )
+{
+    if (SDL_WasInit(SDL_INIT_VIDEO))
+        return;
+
+    if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
+    {
+        fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    SDL_WM_SetCaption("OpenTyrian", NULL);
+
+    VGAScreen = VGAScreenSeg = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
+    VGAScreen2 = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
+    game_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
+
+    SDL_FillRect(VGAScreen, NULL, 0);
+
+    if (!init_scaler(scaler, true) &&  // try desired scaler and desired fullscreen state
+        !init_any_scaler(true) &&      // try any scaler in desired fullscreen state
+        !init_any_scaler(!true))       // try any scaler in other fullscreen state
+    {
+        fprintf(stderr, "error: failed to initialize any supported video mode\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+int can_init_scaler( unsigned int new_scaler, bool fullscreen )
+{
+    if (new_scaler >= scalers_count)
+        return false;
+    
+    int w = scalers[new_scaler].width,
+        h = scalers[new_scaler].height;
+    int flags = SDL_SWSURFACE | SDL_HWPALETTE | (fullscreen ? SDL_FULLSCREEN : 0);
+    
+    // test each bitdepth
+    for (uint bpp = 32; bpp > 0; bpp -= 8)
+    {
+        uint temp_bpp = SDL_VideoModeOK(w, h, bpp, flags);
+        
+        if ((temp_bpp == 32 && scalers[new_scaler].scaler32) ||
+            (temp_bpp == 16 && scalers[new_scaler].scaler16))
+        {
+            return temp_bpp;
+        }
+        else if (temp_bpp == 24 && scalers[new_scaler].scaler32)
+        {
+            // scalers don't support 24 bpp because it's a pain
+            // so let SDL handle the conversion
+            return 32;
+        }
+    }
+    
+    return 0;
+}
+
+bool init_scaler( unsigned int new_scaler, bool fullscreen )
+{
+    int w = scalers[new_scaler].width,
+        h = scalers[new_scaler].height;
+    int bpp = can_init_scaler(new_scaler, fullscreen);
+    int flags = SDL_SWSURFACE | SDL_HWPALETTE | (fullscreen ? SDL_FULLSCREEN : 0);
+    
+    if (bpp == 0)
+        return false;
+    
+    SDL_Surface *const surface = SDL_SetVideoMode(w, h, bpp, flags);
+    
+    if (surface == NULL)
+    {
+        fprintf(stderr, "error: failed to initialize %s video mode %dx%dx%d: %s\n", fullscreen ? "fullscreen" : "windowed", w, h, bpp, SDL_GetError());
+        return false;
+    }
+    
+    w = surface->w;
+    h = surface->h;
+    bpp = surface->format->BitsPerPixel;
+    
+    printf("initialized video: %dx%dx%d %s\n", w, h, bpp, fullscreen ? "fullscreen" : "windowed");
+    
+    scaler = new_scaler;
+    
+    switch (bpp)
+    {
+    case 32:
+        scaler_function = scalers[scaler].scaler32;
+        break;
+    case 16:
+        scaler_function = scalers[scaler].scaler16;
+        break;
+    default:
+        scaler_function = NULL;
+        break;
+    }
+    
+    if (scaler_function == NULL)
+    {
+        assert(false);
+        return false;
+    }
+
+    service_SDL_events(false);
+    
+    JE_showVGA();
+    
+    return true;
+}
+
+bool can_init_any_scaler( bool fullscreen )
+{
+    for (int i = scalers_count - 1; i >= 0; --i)
+        if (can_init_scaler(i, fullscreen) != 0)
+            return true;
+    
+    return false;
+}
+
+bool init_any_scaler( bool fullscreen )
+{
+    // attempts all scalers from last to first
+    for (int i = scalers_count - 1; i >= 0; --i)
+        if (init_scaler(i, fullscreen))
+            return true;
+    
+    return false;
+}
+
+void deinit_video( void )
+{
+    SDL_FreeSurface(VGAScreenSeg);
+    SDL_FreeSurface(VGAScreen2);
+    SDL_FreeSurface(game_screen);
+    
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+}
+
+void JE_clr256( SDL_Surface * screen)
+{
+    memset(screen->pixels, 0, screen->pitch * screen->h);
+}
+void JE_showVGA( void ) { scale_and_flip(VGAScreen); }
+
+void scale_and_flip( SDL_Surface *src_surface )
+{
+    assert(src_surface->format->BitsPerPixel == 8);
+    
+    SDL_Surface *dst_surface = SDL_GetVideoSurface();
+    
+    assert(scaler_function != NULL);
+    scaler_function(src_surface, dst_surface);
+    
+    SDL_Flip(dst_surface);
+}
+#else
 void init_video(void)
 {
 #ifndef WITH_SDL3
@@ -533,6 +710,7 @@ static void scale_and_flip(SDL_Surface *src_surface)
 	// Save output rect to be used by mouse functions
 	last_output_rect = dst_rect;
 }
+#endif
 
 /** Maps a specified point in game screen coordinates to window coordinates. */
 void mapScreenPointToWindow(Sint32 *const inout_x, Sint32 *const inout_y)
@@ -554,3 +732,4 @@ void scaleWindowDistanceToScreen(Sint32 *const inout_x, Sint32 *const inout_y)
 	*inout_x = (2 * *inout_x + 1) * VGAScreen->w / (2 * last_output_rect.w);
 	*inout_y = (2 * *inout_y + 1) * VGAScreen->h / (2 * last_output_rect.h);
 }
+

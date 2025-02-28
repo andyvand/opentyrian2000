@@ -24,7 +24,11 @@
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 #include <errno.h>
@@ -72,6 +76,14 @@ const char *data_dir(void)
     {
         custom_data_dir,
         "app0:data/",
+        ".",
+    };
+#elif defined(__DREAMCAST__)
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        "/rd/data/",
+        "data",
         ".",
     };
 #elif defined(__3DS__)

@@ -60,7 +60,9 @@ void JE_paramCheck(int argc, char *argv[])
 		{ 'n', 'n', "net",               true },
 		{ 256, 0,   "net-player-name",   true }, // TODO: no short codes because there should
 		{ 257, 0,   "net-player-number", true }, //       be a menu for entering these in the future
+#ifndef WITH_SDL
         { 258, 0,   "net-type",          true },
+#endif
 		{ 'p', 'p', "net-port",          true },
 		{ 'd', 'd', "net-delay",         true },
 
@@ -103,7 +105,9 @@ void JE_paramCheck(int argc, char *argv[])
 			       "  --net-player-name=NAME       Sets local player name in a networked game\n"
 			       "  --net-player-number=NUMBER   Sets local player number in a networked game\n"
 			       "                               (1 or 2)\n"
+#ifndef WITH_SDL
                    "  --net-type=[ipv4|ipv6]       Sets network type for socket\n"
+#endif
 			       "  -p, --net-port=PORT          Local port to bind (default is 1333)\n"
 			       "  -d, --net-delay=FRAMES       Set lag-compensation delay (default is 1)\n"
 				   "  -f, --soundfont=FILE         Set the soundfont for MIDI playback\n\n"
@@ -163,6 +167,7 @@ void JE_paramCheck(int argc, char *argv[])
 			break;
 		}
 
+#ifndef WITH_SDL
         case 258:
             if (strncmp(option.arg, "ipv4", 4) == 0 || strncmp(option.arg, "ipv6", 4) == 0)
             {
@@ -172,6 +177,7 @@ void JE_paramCheck(int argc, char *argv[])
                 exit(EXIT_FAILURE);
             }
             break;
+#endif
 
 		case 'p':
 		{

@@ -24,10 +24,18 @@
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
 #endif
+#endif
 
+#ifdef WITH_SDL
+typedef void (*ScalerFunction)(SDL_Surface *src, SDL_Surface *dst);
+#else
 typedef void (*ScalerFunction)(SDL_Surface *src, SDL_Texture *dst);
+#endif
 
 struct Scalers
 {

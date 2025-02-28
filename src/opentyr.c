@@ -57,7 +57,11 @@
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 #ifdef WITH_NETWORK
@@ -97,11 +101,18 @@
 #endif
 #endif
 
+#ifndef init_scaler
+#define init_scaler(a) init_scaler(a, true)
+#endif
+
 const char *opentyrian_str = "OpenTyrian " TYRIAN_VERSION;
 const char *opentyrian_version = OPENTYRIAN_VERSION;
 
 static size_t getDisplayPickerItemsCount(void)
 {
+#ifdef WITH_SDL
+    return 1;
+#else
 #ifdef WITH_SDL3
     int count = 0;
     SDL_GetDisplays(&count);
@@ -109,6 +120,7 @@ static size_t getDisplayPickerItemsCount(void)
     return 1 + count;
 #else
 	return 1 + (size_t)SDL_GetNumVideoDisplays();
+#endif
 #endif
 }
 
@@ -801,8 +813,10 @@ void setupMenu(void)
 				{
 				case MENU_ITEM_DISPLAY:
 				{
+#ifndef WITH_SDL
 					if ((int)pickerSelectedIndex - 1 != fullscreen_display)
 						reinit_fullscreen((int)pickerSelectedIndex - 1);
+#endif
 					break;
 				}
 				case MENU_ITEM_SCALER:
@@ -846,7 +860,7 @@ int SDL_main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 #endif
-#ifndef WITH_SDL3
+#if !defined(WITH_SDL3) && !defined(WITH_SDL)
     SDL_version sdlver;
 #ifdef WITH_NETWORK
     const SDLNet_version *sdlnetver = NULL;
@@ -905,7 +919,7 @@ int main(int argc, char *argv[])
     _printf("Minimum OS version: %s\n", getMinimumOS());
 #endif
 
-#ifndef WITH_SDL3
+#if !defined(WITH_SDL3) && !defined(WITH_SDL)
     SDL_GetVersion(&sdlver);
 
 #ifdef WITH_NETWORK
@@ -918,7 +932,7 @@ int main(int argc, char *argv[])
     _printf("SDL_net version %d.%d.%d\n\n", sdlnetver->major, sdlnetver->minor, sdlnetver->patch);
 #endif /* WITH_NETWORK */
 #else
-    _printf("SDL version %d.%d.%d\n", SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION);
+    _printf("SDL version %d.%d\n", SDL_MAJOR_VERSION, SDL_MINOR_VERSION);
 
 #ifdef WITH_NETWORK
     _printf("SDL_net version %d.%d\n\n", SDL_NET_MAJOR_VERSION, SDL_NET_MINOR_VERSION);

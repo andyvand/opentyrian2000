@@ -59,6 +59,11 @@
 #include "keyboard_vita.h"
 #endif
 
+#ifdef WITH_SDL
+#undef  toupper
+#define toupper _toupper
+#endif
+
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 #define snprintf sprintf_s
 #endif
@@ -3557,7 +3562,7 @@ void JE_pauseGame(void)
 #endif
 }
 
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL)
 JE_byte mousePlayerNumber = 0;
 #endif
 
@@ -3784,7 +3789,7 @@ redo:
 				/* mouse input */
 				if ((inputDevice == 0 || inputDevice == 2) && has_mouse)
 				{
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL)
                     mousePlayerNumber = playerNum_;
 #endif
 

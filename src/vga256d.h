@@ -28,7 +28,11 @@
 extern bool SDL_FillSurfaceRect(SDL_Surface *dst, const SDL_Rect *rect, Uint32 color);
 #endif
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 void JE_pix(SDL_Surface *surface, int x, int y, JE_byte c);

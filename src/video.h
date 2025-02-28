@@ -24,7 +24,11 @@
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 #define vga_width 320
@@ -56,7 +60,9 @@ extern SDL_Surface *VGAScreen, *VGAScreenSeg;
 extern SDL_Surface *game_screen;
 extern SDL_Surface *VGAScreen2;
 
+#ifndef WITH_SDL
 extern SDL_Window *main_window;
+#endif
 
 #ifdef WITH_SDL3
 #if defined(__ANDROID__) || defined(ANDROID)
@@ -69,6 +75,21 @@ extern const SDL_PixelFormatDetails *main_window_tex_format;
 extern SDL_PixelFormat *main_window_tex_format;
 #endif
 
+#ifdef WITH_SDL
+void init_video( void );
+
+int can_init_scaler( unsigned int new_scaler, bool fullscreen );
+bool init_scaler( unsigned int new_scaler, bool fullscreen );
+bool can_init_any_scaler( bool fullscreen );
+bool init_any_scaler( bool fullscreen );
+bool set_scaling_mode_by_name(const char *name);
+
+void deinit_video( void );
+
+void JE_clr256( SDL_Surface * );
+void JE_showVGA( void );
+void scale_and_flip( SDL_Surface * );
+#else
 void init_video(void);
 
 void video_on_win_resize(void);
@@ -81,6 +102,7 @@ void deinit_video(void);
 
 void JE_clr256(SDL_Surface *);
 void JE_showVGA(void);
+#endif
 
 void mapScreenPointToWindow(Sint32 *inout_x, Sint32 *inout_y);
 void mapWindowPointToScreen(Sint32 *inout_x, Sint32 *inout_y);

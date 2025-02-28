@@ -625,8 +625,13 @@ void code_to_assignment(Joystick_assignment *assignment, const char *buffer)
 	else
 		--assignment->num;
 	
+#ifdef WITH_SDL
+    assignment->x_axis = (_toupper(axis) == 'X');
+    assignment->negative_axis = (_toupper(direction) == '-');
+#else
 	assignment->x_axis = (toupper(axis) == 'X');
 	assignment->negative_axis = (toupper(direction) == '-');
+#endif
 }
 
 /* gives the short (6 or less characters) identifier for a joystick assignment

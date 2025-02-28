@@ -25,6 +25,11 @@
 
 #include <ctype.h>
 
+#ifdef WITH_SDL
+#undef  toupper
+#define toupper _toupper
+#endif
+
 #define starlib_MAX_STARS 1000
 #define MAX_TYPES 14
 

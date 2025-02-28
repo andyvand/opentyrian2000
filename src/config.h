@@ -25,7 +25,11 @@
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 #include <stdio.h>

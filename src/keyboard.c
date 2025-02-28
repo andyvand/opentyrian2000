@@ -27,7 +27,7 @@
 #include "video_scale.h"
 #include "font.h"
 
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL)
 #include "player.h"
 #include "network.h"
 #endif
@@ -35,7 +35,11 @@
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 #include <stdio.h>
@@ -118,11 +122,13 @@ void init_keyboard(void)
 	SDL_ShowCursor(SDL_FALSE);
 #endif
 
+#ifndef WITH_SDL
 #if SDL_VERSION_ATLEAST(2, 26, 0)
 	SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE, "1");
 #endif
 #ifdef WITH_SDL3
     SDL_SetHint(SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE, "0");
+#endif
 #endif
 }
 
@@ -132,14 +138,16 @@ void mouseSetRelative(SDL_Window *window, bool enable)
 void mouseSetRelative(bool enable)
 #endif
 {
-#if !defined(ANDROID) && !defined(__ANDROID__) && !defined(IOS) || defined(VITA)
+#if !defined(ANDROID) && !defined(__ANDROID__) && !defined(IOS) && !defined(VITA) && !defined(WITH_SDL)
 #ifdef WITH_SDL3
     SDL_SetWindowRelativeMouseMode(window, enable && windowHasFocus);
 #else
 	SDL_SetRelativeMouseMode(enable && windowHasFocus);
 #endif
 #else
+#ifdef WITH_SDL3
     (void)window;
+#endif
 #endif
 
     mouseRelativeEnabled = enable;
@@ -192,6 +200,7 @@ void service_SDL_events(JE_boolean clear_new)
 	{
 		switch (ev.type)
 		{
+#ifndef WITH_SDL
 #ifndef WITH_SDL3
 			case SDL_WINDOWEVENT:
 				switch (ev.window.event)
@@ -234,19 +243,24 @@ void service_SDL_events(JE_boolean clear_new)
 				}
 				break;
 #endif
+#endif
 
 #ifdef WITH_SDL3
             case SDL_EVENT_KEY_DOWN:
                 if (ev.key.mod & SDL_KMOD_ALT && ev.key.scancode == SDL_SCANCODE_RETURN)
 #else
 			case SDL_KEYDOWN:
+#ifndef WITH_SDL
                 if (ev.key.keysym.mod & KMOD_ALT && ev.key.keysym.scancode == SDL_SCANCODE_RETURN)
 #endif
+#endif
+#ifndef WITH_SDL
 				/* <alt><enter> toggle fullscreen */
 				{
 					toggle_fullscreen();
 					break;
 				}
+#endif
 
 #ifdef WITH_SDL3
                 keysactive[ev.key.scancode] = 1;
@@ -293,7 +307,7 @@ void service_SDL_events(JE_boolean clear_new)
 				if (mouseRelativeEnabled && windowHasFocus)
 				{
 #ifdef WITH_SDL3
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL)
                     if (isNetworkGame)
                     {
                         mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;

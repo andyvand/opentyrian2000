@@ -27,7 +27,11 @@
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 #ifdef WITH_MIDI
@@ -90,7 +94,9 @@ static MidiData * midi_data;
 static Mix_Music ** midi_tracks = NULL;
 #endif
 
+#ifndef WITH_SDL
 static SDL_AudioDeviceID audioDevice = 0;
+#endif
 
 #ifdef WITH_SDL3
 static SDL_AudioStream *auStream = NULL;
@@ -377,10 +383,12 @@ bool init_audio(void)
 		return false;
 	}
 
+#ifndef WITH_SDL
 #ifndef WITH_SDL3
 	int allowedChanges = SDL_AUDIO_ALLOW_FREQUENCY_CHANGE;
 #if SDL_VERSION_ATLEAST(2, 0, 9)
 	allowedChanges |= SDL_AUDIO_ALLOW_SAMPLES_CHANGE;
+#endif
 #endif
 #endif
 
@@ -392,9 +400,17 @@ bool init_audio(void)
     if ((auStream == NULL) || (audioDevice == 0))
     {
 #else
+#ifdef WITH_SDL
+    int audioDevice = SDL_OpenAudio(&ask, &got);
+#else
 	audioDevice = SDL_OpenAudioDevice(/*device*/ NULL, /*iscapture*/ 0, &ask, &got, allowedChanges);
+#endif
 
+#ifdef WITH_SDL
+    if (audioDevice != 0)
+#else
     if (audioDevice == 0)
+#endif
     {
 #endif
 
@@ -427,7 +443,11 @@ bool init_audio(void)
 
     SDL_ResumeAudioDevice(audioDevice); // unpause
 #else
+#ifdef WITH_SDL
+    SDL_PauseAudio(0);
+#else
     SDL_PauseAudioDevice(audioDevice, 0); // unpause
+#endif
 #endif
 
 	return true;
@@ -439,7 +459,9 @@ bool restart_audio(void){
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
+#endif
 #endif
 
 	unsigned int prev_song = song_playing;
@@ -447,7 +469,9 @@ bool restart_audio(void){
 #ifdef WITH_SDL3
     SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
+#endif
 #endif
 
 	deinit_audio();
@@ -723,20 +747,29 @@ void deinit_audio(void)
 	if (audio_disabled)
 		return;
 
-	if (audioDevice != 0)
+#ifndef WITH_SDL
+    if (audioDevice != 0)
 	{
 #ifdef WITH_SDL3
 		SDL_PauseAudioDevice(audioDevice); // pause
 #else
+#ifdef WITH_SDL
+        SDL_PauseAudio(1);
+#else
         SDL_PauseAudioDevice(audioDevice, 1); // pause
+#endif
 #endif
 
 #ifdef WITH_MIDI
 		deinit_midi();
 #endif
 		SDL_CloseAudioDevice(audioDevice);
+
 		audioDevice = 0;
 	}
+#else
+    SDL_CloseAudio();
+#endif
 
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 	song_playing = NO_SONG_PLAYING;
@@ -813,7 +846,11 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 #ifdef WITH_SDL3
         SDL_LockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 		SDL_LockAudioDevice(audioDevice);
+#else
+        SDL_LockAudio();
+#endif
 #endif
 
 		music_stopped = true;
@@ -831,7 +868,11 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 #ifdef WITH_SDL3
         SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 		SDL_UnlockAudioDevice(audioDevice);
+#else
+        SDL_UnlockAudio();
+#endif
 #endif
 
 		if (music_device == OPL)
@@ -844,7 +885,11 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
+#else
+    SDL_LockAudio();
+#endif
 #endif
 
 	music_stopped = false;
@@ -852,7 +897,11 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 #ifdef WITH_SDL3
     SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
+#else
+    SDL_UnlockAudio();
+#endif
 #endif
 }
 
@@ -864,7 +913,11 @@ void restart_song(void)  // FKA Player.selectSong(1)
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
+#else
+    SDL_LockAudio();
+#endif
 #endif
 
 	#ifdef WITH_MIDI
@@ -886,7 +939,11 @@ void restart_song(void)  // FKA Player.selectSong(1)
 #ifdef WITH_SDL3
     SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
+#else
+    SDL_UnlockAudio();
+#endif
 #endif
 }
 
@@ -897,8 +954,12 @@ void stop_song(void)  // FKA Player.selectSong(0)
 
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
-#else
+#els
+#ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
+#else
+    SDL_LockAudio();
+#endif
 #endif
 
 #ifdef WITH_MIDI
@@ -914,7 +975,11 @@ void stop_song(void)  // FKA Player.selectSong(0)
 #ifdef WITH_SDL3
     SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
+#else
+    SDL_UnlockAudio();
+#endif
 #endif
 }
 
@@ -926,7 +991,11 @@ void fade_song(void)  // FKA Player.selectSong($C001)
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
+#else
+    SDL_LockAudio();
+#endif
 #endif
 
 	fading_out = true;
@@ -946,7 +1015,11 @@ void fade_song(void)  // FKA Player.selectSong($C001)
 #ifdef WITH_SDL3
     SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
+#else
+    SDL_UnlockAudio();
+#endif
 #endif
 }
 
@@ -958,7 +1031,11 @@ void set_volume(Uint8 musicVolume_, Uint8 sampleVolume_)  // FKA NortSong.setVol
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
     SDL_LockAudioDevice(audioDevice);
+#else
+    SDL_LockAudio();
+#endif
 #endif
 
 	musicVolume = musicVolume_;
@@ -967,7 +1044,11 @@ void set_volume(Uint8 musicVolume_, Uint8 sampleVolume_)  // FKA NortSong.setVol
 #ifdef WITH_SDL3
     SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
+#else
+    SDL_UnlockAudio();
+#endif
 #endif
 }
 
@@ -981,8 +1062,12 @@ void multiSamplePlay(const Sint16 *samples, size_t sampleCount, Uint8 chan, Uint
 
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
-#else
+#els
+#ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
+#else
+    SDL_LockAudio();
+#endif
 #endif
 
 	channelSamples[chan] = samples;
@@ -992,6 +1077,10 @@ void multiSamplePlay(const Sint16 *samples, size_t sampleCount, Uint8 chan, Uint
 #ifdef WITH_SDL3
     SDL_UnlockMutex(AudioDeviceLock);
 #else
+#ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
+#else
+    SDL_UnlockAudio();
+#endif
 #endif
 }

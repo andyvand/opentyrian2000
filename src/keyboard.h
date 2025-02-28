@@ -32,7 +32,11 @@
 #define SDL_TEXTINPUTEVENT_TEXT_SIZE (32)
 #endif
 #else
+#ifdef WITH_SDL
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #endif
 
 #include <stdbool.h>
