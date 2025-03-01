@@ -101,7 +101,7 @@
 #endif
 #endif
 
-#ifndef init_scaler
+#ifdef WITH_SDL
 #define init_scaler(a) init_scaler(a, true)
 #endif
 

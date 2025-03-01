@@ -954,7 +954,7 @@ void stop_song(void)  // FKA Player.selectSong(0)
 
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
-#els
+#else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
 #else
@@ -1062,7 +1062,7 @@ void multiSamplePlay(const Sint16 *samples, size_t sampleCount, Uint8 chan, Uint
 
 #ifdef WITH_SDL3
     SDL_LockMutex(AudioDeviceLock);
-#els
+#else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
 #else
