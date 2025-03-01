@@ -10,4 +10,4 @@
 #include $(IDF_PATH)/make/component_common.mk
 
 COMPONENT_ADD_INCLUDEDIRS += ../components/OpenTyrian2000
-CFLAGS += -DWITH_SDL=1
+CFLAGS += -DWITH_SDL=1 -DNETWORK_GAME=1

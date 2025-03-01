@@ -314,5 +314,4 @@ config HW_BUTTON_PIN_NUM_VOL
 	default HW_BUTTON_PIN_NUM_VOL_CUST if HW_CUSTOM
 	default 0
 
-
 endmenu
