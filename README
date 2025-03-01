@@ -69,26 +69,18 @@ Video:
 https://www.youtube.com/watch?v=UL5eTUv7SZE
 
 ## Required esp-idf tools
-
 esp-idf V3.3.3
 
 ## Set up esp-idf tools
-
 export PATH=<PATH_TO_XTENSA_GCC_BINDIR>:$PATH
 export GNUMAKEFLAGS=
 export IDF_PATH=<PATH_TO_ESP_IDF_V3.3>
 
 ## Installation
-
 "make -f Makefile.esp32 menuconfig"
 
-under the section "ESP32-TYRIAN platform-specific configuration:
-https://github.com/andyvand/opentyrian2000/raw/master/documents/config_1.png
-
 ### LCD / SD Card
-Set up the pins used for your LCD and SD Card.  This is the default configuration:
-https://github.com/andyvand/opentyrian/raw/master/documents/config_2.png
-
+Set up the pins used for your LCD and SD Card.
 The LCD is connected to VSPI, and the SD Card to HSPI.
 
 ### Input / Controls
