@@ -34,10 +34,10 @@
 #include "vga256d.h"
 #include "video.h"
 
-char episode_name[6][31];
-char difficulty_name[7][21];
-char gameplay_name[GAMEPLAY_NAME_COUNT][26];
-char timed_battle_name[4][23];
+EXTATTR char episode_name[6][31];
+EXTATTR char difficulty_name[7][21];
+EXTATTR char gameplay_name[GAMEPLAY_NAME_COUNT][26];
+EXTATTR char timed_battle_name[4][23];
 
 bool gameplaySelect(void)
 {

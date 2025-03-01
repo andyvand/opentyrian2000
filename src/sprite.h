@@ -61,7 +61,7 @@ typedef struct
 }
 Sprite_array;
 
-extern Sprite_array sprite_table[SPRITE_TABLES_MAX];  // fka shapearray, shapex, shapey, shapesize, shapexist, maxshape
+extern EXTATTR Sprite_array sprite_table[SPRITE_TABLES_MAX];  // fka shapearray, shapex, shapey, shapesize, shapexist, maxshape
 
 static inline Sprite *sprite(unsigned int table, unsigned int index)
 {

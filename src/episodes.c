@@ -25,18 +25,18 @@
 #include "opentyr.h"
 
 /* MAIN Weapons Data */
-JE_WeaponPortType weaponPort;
-JE_WeaponType     weapons[WEAP_NUM + 1]; /* [0..weapnum] */
+EXTATTR JE_WeaponPortType weaponPort;
+EXTATTR JE_WeaponType     weapons[WEAP_NUM + 1]; /* [0..weapnum] */
 
 /* Items */
 JE_PowerType   powerSys;
 JE_ShipType    ships;
-JE_OptionType  options[OPTION_NUM + 1]; /* [0..optionnum] */
+EXTATTR JE_OptionType  options[OPTION_NUM + 1]; /* [0..optionnum] */
 JE_ShieldType  shields;
 JE_SpecialType special;
 
 /* Enemy data */
-JE_EnemyDatType enemyDat;
+EXTATTR JE_EnemyDatType enemyDat;
 
 /* EPISODE variables */
 JE_byte    initial_episode_num, episodeNum = 0;

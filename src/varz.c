@@ -208,9 +208,9 @@ JE_word totalEnemy;
 JE_word enemyKilled;
 
 /* Shape/Map Data - All in one Segment! */
-struct JE_MegaDataType1 megaData1;
-struct JE_MegaDataType2 megaData2;
-struct JE_MegaDataType3 megaData3;
+EXTATTR struct JE_MegaDataType1 megaData1;
+EXTATTR struct JE_MegaDataType2 megaData2;
+EXTATTR struct JE_MegaDataType3 megaData3;
 
 /* Secret Level Display */
 JE_byte flash;
@@ -260,7 +260,7 @@ JE_boolean moveTyrianLogoUp;
 JE_boolean skipStarShowVGA;
 
 /*EnemyData*/
-JE_MultiEnemyType enemy;
+EXTATTR JE_MultiEnemyType enemy;
 JE_EnemyAvailType enemyAvail;  /* values: 0: used, 1: free, 2: secret pick-up */
 JE_word enemyOffset;
 JE_word enemyOnScreen;
@@ -269,7 +269,7 @@ JE_word superEnemy254Jump;
 /*EnemyShotData*/
 JE_boolean fireButtonHeld;
 JE_boolean enemyShotAvail[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax] */
-EnemyShotType enemyShot[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax]  */
+EXTATTR EnemyShotType enemyShot[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax]  */
 
 /* Player Shot Data */
 JE_byte     zinglonDuration;
@@ -298,7 +298,7 @@ JE_byte chargeWait, chargeLevel, chargeMax, chargeGr, chargeGrWait;
 JE_word neat;
 
 /*ExplosionData*/
-Explosion explosions[MAX_EXPLOSIONS]; /* [1..ExplosionMax] */
+EXTATTR Explosion explosions[MAX_EXPLOSIONS]; /* [1..ExplosionMax] */
 JE_integer explosionFollowAmountX, explosionFollowAmountY;
 
 /*Repeating Explosions*/

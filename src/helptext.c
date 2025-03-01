@@ -53,32 +53,32 @@ JE_byte helpBoxColor = 12;
 JE_byte helpBoxBrightness = 1;
 JE_byte helpBoxShadeType = FULL_SHADE;
 
-char helpTxt[39][231];                                                   /* [1..39] of string [230] */
-char pName[21][16];                                                      /* [1..21] of string [15] */
-char miscText[HELPTEXT_MISCTEXT_COUNT][42];                              /* [1..68] of string [41] */
-char miscTextB[HELPTEXT_MISCTEXTB_COUNT][HELPTEXT_MISCTEXTB_SIZE];       /* [1..5] of string [10] */
-char keyName[8][18];                                                     /* [1..8] of string [17] */
-char menuText[7][HELPTEXT_MENUTEXT_SIZE];                                /* [1..7] of string [20] */
-char outputs[9][31];                                                     /* [1..9] of string [30] */
-char topicName[6][21];                                                   /* [1..6] of string [20] */
-char mainMenuHelp[HELPTEXT_MAINMENUHELP_COUNT][66];                      /* [1..34] of string [65] */
-char inGameText[6][21];                                                  /* [1..6] of string [20] */
-char detailLevel[6][13];                                                 /* [1..6] of string [12] */
-char gameSpeedText[5][13];                                               /* [1..5] of string [12] */
-char inputDevices[3][13];                                                /* [1..3] of string [12] */
-char networkText[HELPTEXT_NETWORKTEXT_COUNT][HELPTEXT_NETWORKTEXT_SIZE]; /* [1..4] of string [20] */
-char difficultyNameB[11][21];                                            /* [0..9] of string [20] */
-char joyButtonNames[5][21];                                              /* [1..5] of string [20] */
-char superShips[HELPTEXT_SUPERSHIPS_COUNT][26];                          /* [0..10] of string [25] */
-char specialName[HELPTEXT_SPECIALNAME_COUNT][10];                        /* [1..9] of string [9] */
-char destructHelp[25][22];                                               /* [1..25] of string [21] */
-char weaponNames[17][17];                                                /* [1..17] of string [16] */
-char destructModeName[DESTRUCT_MODES][13];                               /* [1..destructmodes] of string [12] */
-char shipInfo[HELPTEXT_SHIPINFO_COUNT][2][256];                          /* [1..13, 1..2] of string */
-char licensingInfo[3][46];                                               /* [1..3] of string */
-char orderingInfo[6][32];                                                /* [1..6] of string */
-char superTyrianText[6][64];                                             /* [1..6] of string */
-char menuInt[MENU_MAX+1][11][18];                                        /* [0..14, 1..11] of string [17] */
+EXTATTR char helpTxt[39][231];                                                   /* [1..39] of string [230] */
+EXTATTR char pName[21][16];                                                      /* [1..21] of string [15] */
+EXTATTR char miscText[HELPTEXT_MISCTEXT_COUNT][42];                              /* [1..68] of string [41] */
+EXTATTR char miscTextB[HELPTEXT_MISCTEXTB_COUNT][HELPTEXT_MISCTEXTB_SIZE];       /* [1..5] of string [10] */
+EXTATTR char keyName[8][18];                                                     /* [1..8] of string [17] */
+EXTATTR char menuText[7][HELPTEXT_MENUTEXT_SIZE];                                /* [1..7] of string [20] */
+EXTATTR char outputs[9][31];                                                     /* [1..9] of string [30] */
+EXTATTR char topicName[6][21];                                                   /* [1..6] of string [20] */
+EXTATTR char mainMenuHelp[HELPTEXT_MAINMENUHELP_COUNT][66];                      /* [1..34] of string [65] */
+EXTATTR char inGameText[6][21];                                                  /* [1..6] of string [20] */
+EXTATTR char detailLevel[6][13];                                                 /* [1..6] of string [12] */
+EXTATTR char gameSpeedText[5][13];                                               /* [1..5] of string [12] */
+EXTATTR char inputDevices[3][13];                                                /* [1..3] of string [12] */
+EXTATTR char networkText[HELPTEXT_NETWORKTEXT_COUNT][HELPTEXT_NETWORKTEXT_SIZE]; /* [1..4] of string [20] */
+EXTATTR char difficultyNameB[11][21];                                            /* [0..9] of string [20] */
+EXTATTR char joyButtonNames[5][21];                                              /* [1..5] of string [20] */
+EXTATTR char superShips[HELPTEXT_SUPERSHIPS_COUNT][26];                          /* [0..10] of string [25] */
+EXTATTR char specialName[HELPTEXT_SPECIALNAME_COUNT][10];                        /* [1..9] of string [9] */
+EXTATTR char destructHelp[25][22];                                               /* [1..25] of string [21] */
+EXTATTR char weaponNames[17][17];                                                /* [1..17] of string [16] */
+EXTATTR char destructModeName[DESTRUCT_MODES][13];                               /* [1..destructmodes] of string [12] */
+EXTATTR char shipInfo[HELPTEXT_SHIPINFO_COUNT][2][256];                          /* [1..13, 1..2] of string */
+EXTATTR char licensingInfo[3][46];                                               /* [1..3] of string */
+EXTATTR char orderingInfo[6][32];                                                /* [1..6] of string */
+EXTATTR char superTyrianText[6][64];                                             /* [1..6] of string */
+EXTATTR char menuInt[MENU_MAX+1][11][18];                                        /* [0..14, 1..11] of string [17] */
 
 static void decrypt_string(char *s, size_t len)
 {

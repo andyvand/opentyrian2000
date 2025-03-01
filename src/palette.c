@@ -29,11 +29,11 @@ static Uint32 rgb_to_yuv(int r, int g, int b);
 
 #define PALETTE_COUNT 24
 
-Palette palettes[PALETTE_COUNT];
+EXTATTR Palette palettes[PALETTE_COUNT];
 int palette_count;
 
 static Palette palette;
-Uint32 rgb_palette[256], yuv_palette[256];
+EXTATTR Uint32 rgb_palette[256], yuv_palette[256];
 
 Palette colors;
 
