@@ -264,6 +264,31 @@ long ftell_eof(FILE *f)
 	return size;
 }
 
+long eftell(FILE *f)
+{
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
+    long size = ftell(f);
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
+#endif
+
+    return size;
+}
+
+int efseek(FILE *f, long pos, int flag)
+{
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
+    int retval = fseek(f, pos, flag);
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
+#endif
+    return retval;
+}
+
 #ifndef HANDLE_RESULT
 #define HANDLE_RESULT 1
 #endif

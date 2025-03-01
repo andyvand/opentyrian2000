@@ -26,17 +26,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#if defined(__APPLE__) & defined(__MACH__)
-#include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
-#endif
-
 const unsigned char op_table[9] = {0x00, 0x01, 0x02, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12};
 
 /* A substantial amount of this code has been copied and adapted from adplug.
@@ -100,7 +89,7 @@ bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 {
 	SoundBank *sb;
 	
-	fseek(f, music_offset, SEEK_SET);
+	efseek(f, music_offset, SEEK_SET);
 
 	/* load header */
 	fread_u8_die(&mode, 1, f);
@@ -180,8 +169,8 @@ bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 	}
 	
 	/* load patterns */
-	fseek(f, 2, SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
-    unsigned int remaining = (unsigned int)(music_size - (ftell(f) - music_offset));
+	efseek(f, 2, SEEK_CUR); /* ignore # of digital sounds (dunno what this is for) */
+    unsigned int remaining = (unsigned int)(music_size - (eftell(f) - music_offset));
 
 	size_t numpatterns = remaining / 2;
 

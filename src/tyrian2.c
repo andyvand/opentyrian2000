@@ -58,17 +58,6 @@
 #define snprintf sprintf_s
 #endif
 
-#if defined(__APPLE__) & defined(__MACH__)
-#include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
-#endif
-
 #ifdef WITH_SDL
 #undef  toupper
 #define toupper _toupper
@@ -3098,7 +3087,7 @@ new_game:
 		fade_black(50);
 
 	FILE *level_f = dir_fopen_die(data_dir(), levelFile, "rb");
-	fseek(level_f, lvlPos[(lvlFileNum-1) * 2], SEEK_SET);
+	efseek(level_f, lvlPos[(lvlFileNum-1) * 2], SEEK_SET);
 
 	JE_char char_mapFile;
 	JE_char char_shapeFile;

@@ -26,17 +26,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#if defined(__APPLE__) & defined(__MACH__)
-#include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
-#endif
-
 Sprite_array sprite_table[SPRITE_TABLES_MAX];
 
 Sprite2_array shopSpriteSheet;
@@ -825,15 +814,15 @@ void JE_loadMainShapeTables(const char *shpfile)
 	
 	fread_s32_die(shpPos, shpNumb, f);
 	
-	fseek(f, 0, SEEK_END);
+	efseek(f, 0, SEEK_END);
 	for (unsigned int i = shpNumb; i < COUNTOF(shpPos); ++i)
-		shpPos[i] = (JE_longint)ftell(f);
+		shpPos[i] = (JE_longint)eftell(f);
 
 	int i;
 	// fonts, interface, option sprites
 	for (i = 0; i < 7; i++)
 	{
-		fseek(f, shpPos[i], SEEK_SET);
+		efseek(f, shpPos[i], SEEK_SET);
 
 		load_sprites(i, f);
 	}

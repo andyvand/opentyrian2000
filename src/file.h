@@ -43,6 +43,8 @@ FILE *dir_fopen_die(const char *dir, const char *file, const char *mode);
 bool dir_file_exists(const char *dir, const char *file);
 
 long ftell_eof(FILE *f);
+long eftell(FILE *f);
+int efseek(FILE *, long, int);
 
 void fread_die(void *buffer, size_t size, size_t count, FILE *stream);
 

@@ -38,17 +38,6 @@
 #endif
 #endif
 
-#if defined(__APPLE__) & defined(__MACH__)
-#include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
-#endif
-
 JE_word frameCountMax;
 
 Sint16 *soundSamples[SOUND_COUNT] = { NULL }; /* [1..soundnum + 9] */  // FKA digiFx
@@ -148,8 +137,8 @@ void loadSndFile(bool xmas)
 	fread_u32_die(sfxPositions, sfxCount, f);
 
 	// Determine end of last sound.
-	fseek(f, 0, SEEK_END);
-	sfxPositions[sfxCount] = (Uint32)ftell(f);
+	efseek(f, 0, SEEK_END);
+	sfxPositions[sfxCount] = (Uint32)eftell(f);
 
 	// Read samples.
 	for (size_t i = 0; i < sfxCount; ++i)
@@ -162,7 +151,7 @@ void loadSndFile(bool xmas)
 
 		free(soundSamples[i]);
 		soundSamples[i] = malloc(soundSampleCount[i]);
-		fseek(f, sfxPositions[i], SEEK_SET);
+		efseek(f, sfxPositions[i], SEEK_SET);
 		fread_u8_die((Uint8 *)soundSamples[i], soundSampleCount[i], f);
 	}
 
@@ -181,8 +170,8 @@ void loadSndFile(bool xmas)
 	fread_u32_die(voicePositions, voiceCount, f);
 
 	// Determine end of last sound.
-	fseek(f, 0, SEEK_END);
-    voicePositions[voiceCount] = (Uint32)ftell(f);
+	efseek(f, 0, SEEK_END);
+    voicePositions[voiceCount] = (Uint32)eftell(f);
 
 	for (size_t vi = 0; vi < voiceCount; ++vi)
 	{
@@ -201,7 +190,7 @@ void loadSndFile(bool xmas)
 
 		free(soundSamples[i]);
 		soundSamples[i] = malloc(soundSampleCount[i]);
-		fseek(f, voicePositions[vi], SEEK_SET);
+		efseek(f, voicePositions[vi], SEEK_SET);
 		fread_u8_die((Uint8 *)soundSamples[i], soundSampleCount[i], f);
 	}
 

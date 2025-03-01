@@ -25,22 +25,11 @@
 
 #include <string.h>
 
-#if defined(__APPLE__) & defined(__MACH__)
-#include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
-#endif
-
 void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 {
 	Uint8 *s = VGAScreen->pixels; /* 8-bit specific */
     FILE *f = dir_fopen_die(data_dir(), file, "rb");
-	fseek(f, -769, SEEK_END);
+	efseek(f, -769, SEEK_END);
 
 	Uint8 temp;
 	fread_u8_die(&temp, 1, f);
@@ -56,7 +45,7 @@ void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 		}
 	}
 	
-	fseek(f, 128, SEEK_SET);
+	efseek(f, 128, SEEK_SET);
 
 	for (int i = 0; i < 320 * 200; )
 	{

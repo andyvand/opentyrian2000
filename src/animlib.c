@@ -29,17 +29,6 @@
 #include <assert.h>
 #include <string.h>
 
-#if defined(__APPLE__) & defined(__MACH__)
-#include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
-#endif
-
 /*** Structs ***/
 /* The actual header has a lot of fields that are basically useless to us since
  * we both set our own framerate and the format itself only allows for
@@ -105,12 +94,12 @@ int JE_loadPage(unsigned int pagenumber)
 	 * Pages repeat their headers for some reason.  They then have two bytes of
 	 * padding followed by a word for every record.  THEN the data starts.
 	 */
-	fseek(InFile, ANIM_OFFSET + (pagenumber * ANI_PAGE_SIZE), SEEK_SET);
+	efseek(InFile, ANIM_OFFSET + (pagenumber * ANI_PAGE_SIZE), SEEK_SET);
 	fread_u16_die(&CurrentPageHeader.baseRecord, 1, InFile);
 	fread_u16_die(&CurrentPageHeader.nRecords,   1, InFile);
 	fread_u16_die(&CurrentPageHeader.nBytes,     1, InFile);
 
-    fseek(InFile, 2, SEEK_CUR);
+    efseek(InFile, 2, SEEK_CUR);
 	fread_u16_die(CurrentPageRecordSizes, CurrentPageHeader.nRecords, InFile);
 
 	/* What remains is the 'compressed' data */
@@ -238,7 +227,7 @@ int JE_loadAnim(const char *filename)
 	 */
 
 	fread_die(&temp, 1, 4, InFile); /* The ID, should equal "LPF " */
-	fseek(InFile, 2, SEEK_CUR); /* skip over this word */
+	efseek(InFile, 2, SEEK_CUR); /* skip over this word */
 
 	fread_u16_die(&FileHeader.nlps,     1, InFile); /* Number of pages */
 	fread_u32_die(&FileHeader.nRecords, 1, InFile); /* Number of records */
@@ -252,7 +241,7 @@ int JE_loadAnim(const char *filename)
 	}
 
 	/* Read in headers */
-	fseek(InFile, PAGEHEADER_OFFSET, SEEK_SET);
+	efseek(InFile, PAGEHEADER_OFFSET, SEEK_SET);
 
 	for (i = 0; i < FileHeader.nlps; i++)
 	{
@@ -273,7 +262,7 @@ int JE_loadAnim(const char *filename)
 	}
 
 	/* Now read in the palette. */
-	fseek(InFile, PALETTE_OFFSET, SEEK_SET);
+	efseek(InFile, PALETTE_OFFSET, SEEK_SET);
 
 	for (i = 0; i < 256; i++)
 	{

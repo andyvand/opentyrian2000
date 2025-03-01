@@ -27,17 +27,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#if defined(__APPLE__) & defined(__MACH__)
-#include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
-#endif
-
 void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 {
 	PCXnumber--;
@@ -58,7 +47,7 @@ void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 	unsigned int size = pcxpos[PCXnumber + 1] - pcxpos[PCXnumber];
 	Uint8 *buffer = malloc(size);
 
-	fseek(f, pcxpos[PCXnumber], SEEK_SET);
+	efseek(f, pcxpos[PCXnumber], SEEK_SET);
 	fread_u8_die(buffer, size, f);
     fclose(f);
 

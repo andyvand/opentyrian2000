@@ -53,13 +53,6 @@
 
 #if defined(__APPLE__) & defined(__MACH__)
 #include "macos-bundle.h"
-
-#define fseek fseeko
-#define ftell ftello
-#elif (defined(_WIN32) || defined(WIN32)) && !defined(_MSC_VER)
-#define fseek fseeko64
-#define ftell ftello64
-#define fopen fopen64
 #endif
 
 /* Configuration Load/Save handler */
@@ -913,7 +906,7 @@ void JE_loadConfiguration(void)
 	fi = dir_fopen_warn(get_user_directory(), "tyrian.sav", "rb");
 	if (fi)
 	{
-		fseek(fi, 0, SEEK_SET);
+		efseek(fi, 0, SEEK_SET);
 		fread_die(saveTemp, 1, sizeof(saveTemp), fi);
 		JE_decryptSaveTemp();
 
@@ -1038,7 +1031,7 @@ void JE_loadConfiguration(void)
 				t2kHighScores[z][y].score = SDL_SwapLE32(t2kHighScores[z][y].score);
 #endif
 
-				fseek(fi, 4, SEEK_CUR); // Unknown long int that seems to have no effect
+				efseek(fi, 4, SEEK_CUR); // Unknown long int that seems to have no effect
 				fread_u8_die(&len, 1, fi);
 
 				fread_die(t2kHighScores[z][y].playerName, 1, 29, fi);
