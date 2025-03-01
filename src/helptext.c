@@ -449,5 +449,5 @@ void JE_loadHelpText(void)
 	for (unsigned int i = 0; i < COUNTOF(superTyrianText); ++i)
 		read_encrypted_pascal_string(superTyrianText[i], sizeof(superTyrianText[i]), f);
 
-	fclose(f);
+	efclose(f);
 }

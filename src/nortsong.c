@@ -155,7 +155,7 @@ void loadSndFile(bool xmas)
 		fread_u8_die((Uint8 *)soundSamples[i], soundSampleCount[i], f);
 	}
 
-	fclose(f);
+	efclose(f);
 	f = dir_fopen_die(data_dir(), xmas ? "voicesc.snd" : "voices.snd", "rb");
 
 	Uint16 voiceCount;
@@ -194,7 +194,7 @@ void loadSndFile(bool xmas)
 		fread_u8_die((Uint8 *)soundSamples[i], soundSampleCount[i], f);
 	}
 
-	fclose(f);
+	efclose(f);
 
 	// Convert samples to output sample format and rate.
 #ifdef WITH_SDL3

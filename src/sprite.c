@@ -51,7 +51,7 @@ void load_sprites_file(unsigned int table, const char *filename)
 
 	load_sprites(table, f);
 
-	fclose(f);
+	efclose(f);
 }
 
 void load_sprites(unsigned int table, FILE *f)
@@ -487,7 +487,7 @@ void JE_loadCompShapes(Sprite2_array *sprite2s, char s)
 	
 	JE_loadCompShapesB(sprite2s, f);
 	
-	fclose(f);
+	efclose(f);
 }
 
 void JE_loadCompShapesB(Sprite2_array *sprite2s, FILE *f)
@@ -856,7 +856,7 @@ void JE_loadMainShapeTables(const char *shpfile)
 	spriteSheetT2000.size = shpPos[i + 1] - shpPos[i];
 	JE_loadCompShapesB(&spriteSheetT2000, f);
 	
-	fclose(f);
+	efclose(f);
 }
 
 void free_main_shape_tables(void)

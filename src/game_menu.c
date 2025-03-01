@@ -1873,7 +1873,7 @@ bool load_cube(int cube_slot, int cube_index)
 		}
 	}
 
-	fclose(f);
+	efclose(f);
 
 	return true;
 }

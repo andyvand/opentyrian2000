@@ -215,7 +215,7 @@ int OTATTR JE_loadAnim(const char *filename)
 	{
 		/* We don't know the exact size our file should be yet,
 		 * but we do know it should be way more than this */
-		fclose(InFile);
+		efclose(InFile);
 		return -1;
 	}
 
@@ -236,7 +236,7 @@ int OTATTR JE_loadAnim(const char *filename)
 	    FileHeader.nlps == 0  || FileHeader.nRecords == 0 ||
 	    FileHeader.nlps > 256 || FileHeader.nRecords > 65535)
 	{
-		fclose(InFile);
+		efclose(InFile);
 		return -1;
 	}
 
@@ -257,7 +257,7 @@ int OTATTR JE_loadAnim(const char *filename)
 	  + PageHeader[FileHeader.nlps-1].nBytes
 	  + PageHeader[FileHeader.nlps-1].nRecords * 2 + 8)
 	{
-		fclose(InFile);
+		efclose(InFile);
 		return -1;
 	}
 
@@ -280,7 +280,7 @@ int OTATTR JE_loadAnim(const char *filename)
 
 void OTATTR JE_closeAnim(void)
 {
-	fclose(InFile);
+	efclose(InFile);
 }
 
 /* RunSkipDump decompresses the video.  There are three operations, run, skip,

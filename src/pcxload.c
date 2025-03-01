@@ -70,5 +70,5 @@ void JE_loadPCX(const char *file) // this is only meant to load tshp2.pcx
 		}
 	}
 	
-	fclose(f);
+	efclose(f);
 }

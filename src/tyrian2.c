@@ -677,7 +677,7 @@ start_level:
 	{
 		if (demo_file)
 		{
-			fclose(demo_file);
+			efclose(demo_file);
             demo_file = NULL;
 		}
 
@@ -2506,7 +2506,7 @@ new_game:
 			{
 				if (gameLoaded)
 				{
-					fclose(ep_f);
+					efclose(ep_f);
 
 					if (mainLevel == 0)  // if quit itemscreen
 						return;          // back to title screen
@@ -3077,7 +3077,7 @@ new_game:
 
 			} while (!(loadLevelOk || jumpSection));
 
-			fclose(ep_f);
+			efclose(ep_f);
 		} while (!loadLevelOk);
 	}
 
@@ -3202,7 +3202,7 @@ new_game:
 		}
 	}
 
-	fclose(shpFile);
+	efclose(shpFile);
 
 	fread_u8_die(mapBuf, 14 * 300, level_f);
 	bufLoc = 0;              /* MAP NUMBER 1 */
@@ -3237,7 +3237,7 @@ new_game:
 		}
 	}
 
-	fclose(level_f);
+	efclose(level_f);
 
 	/* Note: The map data is automatically calculated with the correct mapsh
 	value and then the pointer is calculated using the formula (MAPSH-1)*168.

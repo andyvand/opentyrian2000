@@ -247,7 +247,7 @@ bool load_opentyrian_config(void)
 
 	if (!config_parse(config, file))
 	{
-		fclose(file);
+		efclose(file);
 		
 		return false;
 	}
@@ -326,7 +326,7 @@ bool load_opentyrian_config(void)
 		
 	}
 
-	fclose(file);
+	efclose(file);
 
 	return true;
 }
@@ -393,7 +393,7 @@ bool save_opentyrian_config(void)
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
 	fsync(fileno(file));
 #endif
-	fclose(file);
+	efclose(file);
 	
 	return true;
 }
@@ -877,7 +877,7 @@ void JE_loadConfiguration(void)
 
 		fread_u8_die(dosKeySettings, 8, fi);
 		
-		fclose(fi);
+		efclose(fi);
 	}
 	else
 	{
@@ -1040,7 +1040,7 @@ void JE_loadConfiguration(void)
 			}
 		}
 
-		fclose(fi);
+		efclose(fi);
 	}
 	else
 	{
@@ -1262,7 +1262,7 @@ void JE_saveConfiguration(void)
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
 		fsync(fileno(f));
 #endif
-		fclose(f);
+		efclose(f);
 	}
 	
 	JE_decryptSaveTemp();
@@ -1294,7 +1294,7 @@ void JE_saveConfiguration(void)
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
 		fsync(fileno(f));
 #endif
-		fclose(f);
+		efclose(f);
 	}
 	
 	save_opentyrian_config();

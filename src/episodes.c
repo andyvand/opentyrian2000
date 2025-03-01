@@ -222,7 +222,7 @@ void JE_loadItemDat(void)
 		}
 	}
 
-	fclose(f);
+	efclose(f);
 }
 
 void JE_initEpisode(JE_byte newEpisode)

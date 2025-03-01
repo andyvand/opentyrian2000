@@ -49,7 +49,7 @@ void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 
 	efseek(f, pcxpos[PCXnumber], SEEK_SET);
 	fread_u8_die(buffer, size, f);
-    fclose(f);
+    efclose(f);
 
 	Uint8 *p = buffer;
 	Uint8 *s; /* screen pointer, 8-bit specific */

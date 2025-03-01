@@ -86,6 +86,6 @@ void JE_loadExtraShapes(void)
 		fread_die(extraShapes, extraShapeSize, 1, f);
 		fread_die(extraShips, sizeof(extraShips), 1, f);
 		JE_decryptShips();
-		fclose(f);
+		efclose(f);
 	}
 }

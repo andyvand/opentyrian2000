@@ -36,5 +36,5 @@ void JE_analyzeLevel(void)
 	
 	lvlPos[lvlNum] = (JE_longint)ftell_eof(f);
 
-	fclose(f);
+	efclose(f);
 }

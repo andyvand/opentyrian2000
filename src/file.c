@@ -147,7 +147,7 @@ const char *data_dir(void)
 		FILE *f = dir_fopen(dirs[i], "tyrian1.lvl", "rb");
 		if (f)
 		{
-			fclose(f);
+			efclose(f);
 			dir = dirs[i];
 			break;
 		}
@@ -242,7 +242,7 @@ bool dir_file_exists(const char *dir, const char *file)
 {
 	FILE *f = dir_fopen(dir, file, "rb");
 	if (f != NULL)
-		fclose(f);
+		efclose(f);
 	return (f != NULL);
 }
 
@@ -289,6 +289,16 @@ int efseek(FILE *f, long pos, int flag)
     return retval;
 }
 
+int efclose(FILE *f)
+{
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
+    int retval = fclose(f);
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
+#endif
+}
 #ifndef HANDLE_RESULT
 #define HANDLE_RESULT 1
 #endif

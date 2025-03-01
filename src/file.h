@@ -45,6 +45,7 @@ bool dir_file_exists(const char *dir, const char *file);
 long ftell_eof(FILE *f);
 long eftell(FILE *f);
 int efseek(FILE *, long, int);
+int efclose(FILE *f);
 
 void fread_die(void *buffer, size_t size, size_t count, FILE *stream);
 
@@ -59,7 +60,14 @@ static inline void fread_bool_die(bool *buffer, FILE *stream)
 // 8-bit fread
 static inline size_t fread_u8(Uint8 *buffer, size_t count, FILE *stream)
 {
-	return fread(buffer, sizeof(Uint8), count, stream);
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
+	size_t retval = fread(buffer, sizeof(Uint8), count, stream);
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
+#endif
+    return retval;
 }
 
 // 8-bit fread that dies if read fails
@@ -130,7 +138,14 @@ static inline void fwrite_bool_die(const bool *buffer, FILE *stream)
 // 8-bit fwrite
 static inline size_t fwrite_u8(const Uint8 *buffer, size_t count, FILE *stream)
 {
-	return fwrite(buffer, sizeof(Uint8), count, stream);
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
+	size_t retval = fwrite(buffer, sizeof(Uint8), count, stream);
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
+#endif
+    return retval;
 }
 
 // 8-bit fwrite that dies if write fails

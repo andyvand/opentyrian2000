@@ -2587,7 +2587,7 @@ void JE_playCredits(void)
 	{
 		read_encrypted_pascal_string(credstr[lines], sizeof(credstr[lines]), f);
 	}
-	fclose(f);
+	efclose(f);
 
 	memcpy(colors, palettes[6-1], sizeof(colors));
 	JE_clr256(VGAScreen);

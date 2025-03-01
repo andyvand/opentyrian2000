@@ -61,7 +61,7 @@ void JE_loadPals(void)
 		}
 	}
 	
-	fclose(f);
+	efclose(f);
 }
 
 void set_palette(Palette colors, unsigned int first_color, unsigned int last_color)
