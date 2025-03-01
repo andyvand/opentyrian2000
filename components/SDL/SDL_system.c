@@ -9,10 +9,12 @@ struct SDL_mutex
 #endif
 };
 
+#if 0
 void SDL_ClearError(void)
 {
 
 }
+#endif
 
 void SDL_Delay(Uint32 ms)
 {
@@ -20,10 +22,12 @@ void SDL_Delay(Uint32 ms)
     vTaskDelay( xDelay );
 }
 
+#if 0
 char *SDL_GetError(void)
 {
     return (char *)"";
 }
+#endif
 
 int SDL_Init(Uint32 flags)
 {

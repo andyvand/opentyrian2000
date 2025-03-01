@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include "SDL_error.h"
 #include "SDL_input.h"
 #include "SDL_stdinc.h"
 #include "SDL_endian.h"

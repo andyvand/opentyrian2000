@@ -69,6 +69,7 @@ static SDL_Texture *main_window_texture = NULL;
 
 static ScalerFunction scaler_function;
 
+#ifndef WITH_SDL
 static void init_renderer(void);
 static void deinit_renderer(void);
 static void init_texture(void);
@@ -77,6 +78,7 @@ static void deinit_texture(void);
 static int window_get_display_index(void);
 static void window_center_in_display(int display_index);
 static void calc_dst_render_rect(SDL_Surface *src_surface, SDL_Rect *dst_rect);
+#endif
 
 #ifndef WITH_SDL
 static void scale_and_flip(SDL_Surface *);
