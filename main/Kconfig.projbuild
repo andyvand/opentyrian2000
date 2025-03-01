@@ -7,7 +7,7 @@ menu "WiFi Configuration"
             Configure to start a network game.
 
     config IP_ADDRESS
-        string "IP address"
+        string "Opponent IP address"
 	depends on NETWORK_GAME
         default "192.168.1.100"
         help
