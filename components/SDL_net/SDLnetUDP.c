@@ -423,7 +423,7 @@ static int SocketReady(SOCKET sock)
 
 		/* Look! */
 		retval = select(sock+1, &mask, NULL, NULL, &tv);
-	} while ( SDLNet_GetLastError == EINTR );
+	} while ( SDLNet_GetLastError() == EINTR );
 
 	return(retval == 1);
 }
