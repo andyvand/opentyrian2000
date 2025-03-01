@@ -98,9 +98,13 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)
     return ESP_OK;
 }
 
+static EventGroupHandle_t wifi_event_group;
+const static int CONNECTED_BIT = BIT0;
+
 static void wifi_scan(void)
 {
     tcpip_adapter_init();
+    wifi_event_group = xEventGroupCreate();
     ESP_ERROR_CHECK(esp_event_loop_init(event_handler, NULL));
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
