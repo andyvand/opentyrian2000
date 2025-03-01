@@ -54,3 +54,53 @@ project: https://github.com/andyvand/opentyrian2000
 project: https://github.com/opentyrian/opentyrian
 irc:     ircs://irc.oftc.net/#opentyrian
 forums:  https://tyrian2k.proboards.com/board/5
+
+== ESP32 =======================================================================
+
+## Requirements
+It requires:
+ - An ESP32 WROVER 
+ - An ILI9341 LCD - connected by SPI
+ - SD Card with the tyrian files in a "data" folder
+ - Amplifier and speaker
+ - Some input buttons (Up/Down/Left/Right + two buttons)
+
+[![Alt text](https://img.youtube.com/vi/UL5eTUv7SZE/0.jpg)](https://www.youtube.com/watch?v=UL5eTUv7SZE)
+
+## Required esp-idf tools
+
+esp-idf V3.3.3
+
+## Set up esp-idf tools
+
+export PATH=<PATH_TO_XTENSA_GCC_BINDIR>:$PATH
+export GNUMAKEFLAGS=
+export IDF_PATH=<PATH_TO_ESP_IDF_V3.3>
+
+## Installation
+
+"make -f Makefile.esp32 menuconfig"
+
+under the section "ESP32-TYRIAN platform-specific configuration:
+![config_image](https://github.com/andyvand/opentyrian2000/raw/master/documents/config_1.png)
+
+### LCD / SD Card
+Set up the pins used for your LCD and SD Card.  This is the default configuration:
+![config_image](https://github.com/andyvand/opentyrian/raw/master/documents/config_2.png)
+
+The LCD is connected to VSPI, and the SD Card to HSPI.
+
+### Input / Controls
+The default button input is configured in keyboard.c
+- GPIO36 UP
+- GPIO34 DOWN
+- GPIO32 LEFT
+- GPIO39 RIGHT
+- GPIO33 ESCAPE (quit)
+- GPIO35 SPACE (fire/select)
+
+### Sound
+Sound is output using I2S connected to the DAC on GPIO25 this is configured in SDL_audio.c.  You will need an amplifier+speaker and coupling capacitor on this pin (the capacitor to bring the DAC's DC signal back to AC).
+
+### Compiling
+"make -f Makefile.esp32"
