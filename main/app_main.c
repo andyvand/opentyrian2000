@@ -10,7 +10,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#ifdef CONFIG_NETWORK_GAME
+#if CONFIG_NETWORK_GAME
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 #include "esp_wifi.h"
@@ -73,7 +73,7 @@ void tyrianTask(void *pvParameters)
     main(PARAMNUM, argv);
 }
 
-#ifdef CONFIG_NETWORK_GAME
+#if CONFIG_NETWORK_GAME
 static const char *TAG = "scan";
 
 static esp_err_t event_handler(void *ctx, system_event_t *event)
@@ -97,7 +97,6 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)
     }
     return ESP_OK;
 }
-#endif
 
 static void wifi_scan(void)
 {
@@ -120,11 +119,12 @@ static void wifi_scan(void)
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config));
     ESP_ERROR_CHECK(esp_wifi_start());
 }
+#endif
 
 //extern "C"
 void app_main(void)
 {
-#ifdef CONFIG_NETWORK_GAME
+#if CONFIG_NETWORK_GAME
     wifi_scan();
 #endif
 
