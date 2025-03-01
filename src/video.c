@@ -117,13 +117,13 @@ void init_video( void )
 
     SDL_FillRect(VGAScreen, NULL, 0);
 
-    if (!init_scaler(scaler, true) &&  // try desired scaler and desired fullscreen state
+    /*if (!init_scaler(scaler, true) &&  // try desired scaler and desired fullscreen state
         !init_any_scaler(true) &&      // try any scaler in desired fullscreen state
         !init_any_scaler(!true))       // try any scaler in other fullscreen state
     {
         fprintf(stderr, "error: failed to initialize any supported video mode\n");
         exit(EXIT_FAILURE);
-    }
+    }*/
 }
 
 int can_init_scaler( unsigned int new_scaler, bool fullscreen )
@@ -244,14 +244,17 @@ void JE_showVGA( void ) { scale_and_flip(VGAScreen); }
 
 void scale_and_flip( SDL_Surface *src_surface )
 {
+/*
     assert(src_surface->format->BitsPerPixel == 8);
     
     SDL_Surface *dst_surface = SDL_GetVideoSurface();
     
     assert(scaler_function != NULL);
     scaler_function(src_surface, dst_surface);
-    
+
     SDL_Flip(dst_surface);
+*/
+    SDL_Flip(src_surface);
 }
 #else
 void init_video(void)
