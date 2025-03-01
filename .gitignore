@@ -10,6 +10,7 @@ tyrian.sav
 *.swp
 
 # Make build output
+/build/
 /obj/
 /src/*.o
 /src/*.d
