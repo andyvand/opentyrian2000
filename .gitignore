@@ -11,6 +11,8 @@ tyrian.sav
 
 # Make build output
 /build/
+/release_esp32/*.fw
+/release_esp32/*.raw
 /obj/
 /src/*.o
 /src/*.d
