@@ -186,8 +186,10 @@ void service_SDL_events(JE_boolean clear_new)
     Sint32 myrel = 0;
 #endif
 
+#ifndef WITH_SDL
     Sint32 bx = 0;
     Sint32 by = 0;
+#endif
 
 	if (clear_new)
 	{
@@ -196,11 +198,11 @@ void service_SDL_events(JE_boolean clear_new)
 		new_text = false;
 	}
 
+#ifndef WITH_SDL
 	while (SDL_PollEvent(&ev))
 	{
 		switch (ev.type)
 		{
-#ifndef WITH_SDL
 #ifndef WITH_SDL3
 			case SDL_WINDOWEVENT:
 				switch (ev.window.event)
@@ -242,7 +244,6 @@ void service_SDL_events(JE_boolean clear_new)
 #ifndef WITH_SDL3
 				}
 				break;
-#endif
 #endif
 
 #ifdef WITH_SDL3
@@ -454,6 +455,22 @@ void service_SDL_events(JE_boolean clear_new)
 				break;
 		}
 	}
+#else
+    while(SDL_PollEvent(&ev))
+    {
+        keysactive[ev.key.keysym.sym] = ev.key.state;
+        if(ev.key.state)
+        {
+            keysactive[ev.key.keysym.scancode] = 1;
+        } else {
+            keysactive[ev.key.keysym.scancode] = 0;
+        }
+        keydown = ev.key.state;
+        newkey = ev.key.state;
+        lastkey_scan = ev.key.keysym.scancode;
+        lastkey_mod = ev.key.keysym.mod;
+    }
+#endif
 }
 
 void JE_clearKeyboard(void)
