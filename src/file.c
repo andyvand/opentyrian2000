@@ -159,17 +159,32 @@ const char *data_dir(void)
 	return dir;
 }
 
+#ifdef WITH_SDL
+bool init_SD = false;
+#endif
+
 // prepend directory and fopen
 FILE *dir_fopen(const char *dir, const char *file, const char *mode)
 {
 	char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
 	snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s/%s", dir, file);
 
+#ifdef WITH_SDL
+    if(init_SD == false)
+    {
+        SDL_InitSD();
+        init_SD = true;
+    }
+    SDL_LockDisplay();
+#endif
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 	FILE *f = NULL;
 	fopen_s(&f, path, mode);
 #else
 	FILE *f = fopen(path, mode);
+#endif
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
 #endif
 
 	free(path);
@@ -234,13 +249,18 @@ bool dir_file_exists(const char *dir, const char *file)
 // returns end-of-file position
 long ftell_eof(FILE *f)
 {
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
 	long pos = ftell(f);
 
 	fseek(f, 0, SEEK_END);
 	long size = ftell(f);
 
 	fseek(f, pos, SEEK_SET);
-
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
+#endif
 	return size;
 }
 
@@ -250,6 +270,10 @@ long ftell_eof(FILE *f)
 
 void fread_die(void *buffer, size_t size, size_t count, FILE *stream)
 {
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
+
 	size_t result = fread(buffer, size, count, stream);
 
 #ifdef HANDLE_RESULT
@@ -262,10 +286,18 @@ void fread_die(void *buffer, size_t size, size_t count, FILE *stream)
 #else
     _fprintf(stderr, "fread_die - size=%llu.\n", (unsigned long long)result);
 #endif
+
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
+#endif
 }
 
 void fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
 {
+#ifdef WITH_SDL
+    SDL_LockDisplay();
+#endif
+
 	size_t result = fwrite(buffer, size, count, stream);
 
 #ifdef HANDLE_RESULT
@@ -277,5 +309,9 @@ void fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
 	}
 #else
     _fprintf(stderr, "fwrite_die - size=%llu.\n", (unsigned long long)result);
+#endif
+
+#ifdef WITH_SDL
+    SDL_UnlockDisplay();
 #endif
 }
