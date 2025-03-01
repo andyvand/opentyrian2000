@@ -29,14 +29,15 @@ SDL_VideoInfo *SDL_GetVideoInfo(void)
 
 char *SDL_VideoDriverName(char *namebuf, int maxlen)
 {
-    return "Gadget Workbench - Awesome SPI TFT Driver";
+    return (char *)("Gadget Workbench - Awesome SPI TFT Driver");
 }
 
+SDL_Rect mode[1] = {{0,0,320,200}};
 
 SDL_Rect **SDL_ListModes(SDL_PixelFormat *format, Uint32 flags)
 {
-    SDL_Rect mode[1] = {{0,0,320,200}};
-    return &mode;
+    SDL_Rect **modeptr = (SDL_Rect **)(&mode);
+    return modeptr;
 }
 
 void SDL_WM_SetCaption(const char *title, const char *icon)

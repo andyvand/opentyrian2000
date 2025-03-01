@@ -380,11 +380,13 @@ int SDL_ShowCursor(int toggle)
 #include <tlhelp32.h>
 #endif
 
+#if 0
 static SDL_bool SDL_joystick_allows_background_events = SDL_FALSE;
 static SDL_Joystick *SDL_joysticks = NULL;
 static SDL_bool SDL_updating_joystick = SDL_FALSE;
 //static SDL_mutex *SDL_joystick_lock = NULL; /* This needs to support recursive locks */
 //static SDL_atomic_t SDL_next_joystick_instance_id;
+#endif
 
 void
 SDL_LockJoysticks(void)
@@ -438,6 +440,7 @@ SDL_GetDriverAndJoystickIndex(int device_index, void **driver, int *driver_index
     return SDL_FALSE;
 }
 
+#if 0
 /*
  * Perform any needed fixups for joystick names
  */
@@ -446,7 +449,7 @@ SDL_FixupJoystickName(const char *name)
 {
     return name;
 }
-
+#endif
 
 /*
  * Get the implementation dependent name of a joystick
@@ -465,6 +468,7 @@ SDL_JoystickGetDevicePlayerIndex(int device_index)
     return player_index;
 }
 
+#if 0
 /*
  * Return true if this joystick is known to have all axes centered at zero
  * This isn't generally needed unless the joystick never generates an initial axis value near zero,
@@ -475,6 +479,7 @@ SDL_JoystickAxesCenteredAtZero(SDL_Joystick *joystick)
 {
     return SDL_FALSE;
 }
+#endif
 
 /*
  * Open a joystick for use - the index passed as an argument refers to
@@ -644,12 +649,13 @@ void SDL_JoystickQuit(void)
 {
 }
 
-
+#if 0
 static SDL_bool
 SDL_PrivateJoystickShouldIgnoreEvent()
 {
     return SDL_TRUE;
 }
+#endif
 
 /* These are global for SDL_sysjoystick.c and SDL_events.c */
 
@@ -657,9 +663,11 @@ void SDL_PrivateJoystickAdded(SDL_JoystickID device_instance)
 {
 }
 
+#if 0
 static void UpdateEventsForDeviceRemoval()
 {
 }
+#endif
 
 void SDL_PrivateJoystickRemoved(SDL_JoystickID device_instance)
 {
@@ -746,6 +754,7 @@ SDL_bool SDL_IsJoystickHIDAPI(SDL_JoystickGUID guid)
     return (guid.data[14] == 'h') ? SDL_TRUE : SDL_FALSE;
 }
 
+#if 0
 static SDL_bool SDL_IsJoystickProductWheel(Uint32 vidpid)
 {
     return SDL_FALSE;
@@ -770,6 +779,7 @@ static SDL_bool SDL_IsPS4RemapperRunning(void)
 {
     return SDL_FALSE;
 }
+#endif
 
 SDL_bool SDL_ShouldIgnoreJoystick(const char *name, SDL_JoystickGUID guid)
 {
@@ -854,6 +864,7 @@ void SDL_JoystickGetGUIDString(SDL_JoystickGUID guid, char *pszGUID, int cbGUID)
 {
 }
 
+#if 0
 /*-----------------------------------------------------------------------------
  * Purpose: Returns the 4 bit nibble for a hex character
  * Input  : c -
@@ -877,6 +888,7 @@ static unsigned char nibble(char c)
     /* AssertMsg1(false, "Q_nibble invalid hex character '%c' ", c); */
     return 0;
 }
+#endif
 
 /* convert the string version of a joystick guid to the struct */
 SDL_JoystickGUID SDL_JoystickGetGUIDFromString(const char *pchGUID)

@@ -102,9 +102,9 @@ char *** allocateTwoDimenArrayOnHeapUsingMalloc(int row, int col)
 {
 	char ***ptr = malloc(row * sizeof(*ptr) + row * (col * sizeof **ptr) );
 
-	int * const data = ptr + row;
+	int * const data = (int *)(ptr + row);
 	for(int i = 0; i < row; i++)
-		ptr[i] = data + i * col;
+		ptr[i] = (char **)(data + i * col);
 
 	return ptr;
 }
