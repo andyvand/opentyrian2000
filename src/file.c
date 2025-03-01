@@ -298,6 +298,7 @@ int efclose(FILE *f)
 #ifdef WITH_SDL
     SDL_UnlockDisplay();
 #endif
+    return retval;
 }
 #ifndef HANDLE_RESULT
 #define HANDLE_RESULT 1
