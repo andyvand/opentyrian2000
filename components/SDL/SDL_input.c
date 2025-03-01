@@ -398,11 +398,12 @@ SDL_UnlockJoysticks(void)
 {
 }
 
-
+#if 0
 static void SDLCALL
 SDL_JoystickAllowBackgroundEventsChanged(void *userdata, const char *name, const char *oldValue, const char *hint)
 {
 }
+#endif
 
 int
 SDL_JoystickInit(void)
