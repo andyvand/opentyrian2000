@@ -117,6 +117,10 @@ char *alloca();
 # endif
 #endif
 
+#include "esp_log.h"
+
+extern const char *SDL_TAG;
+
 /**
  *  The number of elements in an array.
  */

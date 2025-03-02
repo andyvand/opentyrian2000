@@ -370,7 +370,7 @@ int SDLNet_UDP_SendV(UDPsocket sock, UDPpacket **packets, int npackets)
 		{
 			/* Send to each of the bound addresses on the channel */
 #ifdef DEBUG_NET
-			printf("SDLNet_UDP_SendV sending packet to channel = %d\n", packets[i]->channel );
+            ESP_LOGI(SDLNet_TAG, "SDLNet_UDP_SendV sending packet to channel = %d\n", packets[i]->channel);
 #endif
 			
 			binding = &sock->binding[packets[i]->channel];

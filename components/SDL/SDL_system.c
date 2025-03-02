@@ -1,5 +1,7 @@
 #include "SDL_system.h"
 
+const char *SDL_TAG = "SDL";
+
 struct SDL_mutex
 {
     pthread_mutex_t id;
@@ -43,7 +45,7 @@ void SDL_Quit(void)
 
 void SDL_InitSD(void)
 {
-    printf("Initialising SD Card\n");
+    ESP_LOGI(SDL_TAG, "Initialising SD Card\n");
 #if 1
 	sdmmc_host_t host = SDSPI_HOST_DEFAULT();
     host.command_timeout_ms = 3000;
@@ -84,7 +86,7 @@ void SDL_InitSD(void)
         }
     SDL_UnlockDisplay();
 
-    printf("Init_SD: SD card opened.\n");
+    ESP_LOGI(SDL_TAG, "Init_SD: SD card opened.\n");
     
 	//sdmmc_card_print_info(stdout, card);    
 }

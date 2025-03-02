@@ -107,7 +107,7 @@ void SDL_SetError (const char *fmt, ...)
 
 	/* If we are in debug mode, print out an error message */
 #ifdef DEBUG_ERROR
-	fprintf(stderr, "SDL_SetError: %s\n", SDL_GetError());
+	ESP_LOGI(SDL_TAG, "SDL_SetError: %s\n", SDL_GetError());
 #endif
 }
 
@@ -226,12 +226,12 @@ int main(int argc, char *argv[])
 	char buffer[BUFSIZ+1];
 
 	SDL_SetError("Hi there!");
-	printf("Error 1: %s\n", SDL_GetError());
+	ESP_LOGI(SDL_TAG, "Error 1: %s\n", SDL_GetError());
 	SDL_ClearError();
 	SDL_memset(buffer, '1', BUFSIZ);
 	buffer[BUFSIZ] = 0;
 	SDL_SetError("This is the error: %s (%f)", buffer, 1.0);
-	printf("Error 2: %s\n", SDL_GetError());
+	ESP_LOGI(SDL_TAG, "Error 2: %s\n", SDL_GetError());
 	exit(0);
 }
 #endif

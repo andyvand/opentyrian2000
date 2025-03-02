@@ -75,8 +75,15 @@
 #define _fprintf fprintf
 #endif
 #else
+#ifdef WITH_SDL
+#include "esp_log.h"
+
+#define _printf(...) ESP_LOGI(opentyrian_str, __VA_ARGS__)
+#define _fprintf(X, ...) if ((X == stderr) || (X == stdout)) { ESP_LOGI(opentyrian_str, __VA_ARGS__); } else { fprintf(X, __VA_ARGS__); }
+#else
 #define _printf printf
 #define _fprintf fprintf
+#endif
 #endif
 
 #include <math.h>

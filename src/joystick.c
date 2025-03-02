@@ -362,7 +362,9 @@ void init_joysticks(void)
 	}
 	
 	if (joysticks == 0)
-		_fprintf(stdout, "no joysticks detected\n");
+    {
+        _fprintf(stdout, "no joysticks detected\n");
+    }
 }
 
 // deinitializes SDL joystick system and saves joystick assignments

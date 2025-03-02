@@ -191,18 +191,18 @@ void SDL_LockDisplay()
 {
   if (display_mutex == NULL)
     {
-        printf("Creating display mutex.\n");
+        ESP_LOGI(SDL_TAG, "Creating display mutex.\n");
         display_mutex = xSemaphoreCreateMutex();
         if (!display_mutex) 
         {
-            printf("Couldn't create mutex.\n");        
+            ESP_LOGI(SDL_TAG, "Couldn't create mutex.\n");
             abort();
         }
     }
 
     if (!xSemaphoreTake(display_mutex, 60000 / portTICK_RATE_MS))
     {
-        printf("Timeout waiting for display lock.\n");
+        ESP_LOGI(SDL_TAG, "Timeout waiting for display lock.\n");
         abort();
     }
 }

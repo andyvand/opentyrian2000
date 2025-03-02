@@ -29,11 +29,13 @@
 
 #if 0
 #include "SDL_version.h"
+#else
+#include "esp_log.h"
 #endif
 
 #include "begin_code.h"
 
-
+extern const char *SDLNet_TAG;
 
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus

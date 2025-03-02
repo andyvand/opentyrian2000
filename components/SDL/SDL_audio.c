@@ -61,7 +61,7 @@ int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained)
 
 	//xSemaphoreAudio = xSemaphoreCreateBinary();
 	xTaskCreatePinnedToCore(&updateTask, "updateTask", 10000, NULL, 3, NULL, 1);
-	printf("audio task started\n");
+    ESP_LOGI(SDL_TAG, "audio task started\n");
 	return 0;
 }
 

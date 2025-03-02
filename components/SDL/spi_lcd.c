@@ -355,7 +355,7 @@ void IRAM_ATTR displayTask(void *arg) {
     devcfg.pre_cb=ili_spi_pre_transfer_callback;  //Specify pre-transfer callback to handle D/C line
     devcfg.flags = SPI_DEVICE_NO_DUMMY;
 
-	printf("*** Display task starting.\n");
+	ESP_LOGI(SDL_TAG, "*** Display task starting.\n");
 
     //heap_caps_print_heap_info(MALLOC_CAP_DMA);
 
@@ -384,7 +384,7 @@ void IRAM_ATTR displayTask(void *arg) {
 
 	while(1) {
 		xSemaphoreTake(dispSem, portMAX_DELAY);
-//		printf("Display task: frame.\n");
+//		ESP_LOGI(SDL_TAG, "Display task: frame.\n");
 #ifndef DOUBLE_BUFFER
 		uint8_t *myData=(uint8_t*)currFbPtr;
 #endif
@@ -476,7 +476,7 @@ void spi_lcd_clear() {
 }
 
 void spi_lcd_init() {
-	printf("spi_lcd_init()\n");
+	ESP_LOGI(SDL_TAG, "spi_lcd_init()\n");
     dispSem=xSemaphoreCreateBinary();
     //dispDoneSem=xSemaphoreCreateBinary();
 #ifdef DOUBLE_BUFFER

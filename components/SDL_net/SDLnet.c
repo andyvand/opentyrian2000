@@ -32,6 +32,8 @@
 #include <signal.h>
 #endif
 
+const char *SDLNet_TAG = "SDL_net";
+
 const SDL_version *SDLNet_Linked_Version(void)
 {
 	static SDL_version linked_version;
