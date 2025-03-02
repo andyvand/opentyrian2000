@@ -67,7 +67,7 @@ const char *custom_data_dir = NULL;
 #endif
 
 // finds the Tyrian data directory
-const char *data_dir(void)
+const char * OTATTR data_dir(void)
 {
     static const char *dir = NULL;
 
@@ -164,7 +164,7 @@ bool init_SD = false;
 #endif
 
 // prepend directory and fopen
-FILE *dir_fopen(const char *dir, const char *file, const char *mode)
+FILE * OTATTR dir_fopen(const char *dir, const char *file, const char *mode)
 {
 	char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
 	snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s/%s", dir, file);
@@ -193,7 +193,7 @@ FILE *dir_fopen(const char *dir, const char *file, const char *mode)
 }
 
 // warn when dir_fopen fails
-FILE *dir_fopen_warn(const char *dir, const char *file, const char *mode)
+FILE * OTATTR dir_fopen_warn(const char *dir, const char *file, const char *mode)
 {
 	FILE *f = dir_fopen(dir, file, mode);
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
@@ -214,7 +214,7 @@ FILE *dir_fopen_warn(const char *dir, const char *file, const char *mode)
 }
 
 // die when dir_fopen fails
-FILE *dir_fopen_die(const char *dir, const char *file, const char *mode)
+FILE * OTATTR dir_fopen_die(const char *dir, const char *file, const char *mode)
 {
 	FILE *f = dir_fopen(dir, file, mode);
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
@@ -238,7 +238,7 @@ FILE *dir_fopen_die(const char *dir, const char *file, const char *mode)
 }
 
 // check if file can be opened for reading
-bool dir_file_exists(const char *dir, const char *file)
+bool OTATTR dir_file_exists(const char *dir, const char *file)
 {
 	FILE *f = dir_fopen(dir, file, "rb");
 	if (f != NULL)
@@ -247,7 +247,7 @@ bool dir_file_exists(const char *dir, const char *file)
 }
 
 // returns end-of-file position
-long ftell_eof(FILE *f)
+long OTATTR ftell_eof(FILE *f)
 {
 #ifdef WITH_SDL
     SDL_LockDisplay();
@@ -264,7 +264,7 @@ long ftell_eof(FILE *f)
 	return size;
 }
 
-long eftell(FILE *f)
+long OTATTR eftell(FILE *f)
 {
 #ifdef WITH_SDL
     SDL_LockDisplay();
@@ -277,7 +277,7 @@ long eftell(FILE *f)
     return size;
 }
 
-int efseek(FILE *f, long pos, int flag)
+int OTATTR efseek(FILE *f, long pos, int flag)
 {
 #ifdef WITH_SDL
     SDL_LockDisplay();
@@ -289,7 +289,7 @@ int efseek(FILE *f, long pos, int flag)
     return retval;
 }
 
-int efclose(FILE *f)
+int OTATTR efclose(FILE *f)
 {
 #ifdef WITH_SDL
     SDL_LockDisplay();
@@ -304,7 +304,7 @@ int efclose(FILE *f)
 #define HANDLE_RESULT 1
 #endif
 
-void fread_die(void *buffer, size_t size, size_t count, FILE *stream)
+void OTATTR fread_die(void *buffer, size_t size, size_t count, FILE *stream)
 {
 #ifdef WITH_SDL
     SDL_LockDisplay();
@@ -328,7 +328,7 @@ void fread_die(void *buffer, size_t size, size_t count, FILE *stream)
 #endif
 }
 
-void fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
+void OTATTR fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
 {
 #ifdef WITH_SDL
     SDL_LockDisplay();

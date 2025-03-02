@@ -227,7 +227,7 @@ JE_word editorLevel;   /*Initial value 800*/
 
 Config opentyrian_config;  // implicitly initialized
 
-bool load_opentyrian_config(void)
+bool OTATTR load_opentyrian_config(void)
 {
 	// defaults
 	fullscreen_display = -1;
@@ -331,7 +331,7 @@ bool load_opentyrian_config(void)
 	return true;
 }
 
-bool save_opentyrian_config(void)
+bool OTATTR save_opentyrian_config(void)
 {
 	Config *config = &opentyrian_config;
 	
@@ -398,7 +398,7 @@ bool save_opentyrian_config(void)
 	return true;
 }
 
-static void playeritems_to_pitems(JE_PItemsType pItems, PlayerItems *items, JE_byte initial_episode_num)
+static void OTATTR playeritems_to_pitems(JE_PItemsType pItems, PlayerItems *items, JE_byte initial_episode_num)
 {
 	pItems[0]  = items->weapon[FRONT_WEAPON].id;
 	pItems[1]  = items->weapon[REAR_WEAPON].id;
@@ -414,7 +414,7 @@ static void playeritems_to_pitems(JE_PItemsType pItems, PlayerItems *items, JE_b
 	pItems[11] = items->ship;
 }
 
-static void pitems_to_playeritems(PlayerItems *items, JE_PItemsType pItems, JE_byte *initial_episode_num)
+static void OTATTR pitems_to_playeritems(PlayerItems *items, JE_PItemsType pItems, JE_byte *initial_episode_num)
 {
 	items->weapon[FRONT_WEAPON].id  = pItems[0];
 	items->weapon[REAR_WEAPON].id   = pItems[1];
@@ -431,7 +431,7 @@ static void pitems_to_playeritems(PlayerItems *items, JE_PItemsType pItems, JE_b
 	items->ship                     = pItems[11];
 }
 
-void JE_saveGame(JE_byte slot, const char *name)
+void OTATTR JE_saveGame(JE_byte slot, const char *name)
 {
 	saveFiles[slot-1].initialDifficulty = initialDifficulty;
 	saveFiles[slot-1].gameHasRepeated = gameHasRepeated;
@@ -487,7 +487,7 @@ void JE_saveGame(JE_byte slot, const char *name)
 	JE_saveConfiguration();
 }
 
-void JE_loadGame(JE_byte slot)
+void OTATTR JE_loadGame(JE_byte slot)
 {
 	superTyrian = false;
 	onePlayerAction = false;
@@ -565,7 +565,7 @@ void JE_loadGame(JE_byte slot)
 	memcpy(&lastLevelName, &levelName, sizeof(levelName));
 }
 
-void JE_initProcessorType(void)
+void OTATTR JE_initProcessorType(void)
 {
 	/* SYN: Originally this proc looked at your hardware specs and chose appropriate options. We don't care, so I'll just set
 	   decent defaults here. */
@@ -625,7 +625,7 @@ void JE_initProcessorType(void)
 
 }
 
-void JE_setNewGameSpeed(void)
+void OTATTR JE_setNewGameSpeed(void)
 {
 	pentiumMode = false;
 
@@ -672,7 +672,7 @@ void JE_setNewGameSpeed(void)
 	setDelay(frameCountMax);
 }
 
-void JE_encryptSaveTemp(void)
+void OTATTR JE_encryptSaveTemp(void)
 {
 	JE_SaveGameTemp s3;
 	JE_word x;
@@ -718,7 +718,7 @@ void JE_encryptSaveTemp(void)
 	}
 }
 
-void JE_decryptSaveTemp(void)
+void OTATTR JE_decryptSaveTemp(void)
 {
 	JE_boolean correct = true;
 	JE_SaveGameTemp s2;
@@ -794,7 +794,7 @@ void JE_decryptSaveTemp(void)
 	memcpy(&saveTemp, &s2, sizeof(s2));
 }
 
-const char *get_user_directory(void)
+const char * OTATTR get_user_directory(void)
 {
 	static char user_dir[500] = "";
 	
@@ -805,6 +805,8 @@ const char *get_user_directory(void)
 		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
 #elif defined(VITA)
         snprintf(user_dir, sizeof(user_dir), "ux0:data/opentyrian2000");
+#elif defined(WITH_SDL)
+        snprintf(user_dir, sizeof(user_dir), "/data");
 #elif defined(PSP)
         snprintf(user_dir, sizeof(user_dir), "ms0:/PSP/GAME/opentyrian2000");
 #elif defined(__3DS__)
@@ -843,7 +845,7 @@ Uint8 joyButtonAssign[4] = {1, 4, 5, 5};
 Uint8 inputDevice_ = 0, jConfigure = 0, midiPort = 1;
 bool configuration_loaded = false;
 
-void JE_loadConfiguration(void)
+void OTATTR JE_loadConfiguration(void)
 {
 	FILE *fi;
 	int z;
@@ -1102,7 +1104,7 @@ void JE_loadConfiguration(void)
 	configuration_loaded = true;
 }
 
-void JE_saveConfiguration(void)
+void OTATTR JE_saveConfiguration(void)
 {
 	FILE *f;
 	JE_byte *p;

@@ -22,6 +22,7 @@
  * \date 2015
  * \copyright GNU General Public License v2+ or Mozilla Public License 2.0
  */
+#include "opentyr.h"
 #include "config_file.h"
 
 #include <assert.h>
@@ -46,17 +47,17 @@
 #define udecsizeof(t) ((CHAR_BIT * sizeof(t) / 3) + 1)
 #define sdecsizeof(t) (udecsizeof(t) + 1)
 
-extern void config_oom(void);
+extern void OTATTR config_oom(void);
 
-void config_oom(void)
+void OTATTR config_oom(void)
 {
-	fprintf(stderr, "out of memory\n");
+	_fprintf(stderr, "out of memory\n");
 	exit(EXIT_FAILURE);
 }
 
 /* string manipulators */
 
-static ConfigString string_init_len(const char *s, size_t n)
+static ConfigString OTATTR string_init_len(const char *s, size_t n)
 {
 	ConfigString string;
 	
@@ -85,7 +86,7 @@ static ConfigString string_init_len(const char *s, size_t n)
 	return string;
 }
 
-static void string_deinit(ConfigString *string)
+static void OTATTR string_deinit(ConfigString *string)
 {
 	char is_long = CONFIG_STRING_LONG_TAG(*string);
 	
@@ -96,7 +97,7 @@ static void string_deinit(ConfigString *string)
 	}
 }
 
-static bool string_equal_len(ConfigString *string, const char *s, size_t n)
+static bool OTATTR string_equal_len(ConfigString *string, const char *s, size_t n)
 {
 	const char *cstr = config_string_to_cstr(string);
 	return strncmp(cstr, s, n) == 0 && cstr[n] == '\0';
@@ -104,10 +105,10 @@ static bool string_equal_len(ConfigString *string, const char *s, size_t n)
 
 /* config manipulators */
 
-static void deinit_section(ConfigSection *section);
-static void deinit_option(ConfigOption *option);
+static void OTATTR deinit_section(ConfigSection *section);
+static void OTATTR deinit_option(ConfigOption *option);
 
-void config_init(Config *config)
+void OTATTR config_init(Config *config)
 {
 	assert(config != NULL);
 	
@@ -115,7 +116,7 @@ void config_init(Config *config)
 	config->sections = NULL;
 }
 
-void config_deinit(Config *config)
+void OTATTR config_deinit(Config *config)
 {
 	assert(config != NULL);
 	
@@ -132,7 +133,7 @@ void config_deinit(Config *config)
 
 /* config section manipulators -- internal */
 
-static void init_section(ConfigSection *section, const char *type, size_t type_len, const char *name, size_t name_len)
+static void OTATTR init_section(ConfigSection *section, const char *type, size_t type_len, const char *name, size_t name_len)
 {
 	section->type = string_init_len(type, type_len);
 	section->name = string_init_len(name, name_len);
@@ -140,7 +141,7 @@ static void init_section(ConfigSection *section, const char *type, size_t type_l
 	section->options = NULL;
 }
 
-static void deinit_section(ConfigSection *section)
+static void OTATTR deinit_section(ConfigSection *section)
 {
 	for (unsigned int o = 0; o < section->options_count; ++o)
 	{
@@ -158,7 +159,7 @@ static void deinit_section(ConfigSection *section)
 
 /* config section accessors/manipulators -- by type, name */
 
-ConfigSection *config_add_section_len(Config *config, const char *type, size_t type_len, const char *name, size_t name_len)
+ConfigSection * OTATTR config_add_section_len(Config *config, const char *type, size_t type_len, const char *name, size_t name_len)
 {
 	assert(config != NULL);
 	assert(type != NULL);
@@ -177,7 +178,7 @@ ConfigSection *config_add_section_len(Config *config, const char *type, size_t t
 	return section;
 }
 
-ConfigSection *config_find_sections(Config *config, const char *type, ConfigSection **save)
+ConfigSection * OTATTR config_find_sections(Config *config, const char *type, ConfigSection **save)
 {
 	assert(config != NULL);
 	assert(type != NULL);
@@ -198,7 +199,7 @@ ConfigSection *config_find_sections(Config *config, const char *type, ConfigSect
 	return section < sections_end ? section : NULL;
 }
 
-ConfigSection *config_find_section(Config *config, const char *type, const char *name)
+ConfigSection * OTATTR config_find_section(Config *config, const char *type, const char *name)
 {
 	assert(config != NULL);
 	assert(type != NULL);
@@ -218,7 +219,7 @@ ConfigSection *config_find_section(Config *config, const char *type, const char 
 	return NULL;
 }
 
-ConfigSection *config_find_or_add_section(Config *config, const char *type, const char *name)
+ConfigSection * OTATTR config_find_or_add_section(Config *config, const char *type, const char *name)
 {
 	assert(config != NULL);
 	assert(type != NULL);
@@ -233,13 +234,13 @@ ConfigSection *config_find_or_add_section(Config *config, const char *type, cons
 
 /* config option manipulators -- internal */
 
-static void init_option_value(ConfigOption *option, const char *value, size_t value_len)
+static void OTATTR init_option_value(ConfigOption *option, const char *value, size_t value_len)
 {
 	option->values_count = 0;
 	option->v.value = string_init_len(value, value_len);
 }
 
-static void deinit_option_value(ConfigOption *option)
+static void OTATTR deinit_option_value(ConfigOption *option)
 {
 	if (option->values_count != 0)
 	{
@@ -256,19 +257,19 @@ static void deinit_option_value(ConfigOption *option)
 	}
 }
 
-static void init_option(ConfigOption *option, const char *key, size_t key_len, const char *value, size_t value_len)
+static void OTATTR init_option(ConfigOption *option, const char *key, size_t key_len, const char *value, size_t value_len)
 {
 	option->key = string_init_len(key, key_len);
 	init_option_value(option, value, value_len);
 }
 
-static void deinit_option(ConfigOption *option)
+static void OTATTR deinit_option(ConfigOption *option)
 {
 	string_deinit(&option->key);
 	deinit_option_value(option);
 }
 
-static ConfigOption *append_option(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
+static ConfigOption * OTATTR append_option(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
 {
 	ConfigOption *options = realloc(section->options, (section->options_count + 1) * sizeof(ConfigSection));
 	if (options == NULL)
@@ -284,7 +285,7 @@ static ConfigOption *append_option(ConfigSection *section, const char *key, size
 	return option;
 }
 
-static ConfigOption *get_option_len(ConfigSection *section, const char *key, size_t key_len)
+static ConfigOption * OTATTR get_option_len(ConfigSection *section, const char *key, size_t key_len)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -299,7 +300,7 @@ static ConfigOption *get_option_len(ConfigSection *section, const char *key, siz
 
 /* config option accessors/manipulators -- by key */
 
-ConfigOption *config_set_option_len(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
+ConfigOption * OTATTR config_set_option_len(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -312,7 +313,7 @@ ConfigOption *config_set_option_len(ConfigSection *section, const char *key, siz
 	return append_option(section, key, key_len, value, value_len);
 }
 
-ConfigOption *config_get_option(const ConfigSection *section, const char *key)
+ConfigOption * OTATTR config_get_option(const ConfigSection *section, const char *key)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -325,7 +326,7 @@ ConfigOption *config_get_option(const ConfigSection *section, const char *key)
 	return NULL;
 }
 
-ConfigOption *config_get_or_set_option_len(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
+ConfigOption * OTATTR config_get_or_set_option_len(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -338,13 +339,13 @@ ConfigOption *config_get_or_set_option_len(ConfigSection *section, const char *k
 	return append_option(section, key, key_len, value, value_len);
 }
 
-void config_set_string_option_len(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
+void OTATTR config_set_string_option_len(ConfigSection *section, const char *key, size_t key_len, const char *value, size_t value_len)
 {
 	if (config_set_option_len(section, key, key_len, value, value_len) == NULL)
 		config_oom();
 }
 
-bool config_get_string_option(const ConfigSection *section, const char *key, const char **out_value)
+bool OTATTR config_get_string_option(const ConfigSection *section, const char *key, const char **out_value)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -363,7 +364,7 @@ bool config_get_string_option(const ConfigSection *section, const char *key, con
 	return false;
 }
 
-const char *config_get_or_set_string_option(ConfigSection *section, const char *key, const char *value)
+const char * OTATTR config_get_or_set_string_option(ConfigSection *section, const char *key, const char *value)
 {
 	if (!config_get_string_option(section, key, &value))
 		config_set_string_option_len(section, key, strlen(key), value, value == NULL ? 0 : strlen(value));
@@ -378,13 +379,13 @@ static const char *const bool_values[][2] =
 	{ "false", "true" },
 };
 
-void config_set_bool_option(ConfigSection *section, const char *key, bool value, ConfigBoolStyle style)
+void OTATTR config_set_bool_option(ConfigSection *section, const char *key, bool value, ConfigBoolStyle style)
 {
 	if (config_set_option(section, key, bool_values[style][value ? 1 : 0]) == NULL)
 		config_oom();
 }
 
-bool config_get_bool_option(const ConfigSection *section, const char *key, bool *out_value)
+bool OTATTR config_get_bool_option(const ConfigSection *section, const char *key, bool *out_value)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -409,14 +410,14 @@ bool config_get_bool_option(const ConfigSection *section, const char *key, bool 
 	return false;
 }
 
-bool config_get_or_set_bool_option(ConfigSection *section, const char *key, bool value, ConfigBoolStyle style)
+bool OTATTR config_get_or_set_bool_option(ConfigSection *section, const char *key, bool value, ConfigBoolStyle style)
 {
 	if (!config_get_bool_option(section, key, &value))
 		config_set_bool_option(section, key, value, style);
 	return value;
 }
 
-void config_set_int_option(ConfigSection *section, const char *key, int value)
+void OTATTR config_set_int_option(ConfigSection *section, const char *key, int value)
 {
 	assert(key != NULL);
 	
@@ -427,7 +428,7 @@ void config_set_int_option(ConfigSection *section, const char *key, int value)
 		config_oom();
 }
 
-bool config_get_int_option(const ConfigSection *section, const char *key, int *out_value)
+bool OTATTR config_get_int_option(const ConfigSection *section, const char *key, int *out_value)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -454,14 +455,14 @@ bool config_get_int_option(const ConfigSection *section, const char *key, int *o
 	return false;
 }
 
-int config_get_or_set_int_option(ConfigSection *section, const char *key, int value)
+int OTATTR config_get_or_set_int_option(ConfigSection *section, const char *key, int value)
 {
 	if (!config_get_int_option(section, key, &value))
 		config_set_int_option(section, key, value);
 	return value;
 }
 
-void config_set_uint_option(ConfigSection *section, const char *key, unsigned int value)
+void OTATTR config_set_uint_option(ConfigSection *section, const char *key, unsigned int value)
 {
 	assert(key != NULL);
 	
@@ -472,7 +473,7 @@ void config_set_uint_option(ConfigSection *section, const char *key, unsigned in
 		config_oom();
 }
 
-bool config_get_uint_option(const ConfigSection *section, const char *key, unsigned int *out_value)
+bool OTATTR config_get_uint_option(const ConfigSection *section, const char *key, unsigned int *out_value)
 {
 	assert(section != NULL);
 	assert(key != NULL);
@@ -497,7 +498,7 @@ bool config_get_uint_option(const ConfigSection *section, const char *key, unsig
 	return false;
 }
 
-unsigned int config_get_or_set_uint_option(ConfigSection *section, const char *key, unsigned int value)
+unsigned int OTATTR config_get_or_set_uint_option(ConfigSection *section, const char *key, unsigned int value)
 {
 	if (!config_get_uint_option(section, key, &value))
 		config_set_uint_option(section, key, value);
@@ -506,7 +507,7 @@ unsigned int config_get_or_set_uint_option(ConfigSection *section, const char *k
 
 /* config option accessors/manipulators -- by reference */
 
-ConfigOption *config_set_value_len(ConfigOption *option, const char *value, size_t value_len)
+ConfigOption * OTATTR config_set_value_len(ConfigOption *option, const char *value, size_t value_len)
 {
 	assert(option != NULL);
 	
@@ -517,7 +518,7 @@ ConfigOption *config_set_value_len(ConfigOption *option, const char *value, size
 	return option;
 }
 
-ConfigOption *config_add_value_len(ConfigOption *option, const char *value, size_t value_len)
+ConfigOption * OTATTR config_add_value_len(ConfigOption *option, const char *value, size_t value_len)
 {
 	assert(option != NULL);
 	assert(value != NULL);
@@ -550,7 +551,7 @@ ConfigOption *config_add_value_len(ConfigOption *option, const char *value, size
 	return option;
 }
 
-ConfigOption *config_remove_value(ConfigOption *option, unsigned int i)
+ConfigOption * OTATTR config_remove_value(ConfigOption *option, unsigned int i)
 {
 	assert(option != NULL);
 	
@@ -588,7 +589,7 @@ ConfigOption *config_remove_value(ConfigOption *option, unsigned int i)
 	return option;
 }
 
-const char *config_get_value(const ConfigOption *option)
+const char * OTATTR config_get_value(const ConfigOption *option)
 {
 	if (option == NULL || option->values_count != 0)
 		return NULL;
@@ -598,17 +599,17 @@ const char *config_get_value(const ConfigOption *option)
 
 /* config parser */
 
-static bool is_whitespace(char c)
+static bool OTATTR is_whitespace(char c)
 {
 	return c == '\t' || c == ' ';
 }
 
-static bool is_end(char c)
+static bool OTATTR is_end(char c)
 {
 	return c == '\0' || c == '\n' || c == '\r';
 }
 
-static bool is_whitespace_or_end(char c)
+static bool OTATTR is_whitespace_or_end(char c)
 {
 	return is_whitespace(c) || is_end(c);
 }
@@ -621,7 +622,7 @@ typedef enum
 	LIST_DIRECTIVE,
 } Directive;
 
-static Directive match_directive(const char *buffer, size_t *index)
+static Directive OTATTR match_directive(const char *buffer, size_t *index)
 {
 	size_t i = *index;
 	
@@ -658,7 +659,7 @@ static Directive match_directive(const char *buffer, size_t *index)
 	return directive;
 }
 
-static bool match_nonquote_field(const char *buffer, size_t *index, size_t *length)
+static bool OTATTR match_nonquote_field(const char *buffer, size_t *index, size_t *length)
 {
 	size_t i = *index;
 	
@@ -682,7 +683,7 @@ static bool match_nonquote_field(const char *buffer, size_t *index, size_t *leng
 	return *length > 0;
 }
 
-static bool parse_quote_field(char *buffer, size_t *index, size_t *length)
+static bool OTATTR parse_quote_field(char *buffer, size_t *index, size_t *length)
 {
 	size_t i = *index;
 	size_t o = *index;
@@ -759,7 +760,7 @@ static bool parse_quote_field(char *buffer, size_t *index, size_t *length)
 	return true;
 }
 
-static bool parse_field(char *buffer, size_t *index, size_t *start, size_t *length)
+static bool OTATTR parse_field(char *buffer, size_t *index, size_t *start, size_t *length)
 {
 	size_t i = *index;
 	
@@ -787,7 +788,7 @@ static bool parse_field(char *buffer, size_t *index, size_t *start, size_t *leng
 	return true;
 }
 
-bool config_parse(Config *config, FILE *file)
+bool OTATTR config_parse(Config *config, FILE *file)
 {
 	assert(config != NULL);
 	assert(file != NULL);
@@ -931,7 +932,7 @@ bool config_parse(Config *config, FILE *file)
 
 /* config writer */
 
-static void write_field(const ConfigString *field, FILE *file)
+static void OTATTR write_field(const ConfigString *field, FILE *file)
 {
 	fputc('\'', file);
 	
@@ -1007,7 +1008,7 @@ static void write_field(const ConfigString *field, FILE *file)
 	fputc('\'', file);
 }
 
-void config_write(const Config *config, FILE *file)
+void OTATTR config_write(const Config *config, FILE *file)
 {
 	assert(config != NULL);
 	assert(file != NULL);

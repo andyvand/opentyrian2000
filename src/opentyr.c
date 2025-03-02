@@ -112,7 +112,7 @@
 const char *opentyrian_str = "OpenTyrian " TYRIAN_VERSION;
 const char *opentyrian_version = OPENTYRIAN_VERSION;
 
-static size_t getDisplayPickerItemsCount(void)
+static size_t OTATTR getDisplayPickerItemsCount(void)
 {
 #ifdef WITH_SDL
     return 1;
@@ -128,7 +128,7 @@ static size_t getDisplayPickerItemsCount(void)
 #endif
 }
 
-static const char *getDisplayPickerItem(size_t i, char *buffer, size_t bufferSize)
+static const char * OTATTR getDisplayPickerItem(size_t i, char *buffer, size_t bufferSize)
 {
 	if (i == 0)
 		return "Window";
@@ -137,31 +137,31 @@ static const char *getDisplayPickerItem(size_t i, char *buffer, size_t bufferSiz
 	return buffer;
 }
 
-static size_t getScalerPickerItemsCount(void)
+static size_t OTATTR getScalerPickerItemsCount(void)
 {
 	return (size_t)scalers_count;
 }
 
-static const char *getScalerPickerItem(size_t i, char *buffer, size_t bufferSize)
+static const char * OTATTR getScalerPickerItem(size_t i, char *buffer, size_t bufferSize)
 {
 	(void)buffer, (void)bufferSize;
 
 	return scalers[i].name;
 }
 
-static size_t getScalingModePickerItemsCount(void)
+static size_t OTATTR getScalingModePickerItemsCount(void)
 {
 	return (size_t)ScalingMode_MAX;
 }
 
-static const char *getScalingModePickerItem(size_t i, char *buffer, size_t bufferSize)
+static const char * OTATTR getScalingModePickerItem(size_t i, char *buffer, size_t bufferSize)
 {
 	(void)buffer, (void)bufferSize;
 
 	return scaling_mode_names[i];
 }
 
-static size_t getMusicDevicePickerItemsCount(void)
+static size_t OTATTR getMusicDevicePickerItemsCount(void)
 {
 #ifndef WITH_MIDI
 	return (size_t)1;
@@ -174,7 +174,7 @@ static size_t getMusicDevicePickerItemsCount(void)
 #endif
 }
 
-static const char *getMusicDevicePickerItem(size_t i, char *buffer, size_t bufferSize)
+static const char * OTATTR getMusicDevicePickerItem(size_t i, char *buffer, size_t bufferSize)
 {
 	(void)buffer, (void)bufferSize;
 #ifndef WITH_MIDI
@@ -186,7 +186,7 @@ static const char *getMusicDevicePickerItem(size_t i, char *buffer, size_t buffe
 }
 
 
-void setupMenu(void)
+void OTATTR setupMenu(void)
 {
 	typedef enum
 	{
@@ -861,7 +861,7 @@ void setupMenu(void)
 int SDL_main(int argc, char *argv[])
 {
 #else
-int main(int argc, char *argv[])
+int OTATTR main(int argc, char *argv[])
 {
 #endif
 #if !defined(WITH_SDL3) && !defined(WITH_SDL)

@@ -29,20 +29,20 @@
 
 #ifdef WITH_SDL
 #if 0
-static void no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+static void OTATTR no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 #endif
 
-static void nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+static void OTATTR nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 
-static void scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
-static void scale2x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
-static void scale3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
-static void scale3x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+static void OTATTR scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+static void OTATTR scale2x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+static void OTATTR scale3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+static void OTATTR scale3x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 
-void hq2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
-void hq3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
-void hq4x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+void OTATTR hq2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+void OTATTR hq3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+void OTATTR hq4x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 
 uint scaler;
 
@@ -64,7 +64,7 @@ const struct Scalers scalers[] =
 };
 const uint scalers_count = COUNTOF(scalers);
 
-void set_scaler_by_name( const char *name )
+void OTATTR set_scaler_by_name( const char *name )
 {
     for (uint i = 0; i < scalers_count; ++i)
     {
@@ -81,7 +81,7 @@ void set_scaler_by_name( const char *name )
 #endif
 
 #if 0
-void no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void OTATTR no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels,
           *dst = dst_surface->pixels;
@@ -101,7 +101,7 @@ void no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 }
 #endif
 
-void nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void OTATTR nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
@@ -150,7 +150,7 @@ void nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 #endif
 }
 
-void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void OTATTR nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
@@ -200,7 +200,7 @@ void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 }
 
 
-void scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void OTATTR scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
@@ -253,7 +253,7 @@ void scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
     }
 }
 
-void scale2x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void OTATTR scale2x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
@@ -307,7 +307,7 @@ void scale2x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 }
 
 
-void scale3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void OTATTR scale3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
@@ -374,7 +374,7 @@ void scale3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
     }
 }
 
-void scale3x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void OTATTR scale3x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;

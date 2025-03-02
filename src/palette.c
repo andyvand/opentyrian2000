@@ -37,7 +37,7 @@ EXTATTR Uint32 rgb_palette[256], yuv_palette[256];
 
 Palette colors;
 
-void JE_loadPals(void)
+void OTATTR JE_loadPals(void)
 {
 	FILE *f = dir_fopen_die(data_dir(), "palette.dat", "rb");
 	palette_count = (int)(ftell_eof(f) / (256 * 3));
@@ -64,7 +64,7 @@ void JE_loadPals(void)
 	efclose(f);
 }
 
-void set_palette(Palette colors, unsigned int first_color, unsigned int last_color)
+void OTATTR set_palette(Palette colors, unsigned int first_color, unsigned int last_color)
 {
 	for (uint i = first_color; i <= last_color; ++i)
 	{
@@ -78,7 +78,7 @@ void set_palette(Palette colors, unsigned int first_color, unsigned int last_col
 	}
 }
 
-void set_colors(SDL_Color color, unsigned int first_color, unsigned int last_color)
+void OTATTR set_colors(SDL_Color color, unsigned int first_color, unsigned int last_color)
 {
 	for (uint i = first_color; i <= last_color; ++i)
 	{
@@ -92,7 +92,7 @@ void set_colors(SDL_Color color, unsigned int first_color, unsigned int last_col
 	}
 }
 
-void init_step_fade_palette(int diff[256][3], Palette colors, unsigned int first_color, unsigned int last_color)
+void OTATTR init_step_fade_palette(int diff[256][3], Palette colors, unsigned int first_color, unsigned int last_color)
 {
 	for (unsigned int i = first_color; i <= last_color; i++)
 	{
@@ -102,7 +102,7 @@ void init_step_fade_palette(int diff[256][3], Palette colors, unsigned int first
 	}
 }
 
-void init_step_fade_solid(int diff[256][3], SDL_Color color, unsigned int first_color, unsigned int last_color)
+void OTATTR init_step_fade_solid(int diff[256][3], SDL_Color color, unsigned int first_color, unsigned int last_color)
 {
 	for (unsigned int i = first_color; i <= last_color; i++)
 	{
@@ -112,7 +112,7 @@ void init_step_fade_solid(int diff[256][3], SDL_Color color, unsigned int first_
 	}
 }
 
-void step_fade_palette(int diff[256][3], int steps, unsigned int first_color, unsigned int last_color)
+void OTATTR step_fade_palette(int diff[256][3], int steps, unsigned int first_color, unsigned int last_color)
 {
 	assert(steps > 0);
 	
@@ -138,7 +138,7 @@ void step_fade_palette(int diff[256][3], int steps, unsigned int first_color, un
 	}
 }
 
-void fade_palette(Palette colors, int steps, unsigned int first_color, unsigned int last_color)
+void OTATTR fade_palette(Palette colors, int steps, unsigned int first_color, unsigned int last_color)
 {
 	assert(steps > 0);
 	
@@ -157,7 +157,7 @@ void fade_palette(Palette colors, int steps, unsigned int first_color, unsigned 
 	}
 }
 
-void fade_solid(SDL_Color color, int steps, unsigned int first_color, unsigned int last_color)
+void OTATTR fade_solid(SDL_Color color, int steps, unsigned int first_color, unsigned int last_color)
 {
 	assert(steps > 0);
 	
@@ -176,19 +176,19 @@ void fade_solid(SDL_Color color, int steps, unsigned int first_color, unsigned i
 	}
 }
 
-void fade_black(int steps)
+void OTATTR fade_black(int steps)
 {
 	SDL_Color black = { 0, 0, 0, 0 };
 	fade_solid(black, steps, 0, 255);
 }
 
-void fade_white(int steps)
+void OTATTR fade_white(int steps)
 {
 	SDL_Color white = { 255, 255, 255, 0 };
 	fade_solid(white, steps, 0, 255);
 }
 
-static Uint32 rgb_to_yuv(int r, int g, int b)
+static Uint32 OTATTR rgb_to_yuv(int r, int g, int b)
 {
 	int y = (r + g + b) >> 2,
 	    u = 128 + ((r - b) >> 2),

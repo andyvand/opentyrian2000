@@ -130,7 +130,7 @@ static void packet_copy(SDLNet_Datagram *dst, SDLNet_Datagram *src)
     memcpy(dst->buf, src->buf, src->buflen);
 }
 #else
-static void packet_copy(UDPpacket *dst, UDPpacket *src)
+static void OTATTR packet_copy(UDPpacket *dst, UDPpacket *src)
 {
     void *temp = dst->data;
     memcpy(dst, src, sizeof(*dst));
@@ -142,7 +142,7 @@ static void packet_copy(UDPpacket *dst, UDPpacket *src)
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static void packets_shift_up(SDLNet_Datagram **packet, int max_packets)
 #else
-static void packets_shift_up(UDPpacket **packet, int max_packets)
+static void OTATTR packets_shift_up(UDPpacket **packet, int max_packets)
 #endif
 {
 		if (packet[0])
@@ -163,7 +163,7 @@ static void packets_shift_up(UDPpacket **packet, int max_packets)
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
 static void packets_shift_down(SDLNet_Datagram **packet, int max_packets)
 #else
-static void packets_shift_down(UDPpacket **packet, int max_packets)
+static void OTATTR packets_shift_down(UDPpacket **packet, int max_packets)
 #endif
 {
 	if (packet[max_packets - 1])
@@ -182,7 +182,7 @@ static void packets_shift_down(UDPpacket **packet, int max_packets)
 }
 
 // prepare new packet for sending
-void network_prepare(Uint16 type)
+void OTATTR network_prepare(Uint16 type)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (packet_out_temp == NULL)
@@ -199,7 +199,7 @@ void network_prepare(Uint16 type)
 }
 
 // send packet but don't expect acknowledgment of delivery
-static bool network_send_no_ack(int len)
+static bool OTATTR network_send_no_ack(int len)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (packet_out_temp == NULL)
@@ -236,7 +236,7 @@ static bool network_send_no_ack(int len)
 }
 
 // send packet and place it in queue to be acknowledged
-bool network_send(int len)
+bool OTATTR network_send(int len)
 {
 	bool temp = network_send_no_ack(len);
 
@@ -275,7 +275,7 @@ bool network_send(int len)
 }
 
 // send acknowledgment packet
-static int network_acknowledge(Uint16 sync)
+static int OTATTR network_acknowledge(Uint16 sync)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (packet_out_temp == NULL)
@@ -296,13 +296,13 @@ static int network_acknowledge(Uint16 sync)
 }
 
 // activity lately?
-static bool network_is_alive(void)
+static bool OTATTR network_is_alive(void)
 {
 	return (SDL_GetTicks() - last_in_tick < NET_TIME_OUT || SDL_GetTicks() - last_state_in_tick < NET_TIME_OUT);
 }
 
 // poll for new packets received, check that connection is alive, resend queued packets if necessary
-int network_check(void)
+int OTATTR network_check(void)
 {
 	if (!net_initialized)
 		return -1;
@@ -669,7 +669,7 @@ int network_check(void)
 }
 
 // discard working packet, now processing next packet in queue
-bool network_update(void)
+bool OTATTR network_update(void)
 {
 	if (packet_in[0])
 	{
@@ -684,13 +684,13 @@ bool network_update(void)
 }
 
 // has opponent gotten all the packets we've sent?
-bool network_is_sync(void)
+bool OTATTR network_is_sync(void)
 {
 	return (queue_out_sync - last_ack_sync == 1);
 }
 
 // prepare new state for sending
-void network_state_prepare(void)
+void OTATTR network_state_prepare(void)
 {
 	if (packet_state_out[0])
 	{
@@ -726,7 +726,7 @@ void network_state_prepare(void)
 }
 
 // send state packet, xor packet if applicable
-int network_state_send(void)
+int OTATTR network_state_send(void)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     if (packet_state_out[0]->buf)
@@ -804,7 +804,7 @@ int network_state_send(void)
 }
 
 // receive state packet, wait until received
-bool network_state_update(void)
+bool OTATTR network_state_update(void)
 {
 	if (network_state_is_reset())
 	{
@@ -939,13 +939,13 @@ bool network_state_update(void)
 }
 
 // ignore first network_delay states of level
-bool network_state_is_reset(void)
+bool OTATTR network_state_is_reset(void)
 {
 	return (last_state_out_sync < network_delay);
 }
 
 // reset queues for new level
-void network_state_reset(void)
+void OTATTR network_state_reset(void)
 {
 	last_state_in_sync = last_state_out_sync = 0;
 
@@ -994,7 +994,7 @@ void network_state_reset(void)
 
 // attempt to punch through firewall by firing off UDP packets at the opponent
 // exchange game information
-int network_connect(void)
+int OTATTR network_connect(void)
 {
 #if defined(WITH_SDL3) && !defined(WITH_SDL2NET)
     ip = SDLNet_ResolveHostname(network_opponent_host);
@@ -1180,7 +1180,7 @@ connect_again:
 }
 
 // something has gone wrong :(
-void network_tyrian_halt(unsigned int err, bool attempt_sync)
+void OTATTR network_tyrian_halt(unsigned int err, bool attempt_sync)
 {
 	const char *const err_msg[] = {
 		"Quitting...",
@@ -1235,9 +1235,9 @@ void network_tyrian_halt(unsigned int err, bool attempt_sync)
 	JE_tyrianHalt(5);
 }
 
-int network_init(void)
+int OTATTR network_init(void)
 {
-	printf("Initializing network...\n");
+	_printf("Initializing network...\n");
 
 	if (network_delay * 2 > NET_PACKET_QUEUE - 2)
 	{
@@ -1301,7 +1301,7 @@ int network_init(void)
 
 #endif
 
-void JE_clearSpecialRequests(void)
+void OTATTR JE_clearSpecialRequests(void)
 {
 	pauseRequest = false;
 	inGameMenuRequest = false;

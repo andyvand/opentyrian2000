@@ -70,14 +70,14 @@ static bool mouseRelativeEnabled;
 static Sint32 mouseWindowXRelative;
 static Sint32 mouseWindowYRelative;
 
-void flush_events_buffer(void)
+void OTATTR flush_events_buffer(void)
 {
 	SDL_Event ev;
 
 	while (SDL_PollEvent(&ev));
 }
 
-void wait_input(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
+void OTATTR wait_input(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
 {
 	service_SDL_events(false);
 	while (!((keyboard && keydown) || (mouse && mousedown) || (joystick && joydown)))
@@ -93,7 +93,7 @@ void wait_input(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
 	}
 }
 
-void wait_noinput(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
+void OTATTR wait_noinput(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
 {
 	service_SDL_events(false);
 	while ((keyboard && keydown) || (mouse && mousedown) || (joystick && joydown))
@@ -109,7 +109,7 @@ void wait_noinput(JE_boolean keyboard, JE_boolean mouse, JE_boolean joystick)
 	}
 }
 
-void init_keyboard(void)
+void OTATTR init_keyboard(void)
 {
 	//SDL_EnableKeyRepeat(500, 60); TODO Find if SDL2 has an equivalent.
 
@@ -156,7 +156,7 @@ void mouseSetRelative(bool enable)
 	mouseWindowYRelative = 0;
 }
 
-JE_word JE_mousePosition(JE_word *mouseX, JE_word *mouseY)
+JE_word OTATTR JE_mousePosition(JE_word *mouseX, JE_word *mouseY)
 {
 	service_SDL_events(false);
 	*mouseX = mouse_x;
@@ -164,7 +164,7 @@ JE_word JE_mousePosition(JE_word *mouseX, JE_word *mouseY)
 	return mousedown ? lastmouse_but : 0;
 }
 
-void mouseGetRelativePosition(Sint32 *const out_x, Sint32 *const out_y)
+void OTATTR mouseGetRelativePosition(Sint32 *const out_x, Sint32 *const out_y)
 {
 	service_SDL_events(false);
 
@@ -176,7 +176,7 @@ void mouseGetRelativePosition(Sint32 *const out_x, Sint32 *const out_y)
 	mouseWindowYRelative = 0;
 }
 
-void service_SDL_events(JE_boolean clear_new)
+void OTATTR service_SDL_events(JE_boolean clear_new)
 {
 	SDL_Event ev;
 #ifdef WITH_SDL3
@@ -473,7 +473,7 @@ void service_SDL_events(JE_boolean clear_new)
 #endif
 }
 
-void JE_clearKeyboard(void)
+void OTATTR JE_clearKeyboard(void)
 {
 	// /!\ Doesn't seems important. I think. D:
 }

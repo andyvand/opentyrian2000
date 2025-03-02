@@ -118,7 +118,7 @@ static const uint cube_line_chars = sizeof(*cube->text) - 1;
 static const uint cube_line_width = 150;
 
 /*** Functions ***/
-static Uint8 *playeritem_map(PlayerItems *items, uint i)
+static Uint8 * OTATTR playeritem_map(PlayerItems *items, uint i)
 {
 	Uint8 *const map[] =
 	{
@@ -134,7 +134,7 @@ static Uint8 *playeritem_map(PlayerItems *items, uint i)
 	return map[i];
 }
 
-JE_longint JE_cashLeft(void)
+JE_longint OTATTR JE_cashLeft(void)
 {
 	JE_longint tempL = (JE_longint)player[0].cash;
 	JE_word itemNum = *playeritem_map(&player[0].items, curSel[MENU_UPGRADES] - 2);
@@ -158,7 +158,7 @@ JE_longint JE_cashLeft(void)
 	return tempL;
 }
 
-void JE_itemScreen(void)
+void OTATTR JE_itemScreen(void)
 {
 	bool quit = false;
 
@@ -1668,7 +1668,7 @@ void JE_itemScreen(void)
 		fade_black(10);
 }
 
-void draw_ship_illustration(void)
+void OTATTR draw_ship_illustration(void)
 {
 	// full of evil hardcoding
 
@@ -1762,7 +1762,7 @@ void draw_ship_illustration(void)
 	blit_sprite_hv(VGAScreenSeg, 28, 23, OPTION_SHAPES, 26, 15, shields[player[0].items.shield].mpwr - 10);
 }
 
-void load_cubes(void)
+void OTATTR load_cubes(void)
 {
 	for (int cube_slot = 0; cube_slot < cubeMax; ++cube_slot)
 	{
@@ -1772,7 +1772,7 @@ void load_cubes(void)
 	}
 }
 
-bool load_cube(int cube_slot, int cube_index)
+bool OTATTR load_cube(int cube_slot, int cube_index)
 {
 	FILE *f = dir_fopen_die(data_dir(), cube_file, "rb");
 	char buf[256];
@@ -1878,7 +1878,7 @@ bool load_cube(int cube_slot, int cube_index)
 	return true;
 }
 
-void JE_drawItem(JE_byte itemType, JE_word itemNum, JE_word x, JE_word y)
+void OTATTR JE_drawItem(JE_byte itemType, JE_word itemNum, JE_word x, JE_word y)
 {
 	JE_word tempW = 0;
 
@@ -1926,7 +1926,7 @@ void JE_drawItem(JE_byte itemType, JE_word itemNum, JE_word x, JE_word y)
 	}
 }
 
-void JE_drawMenuHeader(void)
+void OTATTR JE_drawMenuHeader(void)
 {
 	switch (curMenu)
 	{
@@ -1946,7 +1946,7 @@ void JE_drawMenuHeader(void)
 	JE_dString(VGAScreen, 74 + JE_fontCenter(tempStr, FONT_SHAPES), 10, tempStr, FONT_SHAPES);
 }
 
-void JE_drawMenuChoices(void)
+void OTATTR JE_drawMenuChoices(void)
 {
 	JE_byte x;
 	char *str;
@@ -2001,7 +2001,7 @@ void JE_drawMenuChoices(void)
 	}
 }
 
-void JE_updateNavScreen(void)
+void OTATTR JE_updateNavScreen(void)
 {
 	JE_byte x;
 
@@ -2079,7 +2079,7 @@ void JE_updateNavScreen(void)
 	}
 }
 
-void JE_drawLines(SDL_Surface *surface, JE_boolean dark)
+void OTATTR JE_drawLines(SDL_Surface *surface, JE_boolean dark)
 {
 	JE_byte x, y;
 	JE_integer tempX, tempY;
@@ -2135,7 +2135,7 @@ void JE_drawLines(SDL_Surface *surface, JE_boolean dark)
 /* SYN: This was originally PROC drawlines... yes, there were two different procs called
    drawlines in different scopes in the same file. Dammit, Jason, why do you do this to me? */
 
-void JE_drawNavLines(JE_boolean dark)
+void OTATTR JE_drawNavLines(JE_boolean dark)
 {
 	JE_byte x, y;
 	JE_integer tempX, tempY;
@@ -2186,7 +2186,7 @@ void JE_drawNavLines(JE_boolean dark)
 	}
 }
 
-void JE_drawDots(void)
+void OTATTR JE_drawDots(void)
 {
 	JE_byte x, y;
 	JE_integer tempX, tempY;
@@ -2203,7 +2203,7 @@ void JE_drawDots(void)
 	}
 }
 
-void JE_drawPlanet(JE_byte planetNum)
+void OTATTR JE_drawPlanet(JE_byte planetNum)
 {
 	JE_integer tempZ = PGR[planetNum]-1,
 	           tempX = planetX[planetNum] + 66 - tempNavX - sprite(PLANET_SHAPES, tempZ)->width / 2,
@@ -2219,7 +2219,7 @@ void JE_drawPlanet(JE_byte planetNum)
 	}
 }
 
-void JE_scaleBitmap(SDL_Surface *dst_bitmap, const SDL_Surface *src_bitmap,  int x1, int y1, int x2, int y2)
+void OTATTR JE_scaleBitmap(SDL_Surface *dst_bitmap, const SDL_Surface *src_bitmap,  int x1, int y1, int x2, int y2)
 {
 	/* This function scales one screen and writes the result to another.
 	 *  The only code that calls it is the code run when you select 'ship
@@ -2265,7 +2265,7 @@ void JE_scaleBitmap(SDL_Surface *dst_bitmap, const SDL_Surface *src_bitmap,  int
 	}
 }
 
-void JE_initWeaponView(void)
+void OTATTR JE_initWeaponView(void)
 {
 	fill_rectangle_xy(VGAScreen, 8, 8, 144, 177, 0);
 
@@ -2291,7 +2291,7 @@ void JE_initWeaponView(void)
 	initialize_starfield();
 }
 
-void JE_computeDots(void)
+void OTATTR JE_computeDots(void)
 {
 	JE_integer tempX, tempY;
 	JE_longint distX, distY;
@@ -2322,12 +2322,12 @@ void JE_computeDots(void)
 	}
 }
 
-JE_integer JE_partWay(JE_integer start, JE_integer finish, JE_byte dots, JE_byte dist)
+JE_integer OTATTR JE_partWay(JE_integer start, JE_integer finish, JE_byte dots, JE_byte dist)
 {
 	return (finish - start) / (dots + 2) * (dist + 1) + start;
 }
 
-void JE_doShipSpecs(void)
+void OTATTR JE_doShipSpecs(void)
 {
 	/* This function is called whenever you select 'ship specs' in the
 	 * game menu.  It draws the nice green tech screen and scales it onto
@@ -2353,7 +2353,7 @@ void JE_doShipSpecs(void)
 	wait_input(true, true, true);
 }
 
-void JE_drawMainMenuHelpText(void)
+void OTATTR JE_drawMainMenuHelpText(void)
 {
 	char tempStr[67];
 	JE_byte temp;
@@ -2390,7 +2390,7 @@ void JE_drawMainMenuHelpText(void)
 	JE_textShade(VGAScreen, 10, 187, tempStr, 14, 1, DARKEN);
 }
 
-JE_boolean JE_saveRequest(JE_byte slot, const char *savename)
+JE_boolean OTATTR JE_saveRequest(JE_byte slot, const char *savename)
 {
 	bool save_selected = true, done = false;
 
@@ -2496,7 +2496,7 @@ JE_boolean JE_saveRequest(JE_byte slot, const char *savename)
 	return save_selected;
 }
 
-JE_boolean JE_quitRequest(void)
+JE_boolean OTATTR JE_quitRequest(void)
 {
 	bool quit_selected = true, done = false;
 
@@ -2610,7 +2610,7 @@ JE_boolean JE_quitRequest(void)
 	return quit_selected;
 }
 
-void JE_genItemMenu(JE_byte itemNum)
+void OTATTR JE_genItemMenu(JE_byte itemNum)
 {
 	menuChoices[MENU_UPGRADE_SUB] = itemAvailMax[itemAvailMap[itemNum - 2] - 1] + 2;
 
@@ -2654,7 +2654,7 @@ void JE_genItemMenu(JE_byte itemNum)
 	curSel[MENU_UPGRADE_SUB] = temp3;
 }
 
-void JE_scaleInPicture(SDL_Surface *dst, const SDL_Surface *src)
+void OTATTR JE_scaleInPicture(SDL_Surface *dst, const SDL_Surface *src)
 {
 	for (int i = 2; i <= 160; i += 2)
 	{
@@ -2668,7 +2668,7 @@ void JE_scaleInPicture(SDL_Surface *dst, const SDL_Surface *src)
 	}
 }
 
-void JE_drawScore(void)
+void OTATTR JE_drawScore(void)
 {
 	char cl[24];
 	if (curMenu == MENU_UPGRADE_SUB)
@@ -2678,7 +2678,7 @@ void JE_drawScore(void)
 	}
 }
 
-void JE_menuFunction(JE_byte select)
+void OTATTR JE_menuFunction(JE_byte select)
 {
 	JE_byte x;
 	JE_word curSelect;
@@ -3138,7 +3138,7 @@ joystick_assign_done:
 	old_items[0] = player[0].items;
 }
 
-void JE_drawShipSpecs(SDL_Surface * screen, SDL_Surface * temp_screen)
+void OTATTR JE_drawShipSpecs(SDL_Surface * screen, SDL_Surface * temp_screen)
 {
 	/* In this function we create our ship description image.
 	 *
@@ -3245,7 +3245,7 @@ void JE_drawShipSpecs(SDL_Surface * screen, SDL_Surface * temp_screen)
 	}
 }
 
-void JE_weaponSimUpdate(void)
+void OTATTR JE_weaponSimUpdate(void)
 {
 	char buf[32];
 
@@ -3301,7 +3301,7 @@ void JE_weaponSimUpdate(void)
 	JE_drawItem(1, player[0].items.ship, player[0].x - 5, player[0].y - 7);
 }
 
-void JE_weaponViewFrame(void)
+void OTATTR JE_weaponViewFrame(void)
 {
 	fill_rectangle_xy(VGAScreen, 8, 8, 143, 182, 0);
 

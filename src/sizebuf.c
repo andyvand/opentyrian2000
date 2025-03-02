@@ -51,7 +51,7 @@
 #include <string.h>
 
 /* Construct buffer with the passed array and size */
-void SZ_Init(sizebuf_t * sz, Uint8 * buf, unsigned int size)
+void OTATTR SZ_Init(sizebuf_t * sz, Uint8 * buf, unsigned int size)
 {
 	sz->data = buf;
 	sz->bufferLen = size;
@@ -60,13 +60,13 @@ void SZ_Init(sizebuf_t * sz, Uint8 * buf, unsigned int size)
 }
 
 /* Check error flags */
-bool SZ_Error(sizebuf_t * sz)
+bool OTATTR SZ_Error(sizebuf_t * sz)
 {
 	return sz->error;
 }
 
 /* mimic memset */
-void SZ_Memset(sizebuf_t * sz, int value, size_t count)
+void OTATTR SZ_Memset(sizebuf_t * sz, int value, size_t count)
 {
 	/* Do bounds checking before writing */
 	if (sz->error || sz->bufferPos + count > sz->bufferLen)
@@ -81,7 +81,7 @@ void SZ_Memset(sizebuf_t * sz, int value, size_t count)
 }
 
 /* Mimic memcpy. */
-void SZ_Memcpy2(sizebuf_t * sz, sizebuf_t * bf, size_t count)
+void OTATTR SZ_Memcpy2(sizebuf_t * sz, sizebuf_t * bf, size_t count)
 {
 	/* State checking */
 	if (sz->error || sz->bufferPos + count > sz->bufferLen)
@@ -102,7 +102,7 @@ void SZ_Memcpy2(sizebuf_t * sz, sizebuf_t * bf, size_t count)
 }
 
 /* Reposition buffer pointer */
-void SZ_Seek(sizebuf_t * sz, long count, int mode)
+void OTATTR SZ_Seek(sizebuf_t * sz, long count, int mode)
 {
 	/* Okay, it's reasonable to reset the error bool on seeking... */
 
@@ -132,7 +132,7 @@ void SZ_Seek(sizebuf_t * sz, long count, int mode)
  * It's not the ONLY way to write ints to a stream, but it's probably the
  * cleanest of the lot.  Better to have it here than littered all over the code.
  */
-unsigned int MSG_ReadByte(sizebuf_t * sz)
+unsigned int OTATTR MSG_ReadByte(sizebuf_t * sz)
 {
 	unsigned int ret;
 
@@ -148,7 +148,7 @@ unsigned int MSG_ReadByte(sizebuf_t * sz)
 	return ret;
 }
 
-unsigned int MSG_ReadWord(sizebuf_t * sz)
+unsigned int OTATTR MSG_ReadWord(sizebuf_t * sz)
 {
 	unsigned int ret;
 

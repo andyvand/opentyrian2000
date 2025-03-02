@@ -51,7 +51,7 @@ JE_boolean bonusLevel;
 /* Tells if the game jumped back to Episode 1 */
 JE_boolean jumpBackToEpisode1;
 
-void JE_loadItemDat(void)
+void OTATTR JE_loadItemDat(void)
 {
 	FILE *f = NULL;
 
@@ -225,7 +225,7 @@ void JE_loadItemDat(void)
 	efclose(f);
 }
 
-void JE_initEpisode(JE_byte newEpisode)
+void OTATTR JE_initEpisode(JE_byte newEpisode)
 {
 	if (newEpisode == episodeNum)
 		return;
@@ -240,7 +240,7 @@ void JE_initEpisode(JE_byte newEpisode)
 	JE_loadItemDat();
 }
 
-void JE_scanForEpisodes(void)
+void OTATTR JE_scanForEpisodes(void)
 {
 	for (int i = 0; i < EPISODE_MAX; ++i)
 	{
@@ -250,7 +250,7 @@ void JE_scanForEpisodes(void)
 	}
 }
 
-unsigned int JE_findNextEpisode(void)
+unsigned int OTATTR JE_findNextEpisode(void)
 {
 	unsigned int newEpisode = episodeNum;
 	

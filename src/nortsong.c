@@ -56,36 +56,36 @@ static float delayPeriod = 0x4300 * ((12.0f / 14318180.0f) * 1000.0f);
 static Uint32 target = 0;
 static Uint32 target2 = 0;
 
-void setDelay(int delay)  // FKA NortSong.frameCount
+void OTATTR setDelay(int delay)  // FKA NortSong.frameCount
 {
 	target = SDL_GetTicks() + delay * delayPeriod;
 }
 
-void setDelay2(int delay)  // FKA NortSong.frameCount2
+void OTATTR setDelay2(int delay)  // FKA NortSong.frameCount2
 {
 	target2 = SDL_GetTicks() + delay * delayPeriod;
 }
 
-Uint32 getDelayTicks(void)  // FKA NortSong.frameCount
+Uint32 OTATTR getDelayTicks(void)  // FKA NortSong.frameCount
 {
 	Sint32 delay = target - (Sint32)SDL_GetTicks();
 	return MAX(0, delay);
 }
 
-Uint32 getDelayTicks2(void)  // FKA NortSong.frameCount2
+Uint32 OTATTR getDelayTicks2(void)  // FKA NortSong.frameCount2
 {
 	Sint32 delay = target2 - (Sint32)SDL_GetTicks();
 	return MAX(0, delay);
 }
 
-void wait_delay(void)
+void OTATTR wait_delay(void)
 {
 	Sint32 delay = target - (Sint32)SDL_GetTicks();
 	if (delay > 0)
 		SDL_Delay(delay);
 }
 
-void service_wait_delay(void)
+void OTATTR service_wait_delay(void)
 {
 	for (; ; )
 	{
@@ -99,7 +99,7 @@ void service_wait_delay(void)
 	}
 }
 
-void wait_delayorinput(void)
+void OTATTR wait_delayorinput(void)
 {
 	for (; ; )
 	{
@@ -120,7 +120,7 @@ void wait_delayorinput(void)
 	}
 }
 
-void loadSndFile(bool xmas)
+void OTATTR loadSndFile(bool xmas)
 {
 	FILE *f;
 	f = dir_fopen_die(data_dir(), "tyrian.snd", "rb");
@@ -351,18 +351,18 @@ die:
 	exit(EXIT_FAILURE);
 }
 
-void JE_playSampleNum(JE_byte samplenum)
+void OTATTR JE_playSampleNum(JE_byte samplenum)
 {
 	multiSamplePlay(soundSamples[samplenum-1], soundSampleCount[samplenum-1], 0, fxPlayVol);
 }
 
-void setDelaySpeed(Uint16 speed)  // FKA NortSong.speed and NortSong.setTimerInt
+void OTATTR setDelaySpeed(Uint16 speed)  // FKA NortSong.speed and NortSong.setTimerInt
 {
 	delaySpeed = speed;
 	delayPeriod = speed * pitPeriod;
 }
 
-void JE_changeVolume(JE_word *music, int music_delta, JE_word *sample, int sample_delta)
+void OTATTR JE_changeVolume(JE_word *music, int music_delta, JE_word *sample, int sample_delta)
 {
 	int music_temp = *music + music_delta,
 	    sample_temp = *sample + sample_delta;

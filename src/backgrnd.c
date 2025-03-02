@@ -40,7 +40,7 @@ JE_byte map1YDelay, map1YDelayMax, map2YDelay, map2YDelayMax;
 JE_boolean  anySmoothies;
 JE_byte     smoothie_data[9]; /* [1..9] */
 
-void JE_darkenBackground(JE_word neat)  /* wild detail level */
+void OTATTR JE_darkenBackground(JE_word neat)  /* wild detail level */
 {
 	Uint8 *s = VGAScreen->pixels; /* screen pointer, 8-bit specific */
 	int x, y;
@@ -58,7 +58,7 @@ void JE_darkenBackground(JE_word neat)  /* wild detail level */
 	}
 }
 
-void blit_background_row(SDL_Surface *surface, int x, int y, Uint8 **map)
+void OTATTR blit_background_row(SDL_Surface *surface, int x, int y, Uint8 **map)
 {
 	Uint8 *pixels = (Uint8 *)surface->pixels + (y * surface->pitch) + x,
 	      *pixels_ll = (Uint8 *)surface->pixels,  // lower limit
@@ -102,7 +102,7 @@ void blit_background_row(SDL_Surface *surface, int x, int y, Uint8 **map)
 	}
 }
 
-void blit_background_row_blend(SDL_Surface *surface, int x, int y, Uint8 **map)
+void OTATTR blit_background_row_blend(SDL_Surface *surface, int x, int y, Uint8 **map)
 {
 	Uint8 *pixels = (Uint8 *)surface->pixels + (y * surface->pitch) + x,
 	      *pixels_ll = (Uint8 *)surface->pixels,  // lower limit
@@ -146,7 +146,7 @@ void blit_background_row_blend(SDL_Surface *surface, int x, int y, Uint8 **map)
 	}
 }
 
-void draw_background_1(SDL_Surface *surface)
+void OTATTR draw_background_1(SDL_Surface *surface)
 {
 #ifdef WITH_SDL3
     SDL_FillSurfaceRect(surface, NULL, 0);
@@ -164,7 +164,7 @@ void draw_background_1(SDL_Surface *surface)
 	}
 }
 
-void draw_background_2(SDL_Surface *surface)
+void OTATTR draw_background_2(SDL_Surface *surface)
 {
 	if (map2YDelayMax > 1 && backMove2 < 2)
 		backMove2 = (map2YDelay == 1) ? 1 : 0;
@@ -200,7 +200,7 @@ void draw_background_2(SDL_Surface *surface)
 	}
 }
 
-void draw_background_2_blend(SDL_Surface *surface)
+void OTATTR draw_background_2_blend(SDL_Surface *surface)
 {
 	if (map2YDelayMax > 1 && backMove2 < 2)
 		backMove2 = (map2YDelay == 1) ? 1 : 0;
@@ -230,7 +230,7 @@ void draw_background_2_blend(SDL_Surface *surface)
 	}
 }
 
-void draw_background_3(SDL_Surface *surface)
+void OTATTR draw_background_3(SDL_Surface *surface)
 {
 	/* Movement of background */
 	backPos3 += backMove3;
@@ -252,7 +252,7 @@ void draw_background_3(SDL_Surface *surface)
 	}
 }
 
-void JE_filterScreen(JE_shortint col, JE_shortint int_)
+void OTATTR JE_filterScreen(JE_shortint col, JE_shortint int_)
 {
 	Uint8 *s = NULL; /* screen pointer, 8-bit specific */
 	int x, y;
@@ -310,12 +310,12 @@ void JE_filterScreen(JE_shortint col, JE_shortint int_)
 	}
 }
 
-void JE_checkSmoothies(void)
+void OTATTR JE_checkSmoothies(void)
 {
 	anySmoothies = (processorType > 2 && (smoothies[1-1] || smoothies[2-1])) || (processorType > 1 && (smoothies[3-1] || smoothies[4-1] || smoothies[5-1]));
 }
 
-void lava_filter(SDL_Surface *dst, SDL_Surface *src)
+void OTATTR lava_filter(SDL_Surface *dst, SDL_Surface *src)
 {
 	/* we don't need to check for over-reading the pixel surfaces since we only
 	 * read from the top 185+1 scanlines, and there should be 320 */
@@ -361,7 +361,7 @@ void lava_filter(SDL_Surface *dst, SDL_Surface *src)
 	}
 }
 
-void water_filter(SDL_Surface *dst, SDL_Surface *src)
+void OTATTR water_filter(SDL_Surface *dst, SDL_Surface *src)
 {
 	Uint8 hue = smoothie_data[1] << 4;
 	
@@ -407,7 +407,7 @@ void water_filter(SDL_Surface *dst, SDL_Surface *src)
 	}
 }
 
-void iced_blur_filter(SDL_Surface *dst, SDL_Surface *src)
+void OTATTR iced_blur_filter(SDL_Surface *dst, SDL_Surface *src)
 {
 	Uint8 *dst_pixel = dst->pixels;
 	const Uint8 *src_pixel = src->pixels;
@@ -431,7 +431,7 @@ void iced_blur_filter(SDL_Surface *dst, SDL_Surface *src)
 	}
 }
 
-void blur_filter(SDL_Surface *dst, SDL_Surface *src)
+void OTATTR blur_filter(SDL_Surface *dst, SDL_Surface *src)
 {
 	Uint8 *dst_pixel = dst->pixels;
 	const Uint8 *src_pixel = src->pixels;
@@ -468,7 +468,7 @@ typedef struct
 static StarfieldStar starfield_stars[MAX_STARS];
 int starfield_speed;
 
-void initialize_starfield(void)
+void OTATTR initialize_starfield(void)
 {
 	for (int i = MAX_STARS-1; i >= 0; --i)
 	{
@@ -478,7 +478,7 @@ void initialize_starfield(void)
 	}
 }
 
-void update_and_draw_starfield(SDL_Surface* surface, int move_speed)
+void OTATTR update_and_draw_starfield(SDL_Surface* surface, int move_speed)
 {
 	Uint8* p = (Uint8*)surface->pixels;
 

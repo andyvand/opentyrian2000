@@ -54,7 +54,7 @@
  *        1 causes the shadow to be drawn 1 pixel right and 1 pixel lower than
  *        the text.)
  */
-void draw_font_hv_shadow(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value, bool black, int shadow_dist)
+void OTATTR draw_font_hv_shadow(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value, bool black, int shadow_dist)
 {
 	draw_font_dark(surface, x + shadow_dist, y + shadow_dist, text, font, alignment, black);
 	
@@ -87,7 +87,7 @@ void draw_font_hv_shadow(SDL_Surface *surface, int x, int y, const char *text, F
  *        in each cardinal direction.  If this shadow distance is small enough,
  *        this produces a shadow that outlines the text.)
  */
-void draw_font_hv_full_shadow(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value, bool black, int shadow_dist)
+void OTATTR draw_font_hv_full_shadow(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value, bool black, int shadow_dist)
 {
 	draw_font_dark(surface, x,               y - shadow_dist, text, font, alignment, black);
 	draw_font_dark(surface, x + shadow_dist, y,               text, font, alignment, black);
@@ -116,7 +116,7 @@ void draw_font_hv_full_shadow(SDL_Surface *surface, int x, int y, const char *te
  * @param hue hue component of text color
  * @param value value component of text color
  */
-void draw_font_hv(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value)
+void OTATTR draw_font_hv(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value)
 {
 	switch (alignment)
 	{
@@ -179,7 +179,7 @@ void draw_font_hv(SDL_Surface *surface, int x, int y, const char *text, Font fon
  * @param hue hue component of text color
  * @param value value component of text color
  */
-void draw_font_hv_blend(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value)
+void OTATTR draw_font_hv_blend(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, Uint8 hue, Sint8 value)
 {
 	switch (alignment)
 	{
@@ -235,7 +235,7 @@ void draw_font_hv_blend(SDL_Surface *surface, int x, int y, const char *text, Fo
  * @param black if true text is drawn as solid black, if false text is drawn by
  *        darkening the pixels of the destination surface
  */
-void draw_font_dark(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, bool black)
+void OTATTR draw_font_dark(SDL_Surface *surface, int x, int y, const char *text, Font font, FontAlignment alignment, bool black)
 {
 	switch (alignment)
 	{

@@ -27,7 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-void JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
+void OTATTR JE_loadPic(SDL_Surface *screen, JE_byte PCXnumber, JE_boolean storepal)
 {
 	PCXnumber--;
 	FILE *f = dir_fopen_die(data_dir(), "tyrian.pic", "rb");

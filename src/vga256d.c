@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void JE_pix(SDL_Surface *surface, int x, int y, JE_byte c)
+void OTATTR JE_pix(SDL_Surface *surface, int x, int y, JE_byte c)
 {
 	/* Bad things happen if we don't clip */
 	if (x <  surface->pitch && y <  surface->h)
@@ -50,7 +50,7 @@ void JE_pix(SDL_Surface *surface, int x, int y, JE_byte c)
 	}
 }
 
-void JE_pix3(SDL_Surface *surface, int x, int y, JE_byte c)
+void OTATTR JE_pix3(SDL_Surface *surface, int x, int y, JE_byte c)
 {
 	/* Originally implemented as several direct accesses */
 	JE_pix(surface, x, y, c);
@@ -60,7 +60,7 @@ void JE_pix3(SDL_Surface *surface, int x, int y, JE_byte c)
 	JE_pix(surface, x, y + 1, c);
 }
 
-void JE_rectangle(SDL_Surface *surface, int a, int b, int c, int d, int e) /* x1, y1, x2, y2, color */
+void OTATTR JE_rectangle(SDL_Surface *surface, int a, int b, int c, int d, int e) /* x1, y1, x2, y2, color */
 {
 	if (a < surface->pitch && b < surface->h &&
 	    c < surface->pitch && d < surface->h)
@@ -92,7 +92,7 @@ void JE_rectangle(SDL_Surface *surface, int a, int b, int c, int d, int e) /* x1
 	}
 }
 
-void fill_rectangle_xy(SDL_Surface *surface, int x, int y, int x2, int y2, Uint8 color)
+void OTATTR fill_rectangle_xy(SDL_Surface *surface, int x, int y, int x2, int y2, Uint8 color)
 {
 	SDL_Rect rect = { x, y, x2 - x + 1, y2 - y + 1 };
 
@@ -103,7 +103,7 @@ void fill_rectangle_xy(SDL_Surface *surface, int x, int y, int x2, int y2, Uint8
 #endif
 }
 
-void JE_barShade(SDL_Surface *surface, int a, int b, int c, int d) /* x1, y1, x2, y2 */
+void OTATTR JE_barShade(SDL_Surface *surface, int a, int b, int c, int d) /* x1, y1, x2, y2 */
 {
 	if (a < surface->pitch && b < surface->h &&
 	    c < surface->pitch && d < surface->h)
@@ -127,7 +127,7 @@ void JE_barShade(SDL_Surface *surface, int a, int b, int c, int d) /* x1, y1, x2
 	}
 }
 
-void JE_barBright(SDL_Surface *surface, int a, int b, int c, int d) /* x1, y1, x2, y2 */
+void OTATTR JE_barBright(SDL_Surface *surface, int a, int b, int c, int d) /* x1, y1, x2, y2 */
 {
 	if (a < surface->pitch && b < surface->h &&
 	    c < surface->pitch && d < surface->h)
@@ -162,7 +162,7 @@ void JE_barBright(SDL_Surface *surface, int a, int b, int c, int d) /* x1, y1, x
 	}
 }
 
-void draw_segmented_gauge(SDL_Surface *surface, int x, int y, Uint8 color, uint segment_width, uint segment_height, uint segment_value, uint value)
+void OTATTR draw_segmented_gauge(SDL_Surface *surface, int x, int y, Uint8 color, uint segment_width, uint segment_height, uint segment_value, uint value)
 {
 	assert(segment_width > 0 && segment_height > 0);
 

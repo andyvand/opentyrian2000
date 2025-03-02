@@ -3,6 +3,6 @@
 
 #include "palette.h"
 
-extern Palette vga_palette;
+extern EXTATTR Palette vga_palette;
 
 #endif // VGA_PALETTE_H
