@@ -148,10 +148,10 @@ static void audioCallback(void *userdata, SDL_AudioStream *SDLstream, int add_si
 static void audioCallback(void *userdata, Uint8 *stream, int size);
 #endif
 
-static void OTATTR load_song(unsigned int song_num);
+static void load_song(unsigned int song_num);
 
 #ifdef WITH_MIDI
-bool OTATTR init_midi(SDL_AudioSpec * got){
+bool init_midi(SDL_AudioSpec * got){
 	if (!Mix_Init(MIX_INIT_MID)){
 		_fprintf(stderr, "error: SDL2_mixer_ext failed to init: %s\n", Mix_GetError());
 		return false;
@@ -194,7 +194,7 @@ bool OTATTR init_midi(SDL_AudioSpec * got){
 
 
 // only use this within a lock
-void OTATTR _stop_midi(void){
+void _stop_midi(void){
 	if (playing)
 	{
 		Mix_HaltMusic();
@@ -203,7 +203,7 @@ void OTATTR _stop_midi(void){
 	songlooped = false;
 }
 
-void OTATTR deinit_midi(void){
+void deinit_midi(void){
 	_stop_midi();
 	if (midi_tracks != NULL) {
 		for (unsigned int i = 0; i < song_count; ++i)
@@ -224,7 +224,7 @@ void OTATTR deinit_midi(void){
 #endif
 }
 
-void OTATTR convert_midi_data(void){
+void convert_midi_data(void){
 	// initialize the midi_data array
 	midi_data = malloc(song_count * sizeof(*midi_data));
 	midi_tracks = malloc(song_count * sizeof(*midi_tracks));
@@ -269,7 +269,7 @@ void OTATTR convert_midi_data(void){
 
 
 // only use this within a lock
-bool OTATTR _play_midi(Uint32 songnum){
+bool _play_midi(Uint32 songnum){
 	if (fading_out)
 	{
 		_stop_midi();
@@ -303,7 +303,7 @@ bool OTATTR _play_midi(Uint32 songnum){
 	return true;
 }
 
-const char * OTATTR get_midi_params(void){
+const char * get_midi_params(void){
 	if (music_device == FLUIDSYNTH){
 #if (defined(__APPLE__) && defined(__MACH__)) || defined(ANDROID) || defined(__ANDROID__) || defined(WIN32) || defined(_WIN32) || defined(__linux__)
         return "s1;p512;";
@@ -317,7 +317,7 @@ const char * OTATTR get_midi_params(void){
 	}
 }
 
-bool OTATTR load_midi(unsigned int song_num){
+bool load_midi(unsigned int song_num){
 	// This is outside of the audio lock because it can take a while
 	if (midi_tracks[song_num] == NULL){
 #ifdef WITH_SDL3
@@ -337,7 +337,7 @@ bool OTATTR load_midi(unsigned int song_num){
 }
 #endif
 
-bool OTATTR init_audio(void)
+bool init_audio(void)
 {
 #ifdef WITH_SDL3
     AudioDeviceLock = SDL_CreateMutex();
@@ -453,7 +453,7 @@ bool OTATTR init_audio(void)
 	return true;
 }
 
-bool OTATTR restart_audio(void){
+bool restart_audio(void){
 	if (audio_disabled)
 		return false;
 #ifdef WITH_SDL3
@@ -742,7 +742,7 @@ static void audioCallback(void *userdata, Uint8 *stream, int size)
 #endif
 }
 
-void OTATTR deinit_audio(void)
+void deinit_audio(void)
 {
 	if (audio_disabled)
 		return;
@@ -787,7 +787,7 @@ void OTATTR deinit_audio(void)
 }
 
 
-void OTATTR load_music(void)  // FKA NortSong.loadSong
+void load_music(void)  // FKA NortSong.loadSong
 {
 	if (music_file == NULL)
 	{
@@ -806,7 +806,7 @@ void OTATTR load_music(void)  // FKA NortSong.loadSong
 	}
 }
 
-static void OTATTR load_song(unsigned int song_num)  // FKA NortSong.loadSong
+static void load_song(unsigned int song_num)  // FKA NortSong.loadSong
 {
 	if (song_num < song_count)
 	{
@@ -821,7 +821,7 @@ static void OTATTR load_song(unsigned int song_num)  // FKA NortSong.loadSong
 
 
 
-void OTATTR play_song(unsigned int song_num)  // FKA NortSong.playSong
+void play_song(unsigned int song_num)  // FKA NortSong.playSong
 {
 	if (song_num >= song_count)
 	{
@@ -905,7 +905,7 @@ void OTATTR play_song(unsigned int song_num)  // FKA NortSong.playSong
 #endif
 }
 
-void OTATTR restart_song(void)  // FKA Player.selectSong(1)
+void restart_song(void)  // FKA Player.selectSong(1)
 {
 	if (audio_disabled)
 		return;
@@ -947,7 +947,7 @@ void OTATTR restart_song(void)  // FKA Player.selectSong(1)
 #endif
 }
 
-void OTATTR stop_song(void)  // FKA Player.selectSong(0)
+void stop_song(void)  // FKA Player.selectSong(0)
 {
 	if (audio_disabled)
 		return;
@@ -983,7 +983,7 @@ void OTATTR stop_song(void)  // FKA Player.selectSong(0)
 #endif
 }
 
-void OTATTR fade_song(void)  // FKA Player.selectSong($C001)
+void fade_song(void)  // FKA Player.selectSong($C001)
 {
 	if (audio_disabled)
 		return;
@@ -1023,7 +1023,7 @@ void OTATTR fade_song(void)  // FKA Player.selectSong($C001)
 #endif
 }
 
-void OTATTR set_volume(Uint8 musicVolume_, Uint8 sampleVolume_)  // FKA NortSong.setVol and Player.setVol
+void set_volume(Uint8 musicVolume_, Uint8 sampleVolume_)  // FKA NortSong.setVol and Player.setVol
 {
 	if (audio_disabled)
 		return;
@@ -1052,7 +1052,7 @@ void OTATTR set_volume(Uint8 musicVolume_, Uint8 sampleVolume_)  // FKA NortSong
 #endif
 }
 
-void OTATTR multiSamplePlay(const Sint16 *samples, size_t sampleCount, Uint8 chan, Uint8 vol)  // FKA Player.multiSamplePlay
+void multiSamplePlay(const Sint16 *samples, size_t sampleCount, Uint8 chan, Uint8 vol)  // FKA Player.multiSamplePlay
 {
 	assert(chan < CHANNEL_COUNT);
 	assert(vol < CHANNEL_VOLUME_LEVELS);

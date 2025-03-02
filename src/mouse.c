@@ -38,7 +38,7 @@ JE_word mouseXB, mouseYB;
 static JE_word mouseGrabX, mouseGrabY;
 static JE_byte mouseGrabShape[24 * 28];
 
-static void OTATTR JE_drawShapeTypeOne(JE_word x, JE_word y, JE_byte *shape)
+static void JE_drawShapeTypeOne(JE_word x, JE_word y, JE_byte *shape)
 {
 	JE_word xloop = 0, yloop = 0;
 	JE_byte *p = shape; /* shape pointer */
@@ -65,7 +65,7 @@ static void OTATTR JE_drawShapeTypeOne(JE_word x, JE_word y, JE_byte *shape)
 	}
 }
 
-static void OTATTR JE_grabShapeTypeOne(JE_word x, JE_word y, JE_byte *shape)
+static void JE_grabShapeTypeOne(JE_word x, JE_word y, JE_byte *shape)
 {
 	JE_word xloop = 0, yloop = 0;
 	JE_byte *p = shape; /* shape pointer */
@@ -112,7 +112,7 @@ static const MousePointerSpriteInfo mousePointerSprites[] = // fka mouseCursorGr
 	{ 281, 8, 0, 16, 21,  7, 10 },
 };
 
-void OTATTR JE_mouseStart(void)
+void JE_mouseStart(void)
 {
 	if (has_mouse)
 	{
@@ -137,7 +137,7 @@ void OTATTR JE_mouseStart(void)
 	 }
 }
 
-void OTATTR JE_mouseStartFilter(Uint8 filter)
+void JE_mouseStartFilter(Uint8 filter)
 {
 	if (has_mouse)
 	{
@@ -159,7 +159,7 @@ void OTATTR JE_mouseStartFilter(Uint8 filter)
 	}
 }
 
-void OTATTR JE_mouseReplace(void)
+void JE_mouseReplace(void)
 {
 	if (has_mouse)
 		JE_drawShapeTypeOne(mouseGrabX, mouseGrabY, mouseGrabShape);

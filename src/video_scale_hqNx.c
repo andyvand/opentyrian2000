@@ -25,21 +25,21 @@
 #include <stdlib.h>
 
 #ifdef WITH_SDL
-void OTATTR interp1(Uint32 *pc, Uint32 c1, Uint32 c2);
-void OTATTR interp2(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
-void OTATTR interp3(Uint32 *pc, Uint32 c1, Uint32 c2);
-void OTATTR interp4(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
-void OTATTR interp5(Uint32 *pc, Uint32 c1, Uint32 c2);
-void OTATTR interp6(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
-void OTATTR interp7(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
-void OTATTR interp8(Uint32 *pc, Uint32 c1, Uint32 c2);
-void OTATTR interp9(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
-void OTATTR interp10(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
-bool OTATTR diff(unsigned int w1, unsigned int w2);
+void interp1(Uint32 *pc, Uint32 c1, Uint32 c2);
+void interp2(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
+void interp3(Uint32 *pc, Uint32 c1, Uint32 c2);
+void interp4(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
+void interp5(Uint32 *pc, Uint32 c1, Uint32 c2);
+void interp6(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
+void interp7(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
+void interp8(Uint32 *pc, Uint32 c1, Uint32 c2);
+void interp9(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
+void interp10(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3);
+bool diff(unsigned int w1, unsigned int w2);
 
-void OTATTR hq2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
-void OTATTR hq3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
-void OTATTR hq4x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+void hq2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+void hq3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+void hq4x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 
 static int   YUV1, YUV2;
 const  int   Ymask = 0x00FF0000;
@@ -49,17 +49,17 @@ const  int   trY   = 0x00300000;
 const  int   trU   = 0x00000700;
 const  int   trV   = 0x00000006;
 
-inline void OTATTR interp1(Uint32 *pc, Uint32 c1, Uint32 c2)
+inline void interp1(Uint32 *pc, Uint32 c1, Uint32 c2)
 {
     *pc = (c1*3+c2) >> 2;
 }
 
-inline void OTATTR interp2(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
+inline void interp2(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
 {
     *pc = (c1*2+c2+c3) >> 2;
 }
 
-inline void OTATTR interp3(Uint32 *pc, Uint32 c1, Uint32 c2)
+inline void interp3(Uint32 *pc, Uint32 c1, Uint32 c2)
 {
     //*((int*)pc) = (c1*7+c2)/8;
     
@@ -67,7 +67,7 @@ inline void OTATTR interp3(Uint32 *pc, Uint32 c1, Uint32 c2)
                    (((c1 & 0xFF00FF)*7 + (c2 & 0xFF00FF) ) & 0x07F807F8)) >> 3;
 }
 
-inline void OTATTR interp4(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
+inline void interp4(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
 {
     //*((int*)pc) = (c1*2+(c2+c3)*7)/16;
     
@@ -75,12 +75,12 @@ inline void OTATTR interp4(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
                    (((c1 & 0xFF00FF)*2 + ((c2 & 0xFF00FF) + (c3 & 0xFF00FF))*7 ) & 0x0FF00FF0)) >> 4;
 }
 
-inline void OTATTR interp5(Uint32 *pc, Uint32 c1, Uint32 c2)
+inline void interp5(Uint32 *pc, Uint32 c1, Uint32 c2)
 {
     *pc = (c1+c2) >> 1;
 }
 
-inline void OTATTR interp6(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
+inline void interp6(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
 {
     //*pc = (c1*5+c2*2+c3)/8;
     
@@ -88,7 +88,7 @@ inline void OTATTR interp6(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
            (((c1 & 0xFF00FF)*5 + (c2 & 0xFF00FF)*2 + (c3 & 0xFF00FF) ) & 0x07F807F8)) >> 3;
 }
 
-inline void OTATTR interp7(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
+inline void interp7(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
 {
     //*pc = (c1*6+c2+c3)/8;
     
@@ -96,7 +96,7 @@ inline void OTATTR interp7(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
            (((c1 & 0xFF00FF)*6 + (c2 & 0xFF00FF) + (c3 & 0xFF00FF) ) & 0x07F807F8)) >> 3;
 }
 
-inline void OTATTR interp8(Uint32 *pc, Uint32 c1, Uint32 c2)
+inline void interp8(Uint32 *pc, Uint32 c1, Uint32 c2)
 {
     //*pc = (c1*5+c2*3)/8;
     
@@ -104,7 +104,7 @@ inline void OTATTR interp8(Uint32 *pc, Uint32 c1, Uint32 c2)
            (((c1 & 0xFF00FF)*5 + (c2 & 0xFF00FF)*3 ) & 0x07F807F8)) >> 3;
 }
 
-inline void OTATTR interp9(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
+inline void interp9(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
 {
     //*pc = (c1*2+(c2+c3)*3)/8;
     
@@ -112,7 +112,7 @@ inline void OTATTR interp9(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
            (((c1 & 0xFF00FF)*2 + ((c2 & 0xFF00FF) + (c3 & 0xFF00FF))*3 ) & 0x07F807F8)) >> 3;
 }
 
-inline void OTATTR interp10(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
+inline void interp10(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
 {
     //*pc = (c1*14+c2+c3)/16;
     
@@ -120,7 +120,7 @@ inline void OTATTR interp10(Uint32 *pc, Uint32 c1, Uint32 c2, Uint32 c3)
            (((c1 & 0xFF00FF)*14 + (c2 & 0xFF00FF) + (c3 & 0xFF00FF) ) & 0x0FF00FF0)) >> 4;
 }
 
-inline bool OTATTR diff(unsigned int w1, unsigned int w2)
+inline bool diff(unsigned int w1, unsigned int w2)
 {
     Uint32 YUV1 = yuv_palette[w1];
     Uint32 YUV2 = yuv_palette[w2];
@@ -179,7 +179,7 @@ inline bool OTATTR diff(unsigned int w1, unsigned int w2)
 #define PIXEL11_90    interp9((Uint32 *)(dst + dst_pitch + dst_Bpp), c[5], c[6], c[8]);
 #define PIXEL11_100   interp10((Uint32 *)(dst + dst_pitch + dst_Bpp), c[5], c[6], c[8]);
 
-void OTATTR hq2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void hq2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
@@ -2972,7 +2972,7 @@ void OTATTR hq2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 #define PIXEL22_5   interp5((Uint32 *)(dst + 2 * dst_pitch + 2 * dst_Bpp), c[6], c[8]);
 #define PIXEL22_C   *(Uint32 *)(dst + 2 * dst_pitch + 2 * dst_Bpp) = c[5];
 
-void OTATTR hq3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void hq3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
@@ -6825,7 +6825,7 @@ void OTATTR hq3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 #define PIXEL4_33_81    interp8((Uint32 *)(dst + 3 * dst_pitch + 3 * dst_Bpp), c[5], c[6]);
 #define PIXEL4_33_82    interp8((Uint32 *)(dst + 3 * dst_pitch + 3 * dst_Bpp), c[5], c[8]);
 
-void OTATTR hq4x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+void hq4x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;

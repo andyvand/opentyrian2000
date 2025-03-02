@@ -85,7 +85,7 @@ static Uint16 numpatch, numposi, mainvolume;
 
 bool playing, songlooped;
 
-bool OTATTR lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
+bool lds_load(FILE *f, unsigned int music_offset, unsigned int music_size)
 {
 	SoundBank *sb;
 	
@@ -184,7 +184,7 @@ bool OTATTR lds_load(FILE *f, unsigned int music_offset, unsigned int music_size
 	return true;
 }
 
-void OTATTR lds_free(void)
+void lds_free(void)
 {
 	free(soundbank);
 	soundbank = NULL;
@@ -196,7 +196,7 @@ void OTATTR lds_free(void)
 	patterns = NULL;
 }
 
-void OTATTR lds_rewind(void)
+void lds_rewind(void)
 {
 	int i;
 
@@ -230,12 +230,12 @@ void OTATTR lds_rewind(void)
 	}
 }
 
-void OTATTR lds_fade(Uint8 speed)
+void lds_fade(Uint8 speed)
 {
 	fadeonoff = speed;
 }
 
-void OTATTR lds_setregs(Uint8 reg, Uint8 val)
+void lds_setregs(Uint8 reg, Uint8 val)
 {
 	if(fmchip[reg] == val) return;
 
@@ -243,12 +243,12 @@ void OTATTR lds_setregs(Uint8 reg, Uint8 val)
 	opl_write(reg, val);
 }
 
-void OTATTR lds_setregs_adv(Uint8 reg, Uint8 mask, Uint8 val)
+void lds_setregs_adv(Uint8 reg, Uint8 mask, Uint8 val)
 {
 	lds_setregs(reg, (fmchip[reg] & mask) | val);
 }
 
-int OTATTR lds_update(void)
+int lds_update(void)
 {
 	Uint16 comword, freq, octave, chan, tune, wibc, tremc, arpreg;
 	int vbreak;
@@ -656,7 +656,7 @@ int OTATTR lds_update(void)
 	return (!playing || songlooped) ? false : true;
 }
 
-void OTATTR lds_playsound(int inst_number, int channel_number, int tunehigh)
+void lds_playsound(int inst_number, int channel_number, int tunehigh)
 {
 	Channel		*c = &channel[channel_number];		/* current channel */
 	SoundBank		*i = &soundbank[inst_number];		/* current instrument */

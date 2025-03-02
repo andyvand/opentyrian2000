@@ -39,7 +39,7 @@ EXTATTR char difficulty_name[7][21];
 EXTATTR char gameplay_name[GAMEPLAY_NAME_COUNT][26];
 EXTATTR char timed_battle_name[4][23];
 
-bool OTATTR gameplaySelect(void)
+bool gameplaySelect(void)
 {
 	enum MenuItemIndex
 	{
@@ -244,7 +244,7 @@ bool OTATTR gameplaySelect(void)
 	}
 }
 
-bool OTATTR episodeSelect(void)
+bool episodeSelect(void)
 {
 	if (shopSpriteSheet.data == NULL)
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
@@ -431,7 +431,7 @@ bool OTATTR episodeSelect(void)
 	}
 }
 
-bool OTATTR difficultySelect(void)
+bool difficultySelect(void)
 {
 	if (shopSpriteSheet.data == NULL)
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
@@ -679,7 +679,7 @@ bool OTATTR difficultySelect(void)
 	}
 }
 
-bool OTATTR timedBattleSelect(void)
+bool timedBattleSelect(void)
 {
 	if (shopSpriteSheet.data == NULL)
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites

@@ -64,7 +64,7 @@ static JE_shortint speedChange;
 
 static JE_byte pColor;
 
-void OTATTR JE_starlib_main(void)
+void JE_starlib_main(void)
 {
 	int off;
 	JE_word i;
@@ -329,12 +329,12 @@ void OTATTR JE_starlib_main(void)
 	nspVarInc += nspVarVarInc;
 }
 
-void OTATTR JE_wackyCol(void)
+void JE_wackyCol(void)
 {
 	/* YKS: Does nothing */
 }
 
-void OTATTR JE_starlib_init(void)
+void JE_starlib_init(void)
 {
 	static JE_boolean initialized = false;
 
@@ -356,7 +356,7 @@ void OTATTR JE_starlib_init(void)
 	}
 }
 
-void OTATTR JE_resetValues(void)
+void JE_resetValues(void)
 {
 	nsp2 = 1;
 	nspVar2Inc = 1;
@@ -368,7 +368,7 @@ void OTATTR JE_resetValues(void)
 	speedChange = 0;
 }
 
-void OTATTR JE_changeSetup(JE_byte setupType)
+void JE_changeSetup(JE_byte setupType)
 {
 	stepCounter = 0;
 	changeTime = (mt_rand() % 1000);

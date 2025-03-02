@@ -325,74 +325,74 @@ struct destruct_world_s
 
 /*** Function decs ***/
 //Prep functions
-static void OTATTR JE_destructMain(void);
-static void OTATTR JE_introScreen(void);
-static enum de_mode_t OTATTR JE_modeSelect(void);
-static void OTATTR JE_helpScreen(void);
-static void OTATTR JE_pauseScreen(void);
+static void JE_destructMain(void);
+static void JE_introScreen(void);
+static enum de_mode_t JE_modeSelect(void);
+static void JE_helpScreen(void);
+static void JE_pauseScreen(void);
 
 //level generating functions
-static void OTATTR JE_generateTerrain(void);
-static void OTATTR DE_generateBaseTerrain(unsigned int, unsigned int *);
-static void OTATTR DE_drawBaseTerrain(unsigned int *);
-static void OTATTR DE_generateUnits(unsigned int *);
-static void OTATTR DE_generateWalls(struct destruct_world_s *);
-static void OTATTR DE_generateRings(SDL_Surface *, Uint8);
-static void OTATTR DE_ResetLevel(void);
-static unsigned int OTATTR JE_placementPosition(unsigned int, unsigned int, unsigned int *);
+static void JE_generateTerrain(void);
+static void DE_generateBaseTerrain(unsigned int, unsigned int *);
+static void DE_drawBaseTerrain(unsigned int *);
+static void DE_generateUnits(unsigned int *);
+static void DE_generateWalls(struct destruct_world_s *);
+static void DE_generateRings(SDL_Surface *, Uint8);
+static void DE_ResetLevel(void);
+static unsigned int JE_placementPosition(unsigned int, unsigned int, unsigned int *);
 
 //drawing functions
-static void OTATTR JE_aliasDirt(SDL_Surface *);
-static void OTATTR DE_RunTickDrawCrosshairs(void);
-static void OTATTR DE_RunTickDrawHUD(void);
-static void OTATTR DE_GravityDrawUnit(enum de_player_t, struct destruct_unit_s *);
-static void OTATTR DE_RunTickAnimate(void);
-static void OTATTR DE_RunTickDrawWalls(void);
-static void OTATTR DE_DrawTrails(struct destruct_shot_s *, unsigned int, unsigned int, unsigned int);
-static void OTATTR JE_tempScreenChecking(void);
-static void OTATTR JE_superPixel(unsigned int, unsigned int);
-static void OTATTR JE_pixCool(unsigned int, unsigned int, Uint8);
+static void JE_aliasDirt(SDL_Surface *);
+static void DE_RunTickDrawCrosshairs(void);
+static void DE_RunTickDrawHUD(void);
+static void DE_GravityDrawUnit(enum de_player_t, struct destruct_unit_s *);
+static void DE_RunTickAnimate(void);
+static void DE_RunTickDrawWalls(void);
+static void DE_DrawTrails(struct destruct_shot_s *, unsigned int, unsigned int, unsigned int);
+static void JE_tempScreenChecking(void);
+static void JE_superPixel(unsigned int, unsigned int);
+static void JE_pixCool(unsigned int, unsigned int, Uint8);
 
 //player functions
-static void OTATTR DE_RunTickGetInput(void);
-static void OTATTR DE_ProcessInput(void);
-static void OTATTR DE_ResetPlayers(void);
-static void OTATTR DE_ResetAI(void);
-static void OTATTR DE_ResetActions(void);
-static void OTATTR DE_RunTickAI(void);
+static void DE_RunTickGetInput(void);
+static void DE_ProcessInput(void);
+static void DE_ResetPlayers(void);
+static void DE_ResetAI(void);
+static void DE_ResetActions(void);
+static void DE_RunTickAI(void);
 
 //unit functions
-static void OTATTR DE_RaiseAngle(struct destruct_unit_s *);
-static void OTATTR DE_LowerAngle(struct destruct_unit_s *);
-static void OTATTR DE_RaisePower(struct destruct_unit_s *);
-static void OTATTR DE_LowerPower(struct destruct_unit_s *);
-static void OTATTR DE_CycleWeaponUp(struct destruct_unit_s *);
-static void OTATTR DE_CycleWeaponDown(struct destruct_unit_s *);
-static void OTATTR DE_RunMagnet(enum de_player_t, struct destruct_unit_s *);
-static void OTATTR DE_GravityFlyUnit(struct destruct_unit_s *);
-static void OTATTR DE_GravityLowerUnit(struct destruct_unit_s *);
-static void OTATTR DE_DestroyUnit(enum de_player_t, struct destruct_unit_s *);
-static void OTATTR DE_ResetUnits(void);
-static inline bool OTATTR DE_isValidUnit(struct destruct_unit_s *);
+static void DE_RaiseAngle(struct destruct_unit_s *);
+static void DE_LowerAngle(struct destruct_unit_s *);
+static void DE_RaisePower(struct destruct_unit_s *);
+static void DE_LowerPower(struct destruct_unit_s *);
+static void DE_CycleWeaponUp(struct destruct_unit_s *);
+static void DE_CycleWeaponDown(struct destruct_unit_s *);
+static void DE_RunMagnet(enum de_player_t, struct destruct_unit_s *);
+static void DE_GravityFlyUnit(struct destruct_unit_s *);
+static void DE_GravityLowerUnit(struct destruct_unit_s *);
+static void DE_DestroyUnit(enum de_player_t, struct destruct_unit_s *);
+static void DE_ResetUnits(void);
+static inline bool DE_isValidUnit(struct destruct_unit_s *);
 
 //weapon functions
-static void OTATTR DE_ResetWeapons(void);
-static void OTATTR DE_RunTickShots(void);
-static void OTATTR DE_RunTickExplosions(void);
-static void OTATTR DE_TestExplosionCollision(unsigned int, unsigned int);
-static void OTATTR JE_makeExplosion(unsigned int, unsigned int, enum de_shot_t);
-static void OTATTR DE_MakeShot(enum de_player_t, const struct destruct_unit_s *, int);
+static void DE_ResetWeapons(void);
+static void DE_RunTickShots(void);
+static void DE_RunTickExplosions(void);
+static void DE_TestExplosionCollision(unsigned int, unsigned int);
+static void JE_makeExplosion(unsigned int, unsigned int, enum de_shot_t);
+static void DE_MakeShot(enum de_player_t, const struct destruct_unit_s *, int);
 
 //gameplay functions
-static enum de_state_t OTATTR DE_RunTick(void);
-static void OTATTR DE_RunTickCycleDeadUnits(void);
-static void OTATTR DE_RunTickGravity(void);
-static bool OTATTR DE_RunTickCheckEndgame(void);
-static bool OTATTR JE_stabilityCheck(unsigned int, unsigned int);
+static enum de_state_t DE_RunTick(void);
+static void DE_RunTickCycleDeadUnits(void);
+static void DE_RunTickGravity(void);
+static bool DE_RunTickCheckEndgame(void);
+static bool JE_stabilityCheck(unsigned int, unsigned int);
 
 //sound
-static void OTATTR DE_RunTickPlaySounds(void);
-static void OTATTR JE_eSound(unsigned int);
+static void DE_RunTickPlaySounds(void);
+static void JE_eSound(unsigned int);
 
 /*** Weapon configurations ***/
 
@@ -528,7 +528,7 @@ static const char *const unit_names[] =
 	"heli",
 };
 
-static enum OTATTR de_unit_t get_unit_by_name(const char *unit_name)
+static enum de_unit_t get_unit_by_name(const char *unit_name)
 {
 	for (enum de_unit_t unit = UNIT_FIRST; unit < MAX_UNITS; ++unit)
 		if (strcmp(unit_name, unit_names[unit]) == 0)
@@ -537,7 +537,7 @@ static enum OTATTR de_unit_t get_unit_by_name(const char *unit_name)
 	return UNIT_NONE;
 }
 
-static void OTATTR load_destruct_config(Config *config_)
+static void load_destruct_config(Config *config_)
 {
 	ConfigSection *section;
 	
@@ -661,7 +661,7 @@ static void OTATTR load_destruct_config(Config *config_)
 
 /*** Startup ***/
 
-void OTATTR JE_destructGame(void)
+void JE_destructGame(void)
 {
 	unsigned int i;
 
@@ -702,7 +702,7 @@ void OTATTR JE_destructGame(void)
 	free(destruct_player[PLAYER_RIGHT].unit);
 }
 
-static void OTATTR JE_destructMain(void)
+static void JE_destructMain(void)
 {
 	enum de_state_t curState;
 
@@ -739,7 +739,7 @@ static void OTATTR JE_destructMain(void)
 	}
 }
 
-static void OTATTR JE_introScreen(void)
+static void JE_introScreen(void)
 {
 	memcpy(VGAScreen2->pixels, VGAScreen->pixels, VGAScreen2->h * VGAScreen2->pitch);
 	JE_outText(VGAScreen, JE_fontCenter(specialName[SA_DESTRUCT - 1], TINY_FONT), 90, specialName[SA_DESTRUCT - 1], 12, 5);
@@ -766,7 +766,7 @@ static void OTATTR JE_introScreen(void)
  * The return value is the selected mode, or -1 (MODE_NONE)
  * if the user quits.
  */
-static void OTATTR DrawModeSelectMenu(enum de_mode_t mode)
+static void DrawModeSelectMenu(enum de_mode_t mode)
 {
 	int i;
 
@@ -777,7 +777,7 @@ static void OTATTR DrawModeSelectMenu(enum de_mode_t mode)
 		JE_textShade(VGAScreen, JE_fontCenter("Custom", TINY_FONT), 82 + i * 12, "Custom", 12, (i == mode) * 4, FULL_SHADE);
 }
 
-static enum de_mode_t OTATTR JE_modeSelect(void)
+static enum de_mode_t JE_modeSelect(void)
 {
 	enum de_mode_t mode;
 
@@ -851,7 +851,7 @@ static enum de_mode_t OTATTR JE_modeSelect(void)
 	return mode;
 }
 
-static void OTATTR JE_generateTerrain(void)
+static void JE_generateTerrain(void)
 {
 	/* The unique modifiers:
 	    Altered generation (really tall)
@@ -902,7 +902,7 @@ static void OTATTR JE_generateTerrain(void)
 	memcpy(destructTempScreen->pixels, VGAScreen->pixels, destructTempScreen->pitch * destructTempScreen->h);
 }
 
-static void OTATTR DE_generateBaseTerrain(unsigned int mapFlags, unsigned int * baseWorld)
+static void DE_generateBaseTerrain(unsigned int mapFlags, unsigned int * baseWorld)
 {
 	unsigned int i;
 	unsigned int newheight, HeightMul;
@@ -945,7 +945,7 @@ static void OTATTR DE_generateBaseTerrain(unsigned int mapFlags, unsigned int * 
 	/* The base world has been created. */
 }
 
-static void OTATTR DE_drawBaseTerrain(unsigned int * baseWorld)
+static void DE_drawBaseTerrain(unsigned int * baseWorld)
 {
 	unsigned int i;
 
@@ -955,7 +955,7 @@ static void OTATTR DE_drawBaseTerrain(unsigned int * baseWorld)
 	}
 }
 
-static void OTATTR DE_generateUnits(unsigned int * baseWorld)
+static void DE_generateUnits(unsigned int * baseWorld)
 {
 	unsigned int i, j, numSatellites;
 
@@ -1018,7 +1018,7 @@ static void OTATTR DE_generateUnits(unsigned int * baseWorld)
 	}
 }
 
-static void OTATTR DE_generateWalls(struct destruct_world_s * gameWorld)
+static void DE_generateWalls(struct destruct_world_s * gameWorld)
 {
 	unsigned int i, j, wallX;
 	unsigned int wallHeight, remainWalls;
@@ -1091,7 +1091,7 @@ label_outer_break:
 	} while (remainWalls != 0);
 }
 
-static void OTATTR DE_generateRings(SDL_Surface * screen, Uint8 pixel)
+static void DE_generateRings(SDL_Surface * screen, Uint8 pixel)
 {
 	unsigned int i, j, tempSize, rings;
 	int tempPosX1, tempPosY1, tempPosX2, tempPosY2;
@@ -1118,7 +1118,7 @@ static void OTATTR DE_generateRings(SDL_Surface * screen, Uint8 pixel)
 	}
 }
 
-static unsigned int OTATTR aliasDirtPixel(const SDL_Surface * screen, unsigned int x, unsigned int y, const Uint8 * s)
+static unsigned int aliasDirtPixel(const SDL_Surface * screen, unsigned int x, unsigned int y, const Uint8 * s)
 {
 	//A helper function used when aliasing dirt.  That's a messy process;
 	//let's contain the mess here.
@@ -1138,7 +1138,7 @@ static unsigned int OTATTR aliasDirtPixel(const SDL_Surface * screen, unsigned i
 	return PIXEL_BLACK;
 }
 
-static void OTATTR JE_aliasDirt(SDL_Surface * screen)
+static void JE_aliasDirt(SDL_Surface * screen)
 {
 	/* This complicated looking function goes through the whole screen
 	 * looking for brown pixels which just happen to be next to non-brown
@@ -1162,7 +1162,7 @@ static void OTATTR JE_aliasDirt(SDL_Surface * screen)
 	}
 }
 
-static unsigned int OTATTR JE_placementPosition(unsigned int passed_x, unsigned int width, unsigned int * world)
+static unsigned int JE_placementPosition(unsigned int passed_x, unsigned int width, unsigned int * world)
 {
 	unsigned int i, new_y;
 
@@ -1188,7 +1188,7 @@ static unsigned int OTATTR JE_placementPosition(unsigned int passed_x, unsigned 
 	return new_y;
 }
 
-static bool OTATTR JE_stabilityCheck(unsigned int x, unsigned int y)
+static bool JE_stabilityCheck(unsigned int x, unsigned int y)
 {
 	unsigned int i, numDirtPixels;
 	Uint8 * s;
@@ -1210,7 +1210,7 @@ static bool OTATTR JE_stabilityCheck(unsigned int x, unsigned int y)
 	return (numDirtPixels < 10);
 }
 
-static void OTATTR JE_tempScreenChecking(void) /*and copy to vgascreen*/
+static void JE_tempScreenChecking(void) /*and copy to vgascreen*/
 {
 	Uint8 *s = VGAScreen->pixels;
 	s += 12 * VGAScreen->pitch;
@@ -1246,7 +1246,7 @@ static void OTATTR JE_tempScreenChecking(void) /*and copy to vgascreen*/
 	}
 }
 
-static void OTATTR JE_makeExplosion(unsigned int tempPosX, unsigned int tempPosY, enum de_shot_t shottype)
+static void JE_makeExplosion(unsigned int tempPosX, unsigned int tempPosY, enum de_shot_t shottype)
 {
 	unsigned int i, tempExploSize;
 
@@ -1292,7 +1292,7 @@ static void OTATTR JE_makeExplosion(unsigned int tempPosX, unsigned int tempPosY
 	}
 }
 
-static void OTATTR JE_eSound(unsigned int sound)
+static void JE_eSound(unsigned int sound)
 {
 	static int exploSoundChannel = 0;
 
@@ -1302,7 +1302,7 @@ static void OTATTR JE_eSound(unsigned int sound)
 	soundQueue[exploSoundChannel] = sound;
 }
 
-static void OTATTR JE_superPixel(unsigned int tempPosX, unsigned int tempPosY)
+static void JE_superPixel(unsigned int tempPosX, unsigned int tempPosY)
 {
 	const unsigned int starPattern[5][5] =
 	{
@@ -1363,7 +1363,7 @@ static void OTATTR JE_superPixel(unsigned int tempPosX, unsigned int tempPosY)
 	}
 }
 
-static void OTATTR JE_helpScreen(void)
+static void JE_helpScreen(void)
 {
 	unsigned int i, j;
 
@@ -1395,7 +1395,7 @@ static void OTATTR JE_helpScreen(void)
 	fade_palette(colors, 15, 0, 255);
 }
 
-static void OTATTR JE_pauseScreen(void)
+static void JE_pauseScreen(void)
 {
 	set_volume(tyrMusicVolume / 2, fxVolume);
 
@@ -1421,7 +1421,7 @@ static void OTATTR JE_pauseScreen(void)
  *
  * The reset functions clear the state of whatever they are assigned to.
  */
-static void OTATTR DE_ResetUnits(void)
+static void DE_ResetUnits(void)
 {
 	unsigned int p, u;
 
@@ -1430,7 +1430,7 @@ static void OTATTR DE_ResetUnits(void)
 			destruct_player[p].unit[u].health = 0;
 }
 
-static void OTATTR DE_ResetPlayers(void)
+static void DE_ResetPlayers(void)
 {
 	unsigned int i;
 
@@ -1448,7 +1448,7 @@ static void OTATTR DE_ResetPlayers(void)
 	}
 }
 
-static void OTATTR DE_ResetWeapons(void)
+static void DE_ResetWeapons(void)
 {
 	unsigned int i;
 
@@ -1459,7 +1459,7 @@ static void OTATTR DE_ResetWeapons(void)
 		exploRec[i].isAvailable = true;
 }
 
-static void OTATTR DE_ResetLevel(void)
+static void DE_ResetLevel(void)
 {
 	/* Okay, let's prep the arena */
 
@@ -1469,7 +1469,7 @@ static void OTATTR DE_ResetLevel(void)
 	DE_ResetAI();
 }
 
-static void OTATTR DE_ResetAI(void)
+static void DE_ResetAI(void)
 {
 	unsigned int i, j;
 	struct destruct_unit_s * ptr;
@@ -1500,7 +1500,7 @@ static void OTATTR DE_ResetAI(void)
 	}
 }
 
-static void OTATTR DE_ResetActions(void)
+static void DE_ResetActions(void)
 {
 	unsigned int i;
 
@@ -1517,7 +1517,7 @@ static void OTATTR DE_ResetActions(void)
  * Returns true while the game is running or false if the game is
  * to be terminated.
  */
-static enum de_state_t OTATTR DE_RunTick(void)
+static enum de_state_t DE_RunTick(void)
 {
 	static unsigned int endDelay;
 
@@ -1606,7 +1606,7 @@ static enum de_state_t OTATTR DE_RunTick(void)
  * Handles something that we do once per tick, such as
  * track ammo and move explosions.
  */
-static void OTATTR DE_RunTickCycleDeadUnits(void)
+static void DE_RunTickCycleDeadUnits(void)
 {
 	unsigned int i;
 	struct destruct_unit_s * unit;
@@ -1633,7 +1633,7 @@ static void OTATTR DE_RunTickCycleDeadUnits(void)
 	}
 }
 
-static void OTATTR DE_RunTickGravity(void)
+static void DE_RunTickGravity(void)
 {
 	unsigned int i, j;
 	struct destruct_unit_s * unit;
@@ -1670,7 +1670,7 @@ static void OTATTR DE_RunTickGravity(void)
 	}
 }
 
-static void OTATTR DE_GravityDrawUnit(enum de_player_t team, struct destruct_unit_s * unit)
+static void DE_GravityDrawUnit(enum de_player_t team, struct destruct_unit_s * unit)
 {
 	unsigned int anim_index;
 
@@ -1691,7 +1691,7 @@ static void OTATTR DE_GravityDrawUnit(enum de_player_t team, struct destruct_uni
 	blit_sprite2(VGAScreen, unit->unitX, roundf(unit->unitY) - 13, destructSpriteSheet, anim_index);
 }
 
-static void OTATTR DE_GravityLowerUnit(struct destruct_unit_s * unit)
+static void DE_GravityLowerUnit(struct destruct_unit_s * unit)
 {
 	/* units fall at a constant speed.  The heli is an odd case though;
 	 * we simply give it a downward velocity, but due to a buggy implementation
@@ -1722,7 +1722,7 @@ static void OTATTR DE_GravityLowerUnit(struct destruct_unit_s * unit)
 	}
 }
 
-static void OTATTR DE_GravityFlyUnit(struct destruct_unit_s * unit)
+static void DE_GravityFlyUnit(struct destruct_unit_s * unit)
 {
 	if (unit->unitY + unit->unitYMov > 199) /* would hit bottom of screen */
 	{
@@ -1752,7 +1752,7 @@ static void OTATTR DE_GravityFlyUnit(struct destruct_unit_s * unit)
 	}
 }
 
-static void OTATTR DE_RunTickAnimate(void)
+static void DE_RunTickAnimate(void)
 {
 	unsigned int p, u;
 	struct destruct_unit_s * ptr;
@@ -1775,7 +1775,7 @@ static void OTATTR DE_RunTickAnimate(void)
 	}
 }
 
-static void OTATTR DE_RunTickDrawWalls(void)
+static void DE_RunTickDrawWalls(void)
 {
 	unsigned int i;
 
@@ -1784,7 +1784,7 @@ static void OTATTR DE_RunTickDrawWalls(void)
 			blit_sprite2(VGAScreen, world.mapWalls[i].wallX, world.mapWalls[i].wallY, destructSpriteSheet, 42);
 }
 
-static void OTATTR DE_RunTickExplosions(void)
+static void DE_RunTickExplosions(void)
 {
 	unsigned int i, j;
 	int tempPosX, tempPosY;
@@ -1846,7 +1846,7 @@ static void OTATTR DE_RunTickExplosions(void)
 	}
 }
 
-static void OTATTR DE_TestExplosionCollision(unsigned int PosX, unsigned int PosY)
+static void DE_TestExplosionCollision(unsigned int PosX, unsigned int PosY)
 {
 	unsigned int i, j;
 	struct destruct_unit_s * unit;
@@ -1868,7 +1868,7 @@ static void OTATTR DE_TestExplosionCollision(unsigned int PosX, unsigned int Pos
 	}
 }
 
-static void OTATTR DE_DestroyUnit(enum de_player_t playerID, struct destruct_unit_s * unit)
+static void DE_DestroyUnit(enum de_player_t playerID, struct destruct_unit_s * unit)
 {
 	/* This function call was an evil evil piece of brilliance before.  Go on.
 	 * Look at the older revisions.  It passed the result of a comparison.
@@ -1882,7 +1882,7 @@ static void OTATTR DE_DestroyUnit(enum de_player_t playerID, struct destruct_uni
 	}
 }
 
-static void OTATTR DE_RunTickShots(void)
+static void DE_RunTickShots(void)
 {
 	unsigned int i, j, k;
 	unsigned int tempTrails;
@@ -2025,7 +2025,7 @@ static void OTATTR DE_RunTickShots(void)
 	}
 }
 
-static void OTATTR DE_DrawTrails(struct destruct_shot_s * shot, unsigned int count, unsigned int decay, unsigned int startColor)
+static void DE_DrawTrails(struct destruct_shot_s * shot, unsigned int count, unsigned int decay, unsigned int startColor)
 {
 	int i;
 
@@ -2054,7 +2054,7 @@ static void OTATTR DE_DrawTrails(struct destruct_shot_s * shot, unsigned int cou
 	}
 }
 
-static void OTATTR DE_RunTickAI(void)
+static void DE_RunTickAI(void)
 {
 	unsigned int i, j;
 	struct destruct_player_s * ptrPlayer, * ptrTarget;
@@ -2246,7 +2246,7 @@ static void OTATTR DE_RunTickAI(void)
 	}
 }
 
-static void OTATTR DE_RunTickDrawCrosshairs(void)
+static void DE_RunTickDrawCrosshairs(void)
 {
 	unsigned int i;
 	int tempPosX, tempPosY;
@@ -2293,7 +2293,7 @@ static void OTATTR DE_RunTickDrawCrosshairs(void)
 	}
 }
 
-static void OTATTR DE_RunTickDrawHUD(void)
+static void DE_RunTickDrawHUD(void)
 {
 	unsigned int i;
 	unsigned int startX;
@@ -2322,7 +2322,7 @@ static void OTATTR DE_RunTickDrawHUD(void)
 	}
 }
 
-static void OTATTR DE_RunTickGetInput(void)
+static void DE_RunTickGetInput(void)
 {
 	unsigned int player_index, key_index, slot_index;
 	SDL_Scancode key;
@@ -2362,7 +2362,7 @@ static void OTATTR DE_RunTickGetInput(void)
 	}
 }
 
-static void OTATTR DE_ProcessInput(void)
+static void DE_ProcessInput(void)
 {
 	int direction;
 
@@ -2498,7 +2498,7 @@ static void OTATTR DE_ProcessInput(void)
 	}
 }
 
-static void OTATTR DE_CycleWeaponUp(struct destruct_unit_s * unit)
+static void DE_CycleWeaponUp(struct destruct_unit_s * unit)
 {
 	do
 	{
@@ -2508,7 +2508,7 @@ static void OTATTR DE_CycleWeaponUp(struct destruct_unit_s * unit)
 	} while (weaponSystems[unit->unitType][unit->shotType] == 0);
 }
 
-static void OTATTR DE_CycleWeaponDown(struct destruct_unit_s * unit)
+static void DE_CycleWeaponDown(struct destruct_unit_s * unit)
 {
 	do
 	{
@@ -2518,7 +2518,7 @@ static void OTATTR DE_CycleWeaponDown(struct destruct_unit_s * unit)
 	} while (weaponSystems[unit->unitType][unit->shotType] == 0);
 }
 
-static void OTATTR DE_MakeShot(enum de_player_t curPlayer, const struct destruct_unit_s * curUnit, int direction)
+static void DE_MakeShot(enum de_player_t curPlayer, const struct destruct_unit_s * curUnit, int direction)
 {
 	unsigned int i;
 	unsigned int shotIndex;
@@ -2624,7 +2624,7 @@ static void OTATTR DE_MakeShot(enum de_player_t curPlayer, const struct destruct
 	shotRec[shotIndex].trailc[3] = 0;
 }
 
-static void OTATTR DE_RunMagnet(enum de_player_t curPlayer, struct destruct_unit_s * magnet)
+static void DE_RunMagnet(enum de_player_t curPlayer, struct destruct_unit_s * magnet)
 {
 	unsigned int i;
 	enum de_player_t curEnemy;
@@ -2664,28 +2664,28 @@ static void OTATTR DE_RunMagnet(enum de_player_t curPlayer, struct destruct_unit
 	magnet->ani_frame = 1;
 }
 
-static void OTATTR DE_RaiseAngle(struct destruct_unit_s * unit)
+static void DE_RaiseAngle(struct destruct_unit_s * unit)
 {
 	unit->angle += 0.01f;
 	if (unit->angle > M_PI_2 - 0.01f)
 		unit->angle = M_PI_2 - 0.01f;
 }
 
-static void OTATTR DE_LowerAngle(struct destruct_unit_s * unit)
+static void DE_LowerAngle(struct destruct_unit_s * unit)
 {
 	unit->angle -= 0.01f;
 	if (unit->angle < 0)
 		unit->angle = 0;
 }
 
-static void OTATTR DE_RaisePower(struct destruct_unit_s * unit)
+static void DE_RaisePower(struct destruct_unit_s * unit)
 {
 	unit->power += 0.05f;
 	if (unit->power > 5)
 		unit->power = 5;
 }
 
-static void OTATTR DE_LowerPower(struct destruct_unit_s * unit)
+static void DE_LowerPower(struct destruct_unit_s * unit)
 {
 	unit->power -= 0.05f;
 	if (unit->power < 1)
@@ -2698,12 +2698,12 @@ static void OTATTR DE_LowerPower(struct destruct_unit_s * unit)
  * otherwise.  This mainly exists because the 'health' var
  * serves two roles and that can get confusing.
  */
-static inline bool OTATTR DE_isValidUnit(struct destruct_unit_s * unit)
+static inline bool DE_isValidUnit(struct destruct_unit_s * unit)
 {
 	return unit->health > 0;
 }
 
-static bool OTATTR DE_RunTickCheckEndgame(void)
+static bool DE_RunTickCheckEndgame(void)
 {
 	if (destruct_player[PLAYER_LEFT].unitsRemaining == 0)
 	{
@@ -2720,7 +2720,7 @@ static bool OTATTR DE_RunTickCheckEndgame(void)
 	return false;
 }
 
-static void OTATTR DE_RunTickPlaySounds(void)
+static void DE_RunTickPlaySounds(void)
 {
 	unsigned int i, tempSampleIndex, tempVolume;
 
@@ -2740,7 +2740,7 @@ static void OTATTR DE_RunTickPlaySounds(void)
 	}
 }
 
-static void OTATTR JE_pixCool(unsigned int x, unsigned int y, Uint8 c)
+static void JE_pixCool(unsigned int x, unsigned int y, Uint8 c)
 {
 	JE_pix(VGAScreen, x, y, c);
 	JE_pix(VGAScreen, x - 1, y, c - 2);

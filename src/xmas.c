@@ -33,7 +33,7 @@
 bool xmas = false;
 bool override_xmas = false;
 
-bool OTATTR xmas_time(void)
+bool xmas_time(void)
 {
 	time_t now = time(NULL);
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
@@ -47,7 +47,7 @@ bool OTATTR xmas_time(void)
 #endif
 }
 
-bool OTATTR xmas_prompt(void)
+bool xmas_prompt(void)
 {
 	static const char *const prompt[] =
 	{

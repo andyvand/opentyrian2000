@@ -85,7 +85,7 @@ JE_boolean useLastBank; /* See if I want to use the last 16 colors for DisplayTe
 bool pause_pressed = false, ingamemenu_pressed = false;
 
 /* Draws a message at the bottom text window on the playing screen */
-void OTATTR JE_drawTextWindow(const char *text)
+void JE_drawTextWindow(const char *text)
 {
 	if (textErase > 0) // erase current text
 		blit_sprite(VGAScreenSeg, 16, 189, OPTION_SHAPES, 36);  // in-game text area
@@ -94,7 +94,7 @@ void OTATTR JE_drawTextWindow(const char *text)
 	JE_outText(VGAScreenSeg, 20, 190, text, 0, 4);
 }
 
-void OTATTR JE_outCharGlow(JE_word x, JE_word y, const char *s)
+void JE_outCharGlow(JE_word x, JE_word y, const char *s)
 {
 	JE_integer maxloc, loc, z;
 	JE_shortint glowcol[60]; /* [1..60] */
@@ -182,7 +182,7 @@ void OTATTR JE_outCharGlow(JE_word x, JE_word y, const char *s)
 	}
 }
 
-void OTATTR JE_drawPortConfigButtons(void) // rear weapon pattern indicator
+void JE_drawPortConfigButtons(void) // rear weapon pattern indicator
 {
 	if (twoPlayerMode)
 		return;
@@ -199,9 +199,9 @@ void OTATTR JE_drawPortConfigButtons(void) // rear weapon pattern indicator
 	}
 }
 
-static bool OTATTR helpSystemPage(Uint8 *topic, bool *restart);
+static bool helpSystemPage(Uint8 *topic, bool *restart);
 
-void OTATTR JE_helpSystem(JE_byte startTopic)
+void JE_helpSystem(JE_byte startTopic)
 {
 	if (shopSpriteSheet.data == NULL)
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
@@ -391,7 +391,7 @@ void OTATTR JE_helpSystem(JE_byte startTopic)
 	}
 }
 
-static bool OTATTR helpSystemPage(Uint8 *topic, bool *restart)
+static bool helpSystemPage(Uint8 *topic, bool *restart)
 {
 	Uint8 page = topicStart[*topic - 1];
 
@@ -591,7 +591,7 @@ static bool OTATTR helpSystemPage(Uint8 *topic, bool *restart)
 }
 
 // cost to upgrade a weapon power from power-1 (where power == 0 indicates an unupgraded weapon)
-long OTATTR weapon_upgrade_cost(long base_cost, unsigned int power)
+long weapon_upgrade_cost(long base_cost, unsigned int power)
 {
 	assert(power <= 11);
 
@@ -604,7 +604,7 @@ long OTATTR weapon_upgrade_cost(long base_cost, unsigned int power)
 	return base_cost * temp;
 }
 
-ulong OTATTR JE_getCost(JE_byte itemType, JE_word itemNum)
+ulong JE_getCost(JE_byte itemType, JE_word itemNum)
 {
 	long cost = 0;
 
@@ -638,7 +638,7 @@ ulong OTATTR JE_getCost(JE_byte itemType, JE_word itemNum)
 	return cost;
 }
 
-bool OTATTR JE_loadScreen(void)
+bool JE_loadScreen(void)
 {
 	if (shopSpriteSheet.data == NULL)
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer and arrow sprites
@@ -934,7 +934,7 @@ bool OTATTR JE_loadScreen(void)
 	}
 }
 
-ulong OTATTR JE_totalScore(const Player *this_player)
+ulong JE_totalScore(const Player *this_player)
 {
 	ulong temp = this_player->cash;
 
@@ -949,7 +949,7 @@ ulong OTATTR JE_totalScore(const Player *this_player)
 	return temp;
 }
 
-JE_longint OTATTR JE_getValue(JE_byte itemType, JE_word itemNum)
+JE_longint JE_getValue(JE_byte itemType, JE_word itemNum)
 {
 	long value = 0;
 
@@ -985,7 +985,7 @@ JE_longint OTATTR JE_getValue(JE_byte itemType, JE_word itemNum)
 	return (JE_longint)value;
 }
 
-void OTATTR JE_nextEpisode(void)
+void JE_nextEpisode(void)
 {
 	strlcpy(lastLevelName, "Completed", sizeof(lastLevelName));
 
@@ -1052,7 +1052,7 @@ void OTATTR JE_nextEpisode(void)
 	fade_black(15);
 }
 
-void OTATTR JE_initPlayerData(void)
+void JE_initPlayerData(void)
 {
 	/* JE: New Game Items/Data */
 
@@ -1102,7 +1102,7 @@ void OTATTR JE_initPlayerData(void)
 	strlcpy(lastLevelName, miscText[19], sizeof(lastLevelName));
 }
 
-void OTATTR JE_sortHighScores(void)
+void JE_sortHighScores(void)
 {
 	T2KHighScoreType tempHiScore;
 	for (int table = 0; table < 20; ++table)
@@ -1128,7 +1128,7 @@ void OTATTR JE_sortHighScores(void)
 	}
 }
 
-void OTATTR JE_highScoreScreen(void)
+void JE_highScoreScreen(void)
 {
 	if (shopSpriteSheet.data == NULL)
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer and arrow sprites
@@ -1361,7 +1361,7 @@ void OTATTR JE_highScoreScreen(void)
 	}
 }
 
-void OTATTR JE_gammaCorrect_func(JE_byte *col, JE_real r)
+void JE_gammaCorrect_func(JE_byte *col, JE_real r)
 {
 	int temp = roundf(*col * r);
 	if (temp > 255)
@@ -1371,7 +1371,7 @@ void OTATTR JE_gammaCorrect_func(JE_byte *col, JE_real r)
 	*col = temp;
 }
 
-void OTATTR JE_gammaCorrect(Palette *colorBuffer, JE_byte gamma)
+void JE_gammaCorrect(Palette *colorBuffer, JE_byte gamma)
 {
 	int x;
 	JE_real r = 1 + (JE_real)gamma / 10;
@@ -1384,7 +1384,7 @@ void OTATTR JE_gammaCorrect(Palette *colorBuffer, JE_byte gamma)
 	}
 }
 
-JE_boolean OTATTR JE_gammaCheck(void)
+JE_boolean JE_gammaCheck(void)
 {
 	bool temp = keysactive[SDL_SCANCODE_F11] != 0;
 	if (temp)
@@ -1399,7 +1399,7 @@ JE_boolean OTATTR JE_gammaCheck(void)
 	return temp;
 }
 
-void OTATTR JE_doInGameSetup(void)
+void JE_doInGameSetup(void)
 {
 #ifdef WITH_SDL3
     mouseSetRelative(main_window, false);
@@ -1548,7 +1548,7 @@ void OTATTR JE_doInGameSetup(void)
 #endif
 }
 
-JE_boolean OTATTR JE_inGameSetup(void)
+JE_boolean JE_inGameSetup(void)
 {
 	bool result = false;
 
@@ -1950,7 +1950,7 @@ JE_boolean OTATTR JE_inGameSetup(void)
 	return result;
 }
 
-void OTATTR JE_inGameHelp(void)
+void JE_inGameHelp(void)
 {
 	SDL_Surface *temp_surface = VGAScreen;
 	VGAScreen = VGAScreenSeg; /* side-effect of game_screen */
@@ -2052,7 +2052,7 @@ void OTATTR JE_inGameHelp(void)
 	VGAScreen = temp_surface;
 }
 
-void OTATTR JE_highScoreCheck(void)
+void JE_highScoreCheck(void)
 {
 	if (shopSpriteSheet.data == NULL)
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprite
@@ -2307,7 +2307,7 @@ void OTATTR JE_highScoreCheck(void)
 }
 
 // increases game difficulty based on player's total score / total of players' scores
-void OTATTR adjust_difficulty(void)
+void adjust_difficulty(void)
 {
 	const float score_multiplier[10] =
 	{
@@ -2376,7 +2376,7 @@ void OTATTR adjust_difficulty(void)
 	difficultyLevel = MAX((unsigned)difficultyLevel, new_difficulty);
 }
 
-bool OTATTR load_next_demo(void)
+bool load_next_demo(void)
 {
 	if (++demo_num > 5)
 		demo_num = 1;
@@ -2432,7 +2432,7 @@ bool OTATTR load_next_demo(void)
 	return true;
 }
 
-bool OTATTR replay_demo_keys(void)
+bool replay_demo_keys(void)
 {
 	while (demo_keys_wait == 0)
 	{
@@ -2471,7 +2471,7 @@ bool OTATTR replay_demo_keys(void)
 }
 
 /*Street Fighter codes*/
-void OTATTR JE_SFCodes(JE_byte playerNum_, JE_integer PX_, JE_integer PY_, JE_integer mouseX_, JE_integer mouseY_)
+void JE_SFCodes(JE_byte playerNum_, JE_integer PX_, JE_integer PY_, JE_integer mouseX_, JE_integer mouseY_)
 {
 	JE_byte temp, temp2, temp3, temp4, temp5;
 
@@ -2560,7 +2560,7 @@ void OTATTR JE_SFCodes(JE_byte playerNum_, JE_integer PX_, JE_integer PY_, JE_in
 	}
 }
 
-void OTATTR JE_playCredits(void)
+void JE_playCredits(void)
 {
 	enum { lines_max = 126 };
 	enum { line_max_length = 65 };
@@ -2728,7 +2728,7 @@ void OTATTR JE_playCredits(void)
 	free_sprites(EXTRA_SHAPES);
 }
 
-void OTATTR JE_endLevelAni(void)
+void JE_endLevelAni(void)
 {
 	JE_word x, y;
 	JE_byte temp;
@@ -2944,19 +2944,19 @@ void OTATTR JE_endLevelAni(void)
 	JE_clr256(VGAScreen);
 }
 
-void OTATTR JE_drawCube(SDL_Surface * screen, JE_word x, JE_word y, JE_byte filter, JE_byte brightness)
+void JE_drawCube(SDL_Surface * screen, JE_word x, JE_word y, JE_byte filter, JE_byte brightness)
 {
 	blit_sprite_dark(screen, x + 4, y + 4, OPTION_SHAPES, 25, false);
 	blit_sprite_dark(screen, x + 3, y + 3, OPTION_SHAPES, 25, false);
 	blit_sprite_hv(screen, x, y, OPTION_SHAPES, 25, filter, brightness);
 }
 
-void OTATTR JE_handleChat(void)
+void JE_handleChat(void)
 {
 	// STUB(); Annoying piece of crap =P
 }
 
-bool OTATTR str_pop_int(char *str, int *val)
+bool str_pop_int(char *str, int *val)
 {
 	bool success = false;
 
@@ -2979,7 +2979,7 @@ bool OTATTR str_pop_int(char *str, int *val)
 	return success;
 }
 
-void OTATTR JE_operation(JE_byte slot)
+void JE_operation(JE_byte slot)
 {
 	JE_byte flash;
 	char stemp[21];
@@ -3121,7 +3121,7 @@ void OTATTR JE_operation(JE_byte slot)
 	wait_noinput(false, true, false);
 }
 
-void OTATTR JE_inGameDisplays(void)
+void JE_inGameDisplays(void)
 {
 	char stemp[21];
 	char tempstr[256];
@@ -3196,7 +3196,7 @@ void OTATTR JE_inGameDisplays(void)
 	}
 }
 
-void OTATTR JE_mainKeyboardInput(void)
+void JE_mainKeyboardInput(void)
 {
 	JE_gammaCheck();
 
@@ -3440,7 +3440,7 @@ void OTATTR JE_mainKeyboardInput(void)
 	}
 }
 
-void OTATTR JE_pauseGame(void)
+void JE_pauseGame(void)
 {
 #ifdef WITH_SDL3
     mouseSetRelative(main_window, false);
@@ -3566,7 +3566,7 @@ void OTATTR JE_pauseGame(void)
 JE_byte mousePlayerNumber = 0;
 #endif
 
-void OTATTR JE_playerMovement(Player *this_player,
+void JE_playerMovement(Player *this_player,
                        JE_byte inputDevice,
                        JE_byte playerNum_,
                        JE_word shipGr_,
@@ -4778,7 +4778,7 @@ redo:
 	}
 }
 
-void OTATTR JE_mainGamePlayerFunctions(void)
+void JE_mainGamePlayerFunctions(void)
 {
 	/*PLAYER MOVEMENT/MOUSE ROUTINES*/
 
@@ -4838,7 +4838,7 @@ void OTATTR JE_mainGamePlayerFunctions(void)
 	}
 }
 
-const char * OTATTR JE_getName(JE_byte pnum)
+const char * JE_getName(JE_byte pnum)
 {
 	if (pnum == thisPlayerNum && network_player_name[0] != '\0')
 		return network_player_name;
@@ -4848,7 +4848,7 @@ const char * OTATTR JE_getName(JE_byte pnum)
 	return miscText[47 + pnum];
 }
 
-void OTATTR JE_playerCollide(Player *this_player, JE_byte playerNum_)
+void JE_playerCollide(Player *this_player, JE_byte playerNum_)
 {
 	char tempStr[256];
 

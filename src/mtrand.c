@@ -53,7 +53,7 @@
 static unsigned long x[N];      /* the array for the state vector  */
 static unsigned long *p0, *p1, *pm;
 
-void OTATTR mt_srand(unsigned long s)
+void mt_srand(unsigned long s)
 {
 	int i;
 	
@@ -68,7 +68,7 @@ void OTATTR mt_srand(unsigned long s)
 }
 
 /* generates a random number on the interval [0,0xffffffff] */
-unsigned long OTATTR mt_rand(void)
+unsigned long mt_rand(void)
 {
 	unsigned long y;
 
@@ -94,13 +94,13 @@ unsigned long OTATTR mt_rand(void)
 }
 
 /* generates a random number on the interval [0,1]. */
-float OTATTR mt_rand_1(void)
+float mt_rand_1(void)
 {
 	return ((float)mt_rand() / (float)MT_RAND_MAX);
 }
 
 /* generates a random number on the interval [0,1). */
-float OTATTR mt_rand_lt1(void)
+float mt_rand_lt1(void)
 {
 	/* MT_RAND_MAX must be a float before adding one to it! */
 	return ((float)mt_rand() / ((float)MT_RAND_MAX + 1.0f));

@@ -57,10 +57,8 @@
 #endif
 
 #ifdef WITH_SDL
-#define OTATTR IRAM_ATTR
 #define EXTATTR EXT_RAM_ATTR
 #else
-#define OTATTR
 #define EXTATTR
 #endif
 

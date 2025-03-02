@@ -85,7 +85,7 @@ static void scale_and_flip(SDL_Surface *);
 #endif
 
 #ifdef WITH_SDL
-bool OTATTR set_scaling_mode_by_name(const char *name)
+bool set_scaling_mode_by_name(const char *name)
 {
     for (int i = 0; i < ScalingMode_MAX; ++i)
     {
@@ -98,7 +98,7 @@ bool OTATTR set_scaling_mode_by_name(const char *name)
     return false;
 }
 
-void OTATTR init_video( void )
+void init_video( void )
 {
     if (SDL_WasInit(SDL_INIT_VIDEO))
         return;
@@ -126,7 +126,7 @@ void OTATTR init_video( void )
     }*/
 }
 
-int OTATTR can_init_scaler( unsigned int new_scaler, bool fullscreen )
+int can_init_scaler( unsigned int new_scaler, bool fullscreen )
 {
     if (new_scaler >= scalers_count)
         return false;
@@ -156,7 +156,7 @@ int OTATTR can_init_scaler( unsigned int new_scaler, bool fullscreen )
     return 0;
 }
 
-bool OTATTR init_scaler( unsigned int new_scaler, bool fullscreen )
+bool init_scaler( unsigned int new_scaler, bool fullscreen )
 {
     int w = scalers[new_scaler].width,
         h = scalers[new_scaler].height;
@@ -208,7 +208,7 @@ bool OTATTR init_scaler( unsigned int new_scaler, bool fullscreen )
     return true;
 }
 
-bool OTATTR can_init_any_scaler( bool fullscreen )
+bool can_init_any_scaler( bool fullscreen )
 {
     for (int i = scalers_count - 1; i >= 0; --i)
         if (can_init_scaler(i, fullscreen) != 0)
@@ -217,7 +217,7 @@ bool OTATTR can_init_any_scaler( bool fullscreen )
     return false;
 }
 
-bool OTATTR init_any_scaler( bool fullscreen )
+bool init_any_scaler( bool fullscreen )
 {
     // attempts all scalers from last to first
     for (int i = scalers_count - 1; i >= 0; --i)
@@ -227,7 +227,7 @@ bool OTATTR init_any_scaler( bool fullscreen )
     return false;
 }
 
-void OTATTR deinit_video( void )
+void deinit_video( void )
 {
     SDL_FreeSurface(VGAScreenSeg);
     SDL_FreeSurface(VGAScreen2);
@@ -236,13 +236,13 @@ void OTATTR deinit_video( void )
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-void OTATTR JE_clr256( SDL_Surface * screen)
+void JE_clr256( SDL_Surface * screen)
 {
     memset(screen->pixels, 0, screen->pitch * screen->h);
 }
-void OTATTR JE_showVGA( void ) { scale_and_flip(VGAScreen); }
+void JE_showVGA( void ) { scale_and_flip(VGAScreen); }
 
-void OTATTR scale_and_flip( SDL_Surface *src_surface )
+void scale_and_flip( SDL_Surface *src_surface )
 {
 /*
     assert(src_surface->format->BitsPerPixel == 8);

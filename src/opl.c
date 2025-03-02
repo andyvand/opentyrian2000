@@ -170,19 +170,19 @@ static Bit32u tremtab_add;
 
 
 // enable an operator
-void OTATTR enable_operator(Bitu regbase, op_type* op_pt, Bit32u act_type);
+void enable_operator(Bitu regbase, op_type* op_pt, Bit32u act_type);
 
 // functions to change parameters of an operator
-void OTATTR change_frequency(Bitu chanbase, Bitu regbase, op_type* op_pt);
+void change_frequency(Bitu chanbase, Bitu regbase, op_type* op_pt);
 
-void OTATTR change_attackrate(Bitu regbase, op_type* op_pt);
-void OTATTR change_decayrate(Bitu regbase, op_type* op_pt);
-void OTATTR change_releaserate(Bitu regbase, op_type* op_pt);
-void OTATTR change_sustainlevel(Bitu regbase, op_type* op_pt);
-void OTATTR change_waveform(Bitu regbase, op_type* op_pt);
-void OTATTR change_keepsustain(Bitu regbase, op_type* op_pt);
-void OTATTR change_vibrato(Bitu regbase, op_type* op_pt);
-void OTATTR change_feedback(Bitu chanbase, op_type* op_pt);
+void change_attackrate(Bitu regbase, op_type* op_pt);
+void change_decayrate(Bitu regbase, op_type* op_pt);
+void change_releaserate(Bitu regbase, op_type* op_pt);
+void change_sustainlevel(Bitu regbase, op_type* op_pt);
+void change_waveform(Bitu regbase, op_type* op_pt);
+void change_keepsustain(Bitu regbase, op_type* op_pt);
+void change_vibrato(Bitu regbase, op_type* op_pt);
+void change_feedback(Bitu chanbase, op_type* op_pt);
 
 
 static Bit32u generator_add;	// should be a chip parameter
@@ -300,7 +300,7 @@ static const fltype decrelconst[4] = {
 };
 
 
-void OTATTR operator_advance(op_type* op_pt, Bit32s vib) {
+void operator_advance(op_type* op_pt, Bit32s vib) {
 	op_pt->wfpos = op_pt->tcount;						// waveform position
 	
 	// advance waveform time
@@ -310,7 +310,7 @@ void OTATTR operator_advance(op_type* op_pt, Bit32s vib) {
 	op_pt->generator_pos += generator_add;
 }
 
-void OTATTR operator_advance_drums(op_type* op_pt1, Bit32s vib1, op_type* op_pt2, Bit32s vib2, op_type* op_pt3, Bit32s vib3) {
+void operator_advance_drums(op_type* op_pt1, Bit32s vib1, op_type* op_pt2, Bit32s vib2, op_type* op_pt3, Bit32s vib3) {
 	Bit32u c1 = op_pt1->tcount/FIXEDPT;
 	Bit32u c3 = op_pt3->tcount/FIXEDPT;
 	Bit32u phasebit = (((c1 & 0x88) ^ ((c1<<5) & 0x80)) | ((c3 ^ (c3<<2)) & 0x20)) ? 0x02 : 0x00;
@@ -347,7 +347,7 @@ void OTATTR operator_advance_drums(op_type* op_pt1, Bit32s vib1, op_type* op_pt2
 
 // output level is sustained, mode changes only when operator is turned off (->release)
 // or when the keep-sustained bit is turned off (->sustain_nokeep)
-void OTATTR operator_output(op_type* op_pt, Bit32s modulator, Bit32s trem) {
+void operator_output(op_type* op_pt, Bit32s modulator, Bit32s trem) {
 	if (op_pt->op_state != OF_TYPE_OFF) {
 		op_pt->lastcval = op_pt->cval;
 		Bit32u i = (Bit32u)((op_pt->wfpos+modulator)/FIXEDPT);
@@ -363,13 +363,13 @@ void OTATTR operator_output(op_type* op_pt, Bit32s modulator, Bit32s trem) {
 
 
 // no action, operator is off
-void OTATTR operator_off(op_type* op_pt) {
+void operator_off(op_type* op_pt) {
 	(void) op_pt;
 }
 
 // output level is sustained, mode changes only when operator is turned off (->release)
 // or when the keep-sustained bit is turned off (->sustain_nokeep)
-void OTATTR operator_sustain(op_type* op_pt) {
+void operator_sustain(op_type* op_pt) {
 	Bit32u num_steps_add = op_pt->generator_pos/FIXEDPT;	// number of (standardized) samples
 	for (Bit32u ct=0; ct<num_steps_add; ct++) {
 		op_pt->cur_env_step++;
@@ -378,7 +378,7 @@ void OTATTR operator_sustain(op_type* op_pt) {
 }
 
 // operator in release mode, if output level reaches zero the operator is turned off
-void OTATTR operator_release(op_type* op_pt) {
+void operator_release(op_type* op_pt) {
 	// ??? boundary?
 	if (op_pt->amp > 0.00000001) {
 		// release phase
@@ -404,7 +404,7 @@ void OTATTR operator_release(op_type* op_pt) {
 
 // operator in decay mode, if sustain level is reached the output level is either
 // kept (sustain level keep enabled) or the operator is switched into release mode
-void OTATTR operator_decay(op_type* op_pt) {
+void operator_decay(op_type* op_pt) {
 	if (op_pt->amp > op_pt->sustain_level) {
 		// decay phase
 		op_pt->amp *= op_pt->decaymul;
@@ -433,7 +433,7 @@ void OTATTR operator_decay(op_type* op_pt) {
 
 // operator in attack mode, if full output level is reached,
 // the operator is switched into decay mode
-void OTATTR operator_attack(op_type* op_pt) {
+void operator_attack(op_type* op_pt) {
 	op_pt->amp = ((op_pt->a3*op_pt->amp + op_pt->a2)*op_pt->amp + op_pt->a1)*op_pt->amp + op_pt->a0;
 
 	Bit32u num_steps_add = op_pt->generator_pos/FIXEDPT;		// number of (standardized) samples
@@ -468,7 +468,7 @@ const optype_fptr opfuncs[6] = {
 	operator_off
 };
 
-void OTATTR change_attackrate(Bitu regbase, op_type* op_pt) {
+void change_attackrate(Bitu regbase, op_type* op_pt) {
 	Bits attackrate = adlibreg[ARC_ATTR_DECR+regbase]>>4;
 	if (attackrate) {
 		fltype f = (fltype)(pow(FL2,(fltype)attackrate+(op_pt->toff>>2)-1)*attackconst[op_pt->toff&3]*recipsamp);
@@ -507,7 +507,7 @@ void OTATTR change_attackrate(Bitu regbase, op_type* op_pt) {
 	}
 }
 
-void OTATTR change_decayrate(Bitu regbase, op_type* op_pt) {
+void change_decayrate(Bitu regbase, op_type* op_pt) {
 	Bits decayrate = adlibreg[ARC_ATTR_DECR+regbase]&15;
 	// decaymul should be 1.0 when decayrate==0
 	if (decayrate) {
@@ -521,7 +521,7 @@ void OTATTR change_decayrate(Bitu regbase, op_type* op_pt) {
 	}
 }
 
-void OTATTR change_releaserate(Bitu regbase, op_type* op_pt) {
+void change_releaserate(Bitu regbase, op_type* op_pt) {
 	Bits releaserate = adlibreg[ARC_SUSL_RELR+regbase]&15;
 	// releasemul should be 1.0 when releaserate==0
 	if (releaserate) {
@@ -535,7 +535,7 @@ void OTATTR change_releaserate(Bitu regbase, op_type* op_pt) {
 	}
 }
 
-void OTATTR change_sustainlevel(Bitu regbase, op_type* op_pt) {
+void change_sustainlevel(Bitu regbase, op_type* op_pt) {
 	Bits sustainlevel = adlibreg[ARC_SUSL_RELR+regbase]>>4;
 	// sustainlevel should be 0.0 when sustainlevel==15 (max)
 	if (sustainlevel<15) {
@@ -545,7 +545,7 @@ void OTATTR change_sustainlevel(Bitu regbase, op_type* op_pt) {
 	}
 }
 
-void OTATTR change_waveform(Bitu regbase, op_type* op_pt) {
+void change_waveform(Bitu regbase, op_type* op_pt) {
 #if defined(OPLTYPE_IS_OPL3)
 	if (regbase>=ARC_SECONDSET) regbase -= (ARC_SECONDSET-22);	// second set starts at 22
 #endif
@@ -555,7 +555,7 @@ void OTATTR change_waveform(Bitu regbase, op_type* op_pt) {
 	// (might need to be adapted to waveform type here...)
 }
 
-void OTATTR change_keepsustain(Bitu regbase, op_type* op_pt) {
+void change_keepsustain(Bitu regbase, op_type* op_pt) {
 	op_pt->sus_keep = (adlibreg[ARC_TVS_KSR_MUL+regbase]&0x20)>0;
 	if (op_pt->op_state==OF_TYPE_SUS) {
 		if (!op_pt->sus_keep) op_pt->op_state = OF_TYPE_SUS_NOKEEP;
@@ -565,19 +565,19 @@ void OTATTR change_keepsustain(Bitu regbase, op_type* op_pt) {
 }
 
 // enable/disable vibrato/tremolo LFO effects
-void OTATTR change_vibrato(Bitu regbase, op_type* op_pt) {
+void change_vibrato(Bitu regbase, op_type* op_pt) {
 	op_pt->vibrato = (adlibreg[ARC_TVS_KSR_MUL+regbase]&0x40)!=0;
 	op_pt->tremolo = (adlibreg[ARC_TVS_KSR_MUL+regbase]&0x80)!=0;
 }
 
 // change amount of self-feedback
-void OTATTR change_feedback(Bitu chanbase, op_type* op_pt) {
+void change_feedback(Bitu chanbase, op_type* op_pt) {
 	Bits feedback = adlibreg[ARC_FEEDBACK+chanbase]&14;
 	if (feedback) op_pt->mfbi = (Bit32s)(pow(FL2,(fltype)((feedback>>1)+8)));
 	else op_pt->mfbi = 0;
 }
 
-void OTATTR change_frequency(Bitu chanbase, Bitu regbase, op_type* op_pt) {
+void change_frequency(Bitu chanbase, Bitu regbase, op_type* op_pt) {
 	// frequency
 	Bit32u frn = ((((Bit32u)adlibreg[ARC_KON_BNUM+chanbase])&3)<<8) + (Bit32u)adlibreg[ARC_FREQ_NUM+chanbase];
 	// block number/octave
@@ -605,7 +605,7 @@ void OTATTR change_frequency(Bitu chanbase, Bitu regbase, op_type* op_pt) {
 	change_releaserate(regbase,op_pt);
 }
 
-void OTATTR enable_operator(Bitu regbase, op_type* op_pt, Bit32u act_type) {
+void enable_operator(Bitu regbase, op_type* op_pt, Bit32u act_type) {
 	// check if this is really an off-on transition
 	if (op_pt->act_state == OP_ACT_OFF) {
 		Bits wselbase = regbase;
@@ -619,7 +619,7 @@ void OTATTR enable_operator(Bitu regbase, op_type* op_pt, Bit32u act_type) {
 	}
 }
 
-void OTATTR disable_operator(op_type* op_pt, Bit32u act_type) {
+void disable_operator(op_type* op_pt, Bit32u act_type) {
 	// check if this is really an on-off transition
 	if (op_pt->act_state != OP_ACT_OFF) {
 		op_pt->act_state &= (~act_type);
@@ -629,7 +629,7 @@ void OTATTR disable_operator(op_type* op_pt, Bit32u act_type) {
 	}
 }
 
-void OTATTR adlib_init(Bit32u samplerate) {
+void adlib_init(Bit32u samplerate) {
 	Bits i, j, oct;
 
 	int_samplerate = samplerate;
@@ -752,7 +752,7 @@ void OTATTR adlib_init(Bit32u samplerate) {
 
 
 
-void OTATTR adlib_write(Bitu idx, Bit8u val) {
+void adlib_write(Bitu idx, Bit8u val) {
 	Bit32u second_set = idx&ARC_SECONDSET_MASK;
 	adlibreg[idx] = val;
 
@@ -1048,7 +1048,7 @@ void OTATTR adlib_write(Bitu idx, Bit8u val) {
 }
 
 
-Bitu OTATTR adlib_reg_read(Bitu port) {
+Bitu adlib_reg_read(Bitu port) {
 #if defined(OPLTYPE_IS_OPL3)
 	// opl3-detection routines require ret&6 to be zero
 	if ((port&1)==0) {
@@ -1064,7 +1064,7 @@ Bitu OTATTR adlib_reg_read(Bitu port) {
 #endif
 }
 
-void OTATTR adlib_write_index(Bitu port, Bit8u val) {
+void adlib_write_index(Bitu port, Bit8u val) {
 	(void) port;
 	opl_index = val;
 #if defined(OPLTYPE_IS_OPL3)
@@ -1075,7 +1075,7 @@ void OTATTR adlib_write_index(Bitu port, Bit8u val) {
 #endif
 }
 
-OPL_INLINE static void OTATTR clipit16(Bit32s ival, Bit16s* outval) {
+OPL_INLINE static void clipit16(Bit32s ival, Bit16s* outval) {
 	if (ival<32768) {
 		if (ival>-32769) {
 			*outval=(Bit16s)ival;
@@ -1106,7 +1106,7 @@ OPL_INLINE static void OTATTR clipit16(Bit32s ival, Bit16s* outval) {
 	outbufl[i] += chanval;
 #endif
 
-void OTATTR adlib_getsample(Bit16s* sndptr, Bits numsamples) {
+void adlib_getsample(Bit16s* sndptr, Bits numsamples) {
 	Bits i, endsamples;
 	op_type* cptr;
 

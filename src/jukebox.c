@@ -34,7 +34,7 @@
 
 #include <stdio.h>
 
-void OTATTR jukebox(void)  // FKA Setup.jukeboxGo
+void jukebox(void)  // FKA Setup.jukeboxGo
 {
 	bool trigger_quit = false,  // true when user wants to quit
 	     quitting = false;
