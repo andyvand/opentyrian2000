@@ -3800,7 +3800,7 @@ bool newSuperTyrianGame(void)
 		JE_outText(VGAScreen, 10, 40, superTyrianText[4], 15, 4);
 	JE_outText(VGAScreen, 10, 60, superTyrianText[5], 15, 4);
 
-	char buf[10 + 1 + 15 + 1];
+	char buf[64];
 	snprintf(buf, sizeof(buf), "%s %s", miscTextB[4], pName[0]);
 	JE_dString(VGAScreen, JE_fontCenter(buf, FONT_SHAPES), 110, buf, FONT_SHAPES);
 

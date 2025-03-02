@@ -643,7 +643,7 @@ void code_to_assignment(Joystick_assignment *assignment, const char *buffer)
  */
 const char *assignment_to_code(const Joystick_assignment *assignment)
 {
-	static char name[7];
+	static char name[16];
 	
 	switch (assignment->type)
 	{
@@ -653,7 +653,7 @@ const char *assignment_to_code(const Joystick_assignment *assignment)
 		
 	case AXIS:
 		snprintf(name, sizeof(name), "AX %d%c",
-		         assignment->num + 1,
+		         (int)(assignment->num + 1),
 		         assignment->negative_axis ? '-' : '+');
 		break;
 		
@@ -664,7 +664,7 @@ const char *assignment_to_code(const Joystick_assignment *assignment)
 		
 	case HAT:
 		snprintf(name, sizeof(name), "H %d%c%c",
-		         assignment->num + 1,
+		         (int)(assignment->num + 1),
 		         assignment->x_axis ? 'X' : 'Y',
 		         assignment->negative_axis ? '-' : '+');
 		break;
