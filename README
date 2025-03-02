@@ -75,7 +75,7 @@ esp-idf V4.4.8
 ## Set up esp-idf tools
 "export PATH=<PATH_TO_XTENSA_GCC_BINDIR>:$PATH"
 "export GNUMAKEFLAGS="
-"export IDF_PATH=<PATH_TO_ESP_IDF_V3.3>"
+"export IDF_PATH=<PATH_TO_ESP_IDF>"
 
 ## Installation
 "make -f Makefile.esp32 menuconfig"
