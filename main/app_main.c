@@ -132,6 +132,8 @@ static void wifi_scan(void)
 //extern "C"
 void app_main(void)
 {
+    esp_log_level_set("*", ESP_LOG_INFO);
+
 #if CONFIG_NETWORK_GAME
     wifi_scan();
 #endif
