@@ -33,7 +33,11 @@ void SDL_AudioInit()
 	.sample_rate = SAMPLERATE,
 	.bits_per_sample = SAMPLESIZE*8, /* the DAC module will only take the 8bits from MSB */
 	.channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
+#if 0
 	.communication_format = I2S_COMM_FORMAT_I2S_MSB,
+#else
+    .communication_format = I2S_COMM_FORMAT_STAND_I2S,
+#endif
 	.dma_buf_count = 6,
 	.dma_buf_len = 1024,
 	.intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,                                //Interrupt level 1
