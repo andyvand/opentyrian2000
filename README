@@ -70,6 +70,7 @@ https://www.youtube.com/watch?v=UL5eTUv7SZE
 
 ## Required esp-idf tools
 esp-idf V3.3.3
+esp-idf V4.4.8
 
 ## Set up esp-idf tools
 "export PATH=<PATH_TO_XTENSA_GCC_BINDIR>:$PATH"
