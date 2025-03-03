@@ -4,6 +4,11 @@
 #if CONFIG_TOUCH_ENABLED
 #include "hal/spi_types.h"
 #include "esp_lcd_touch_xpt2046.h"
+
+#if HW_LCD_MISO_GPIO == 19
+#define TFT_VSPI_HOST VSPI_HOST
+#elif HW_LCD_MISO_GPIO == 2
+#define TFT_VSPI_HOST HSPI_HOST
 #endif
 #endif
 
