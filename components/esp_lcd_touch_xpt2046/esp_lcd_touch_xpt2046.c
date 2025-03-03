@@ -18,6 +18,7 @@
 
 #include "sdkconfig.h"
 
+#if CONFIG_TOUCH_ENABLED
 static const char *TAG = "xpt2046";
 
 #ifdef CONFIG_XPT2046_INTERRUPT_MODE
@@ -406,3 +407,4 @@ esp_err_t esp_lcd_touch_xpt2046_read_temp1_level(const esp_lcd_touch_handle_t ha
 
     return ESP_OK;
 }
+#endif
