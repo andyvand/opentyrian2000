@@ -487,13 +487,8 @@ void service_SDL_events(JE_boolean clear_new)
             mouseWindowYRelative += myrel;
         }
 
-#if CONFIG_TOUCH_ENABLED
         mousedown = ev.motion.state == SDL_PRESSED ? true : false;
         mouse_pressed[0] = ev.motion.state == SDL_PRESSED ? true : false;
-#else
-        mousedown = false;
-        mouse_pressed[0] = false;
-#endif
 
         keysactive[ev.key.keysym.sym] = ev.key.state;
         if(ev.key.state)
