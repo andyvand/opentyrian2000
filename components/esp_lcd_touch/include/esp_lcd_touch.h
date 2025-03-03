@@ -23,6 +23,7 @@
 extern "C" {
 #endif
 
+#if CONFIG_TOUCH_ENABLED
 /**
  * @brief Touch controller type
  *
@@ -426,4 +427,5 @@ esp_err_t esp_lcd_touch_exit_sleep(esp_lcd_touch_handle_t tp);
 
 #ifdef __cplusplus
 }
+#endif
 #endif
