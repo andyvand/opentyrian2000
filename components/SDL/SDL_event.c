@@ -1,4 +1,12 @@
 #include "SDL_event.h"
+
+#ifndef CONFIG_HW_ODROID_GO
+#if CONFIG_TOUCH_ENABLED
+#include "hal/spi_types.h"
+#include "esp_lcd_touch_xpt2046.h"
+#endif
+#endif
+
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 
 typedef struct {
@@ -6,6 +14,14 @@ typedef struct {
 	SDL_Scancode scancode;
     SDL_Keycode keycode;
 } GPIOKeyMap;
+
+#ifndef CONFIG_HW_ODROID_GO
+#if CONFIG_TOUCH_ENABLED
+esp_lcd_touch_handle_t tp = NULL;
+esp_lcd_panel_io_handle_t tp_io_handle = NULL;
+esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_XPT2046_CONFIG(CONFIG_HW_LCD_CS_GPIO);
+#endif
+#endif
 
 int keyMode = 1;
 //Mappings from buttons to keys
@@ -28,6 +44,14 @@ static const GPIOKeyMap keymap[2][6]={{
 	{CONFIG_HW_BUTTON_PIN_NUM_START, SDL_SCANCODE_LALT, SDLK_LALT},	
 	{CONFIG_HW_BUTTON_PIN_NUM_SELECT, SDL_SCANCODE_LCTRL, SDLK_LCTRL},		
 }};
+
+#ifdef CONFIG_TOUCH_ENABLED
+typedef struct {
+    Uint32 type;        /**< ::SDL_KEYDOWN or ::SDL_KEYUP */
+    SDL_Scancode scancode;
+    SDL_Scancode keycode;
+} GPIOEvent;
+#endif
 #else
 static const GPIOKeyMap keymap[2][6]={{
 // Game    
@@ -161,22 +185,46 @@ int readOdroidXY(SDL_Event * event)
 
 int SDL_PollEvent(SDL_Event * event)
 {
+#ifndef CONFIG_HW_ODROID_GO
+    GPIOEvent ev;
+#endif
+
     if(!initInput)
         inputInit();
 
 #ifndef CONFIG_HW_ODROID_GO
-    GPIOEvent ev;
     if(xQueueReceive(gpio_evt_queue, &ev, 0)) {
-        event->key.keysym.sym = ev.keycode;
-        event->key.keysym.scancode = ev.scancode;
-        event->key.type = ev.type;
-        event->key.keysym.mod = 0;
-        event->key.state = ev.type == SDL_KEYDOWN ? SDL_PRESSED : SDL_RELEASED;     //< ::SDL_PRESSED or ::SDL_RELEASED 
+#if CONFIG_TOUCH_ENABLED
+        if ((ev.type == SDL_MOUSEMOTION) || (ev.type == SDL_MOUSEBUTTONDOWN) || (ev.type == SDL_MOUSEBUTTONUP))
+        {
+            uint16_t x[1];
+            uint16_t y[1];
+            uint16_t  strength[1];
+            uint8_t count = 0;
+
+            event->type = ev.type;
+            event->motion.type = SDL_MOUSEMOTION;
+            event->motion.state = esp_lcd_touch_get_coordinates(tp, x, y, strength, &count, 1) ? SDL_PRESSED : SDL_RELEASED;
+            event->motion.x = x[0];
+            event->motion.y = y[0];
+        }
+#endif
+        if ((ev.type == SDL_KEYDOWN) || ev.type == SDL_KEYUP)
+        {
+            event->type = ev.type == SDL_KEYDOWN ? SDL_KEYDOWN : SDL_KEYUP;
+            event->key.keysym.sym = ev.keycode;
+            event->key.keysym.scancode = ev.scancode;
+            event->key.type = ev.type;
+            event->key.keysym.mod = 0;
+            event->key.state = ev.type == SDL_KEYDOWN ? SDL_PRESSED : SDL_RELEASED;     //< ::SDL_PRESSED or ::SDL_RELEASED
+        }
         return 1;
     }
 #else
+    event->type = ev.type;
     return readOdroidXY(event);
 #endif
+
     return 0;
 }
 
@@ -242,6 +290,26 @@ void inputInit()
 	adc1_config_channel_atten(ODROID_GAMEPAD_IO_Y, ADC_ATTEN_11db);
 #endif    
 
-	printf("keyboard: GPIO task created.\n");
+	ESP_LOGI(SDL_TAG, "keyboard: GPIO task created.\n");
+
+#if CONFIG_TOUCH_ENABLED
+    ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)SPI2_HOST, &tp_io_config, &tp_io_handle));
+
+    esp_lcd_touch_config_t tp_cfg = {
+         .x_max = 320,
+         .y_max = 200,
+         .rst_gpio_num = -1,
+         .int_gpio_num = -1,
+         .flags = {
+             .swap_xy = 0,
+             .mirror_x = 0,
+             .mirror_y = 0,
+         },
+     };
+
+     ESP_LOGI(SDL_TAG, "Initialize touch controller XPT2046");
+     ESP_ERROR_CHECK(esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &tp));
+#endif
+
     initInput = true;
 }

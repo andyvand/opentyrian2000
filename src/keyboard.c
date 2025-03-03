@@ -182,6 +182,9 @@ void service_SDL_events(JE_boolean clear_new)
 #ifdef WITH_SDL3
     Sint32 mx = 0;
     Sint32 my = 0;
+#endif
+
+#if defined(WITH_SDL3) || defined(WITH_SDL)
     Sint32 mxrel = 0;
     Sint32 myrel = 0;
 #endif
@@ -458,17 +461,68 @@ void service_SDL_events(JE_boolean clear_new)
 #else
     while(SDL_PollEvent(&ev))
     {
-        keysactive[ev.key.keysym.sym] = ev.key.state;
-        if(ev.key.state)
+        switch(ev.type)
         {
-            keysactive[ev.key.keysym.scancode] = 1;
-        } else {
-            keysactive[ev.key.keysym.scancode] = 0;
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                keysactive[ev.key.keysym.sym] = ev.key.state;
+                if(ev.key.state)
+                {
+                    keysactive[ev.key.keysym.scancode] = 1;
+                } else {
+                    keysactive[ev.key.keysym.scancode] = 0;
+                }
+                keydown = ev.key.state;
+                newkey = ev.key.state;
+                lastkey_scan = ev.key.keysym.scancode;
+                lastkey_mod = ev.key.keysym.mod;
+                break;
+                
+            case SDL_MOUSEBUTTONDOWN:
+                mouseInactive = false;
+                
+            case SDL_MOUSEBUTTONUP:
+                mapWindowPointToScreen((Sint32 *)&ev.motion.x, (Sint32 *)&ev.motion.y);
+                
+                if (ev.type == SDL_MOUSEBUTTONDOWN)
+                {
+                    newmouse = true;
+                    lastmouse_but = 0;
+                    lastmouse_x = ev.motion.x;
+                    lastmouse_y = ev.motion.y;
+                    mousedown = true;
+                } else {
+                    mousedown = false;
+                }
+                
+                mouse_pressed[0] = ev.motion.state == SDL_PRESSED ? true : false;
+                break;
+                
+            case SDL_MOUSEMOTION:
+                mouse_x = ev.motion.x;
+                mouse_y = ev.motion.y;
+                
+                mapWindowPointToScreen(&mouse_x, &mouse_y);
+                
+                if (mouseRelativeEnabled && windowHasFocus)
+                {
+                    if (isNetworkGame)
+                    {
+                        mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
+                        myrel = mouse_y - player[thisPlayerNum ? thisPlayerNum - 1 : 0].y;
+                    } else if (twoPlayerMode) {
+                        mxrel = mouse_x - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].x;
+                        myrel = mouse_y - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].y;
+                    } else {
+                        mxrel = mouse_x - player[0].x;
+                        myrel = mouse_y - player[0].y;
+                    }
+                    
+                    mouseWindowXRelative += mxrel;
+                    mouseWindowYRelative += myrel;
+                }
+                break;
         }
-        keydown = ev.key.state;
-        newkey = ev.key.state;
-        lastkey_scan = ev.key.keysym.scancode;
-        lastkey_mod = ev.key.keysym.mod;
     }
 #endif
 }
