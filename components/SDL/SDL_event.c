@@ -209,11 +209,6 @@ int SDL_PollEvent(SDL_Event * event)
     event->motion.y = y[0];
 
     MousePressed = event->motion.state == SDL_PRESSED ? true : false;
-
-    if (event->motion.state == SDL_PRESSED)
-    {
-        return 1;
-    }
 #endif
 
 #ifndef CONFIG_HW_ODROID_GO

@@ -463,30 +463,10 @@ void service_SDL_events(JE_boolean clear_new)
     {
         switch(ev.type)
         {
+            case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                keysactive[ev.key.keysym.sym] = ev.key.state;
-                if(ev.key.state)
-                {
-                    keysactive[ev.key.keysym.scancode] = 1;
-                } else {
-                    keysactive[ev.key.keysym.scancode] = 0;
-                }
-                keydown = ev.key.state;
-                newkey = ev.key.state;
-                lastkey_scan = ev.key.keysym.scancode;
-                lastkey_mod = ev.key.keysym.mod;
-#if CONFIG_TOUCH_ENABLED
-                mousedown = MousePressed;
-                mouse_pressed[0] = MousePressed;
-#else
-                mousedown = false;
-                mouse_pressed[0] = false;
-#endif
-                break;
-                
-            case SDL_MOUSEBUTTONDOWN:
                 mouseInactive = false;
                 mouse_x = ev.motion.x;
                 mouse_y = ev.motion.y;
@@ -512,11 +492,25 @@ void service_SDL_events(JE_boolean clear_new)
                 }
 
                 newmouse = true;
-                lastmouse_but = 0;
-                lastmouse_x = ev.motion.x;
-                lastmouse_y = ev.motion.y;
-                mousedown = true;
-                mouse_pressed[0] = true;
+
+                keysactive[ev.key.keysym.sym] = ev.key.state;
+                if(ev.key.state)
+                {
+                    keysactive[ev.key.keysym.scancode] = 1;
+                } else {
+                    keysactive[ev.key.keysym.scancode] = 0;
+                }
+                keydown = ev.key.state;
+                newkey = ev.key.state;
+                lastkey_scan = ev.key.keysym.scancode;
+                lastkey_mod = ev.key.keysym.mod;
+#if CONFIG_TOUCH_ENABLED
+                mousedown = MousePressed;
+                mouse_pressed[0] = MousePressed;
+#else
+                mousedown = false;
+                mouse_pressed[0] = false;
+#endif
                 break;
         }
     }
