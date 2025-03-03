@@ -2,11 +2,13 @@ menu "ESP LCD TOUCH"
 
     config ESP_LCD_TOUCH_MAX_POINTS
         int "Maximum count of the touch points"
+        depends on TOUCH_ENABLED
         range 1 10
         default 5
 
     config ESP_LCD_TOUCH_MAX_BUTTONS
         int "Maximum count of the touch buttons supported"
+        depends on TOUCH_ENABLED
         range 0 10
         default 1
 

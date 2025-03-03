@@ -14,6 +14,7 @@
 #include "esp_log.h"
 #include "esp_lcd_touch.h"
 
+#if CONFIG_TOUCH_ENABLED
 static const char *TAG = "TP";
 
 /*******************************************************************************
@@ -264,3 +265,4 @@ esp_err_t esp_lcd_touch_register_interrupt_callback_with_data(esp_lcd_touch_hand
     tp->config.user_data = user_data;
     return esp_lcd_touch_register_interrupt_callback(tp, callback);
 }
+#endif
