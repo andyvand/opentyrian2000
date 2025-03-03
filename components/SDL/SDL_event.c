@@ -164,8 +164,10 @@ int readOdroidXY(SDL_Event * event)
     {
         state.up = 0;
         state.down = 0;
-    }    
-    
+    }
+
+    event->type = SDL_KEYDOWN;
+
     event->key.keysym.mod = 0;
     if(checkPin(state.up, &lastState.up, SDL_SCANCODE_UP, SDLK_UP, event))
         return 1;
@@ -179,6 +181,8 @@ int readOdroidXY(SDL_Event * event)
     for(int i = 0; i < 6; i++)
         if(checkPinStruct(i, &lastState.buttons[i], event))
             return 1;
+
+    event->type = SDL_KEYUP;
 
     return 0;
 }
@@ -221,7 +225,6 @@ int SDL_PollEvent(SDL_Event * event)
         return 1;
     }
 #else
-    event->type = ev.type;
     return readOdroidXY(event);
 #endif
 
