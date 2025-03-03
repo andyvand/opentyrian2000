@@ -194,21 +194,6 @@ int SDL_PollEvent(SDL_Event * event)
 
 #ifndef CONFIG_HW_ODROID_GO
     if(xQueueReceive(gpio_evt_queue, &ev, 0)) {
-#if CONFIG_TOUCH_ENABLED
-        if ((ev.type == SDL_MOUSEMOTION) || (ev.type == SDL_MOUSEBUTTONDOWN) || (ev.type == SDL_MOUSEBUTTONUP))
-        {
-            uint16_t x[1];
-            uint16_t y[1];
-            uint16_t  strength[1];
-            uint8_t count = 0;
-
-            event->type = ev.type;
-            event->motion.type = SDL_MOUSEMOTION;
-            event->motion.state = esp_lcd_touch_get_coordinates(tp, x, y, strength, &count, 1) ? SDL_PRESSED : SDL_RELEASED;
-            event->motion.x = x[0];
-            event->motion.y = y[0];
-        }
-#endif
         if ((ev.type == SDL_KEYDOWN) || ev.type == SDL_KEYUP)
         {
             event->type = ev.type == SDL_KEYDOWN ? SDL_KEYDOWN : SDL_KEYUP;
@@ -224,7 +209,22 @@ int SDL_PollEvent(SDL_Event * event)
     return readOdroidXY(event);
 #endif
 
+#if CONFIG_TOUCH_ENABLED
+    uint16_t x[1];
+    uint16_t y[1];
+    uint16_t  strength[1];
+    uint8_t count = 0;
+
+    event->type = ev.type;
+    event->motion.state = esp_lcd_touch_get_coordinates(tp, x, y, strength, &count, 1) ? SDL_PRESSED : SDL_RELEASED;
+    event->motion.type = event->motion.state == SDL_PRESSED ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP;
+    event->motion.x = x[0];
+    event->motion.y = y[0];
+
+    return 1;
+#else
     return 0;
+#endif
 }
 
 #ifndef CONFIG_HW_ODROID_GO

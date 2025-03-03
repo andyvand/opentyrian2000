@@ -480,22 +480,41 @@ void service_SDL_events(JE_boolean clear_new)
                 
             case SDL_MOUSEBUTTONDOWN:
                 mouseInactive = false;
+                mouse_x = ev.motion.x;
+                mouse_y = ev.motion.y;
+
+                mapWindowPointToScreen(&mouse_x, &mouse_y);
                 
+                if (mouseRelativeEnabled)
+                {
+                    if (isNetworkGame)
+                    {
+                        mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
+                        myrel = mouse_y - player[thisPlayerNum ? thisPlayerNum - 1 : 0].y;
+                    } else if (twoPlayerMode) {
+                        mxrel = mouse_x - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].x;
+                        myrel = mouse_y - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].y;
+                    } else {
+                        mxrel = mouse_x - player[0].x;
+                        myrel = mouse_y - player[0].y;
+                    }
+                    
+                    mouseWindowXRelative += mxrel;
+                    mouseWindowYRelative += myrel;
+                }
+
+                newmouse = true;
+                lastmouse_but = 0;
+                lastmouse_x = ev.motion.x;
+                lastmouse_y = ev.motion.y;
+                mousedown = true;
+                mouse_pressed[0] = true;
+                break;
+
             case SDL_MOUSEBUTTONUP:
                 mapWindowPointToScreen((Sint32 *)&ev.motion.x, (Sint32 *)&ev.motion.y);
-                
-                if (ev.type == SDL_MOUSEBUTTONDOWN)
-                {
-                    newmouse = true;
-                    lastmouse_but = 0;
-                    lastmouse_x = ev.motion.x;
-                    lastmouse_y = ev.motion.y;
-                    mousedown = true;
-                } else {
-                    mousedown = false;
-                }
-                
-                mouse_pressed[0] = ev.motion.state == SDL_PRESSED ? true : false;
+                mousedown = false;
+                mouse_pressed[0] = false;
                 break;
                 
             case SDL_MOUSEMOTION:
@@ -504,7 +523,7 @@ void service_SDL_events(JE_boolean clear_new)
                 
                 mapWindowPointToScreen(&mouse_x, &mouse_y);
                 
-                if (mouseRelativeEnabled && windowHasFocus)
+                if (mouseRelativeEnabled)
                 {
                     if (isNetworkGame)
                     {
