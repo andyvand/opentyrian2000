@@ -289,7 +289,7 @@ void inputInit()
 	ESP_LOGI(SDL_TAG, "keyboard: GPIO task created.\n");
 
 #if CONFIG_TOUCH_ENABLED
-    ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)SPI2_HOST, &tp_io_config, &tp_io_handle));
+    ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)SDSPI_DEFAULT_HOST, &tp_io_config, &tp_io_handle));
 
     esp_lcd_touch_config_t tp_cfg = {
          .x_max = 320,
