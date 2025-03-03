@@ -11,6 +11,7 @@
 #define TFT_VSPI_HOST HSPI_HOST
 #endif
 #endif
+#endif
 
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
 
