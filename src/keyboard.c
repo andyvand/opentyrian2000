@@ -461,58 +461,51 @@ void service_SDL_events(JE_boolean clear_new)
 #else
     while(SDL_PollEvent(&ev))
     {
-        switch(ev.type)
-        {
-            case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:
-            case SDL_KEYDOWN:
-            case SDL_KEYUP:
-                mouseInactive = false;
-                mouse_x = ev.motion.x;
-                mouse_y = ev.motion.y;
+        mouseInactive = false;
+        newmouse = true;
 
-                mapWindowPointToScreen(&mouse_x, &mouse_y);
+        mouse_x = ev.motion.x;
+        mouse_y = ev.motion.y;
+
+        mapWindowPointToScreen(&mouse_x, &mouse_y);
                 
-                if (mouseRelativeEnabled)
-                {
-                    if (isNetworkGame)
-                    {
-                        mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
-                        myrel = mouse_y - player[thisPlayerNum ? thisPlayerNum - 1 : 0].y;
-                    } else if (twoPlayerMode) {
-                        mxrel = mouse_x - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].x;
-                        myrel = mouse_y - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].y;
-                    } else {
-                        mxrel = mouse_x - player[0].x;
-                        myrel = mouse_y - player[0].y;
-                    }
+        if (mouseRelativeEnabled)
+        {
+            if (isNetworkGame)
+            {
+                mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
+                myrel = mouse_y - player[thisPlayerNum ? thisPlayerNum - 1 : 0].y;
+            } else if (twoPlayerMode) {
+                mxrel = mouse_x - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].x;
+                myrel = mouse_y - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].y;
+            } else {
+                mxrel = mouse_x - player[0].x;
+                myrel = mouse_y - player[0].y;
+            }
                     
-                    mouseWindowXRelative += mxrel;
-                    mouseWindowYRelative += myrel;
-                }
-
-                newmouse = true;
-
-                keysactive[ev.key.keysym.sym] = ev.key.state;
-                if(ev.key.state)
-                {
-                    keysactive[ev.key.keysym.scancode] = 1;
-                } else {
-                    keysactive[ev.key.keysym.scancode] = 0;
-                }
-                keydown = ev.key.state;
-                newkey = ev.key.state;
-                lastkey_scan = ev.key.keysym.scancode;
-                lastkey_mod = ev.key.keysym.mod;
-#if CONFIG_TOUCH_ENABLED
-                mousedown = MousePressed;
-                mouse_pressed[0] = MousePressed;
-#else
-                mousedown = false;
-                mouse_pressed[0] = false;
-#endif
-                break;
+            mouseWindowXRelative += mxrel;
+            mouseWindowYRelative += myrel;
         }
+
+#if CONFIG_TOUCH_ENABLED
+        mousedown = event->motion.state == SDL_PRESSED ? true : false;
+        mouse_pressed[0] = event->motion.state == SDL_PRESSED ? true : false;
+#else
+        mousedown = false;
+        mouse_pressed[0] = false;
+#endif
+
+        keysactive[ev.key.keysym.sym] = ev.key.state;
+        if(ev.key.state)
+        {
+            keysactive[ev.key.keysym.scancode] = 1;
+        } else {
+            keysactive[ev.key.keysym.scancode] = 0;
+        }
+        keydown = ev.key.state;
+        newkey = ev.key.state;
+        lastkey_scan = ev.key.keysym.scancode;
+        lastkey_mod = ev.key.keysym.mod;
     }
 #endif
 }

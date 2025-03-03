@@ -699,4 +699,3 @@ extern DECLSPEC Uint32 SDLCALL SDL_RegisterEvents(int numevents);
 
 void inputInit();
 extern int keyMode;
-extern bool MousePressed;
