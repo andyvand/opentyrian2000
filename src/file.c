@@ -175,6 +175,7 @@ FILE * dir_fopen(const char *dir, const char *file, const char *mode)
         SDL_InitSD();
         init_SD = true;
     }
+
     SDL_LockDisplay();
 #endif
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
