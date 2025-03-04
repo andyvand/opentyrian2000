@@ -116,6 +116,10 @@ void init_keyboard(void)
 	newkey = newmouse = false;
 	keydown = mousedown = false;
 
+#ifdef WITH_SDL
+    inputInit();
+#endif
+
 #ifdef WITH_SDL3
     SDL_HideCursor();
 #else
