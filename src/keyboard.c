@@ -472,8 +472,8 @@ void service_SDL_events(JE_boolean clear_new)
         {
             mouse_x = ev.motion.x;
             mouse_y = ev.motion.y;
-            lastmouse_x = bx;
-            lastmouse_y = by;
+            lastmouse_x = mouse_x;
+            lastmouse_y = mouse_y;
 
             mapWindowPointToScreen(&mouse_x, &mouse_y);
         }
