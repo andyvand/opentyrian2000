@@ -305,7 +305,7 @@ void inputInit()
 
     esp_lcd_touch_config_t tp_cfg = {
          .x_max = 320,
-         .y_max = 200,
+         .y_max = 240,
          .rst_gpio_num = -1,
          .int_gpio_num = -1,
          .flags = {
