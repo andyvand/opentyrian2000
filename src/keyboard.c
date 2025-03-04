@@ -464,10 +464,13 @@ void service_SDL_events(JE_boolean clear_new)
         mouseInactive = false;
         newmouse = true;
 
-        mouse_x = ev.motion.x;
-        mouse_y = ev.motion.y;
-
-        mapWindowPointToScreen(&mouse_x, &mouse_y);
+        if (ev.motion.state == SDL_PRESSED)
+        {
+            mouse_x = ev.motion.x;
+            mouse_y = ev.motion.y;
+            
+            //mapWindowPointToScreen(&mouse_x, &mouse_y);
+        }
                 
         if (mouseRelativeEnabled)
         {
@@ -482,9 +485,12 @@ void service_SDL_events(JE_boolean clear_new)
                 mxrel = mouse_x - player[0].x;
                 myrel = mouse_y - player[0].y;
             }
-                    
-            mouseWindowXRelative += mxrel;
-            mouseWindowYRelative += myrel;
+
+            if (ev.motion.state == SDL_PRESSED)
+            {
+                mouseWindowXRelative += mxrel;
+                mouseWindowYRelative += myrel;
+            }
         }
 
         mousedown = ev.motion.state == SDL_PRESSED ? true : false;

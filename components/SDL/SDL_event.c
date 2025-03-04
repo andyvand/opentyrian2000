@@ -208,7 +208,7 @@ int SDL_PollEvent(SDL_Event * event)
 
     event->motion.state = esp_lcd_touch_get_coordinates(tp, x, y, strength, &count, 1) ? SDL_PRESSED : SDL_RELEASED;
     event->motion.type = event->motion.state == SDL_PRESSED ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP;
-    
+
     if (event->motion.state == SDL_PRESSED)
     {
         event->motion.x = x[0];
