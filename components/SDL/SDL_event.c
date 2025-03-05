@@ -200,6 +200,7 @@ int SDL_PollEvent(SDL_Event * event)
     if(!initInput)
         inputInit();
 
+#ifndef CONFIG_HW_ODROID_GO
 #if CONFIG_TOUCH_ENABLED
     uint16_t x[1];
     uint16_t y[1];
@@ -214,6 +215,7 @@ int SDL_PollEvent(SDL_Event * event)
         event->motion.x = x[0];
         event->motion.y = y[0];
     }
+#endif
 #endif
 
 #ifndef CONFIG_HW_ODROID_GO
