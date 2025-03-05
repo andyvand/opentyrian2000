@@ -109,7 +109,33 @@ void init_video( void )
         exit(1);
     }
 
-    SDL_WM_SetCaption("OpenTyrian", NULL);
+    SDL_WM_SetCaption("OpenTyrian 2000", NULL);
+
+    main_window_tex_format = malloc(sizeof(*main_window_tex_format));
+    main_window_tex_format->palette=NULL;
+    main_window_tex_format->BitsPerPixel=16;
+    main_window_tex_format->BytesPerPixel=2;
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN
+    main_window_tex_format->Rshift=0;
+    main_window_tex_format->Gshift=5;
+    main_window_tex_format->Bshift=10;
+#else
+    main_window_tex_format->Rshift=15;
+    main_window_tex_format->Gshift=10;
+    main_window_tex_format->Bshift=5;
+#endif
+    main_window_tex_format->Ashift=0;
+    main_window_tex_format->Rmask=0x1f<<main_window_tex_format->Rshift;
+    main_window_tex_format->Gmask=0x1f<<main_window_tex_format->Gshift;
+    main_window_tex_format->Bmask=0x1f<<main_window_tex_format->Bshift;
+    main_window_tex_format->Amask=0;
+    main_window_tex_format->Rloss=0;
+    main_window_tex_format->Gloss=0;
+    main_window_tex_format->Bloss=0;
+    main_window_tex_format->Aloss=1;
+    main_window_tex_format->colorkey=0;
+    main_window_tex_format->alpha=0;
+
 
     VGAScreen = VGAScreenSeg = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
     VGAScreen2 = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
@@ -233,7 +259,12 @@ void deinit_video( void )
     SDL_FreeSurface(VGAScreenSeg);
     SDL_FreeSurface(VGAScreen2);
     SDL_FreeSurface(game_screen);
-    
+
+    if (main_window_tex_format)
+    {
+        free(main_window_tex_format);
+    }
+
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
