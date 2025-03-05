@@ -197,6 +197,24 @@ config HW_BUTTON_PIN_NUM_VOL_CUST
 # Output configurations
 ###############################
 
+config I2S_BCK_IO
+	int "I2S BC IO PIN"
+	depends on HW_CUSTOM
+	range 1 39
+	default 26
+
+config I2S_WS_IO
+	int "I2S WS IO PIN"
+	depends on HW_CUSTOM
+	range 1 39
+	default 27
+
+config I2S_DO_IO
+	int "I2S Data IO PIN"
+	depends on HW_CUSTOM
+	range 1 39
+	default 25
+
 #####
 # LCD - Hidden
 #####

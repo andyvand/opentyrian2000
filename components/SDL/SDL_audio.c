@@ -8,9 +8,9 @@ bool paused = true;
 bool locked = false;
 xSemaphoreHandle xSemaphoreAudio = NULL;
 
-#define I2S_BCK_IO      (26)
-#define I2S_WS_IO       (27)
-#define I2S_DO_IO       (25)
+#define I2S_BCK_IO      (CONFIG_I2S_BCK_IO)
+#define I2S_WS_IO       (CONFIG_I2S_WS_IO)
+#define I2S_DO_IO       (CONFIG_I2S_DO_IO)
 #define I2S_DI_IO       (-1)
 
 IRAM_ATTR void updateTask(void *arg)
