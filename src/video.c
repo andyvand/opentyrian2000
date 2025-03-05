@@ -115,24 +115,18 @@ void init_video( void )
     main_window_tex_format->palette=NULL;
     main_window_tex_format->BitsPerPixel=16;
     main_window_tex_format->BytesPerPixel=2;
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
     main_window_tex_format->Rshift=0;
     main_window_tex_format->Gshift=5;
-    main_window_tex_format->Bshift=10;
-#else
-    main_window_tex_format->Rshift=15;
-    main_window_tex_format->Gshift=10;
-    main_window_tex_format->Bshift=5;
-#endif
+    main_window_tex_format->Bshift=11;
     main_window_tex_format->Ashift=0;
     main_window_tex_format->Rmask=0x1f<<main_window_tex_format->Rshift;
-    main_window_tex_format->Gmask=0x1f<<main_window_tex_format->Gshift;
+    main_window_tex_format->Gmask=0x3f<<main_window_tex_format->Gshift;
     main_window_tex_format->Bmask=0x1f<<main_window_tex_format->Bshift;
     main_window_tex_format->Amask=0;
     main_window_tex_format->Rloss=0;
     main_window_tex_format->Gloss=0;
     main_window_tex_format->Bloss=0;
-    main_window_tex_format->Aloss=1;
+    main_window_tex_format->Aloss=0;
     main_window_tex_format->colorkey=0;
     main_window_tex_format->alpha=0;
 
