@@ -465,6 +465,7 @@ void service_SDL_events(JE_boolean clear_new)
 #else
     while(SDL_PollEvent(&ev))
     {
+#if CONFIG_TOUCH_ENABLED
         mouseInactive = false;
         newmouse = true;
 
@@ -502,6 +503,7 @@ void service_SDL_events(JE_boolean clear_new)
 
         mousedown = ev.motion.state == SDL_PRESSED ? true : false;
         mouse_pressed[0] = ev.motion.state == SDL_PRESSED ? true : false;
+#endif
 
         keysactive[ev.key.keysym.sym] = ev.key.state;
         if(ev.key.state)
