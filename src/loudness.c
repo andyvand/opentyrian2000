@@ -553,7 +553,7 @@ static void audioMixCallback(void *userdata, Uint8 *stream, int size)
 
 static void audioCallback(void *userdata, SDL_AudioStream *SDLstream, int add_size, int size)
 #else
-static void audioCallback(void *userdata, Uint8 *stream, int size)
+static void IRATTR audioCallback(void *userdata, Uint8 *stream, int size)
 #endif
 {
 #ifndef WITH_SDL3

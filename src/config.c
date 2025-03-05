@@ -806,7 +806,7 @@ const char * get_user_directory(void)
 #elif defined(VITA)
         snprintf(user_dir, sizeof(user_dir), "ux0:data/opentyrian2000");
 #elif defined(WITH_SDL)
-        snprintf(user_dir, sizeof(user_dir), "/data");
+        snprintf(user_dir, sizeof(user_dir), "data");
 #elif defined(PSP)
         snprintf(user_dir, sizeof(user_dir), "ms0:/PSP/GAME/opentyrian2000");
 #elif defined(__3DS__)

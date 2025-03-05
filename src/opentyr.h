@@ -58,8 +58,10 @@
 
 #ifdef WITH_SDL
 #define EXTATTR EXT_RAM_ATTR
+#define IRATTR IRAM_ATTR
 #else
 #define EXTATTR
+#define IRATTR
 #endif
 
 #ifdef PSP

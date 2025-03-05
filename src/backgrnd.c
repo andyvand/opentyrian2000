@@ -58,7 +58,7 @@ void JE_darkenBackground(JE_word neat)  /* wild detail level */
 	}
 }
 
-void blit_background_row(SDL_Surface *surface, int x, int y, Uint8 **map)
+void IRATTR blit_background_row(SDL_Surface *surface, int x, int y, Uint8 **map)
 {
 	Uint8 *pixels = (Uint8 *)surface->pixels + (y * surface->pitch) + x,
 	      *pixels_ll = (Uint8 *)surface->pixels,  // lower limit
@@ -102,7 +102,7 @@ void blit_background_row(SDL_Surface *surface, int x, int y, Uint8 **map)
 	}
 }
 
-void blit_background_row_blend(SDL_Surface *surface, int x, int y, Uint8 **map)
+void IRATTR blit_background_row_blend(SDL_Surface *surface, int x, int y, Uint8 **map)
 {
 	Uint8 *pixels = (Uint8 *)surface->pixels + (y * surface->pitch) + x,
 	      *pixels_ll = (Uint8 *)surface->pixels,  // lower limit
@@ -146,7 +146,7 @@ void blit_background_row_blend(SDL_Surface *surface, int x, int y, Uint8 **map)
 	}
 }
 
-void draw_background_1(SDL_Surface *surface)
+void IRATTR draw_background_1(SDL_Surface *surface)
 {
 #ifdef WITH_SDL3
     SDL_FillSurfaceRect(surface, NULL, 0);
@@ -164,7 +164,7 @@ void draw_background_1(SDL_Surface *surface)
 	}
 }
 
-void draw_background_2(SDL_Surface *surface)
+void IRATTR draw_background_2(SDL_Surface *surface)
 {
 	if (map2YDelayMax > 1 && backMove2 < 2)
 		backMove2 = (map2YDelay == 1) ? 1 : 0;
@@ -200,7 +200,7 @@ void draw_background_2(SDL_Surface *surface)
 	}
 }
 
-void draw_background_2_blend(SDL_Surface *surface)
+void IRATTR draw_background_2_blend(SDL_Surface *surface)
 {
 	if (map2YDelayMax > 1 && backMove2 < 2)
 		backMove2 = (map2YDelay == 1) ? 1 : 0;
@@ -230,7 +230,7 @@ void draw_background_2_blend(SDL_Surface *surface)
 	}
 }
 
-void draw_background_3(SDL_Surface *surface)
+void IRATTR draw_background_3(SDL_Surface *surface)
 {
 	/* Movement of background */
 	backPos3 += backMove3;
