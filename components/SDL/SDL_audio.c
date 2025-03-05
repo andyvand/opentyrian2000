@@ -8,6 +8,11 @@ bool paused = true;
 bool locked = false;
 xSemaphoreHandle xSemaphoreAudio = NULL;
 
+#define I2S_BCK_IO      (26)
+#define I2S_WS_IO       (27)
+#define I2S_DO_IO       (25)
+#define I2S_DI_IO       (-1)
+
 IRAM_ATTR void updateTask(void *arg)
 {
   size_t bytesWritten;
@@ -29,25 +34,43 @@ void SDL_AudioInit()
 	sdl_buffer = heap_caps_malloc(SAMPLECOUNT * SAMPLESIZE * 2, MALLOC_CAP_8BIT | MALLOC_CAP_DMA);
 
 	static const i2s_config_t i2s_config = {
-	.mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN,
+#if CONFIG_HW_ODROID_GO
+    .mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN,
+#else
+	.mode = I2S_MODE_MASTER | I2S_MODE_TX,
+#endif
 	.sample_rate = SAMPLERATE,
 	.bits_per_sample = SAMPLESIZE*8, /* the DAC module will only take the 8bits from MSB */
 	.channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
 #if 0
 	.communication_format = I2S_COMM_FORMAT_I2S_MSB,
 #else
-    .communication_format = I2S_COMM_FORMAT_STAND_I2S,
+    .communication_format = I2S_COMM_FORMAT_STAND_MSB,
 #endif
 	.dma_buf_count = 6,
 	.dma_buf_len = 1024,
 	.intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,                                //Interrupt level 1
     .use_apll = 0
 	};
-	static const int i2s_num = I2S_NUM_0; // i2s port number
+#if !CONFIG_HW_ODROID_GO
+    i2s_pin_config_t pin_config = {
+        .mck_io_num = I2S_PIN_NO_CHANGE,
+        .bck_io_num = I2S_BCK_IO,
+        .ws_io_num = I2S_WS_IO,
+        .data_out_num = I2S_DO_IO,
+        .data_in_num = I2S_DI_IO //Not used
+    };
+#endif
+    static const int i2s_num = I2S_NUM_0; // i2s port number
 
 	ESP_ERROR_CHECK(i2s_driver_install(i2s_num, &i2s_config, 0, NULL));   //install and start i2s driver
 
+#if CONFIG_HW_ODROID_GO
 	ESP_ERROR_CHECK(i2s_set_pin(i2s_num, NULL));
+#else
+    ESP_ERROR_CHECK(i2s_set_pin(i2s_num, &pin_config));
+#endif
+
 	//ESP_ERROR_CHECK(i2s_set_clk(i2s_num, SAMPLERATE, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_STEREO));
 	ESP_ERROR_CHECK(i2s_set_dac_mode(I2S_DAC_CHANNEL_BOTH_EN));	
 }
