@@ -986,9 +986,17 @@ int main(int argc, char *argv[])
 
 	JE_scanForEpisodes();
 
+#ifdef WITH_SDL
+    init_keyboard();
+    init_joysticks();
+#endif
+
 	init_video();
-	init_keyboard();
-	init_joysticks();
+
+#ifndef WITH_SDL
+    init_keyboard();
+    init_joysticks();
+#endif
 
 	if (xmas && (!dir_file_exists(data_dir(), "tyrianc.shp") || !dir_file_exists(data_dir(), "voicesc.snd")))
 	{
