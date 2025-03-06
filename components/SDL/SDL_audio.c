@@ -13,18 +13,30 @@ xSemaphoreHandle xSemaphoreAudio = NULL;
 #define I2S_DO_IO       (CONFIG_I2S_DO_IO)
 #define I2S_DI_IO       (-1)
 
+static i2s_chan_handle_t tx_chan;        // I2S tx channel handler
+
 IRAM_ATTR void updateTask(void *arg)
 {
   size_t bytesWritten;
+  size_t w_bytes = SAMPLECOUNT*SAMPLESIZE*2;
+
+  while (w_bytes == SAMPLECOUNT*SAMPLESIZE*2) {
+    /* Here we load the target buffer repeatedly, until all the DMA buffers are preloaded */
+    ESP_ERROR_CHECK(i2s_channel_preload_data(tx_chan, sdl_buffer, SAMPLECOUNT*SAMPLESIZE*2, &w_bytes));
+  }
+    
+  ESP_ERROR_CHECK(i2s_channel_enable(tx_chan));
+
   while(1)
   {
 	  if(!paused && /*xSemaphoreAudio != NULL*/ !locked ){
-		  //xSemaphoreTake( xSemaphoreAudio, portMAX_DELAY );
-		  memset(sdl_buffer, 0, SAMPLECOUNT*SAMPLESIZE*2);
-		  (*as.callback)(NULL, sdl_buffer, SAMPLECOUNT*SAMPLESIZE );
-		  ESP_ERROR_CHECK(i2s_write(I2S_NUM_0, sdl_buffer, SAMPLECOUNT*SAMPLESIZE*2, &bytesWritten, 500 / portTICK_PERIOD_MS));
-		  //xSemaphoreGive( xSemaphoreAudio );
-	  } else
+          if (i2s_channel_write(tx_chan, sdl_buffer, SAMPLECOUNT*SAMPLESIZE*2, &w_bytes, 1000) == ESP_OK) {
+              printf("Write Task: i2s write %d bytes\n", w_bytes);
+          } else {
+              printf("Write Task: i2s write failed\n");
+          }
+          vTaskDelay(pdMS_TO_TICKS(200));
+      } else
 		  vTaskDelay( 5 );
   }
 }
@@ -32,47 +44,24 @@ IRAM_ATTR void updateTask(void *arg)
 void SDL_AudioInit()
 {
 	sdl_buffer = heap_caps_malloc(SAMPLECOUNT * SAMPLESIZE * 2, MALLOC_CAP_8BIT | MALLOC_CAP_DMA);
-
-	static const i2s_config_t i2s_config = {
-#if CONFIG_HW_ODROID_GO
-    .mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN,
-#else
-	.mode = I2S_MODE_MASTER | I2S_MODE_TX,
-#endif
-	.sample_rate = SAMPLERATE,
-	.bits_per_sample = SAMPLESIZE*8, /* the DAC module will only take the 8bits from MSB */
-	.channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
-#if 0
-	.communication_format = I2S_COMM_FORMAT_I2S_MSB,
-#else
-    .communication_format = I2S_COMM_FORMAT_STAND_MSB,
-#endif
-	.dma_buf_count = 6,
-	.dma_buf_len = 1024,
-	.intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,                                //Interrupt level 1
-    .use_apll = 0
-	};
-#if !CONFIG_HW_ODROID_GO
-    i2s_pin_config_t pin_config = {
-        .mck_io_num = I2S_PIN_NO_CHANGE,
-        .bck_io_num = I2S_BCK_IO,
-        .ws_io_num = I2S_WS_IO,
-        .data_out_num = I2S_DO_IO,
-        .data_in_num = I2S_DI_IO //Not used
+    i2s_chan_config_t tx_chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
+    i2s_std_config_t tx_std_cfg = {
+        .clk_cfg  = I2S_STD_CLK_DEFAULT_CONFIG(16000),
+        .slot_cfg = I2S_STD_MSB_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_STEREO),
+        .gpio_cfg = {
+            .mclk = I2S_GPIO_UNUSED,    // some codecs may require mclk signal, this example doesn't need it
+            .bclk = I2S_BCK_IO,
+            .ws   = I2S_WS_IO,
+            .dout = I2S_DO_IO,
+            .din  = I2S_DI_IO,
+            .invert_flags = {
+                .mclk_inv = false,
+                .bclk_inv = false,
+                .ws_inv   = false,
+            },
+        },
     };
-#endif
-    static const int i2s_num = I2S_NUM_0; // i2s port number
-
-	ESP_ERROR_CHECK(i2s_driver_install(i2s_num, &i2s_config, 0, NULL));   //install and start i2s driver
-
-#if CONFIG_HW_ODROID_GO
-	ESP_ERROR_CHECK(i2s_set_pin(i2s_num, NULL));
-#else
-    ESP_ERROR_CHECK(i2s_set_pin(i2s_num, &pin_config));
-#endif
-
-	//ESP_ERROR_CHECK(i2s_set_clk(i2s_num, SAMPLERATE, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_STEREO));
-	ESP_ERROR_CHECK(i2s_set_dac_mode(I2S_DAC_CHANNEL_BOTH_EN));	
+    ESP_ERROR_CHECK(i2s_channel_init_std_mode(tx_chan, &tx_std_cfg));
 }
 
 int SDL_OpenAudio(SDL_AudioSpec *desired, SDL_AudioSpec *obtained)
@@ -99,7 +88,6 @@ void SDL_PauseAudio(int pause_on)
 
 void SDL_CloseAudio(void)
 {
-	  i2s_driver_uninstall(I2S_NUM_0); //stop & destroy i2s driver
 	  free(sdl_buffer);
 }
 

@@ -1,5 +1,10 @@
 #include "SDL_system.h"
 
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+#define VSPI_HOST SPI2_HOST
+#define HSPI_HOST SPI3_HOST
+#endif
+
 const char *SDL_TAG = "SDL";
 
 struct SDL_mutex
@@ -46,7 +51,7 @@ void SDL_Quit(void)
 void SDL_InitSD(void)
 {
     ESP_LOGI(SDL_TAG, "Initialising SD Card\n");
-#if 1
+#if 0
 	sdmmc_host_t host = SDSPI_HOST_DEFAULT();
     host.command_timeout_ms = 3000;
     host.max_freq_khz = SDMMC_FREQ_DEFAULT;

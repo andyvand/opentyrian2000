@@ -42,6 +42,11 @@
 #define PIN_NUM_BCKL CONFIG_HW_LCD_BL_GPIO
 #endif
 
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+#define VSPI_HOST SPI2_HOST
+#define HSPI_HOST SPI3_HOST
+#endif
+
 //You want this, especially at higher framerates. The 2nd buffer is allocated in iram anyway, so isn't really in the way.
 #define DOUBLE_BUFFER
 const int DUTY_MAX = 0x1fff;

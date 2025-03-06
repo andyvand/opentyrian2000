@@ -10,4 +10,4 @@
 #include $(IDF_PATH)/make/component_common.mk
 
 COMPONENT_ADD_INCLUDEDIRS += ../OpenTyrian ../esp_lcd_touch/include ../esp_lcd_touch_xpt2046/include
-CFLAGS += -DWITH_SDL=1
+CFLAGS += -DWITH_SDL=1 -DWITH_NETWORK=1

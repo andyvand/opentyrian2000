@@ -5,6 +5,11 @@
 #include "hal/spi_types.h"
 #include "esp_lcd_touch_xpt2046.h"
 
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+#define VSPI_HOST SPI2_HOST
+#define HSPI_HOST SPI3_HOST
+#endif
+
 #if CONFIG_HW_LCD_MISO_GPIO == 19
 #define TFT_VSPI_HOST VSPI_HOST
 #elif CONFIG_HW_LCD_MISO_GPIO == 2

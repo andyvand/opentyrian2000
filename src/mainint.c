@@ -696,7 +696,7 @@ bool JE_loadScreen(void)
 
 			const bool disabled = saveFile->level == 0;
 
-			char buffer[22];
+			char buffer[64];
 
 			if (disabled)
 			{
