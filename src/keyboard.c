@@ -188,7 +188,7 @@ void service_SDL_events(JE_boolean clear_new)
     Sint32 my = 0;
 #endif
 
-#if defined(WITH_SDL3) || defined(WITH_SDL)
+#if defined(WITH_SDL3) || (defined(WITH_SDL) && CONFIG_TOUCH_ENABLED)
     Sint32 mxrel = 0;
     Sint32 myrel = 0;
 #endif
