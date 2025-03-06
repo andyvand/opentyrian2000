@@ -61,38 +61,38 @@ config HW_LCD_MISO_GPIO_CUST
 	int "LCD MISO pin"
 	depends on HW_CUSTOM
 	range 1 35
-	default 19
+	default 31
 
 config HW_LCD_MOSI_GPIO_CUST
 	int "LCD MOSI pin"
 	depends on HW_CUSTOM
 	range 1 35
-	default 23
+	default 32
 
 
 config HW_LCD_CLK_GPIO_CUST
 	int "LCD CLK pin"
 	depends on HW_CUSTOM
 	range 1 35
-	default 18
+	default 30
 
 config HW_LCD_CS_GPIO_CUST
 	int "LCD CS pin"
 	depends on HW_CUSTOM
 	range 1 35
-	default 5
+	default 29
 
 config HW_LCD_DC_GPIO_CUST
 	int "LCD DC pin"
 	depends on HW_CUSTOM
 	range 1 35
-	default 22
+	default 27
 
 config HW_LCD_RESET_GPIO_CUST
 	int "LCD RESET pin"
 	depends on HW_CUSTOM
 	range -1 35
-	default 21
+	default 28
 
 config HW_LCD_BL_GPIO_CUST
 	int "LCD Backlight pin"
@@ -107,25 +107,25 @@ config HW_SD_PIN_NUM_MISO_CUST
 	int "SD Card MISO"
 	depends on HW_CUSTOM
 	range 1 35
-	default 2
+	default 13
 
 config HW_SD_PIN_NUM_MOSI_CUST
 	int "SD Card MOSI"
 	depends on HW_CUSTOM
 	range 1 35
-	default 13
+	default 11
 
 config HW_SD_PIN_NUM_CLK_CUST
 	int "SD Card CLK"
 	depends on HW_CUSTOM
 	range 1 35
-	default 14
+	default 12
 
 config HW_SD_PIN_NUM_CS_CUST
 	int "SD Card CS"
 	depends on HW_CUSTOM
 	range 1 35
-	default 15
+	default 10
 
 #####
 # Custom KEYS
@@ -134,37 +134,37 @@ config HW_BUTTON_PIN_NUM_UP_CUST
 	int "UP Button"
 	depends on HW_CUSTOM
 	range 1 39
-	default 36
+	default 0
 
 config HW_BUTTON_PIN_NUM_DOWN_CUST
 	int "DOWN Button"
 	depends on HW_CUSTOM
 	range 1 39
-	default 34
+	default 1
 
 config HW_BUTTON_PIN_NUM_LEFT_CUST
 	int "LEFT Button"
 	depends on HW_CUSTOM
 	range 1 39
-	default 32
+	default 2
 
 config HW_BUTTON_PIN_NUM_RIGHT_CUST
 	int "RIGHT Button"
 	depends on HW_CUSTOM
 	range 1 39
-	default 39
+	default 3
 
 config HW_BUTTON_PIN_NUM_BUTTON1_CUST
 	int "BUTTON1 Button"
 	depends on HW_CUSTOM
 	range 1 39
-	default 33
+	default 4
 
 config HW_BUTTON_PIN_NUM_BUTTON2_CUST
 	int "BUTTON2 Button"
 	depends on HW_CUSTOM
 	range 1 39
-	default 35
+	default 5
 
 ####
 # Optional Buttons
@@ -201,19 +201,19 @@ config I2S_BCK_IO
 	int "I2S BC IO PIN"
 	depends on HW_CUSTOM
 	range 1 39
-	default 26
+	default 6
 
 config I2S_WS_IO
 	int "I2S WS IO PIN"
 	depends on HW_CUSTOM
 	range 1 39
-	default 27
+	default 7
 
 config I2S_DO_IO
 	int "I2S Data IO PIN"
 	depends on HW_CUSTOM
 	range 1 39
-	default 25
+	default 8
 
 #####
 # LCD - Hidden
