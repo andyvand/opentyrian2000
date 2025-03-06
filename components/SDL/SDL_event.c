@@ -52,14 +52,6 @@ static const GPIOKeyMap keymap[2][6]={{
 	{CONFIG_HW_BUTTON_PIN_NUM_START, SDL_SCANCODE_LALT, SDLK_LALT},	
 	{CONFIG_HW_BUTTON_PIN_NUM_SELECT, SDL_SCANCODE_LCTRL, SDLK_LCTRL},		
 }};
-
-#ifdef CONFIG_TOUCH_ENABLED
-typedef struct {
-    Uint32 type;        /**< ::SDL_KEYDOWN or ::SDL_KEYUP */
-    SDL_Scancode scancode;
-    SDL_Scancode keycode;
-} GPIOEvent;
-#endif
 #else
 static const GPIOKeyMap keymap[2][6]={{
 // Game    
@@ -302,6 +294,7 @@ void inputInit()
 
 	ESP_LOGI(SDL_TAG, "keyboard: GPIO task created.\n");
 
+#ifndef CONFIG_HW_ODROID_GO
 #if CONFIG_TOUCH_ENABLED
     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)TFT_VSPI_HOST, &tp_io_config, &tp_io_handle));
 
@@ -319,6 +312,7 @@ void inputInit()
 
      ESP_LOGI(SDL_TAG, "Initialize touch controller XPT2046");
      ESP_ERROR_CHECK(esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &tp));
+#endif
 #endif
 
     initInput = true;
