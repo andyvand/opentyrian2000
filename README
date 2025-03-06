@@ -69,15 +69,14 @@ It requires:
 https://www.youtube.com/watch?v=UL5eTUv7SZE
 
 ## Required esp-idf tools
-esp-idf V4.4.8
+esp-idf V5.4
 
 ## Set up esp-idf tools
-"export PATH=<PATH_TO_XTENSA_GCC_BINDIR>:$PATH"
-"export GNUMAKEFLAGS="
-"export IDF_PATH=<PATH_TO_ESP_IDF>"
+Under esp-idf directory do:
+". ./export.sh"
 
 ## Installation
-"make -f Makefile.esp32 menuconfig"
+"idf.py menuconfig"
 
 ### LCD / SD Card
 Set up the pins used for your LCD and SD Card.
@@ -96,4 +95,4 @@ The default button input is configured in keyboard.c
 Sound is output using I2S connected to the DAC on GPIO25 this is configured in SDL_audio.c.  You will need an amplifier+speaker and coupling capacitor on this pin (the capacitor to bring the DAC's DC signal back to AC).
 
 ### Compiling
-"make -f Makefile.esp32"
+"idf.py build"
