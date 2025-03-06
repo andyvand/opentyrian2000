@@ -50,7 +50,6 @@ void SDL_Quit(void)
 
 void SDL_InitSD(void)
 {
-#if 1
     esp_err_t ret;
 
 	/*sdmmc_host_t host = SDSPI_HOST_DEFAULT();
@@ -122,36 +121,6 @@ void SDL_InitSD(void)
     SDL_UnlockDisplay();
 
     ESP_LOGI(SDL_TAG, "Init_SD: SD card opened.\n");
-#else
-	sdmmc_host_t host = SDMMC_HOST_DEFAULT();
-	host.flags = SDMMC_HOST_FLAG_1BIT;
-	//host.max_freq_khz = SDMMC_FREQ_HIGHSPEED;
-	host.command_timeout_ms=1500;
-	sdmmc_slot_config_t slot_config = SDMMC_SLOT_CONFIG_DEFAULT();
-	slot_config.width = 1;
-    esp_vfs_fat_sdmmc_mount_config_t mount_config;
-    memset(&mount_config, 0, sizeof(mount_config));
-    mount_config.format_if_mount_failed = false;
-    mount_config.max_files = 5;
-
-	sdmmc_card_t* card;
-    SDL_LockDisplay();
-    SDL_Delay(200);
-    esp_err_t err = esp_vfs_fat_sdmmc_mount("/sd", &host, &slot_config, &mount_config, &card);
-    if(err != ESP_OK)  // Wait and try again
-        for(int i = 0; i < 10; i++)
-        {
-            SDL_Delay(500);
-            err = esp_vfs_fat_sdmmc_mount("/sd", &host, &slot_config, &mount_config, &card);
-            if(err == ESP_OK) 
-                break;
-        }
-    SDL_UnlockDisplay();
-
-    ESP_LOGI(SDL_TAG, "Init_SD: SD card opened.\n");
-    
-	//sdmmc_card_print_info(stdout, card);
-#endif
 }
 
 const SDL_version* SDL_Linked_Version()
