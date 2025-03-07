@@ -237,7 +237,7 @@ void ili_init(spi_device_handle_t spi)
     //gpio_set_level(PIN_NUM_RST, 0);
     //vTaskDelay(100 / portTICK_RATE_MS);
     //gpio_set_level(PIN_NUM_RST, 1);
-    vTaskDelay(100 / portTICK_RATE_MS);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     //Send all the commands
     while (ili_init_cmds[cmd].databytes!=0xff) {
