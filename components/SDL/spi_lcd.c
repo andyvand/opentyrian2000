@@ -235,7 +235,7 @@ void ili_init(spi_device_handle_t spi)
     backlight_init();
     //Reset the display
     //gpio_set_level(PIN_NUM_RST, 0);
-    //vTaskDelay(100 / portTICK_RATE_MS);
+    //vTaskDelay(100 / portTICK_PERIOD_MS);
     //gpio_set_level(PIN_NUM_RST, 1);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
@@ -247,7 +247,7 @@ void ili_init(spi_device_handle_t spi)
         memcpy(dmdata, ili_init_cmds[cmd].data, 16);
         ili_data(spi, dmdata, ili_init_cmds[cmd].databytes&0x1F);
         if (ili_init_cmds[cmd].databytes&0x80) {
-            vTaskDelay(100 / portTICK_RATE_MS);
+            vTaskDelay(100 / portTICK_PERIOD_MS);
         }
         cmd++;
     }

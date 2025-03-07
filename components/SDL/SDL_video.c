@@ -199,7 +199,7 @@ void SDL_LockDisplay()
         }
     }
 
-    if (!xSemaphoreTake(display_mutex, 60000 / portTICK_RATE_MS))
+    if (!xSemaphoreTake(display_mutex, 60000 / portTICK_PERIOD_MS))
     {
         ESP_LOGI(SDL_TAG, "Timeout waiting for display lock.\n");
         abort();

@@ -6,7 +6,7 @@ unsigned char *sdl_buffer; //[SAMPLECOUNT * SAMPLESIZE * 2];
 void *user_data;
 bool paused = true;
 bool locked = false;
-xSemaphoreHandle xSemaphoreAudio = NULL;
+SemaphoreHandle_t xSemaphoreAudio = NULL;
 
 #ifdef CONFIG_HW_ODROID_GO
 #define I2S_BCK_IO      (27)
