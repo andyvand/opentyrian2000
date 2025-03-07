@@ -1,8 +1,5 @@
 #include "SDL_video.h"
-
-#ifdef CONFIG_IDF_TARGET_ESP32S3
 #include "esp_timer.h"
-#endif
 
 #define SPI_BUS TFT_VSPI_HOST
 

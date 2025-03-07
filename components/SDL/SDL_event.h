@@ -46,10 +46,6 @@
 #include "freertos/queue.h"
 #include "driver/gpio.h"
 
-#ifdef CONFIG_HW_ODROID_GO
-#include "driver/adc.h"
-#endif
-
 #include "begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus

@@ -1,5 +1,12 @@
 #include "SDL_event.h"
 
+#ifdef CONFIG_HW_ODROID_GO
+//#include "driver/adc.h"
+#include "esp_adc/adc_oneshot.h"
+#include "esp_adc/adc_cali.h"
+#include "esp_adc/adc_cali_scheme.h"
+#endif
+
 #ifndef CONFIG_HW_ODROID_GO
 #if CONFIG_TOUCH_ENABLED
 #include "hal/spi_types.h"
@@ -90,8 +97,8 @@ typedef struct {
 } GPIOEvent;
 #endif
 
-#define ODROID_GAMEPAD_IO_X ADC1_CHANNEL_6
-#define ODROID_GAMEPAD_IO_Y ADC1_CHANNEL_7
+#define ODROID_GAMEPAD_IO_X ADC_CHANNEL_6
+#define ODROID_GAMEPAD_IO_Y ADC_CHANNEL_7
 
 typedef struct
 {
@@ -136,11 +143,23 @@ int checkPinStruct(int i, uint8_t *lastState, SDL_Event *event)
 }
 
 #ifdef CONFIG_HW_ODROID_GO
+adc_oneshot_unit_handle_t adc1_handle;
+adc_oneshot_unit_init_cfg_t init_config1 = {
+    .unit_id = ADC_UNIT_1,
+};
+adc_oneshot_chan_cfg_t config = {
+    .atten = ADC_ATTEN_DB_12,
+    .bitwidth = ADC_BITWIDTH_12,
+};
+
 int readOdroidXY(SDL_Event * event)
 {
-    int joyX = adc1_get_raw(ODROID_GAMEPAD_IO_X);
-    int joyY = adc1_get_raw(ODROID_GAMEPAD_IO_Y);
-    
+    int joyX = 0;
+    int joyY = 0;
+
+    adc_oneshot_read(adc1_handle, ODROID_GAMEPAD_IO_X, &joyX);
+    adc_oneshot_read(adc1_handle, ODROID_GAMEPAD_IO_Y, &joyY);
+
     JoystickState state;
     if (joyX > 2048 + 1024)
     {
@@ -296,10 +315,10 @@ void inputInit()
 	for (int i=0; i < NELEMS(keymap[0]); i++)
     	gpio_isr_handler_add(keymap[0][i].gpio, gpio_isr_handler, (void*) keymap[0][i].gpio);
 #else
-	adc1_config_width(ADC_WIDTH_12Bit);
-    adc1_config_channel_atten(ODROID_GAMEPAD_IO_X, ADC_ATTEN_11db);
-	adc1_config_channel_atten(ODROID_GAMEPAD_IO_Y, ADC_ATTEN_11db);
-#endif    
+    ESP_ERROR_CHECK(adc_oneshot_new_unit(&init_config1, &adc1_handle));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, ODROID_GAMEPAD_IO_X, &config));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, ODROID_GAMEPAD_IO_Y, &config));
+#endif
 
 	ESP_LOGI(SDL_TAG, "keyboard: GPIO task created.\n");
 
