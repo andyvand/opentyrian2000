@@ -33,10 +33,10 @@
 
 typedef SDL_Color Palette[256];
 
-extern EXTATTR Palette palettes[];
+extern Palette palettes[];
 extern int palette_count;
 
-extern EXTATTR Uint32 rgb_palette[256], yuv_palette[256];
+extern Uint32 rgb_palette[256], yuv_palette[256];
 
 extern Palette colors; // TODO: get rid of this
 

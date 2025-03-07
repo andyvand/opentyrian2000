@@ -146,14 +146,14 @@ typedef struct
 	JE_word     eenemydie;
 } JE_EnemyDatType[ENEMY_NUM + 1]; /* [0..enemynum] */
 
-extern EXTATTR JE_WeaponPortType weaponPort;
-extern EXTATTR JE_WeaponType weapons[WEAP_NUM + 1]; /* [0..weapnum] */
+extern JE_WeaponPortType weaponPort;
+extern JE_WeaponType weapons[WEAP_NUM + 1]; /* [0..weapnum] */
 extern JE_PowerType powerSys;
 extern JE_ShipType ships;
-extern EXTATTR JE_OptionType options[OPTION_NUM + 1]; /* [0..optionnum] */
+extern JE_OptionType options[OPTION_NUM + 1]; /* [0..optionnum] */
 extern JE_ShieldType shields;
 extern JE_SpecialType special;
-extern EXTATTR JE_EnemyDatType enemyDat;
+extern JE_EnemyDatType enemyDat;
 extern JE_byte initial_episode_num, episodeNum;
 extern JE_boolean episodeAvail[EPISODE_MAX];
 

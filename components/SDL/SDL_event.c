@@ -135,6 +135,7 @@ int checkPinStruct(int i, uint8_t *lastState, SDL_Event *event)
     return 0;
 }
 
+#ifdef CONFIG_HW_ODROID_GO
 int readOdroidXY(SDL_Event * event)
 {
     int joyX = adc1_get_raw(ODROID_GAMEPAD_IO_X);
@@ -189,6 +190,7 @@ int readOdroidXY(SDL_Event * event)
 
     return 0;
 }
+#endif
 
 int SDL_PollEvent(SDL_Event * event)
 {

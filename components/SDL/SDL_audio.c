@@ -17,7 +17,6 @@ static i2s_chan_handle_t tx_chan;        // I2S tx channel handler
 
 IRAM_ATTR void updateTask(void *arg)
 {
-  size_t bytesWritten;
   size_t w_bytes = SAMPLECOUNT*SAMPLESIZE*2;
 
   while (w_bytes == SAMPLECOUNT*SAMPLESIZE*2) {
@@ -45,6 +44,7 @@ void SDL_AudioInit()
 {
 	sdl_buffer = heap_caps_malloc(SAMPLECOUNT * SAMPLESIZE * 2, MALLOC_CAP_8BIT | MALLOC_CAP_DMA);
     i2s_chan_config_t tx_chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
+    ESP_ERROR_CHECK(i2s_new_channel(&tx_chan_cfg, &tx_chan, NULL));
     i2s_std_config_t tx_std_cfg = {
         .clk_cfg  = I2S_STD_CLK_DEFAULT_CONFIG(16000),
         .slot_cfg = I2S_STD_MSB_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_STEREO),
