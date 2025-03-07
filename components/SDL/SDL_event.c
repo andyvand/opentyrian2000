@@ -88,7 +88,7 @@ static const GPIOKeyMap keymap[2][6]={{
 	{CONFIG_HW_BUTTON_PIN_NUM_BUTTON1, SDL_SCANCODE_SPACE, SDLK_SPACE},   	
 }};
 
-static xQueueHandle gpio_evt_queue = NULL;
+static QueueHandle_t gpio_evt_queue = NULL;
 
 typedef struct {
     Uint32 type;        /**< ::SDL_KEYDOWN or ::SDL_KEYUP */
