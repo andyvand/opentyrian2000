@@ -95,6 +95,7 @@ void SDL_InitSD(void)
     ret = spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA);
     if (ret != ESP_OK) {
         ESP_LOGE(SDL_TAG, "Failed to initialize bus.");
+	SDL_UnlockDisplay();
         return;
     }
 
@@ -115,6 +116,7 @@ void SDL_InitSD(void)
             ESP_LOGE(SDL_TAG, "Failed to initialize the card (%s). "
                      "Make sure SD card lines have pull-up resistors in place.", esp_err_to_name(ret));
         }
+	SDL_UnlockDisplay();
         return;
     }
     SDL_UnlockDisplay();
