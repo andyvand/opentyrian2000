@@ -255,7 +255,15 @@ int SDL_PollEvent(SDL_Event * event)
     return readOdroidXY(event);
 #endif
 
+#ifndef CONFIG_HW_ODROID_GO
+#if CONFIG_TOUCH_ENABLED
+    return 1;
+#else
     return 0;
+#endif
+#else
+    return 0;
+#endif
 }
 
 #ifndef CONFIG_HW_ODROID_GO
