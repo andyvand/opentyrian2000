@@ -91,6 +91,7 @@ void SDL_InitSD(void)
         .max_transfer_sz = 4000,
     };
 
+    SDL_LockDisplay();
     ret = spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA);
     if (ret != ESP_OK) {
         ESP_LOGE(SDL_TAG, "Failed to initialize bus.");
@@ -103,7 +104,6 @@ void SDL_InitSD(void)
     slot_config.gpio_cs = CONFIG_HW_SD_PIN_NUM_CS;
     slot_config.host_id = host.slot;
 
-    SDL_LockDisplay();
     SDL_Delay(200);
     ESP_LOGI(SDL_TAG, "Mounting filesystem");
     ret = esp_vfs_fat_sdspi_mount("/sd", &host, &slot_config, &mount_config, &card);
