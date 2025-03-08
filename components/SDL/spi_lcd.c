@@ -258,7 +258,7 @@ void ili_init(spi_device_handle_t spi)
 
 }
 
-static void IRAM_ATTR send_header_start(spi_device_handle_t spi, int xpos, int ypos, int w, int h)
+static void /*IRAM_ATTR*/ send_header_start(spi_device_handle_t spi, int xpos, int ypos, int w, int h)
 {
     esp_err_t ret;
     int x;
@@ -306,7 +306,7 @@ static void IRAM_ATTR send_header_start(spi_device_handle_t spi, int xpos, int y
 }
 
 
-void IRAM_ATTR send_header_cleanup(spi_device_handle_t spi)
+void /*IRAM_ATTR*/ send_header_cleanup(spi_device_handle_t spi)
 {
     spi_transaction_t *rtrans;
     esp_err_t ret;
@@ -333,7 +333,7 @@ SemaphoreHandle_t dispDoneSem = NULL;
 
 int16_t lcdpal[256];
 
-void IRAM_ATTR displayTask(void *arg) {
+void /*IRAM_ATTR*/ displayTask(void *arg) {
 	int x, i;
 	int idx=0;
 	int inProgress=0;
@@ -462,7 +462,7 @@ void spi_lcd_send(uint16_t *scr) {
 	xSemaphoreGive(dispSem);
 }
 
-void IRAM_ATTR spi_lcd_send_boarder(uint16_t *scr, int boarder) {
+void /*IRAM_ATTR*/ spi_lcd_send_boarder(uint16_t *scr, int boarder) {
 #ifdef DOUBLE_BUFFER
 	//memcpy(currFbPtr+(boarder*320/4), scr, 320*(240-boarder*2));
     screen_boarder = boarder;

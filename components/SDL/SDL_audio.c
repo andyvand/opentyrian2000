@@ -21,7 +21,7 @@ SemaphoreHandle_t xSemaphoreAudio = NULL;
 
 static i2s_chan_handle_t tx_chan;        // I2S tx channel handler
 
-IRAM_ATTR void updateTask(void *arg)
+/*IRAM_ATTR*/ void updateTask(void *arg)
 {
   size_t w_bytes = SAMPLECOUNT*SAMPLESIZE*2;
 
@@ -103,7 +103,7 @@ int SDL_BuildAudioCVT(SDL_AudioCVT *cvt, Uint16 src_format, Uint8 src_channels, 
 	return 0;
 }
 
-IRAM_ATTR int SDL_ConvertAudio(SDL_AudioCVT *cvt)
+/*IRAM_ATTR*/ int SDL_ConvertAudio(SDL_AudioCVT *cvt)
 {
 
 	Sint16 *sbuf = (Sint16 *)cvt->buf;
