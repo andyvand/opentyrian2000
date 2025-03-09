@@ -128,6 +128,33 @@ config HW_SD_PIN_NUM_CS_CUST
 	default 10
 
 #####
+# Custom Touch
+#####
+config HW_TOUCH_PIN_NUM_MISO_CUST
+	int "Touch MISO"
+	depends on HW_CUSTOM
+	range 1 35
+	default 18
+
+config HW_TOUCH_PIN_NUM_MOSI_CUST
+	int "Touch MOSI"
+	depends on HW_CUSTOM
+	range 1 35
+	default 16
+
+config HW_TOUCH_PIN_NUM_CLK_CUST
+	int "Touch CLK"
+	depends on HW_CUSTOM
+	range 1 35
+	default 17
+
+config HW_TOUCH_PIN_NUM_CS_CUST
+	int "Touch CS"
+	depends on HW_CUSTOM
+	range 1 35
+	default 15
+
+#####
 # Custom KEYS
 #####
 config HW_BUTTON_PIN_NUM_UP_CUST

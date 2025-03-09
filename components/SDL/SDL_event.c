@@ -13,12 +13,12 @@
 #include "esp_lcd_touch_xpt2046.h"
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3
-#define VSPI_HOST SPI2_HOST
-#define HSPI_HOST SPI3_HOST
+#define VSPI_HOST SPI3_HOST
+#define HSPI_HOST SPI2_HOST
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3
-#define TFT_VSPI_HOST VSPI_HOST
+#define TFT_VSPI_HOST HSPI_HOST
 #elif CONFIG_HW_LCD_MISO_GPIO == 19
 #define TFT_VSPI_HOST VSPI_HOST
 #elif CONFIG_HW_LCD_MISO_GPIO == 2
@@ -41,7 +41,7 @@ typedef struct {
 #if CONFIG_TOUCH_ENABLED
 esp_lcd_touch_handle_t tp = NULL;
 esp_lcd_panel_io_handle_t tp_io_handle = NULL;
-esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_XPT2046_CONFIG(CONFIG_HW_LCD_CS_GPIO);
+esp_lcd_panel_io_spi_config_t tp_io_config = ESP_LCD_TOUCH_IO_SPI_XPT2046_CONFIG(CONFIG_HW_TOUCH_PIN_NUM_CS_CUST);
 #endif
 #endif
 
@@ -335,12 +335,12 @@ void inputInit()
     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)TFT_VSPI_HOST, &tp_io_config, &tp_io_handle));
 
     esp_lcd_touch_config_t tp_cfg = {
-         .x_max = 320,
-         .y_max = 240,
+         .x_max = 240,
+         .y_max = 320,
          .rst_gpio_num = -1,
          .int_gpio_num = -1,
          .flags = {
-             .swap_xy = 0,
+             .swap_xy = 1,
              .mirror_x = 0,
              .mirror_y = 0,
          },
