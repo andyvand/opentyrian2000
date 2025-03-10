@@ -1,8 +1,6 @@
 #include "SDL_video.h"
 #include "esp_timer.h"
 
-#define SPI_BUS TFT_VSPI_HOST
-
 SDL_Surface* primary_surface;
 
 int SDL_LockSurface(SDL_Surface *surface)

@@ -43,8 +43,8 @@
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3
-#define VSPI_HOST SPI2_HOST
-#define HSPI_HOST SPI3_HOST
+#define VSPI_HOST SPI1_HOST
+#define HSPI_HOST SPI2_HOST
 #endif
 
 //You want this, especially at higher framerates. The 2nd buffer is allocated in iram anyway, so isn't really in the way.
@@ -366,10 +366,10 @@ void /*IRAM_ATTR*/ displayTask(void *arg) {
 
     SDL_LockDisplay();
     //Initialize the SPI bus
-    ret=spi_bus_initialize(CONFIG_HW_LCD_MISO_GPIO == 0 ? VSPI_HOST : HSPI_HOST, &buscfg, 1);  // DMA Channel
+    ret=spi_bus_initialize(VSPI_HOST, &buscfg, 1);  // DMA Channel
     //assert(ret==ESP_OK);
     //Attach the LCD to the SPI bus
-    ret=spi_bus_add_device(CONFIG_HW_LCD_MISO_GPIO == 0 ? VSPI_HOST : HSPI_HOST, &devcfg, &spi);
+    ret=spi_bus_add_device(VSPI_HOST, &devcfg, &spi);
     assert(ret==ESP_OK);
     //Initialize the LCD
     ili_init(spi);
