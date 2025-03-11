@@ -134,25 +134,25 @@ config HW_TOUCH_PIN_NUM_MISO_CUST
 	int "Touch MISO"
 	depends on HW_CUSTOM
 	range 0 44
-	default 18
+	default 13
 
 config HW_TOUCH_PIN_NUM_MOSI_CUST
 	int "Touch MOSI"
 	depends on HW_CUSTOM
 	range 0 44
-	default 16
+	default 11
 
 config HW_TOUCH_PIN_NUM_CLK_CUST
 	int "Touch CLK"
 	depends on HW_CUSTOM
 	range 0 44
-	default 17
+	default 12
 
 config HW_TOUCH_PIN_NUM_CS_CUST
 	int "Touch CS"
 	depends on HW_CUSTOM
 	range 0 44
-	default 15
+	default 10
 
 #####
 # Custom KEYS
