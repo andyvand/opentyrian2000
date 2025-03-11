@@ -43,7 +43,7 @@
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3
-#define VSPI_HOST SPI1_HOST
+#define VSPI_HOST SPI3_HOST
 #define HSPI_HOST SPI2_HOST
 #endif
 
@@ -372,8 +372,10 @@ void /*IRAM_ATTR*/ displayTask(void *arg) {
     ret=spi_bus_add_device(VSPI_HOST, &devcfg, &spi);
     assert(ret==ESP_OK);
     //Initialize the LCD
+    ESP_LOGI(SDL_TAG, "Init display.\n");
     ili_init(spi);
-    SDL_UnlockDisplay();   
+    ESP_LOGI(SDL_TAG, "Display initialized.\n");
+    SDL_UnlockDisplay();
 
 	//We're going to do a fair few transfers in parallel. Set them all up.
 	for (x=0; x<NO_SIM_TRANS; x++) {

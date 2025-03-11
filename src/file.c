@@ -78,6 +78,14 @@ const char * data_dir(void)
         "app0:data/",
         ".",
     };
+#elif defined(WITH_SDL)
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        "/sd/data",
+        "data",
+        ".",
+    };
 #elif defined(__DREAMCAST__)
     const char *const dirs[] =
     {

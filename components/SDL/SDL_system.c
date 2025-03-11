@@ -81,6 +81,8 @@ void SDL_InitSD(void)
     // For setting a specific frequency, use host.max_freq_khz (range 400kHz - 20MHz for SDSPI)
     // Example: for fixed frequency of 10MHz, use host.max_freq_khz = 10000;
     sdmmc_host_t host = SDSPI_HOST_DEFAULT();
+    host.slot = SPI2_HOST;
+    host.max_freq_khz = 5000;
 
     spi_bus_config_t bus_cfg = {
         .mosi_io_num = CONFIG_HW_SD_PIN_NUM_MOSI,
