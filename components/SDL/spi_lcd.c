@@ -23,6 +23,8 @@
 #include "driver/gpio.h"
 #include "esp_heap_caps.h"
 #include "SDL.h"
+#include "esp_err.h"
+#include "esp_check.h"
 
 #if 0
 #define PIN_NUM_MISO 25
@@ -255,7 +257,6 @@ void ili_init(spi_device_handle_t spi)
     ///Enable backlight
     if(PIN_NUM_BCKL != -1)
         gpio_set_level(PIN_NUM_BCKL, 1);
-
 }
 
 static void /*IRAM_ATTR*/ send_header_start(spi_device_handle_t spi, int xpos, int ypos, int w, int h)
