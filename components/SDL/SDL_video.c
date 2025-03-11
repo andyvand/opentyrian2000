@@ -171,7 +171,7 @@ void SDL_QuitSubSystem(Uint32 flags)
 int SDL_Flip(SDL_Surface *screen)
 {
 	spi_lcd_send_boarder(screen->pixels, 20);
-	//spi_lcd_send(screen->pixels);
+	spi_lcd_send(screen->pixels);
 	return 0;
 }
 
