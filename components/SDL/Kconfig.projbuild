@@ -107,13 +107,13 @@ config HW_SD_PIN_NUM_MISO_CUST
 	int "SD Card MISO"
 	depends on HW_CUSTOM
 	range 0 44
-	default 35
+	default 37
 
 config HW_SD_PIN_NUM_MOSI_CUST
 	int "SD Card MOSI"
 	depends on HW_CUSTOM
 	range 0 44
-	default 37
+	default 35
 
 config HW_SD_PIN_NUM_CLK_CUST
 	int "SD Card CLK"
