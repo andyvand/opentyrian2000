@@ -35,6 +35,7 @@ static i2s_chan_handle_t tx_chan;        // I2S tx channel handler
   while(1)
   {
 	  if(!paused && /*xSemaphoreAudio != NULL*/ !locked ){
+          (*as.callback)(NULL, sdl_buffer, SAMPLECOUNT*SAMPLESIZE );
           if (i2s_channel_write(tx_chan, sdl_buffer, SAMPLECOUNT*SAMPLESIZE*2, &w_bytes, 1000) == ESP_OK) {
               printf("Write Task: i2s write %d bytes\n", w_bytes);
           } else {
