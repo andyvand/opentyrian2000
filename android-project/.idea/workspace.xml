@@ -9,10 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c1a287b6-2434-4fbe-9286-3a846b759ec3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcodeproj/project.xcworkspace/xcuserdata/andyvand.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/../Xcode/opentyrian2000.xcodeproj/project.xcworkspace/xcuserdata/andyvand.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/video_scale.c" beforeDir="false" afterPath="$PROJECT_DIR$/../src/video_scale.c" afterDir="false" />
-    </list>
+    <list default="true" id="c1a287b6-2434-4fbe-9286-3a846b759ec3" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

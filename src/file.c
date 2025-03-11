@@ -83,6 +83,7 @@ const char * data_dir(void)
     {
         custom_data_dir,
         "/sd/data",
+        "/sd",
         "data",
         ".",
     };
