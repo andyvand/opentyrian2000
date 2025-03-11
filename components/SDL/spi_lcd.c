@@ -366,7 +366,7 @@ void /*IRAM_ATTR*/ displayTask(void *arg) {
 
     SDL_LockDisplay();
     //Initialize the SPI bus
-    ret=spi_bus_initialize(VSPI_HOST, &buscfg, 1);  // DMA Channel
+    ret=spi_bus_initialize(VSPI_HOST, &buscfg, SPI_DMA_CH_AUTO);  // DMA Channel
     //assert(ret==ESP_OK);
     //Attach the LCD to the SPI bus
     ret=spi_bus_add_device(VSPI_HOST, &devcfg, &spi);
