@@ -24,10 +24,6 @@ config LITTLEFS
 	bool "Use LittleFS for data files"
 	default n
 
-config QEMU_LCD 
-	bool "Use QEMU LCD driver"
-	default n
-
 ###############################
 
 choice HW_LCD_TYPE_SEL

@@ -26,10 +26,6 @@
 #include "esp_err.h"
 #include "esp_check.h"
 
-#if CONFIG_QEMU_LCD
-#include "esp_lcd_qemu_rgb.h"
-#endif
-
 #if 0
 #define PIN_NUM_MISO 25
 #define PIN_NUM_MOSI 23
@@ -58,7 +54,6 @@
 
 short screen_boarder = 0;
 
-#if !CONFIG_QEMU_LCD
 const int DUTY_MAX = 0x1fff;
 bool isBackLightIntialized = false;
 const int LCD_BACKLIGHT_ON_VALUE = 1;
@@ -325,7 +320,6 @@ void IRAM_ATTR send_header_cleanup(spi_device_handle_t spi)
         //We could inspect rtrans now if we received any info back. The LCD is treated as write-only, though.
     }
 }
-#endif
 
 #ifndef DOUBLE_BUFFER
 volatile static uint16_t *currFbPtr=NULL;
@@ -341,17 +335,6 @@ SemaphoreHandle_t dispDoneSem = NULL;
 
 int16_t lcdpal[256];
 
-#if CONFIG_QEMU_LCD
-const esp_lcd_rgb_qemu_config_t lcd_config = {
-    320,
-    240,
-    RGB_QEMU_BPP_16
-};
-
-esp_lcd_panel_handle_t lcd_panel;
-#endif
-
-#if !CONFIG_QEMU_LCD
 void IRAM_ATTR displayTask(void *arg) {
     int x, i;
     int idx=0;
@@ -461,7 +444,6 @@ void IRAM_ATTR displayTask(void *arg) {
         SDL_UnlockDisplay();
 	}
 }
-#endif
 
 #include    <xtensa/config/core.h>
 #include    <xtensa/corebits.h>
@@ -481,9 +463,6 @@ void spi_lcd_send(uint16_t *scr) {
 #else
 	currFbPtr=scr;
 #endif
-#if CONFIG_QEMU_LCD
-    esp_lcd_rgb_qemu_refresh(lcd_panel);
-#endif
 	xSemaphoreGive(dispSem);
 }
 
@@ -495,18 +474,12 @@ void IRAM_ATTR spi_lcd_send_boarder(uint16_t *scr, int boarder) {
 #else
 	currFbPtr=scr;
 #endif
-#if CONFIG_QEMU_LCD
-    esp_lcd_rgb_qemu_refresh(lcd_panel);
-#endif
 	xSemaphoreGive(dispSem);
 }
 
 void spi_lcd_clear() {
 #ifdef DOUBLE_BUFFER
 	memset(currFbPtr,0,(320*240/sizeof(currFbPtr)));
-#endif
-#if CONFIG_QEMU_LCD
-    esp_lcd_rgb_qemu_refresh(lcd_panel);
 #endif
 	xSemaphoreGive(dispSem);
 }
@@ -518,25 +491,12 @@ void spi_lcd_init() {
 #ifdef DOUBLE_BUFFER
     screen_boarder = 0;
 
-#if !CONFIG_QEMU_LCD
     currFbPtr=heap_caps_malloc(320*240, MALLOC_CAP_32BIT);
     memset(currFbPtr,0,(320*240));
-#else
-    ESP_LOGI(SDL_TAG, "*** Display task starting.\n");
-
-    SDL_LockDisplay();
-    esp_lcd_new_rgb_qemu(&lcd_config, &lcd_panel);
-    esp_lcd_rgb_qemu_get_frame_buffer(lcd_panel, (void **)&currFbPtr);
-    SDL_UnlockDisplay();
-
-    ESP_LOGI(SDL_TAG, "Display initialized.\n");
 #endif
-#endif
-#if !CONFIG_QEMU_LCD
 #if CONFIG_FREERTOS_UNICORE
 	xTaskCreatePinnedToCore(&displayTask, "display", 6000, NULL, 6, NULL, 0);
 #else
 	xTaskCreatePinnedToCore(&displayTask, "display", 10000, NULL, 6, NULL, 1);
-#endif
 #endif
 }
