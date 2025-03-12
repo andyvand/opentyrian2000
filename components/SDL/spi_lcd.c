@@ -352,10 +352,14 @@ esp_lcd_panel_handle_t lcd_panel;
 
 void /*IRAM_ATTR*/ displayTask(void *arg) {
 #if CONFIG_QEMU_LCD
+    ESP_LOGI(SDL_TAG, "*** Display task starting.\n");
+
     SDL_LockDisplay();
     esp_lcd_new_rgb_qemu(&lcd_config, &lcd_panel);
     esp_lcd_rgb_qemu_get_frame_buffer(lcd_panel, (void **)&currFbPtr);
     SDL_UnlockDisplay();
+
+    ESP_LOGI(SDL_TAG, "Display initialized.\n");
 #else
     int x, i;
     int idx=0;
