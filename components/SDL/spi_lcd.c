@@ -351,17 +351,8 @@ const esp_lcd_rgb_qemu_config_t lcd_config = {
 esp_lcd_panel_handle_t lcd_panel;
 #endif
 
+#if !CONFIG_QEMU_LCD
 void /*IRAM_ATTR*/ displayTask(void *arg) {
-#if CONFIG_QEMU_LCD
-    ESP_LOGI(SDL_TAG, "*** Display task starting.\n");
-
-    SDL_LockDisplay();
-    esp_lcd_new_rgb_qemu(&lcd_config, &lcd_panel);
-    esp_lcd_rgb_qemu_get_frame_buffer(lcd_panel, (void **)&currFbPtr);
-    SDL_UnlockDisplay();
-
-    ESP_LOGI(SDL_TAG, "Display initialized.\n");
-#else
     int x, i;
     int idx=0;
     int inProgress=0;
@@ -469,8 +460,8 @@ void /*IRAM_ATTR*/ displayTask(void *arg) {
 		}
         SDL_UnlockDisplay();
 	}
-#endif
 }
+#endif
 
 #include    <xtensa/config/core.h>
 #include    <xtensa/corebits.h>
@@ -517,15 +508,26 @@ void spi_lcd_init() {
     //dispDoneSem=xSemaphoreCreateBinary();
 #ifdef DOUBLE_BUFFER
     screen_boarder = 0;
+#endif
 
 #if !CONFIG_QEMU_LCD
     currFbPtr=heap_caps_malloc(320*240, MALLOC_CAP_32BIT);
     memset(currFbPtr,0,(320*240));
+#else
+    ESP_LOGI(SDL_TAG, "*** Display task starting.\n");
+
+    SDL_LockDisplay();
+    esp_lcd_new_rgb_qemu(&lcd_config, &lcd_panel);
+    esp_lcd_rgb_qemu_get_frame_buffer(lcd_panel, (void **)&currFbPtr);
+    SDL_UnlockDisplay();
+
+    ESP_LOGI(SDL_TAG, "Display initialized.\n");
 #endif
-#endif
+#if !CONFIG_QEMU_LCD
 #if CONFIG_FREERTOS_UNICORE
 	xTaskCreatePinnedToCore(&displayTask, "display", 6000, NULL, 6, NULL, 0);
 #else
 	xTaskCreatePinnedToCore(&displayTask, "display", 10000, NULL, 6, NULL, 1);
+#endif
 #endif
 }
