@@ -516,8 +516,11 @@ void spi_lcd_init() {
     //dispDoneSem=xSemaphoreCreateBinary();
 #ifdef DOUBLE_BUFFER
     screen_boarder = 0;
+
+#if !CONFIG_QEMU_LCD
     currFbPtr=heap_caps_malloc(320*240, MALLOC_CAP_32BIT);
     memset(currFbPtr,0,(320*240));
+#endif
 #endif
 #if CONFIG_FREERTOS_UNICORE
 	xTaskCreatePinnedToCore(&displayTask, "display", 6000, NULL, 6, NULL, 0);
