@@ -1,4 +1,5 @@
 #include "SDL_event.h"
+#include "SDL_video.h"
 
 #ifdef CONFIG_HW_ODROID_GO
 //#include "driver/adc.h"
