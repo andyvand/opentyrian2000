@@ -911,6 +911,8 @@ int main(int argc, char *argv[])
     _printf("ARM\n");
 #elif defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM64) || defined(_M_ARM64EC)
     _printf("ARM64\n");
+#elif defined(__riscv64__)
+    _printf("RISCV64");
 #elif defined(__mips64__)
     _printf("MIPS64\n");
 #elif defined(__mips__)
@@ -997,8 +999,8 @@ int main(int argc, char *argv[])
 		_fprintf(stderr, "warning: Christmas is missing.\n");
 	}
 
-	JE_loadPals();
-	JE_loadMainShapeTables(xmas ? "tyrianc.shp" : "tyrian.shp");
+    JE_loadPals();
+    JE_loadMainShapeTables(xmas ? "tyrianc.shp" : "tyrian.shp");
 
 	if (xmas && !override_xmas && !xmas_prompt())
 	{

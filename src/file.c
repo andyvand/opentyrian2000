@@ -81,7 +81,6 @@ const char * data_dir(void)
 #elif defined(WITH_SDL)
     const char *const dirs[] =
     {
-        custom_data_dir,
         "/sd/data",
         "/sd",
         "data",
@@ -214,7 +213,7 @@ FILE * dir_fopen_warn(const char *dir, const char *file, const char *mode)
 	{
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 		strerror_s(err, sizeof(err), errno);
-		_fprintf(stderr, "warning: faile to open '%s': %s\n", file, err);
+		_fprintf(stderr, "warning: failed to open '%s': %s\n", file, err);
 #else
 		_fprintf(stderr, "warning: failed to open '%s': %s\n", file, strerror(errno));
 #endif
