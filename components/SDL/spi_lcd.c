@@ -347,6 +347,7 @@ const esp_lcd_rgb_qemu_config_t lcd_config = {
     240,
     RGB_QEMU_BPP_16
 };
+
 esp_lcd_panel_handle_t lcd_panel;
 #endif
 
