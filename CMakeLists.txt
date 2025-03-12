@@ -9,6 +9,6 @@ project(OpenTyrian2000)
 
 get_filename_component(configName "${CMAKE_BINARY_DIR}" NAME)
 
-#list(APPEND EXTRA_COMPONENT_DIRS "${CMAKE_SOURCE_DIR}/components/esp_littlefs")
+list(APPEND EXTRA_COMPONENT_DIRS "${CMAKE_SOURCE_DIR}/components/esp_littlefs")
 
-#littlefs_create_partition_image(storage data FLASH_IN_PROJECT)
+littlefs_create_partition_image(storage data FLASH_IN_PROJECT)
