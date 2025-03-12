@@ -13,8 +13,8 @@
 #include "esp_lcd_touch_xpt2046.h"
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3
-#define VSPI_HOST SPI3_HOST
-#define HSPI_HOST SPI2_HOST
+#define VSPI_HOST SPI2_HOST
+#define HSPI_HOST SPI3_HOST
 #endif
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3

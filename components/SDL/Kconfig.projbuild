@@ -65,38 +65,38 @@ config HW_LCD_MISO_GPIO_CUST
 	int "LCD MISO pin"
 	depends on HW_CUSTOM
 	range 0 44
-	default 38
+	default 13
 
 config HW_LCD_MOSI_GPIO_CUST
 	int "LCD MOSI pin"
 	depends on HW_CUSTOM
 	range 0 44
-	default 36
+	default 11
 
 
 config HW_LCD_CLK_GPIO_CUST
 	int "LCD CLK pin"
 	depends on HW_CUSTOM
 	range 0 44
-	default 37
+	default 12
 
 config HW_LCD_CS_GPIO_CUST
 	int "LCD CS pin"
 	depends on HW_CUSTOM
 	range 0 44
-	default 35
+	default 10
 
 config HW_LCD_DC_GPIO_CUST
 	int "LCD DC pin"
 	depends on HW_CUSTOM
 	range 0 44
-	default 40
+	default 14
 
 config HW_LCD_RESET_GPIO_CUST
 	int "LCD RESET pin"
 	depends on HW_CUSTOM
 	range -1 44
-	default 39
+	default 15
 
 config HW_LCD_BL_GPIO_CUST
 	int "LCD Backlight pin"
@@ -111,25 +111,25 @@ config HW_SD_PIN_NUM_MISO_CUST
 	int "SD Card MISO"
 	depends on HW_CUSTOM
 	range 0 44
-	default 13
+	default 17
 
 config HW_SD_PIN_NUM_MOSI_CUST
 	int "SD Card MOSI"
 	depends on HW_CUSTOM
 	range 0 44
-	default 11
+	default 19
 
 config HW_SD_PIN_NUM_CLK_CUST
 	int "SD Card CLK"
 	depends on HW_CUSTOM
 	range 0 44
-	default 12
+	default 20
 
 config HW_SD_PIN_NUM_CS_CUST
 	int "SD Card CS"
 	depends on HW_CUSTOM
 	range 0 44
-	default 10
+	default 18
 
 #####
 # Custom Touch
@@ -139,7 +139,7 @@ config HW_TOUCH_PIN_NUM_CS_CUST
 	int "Touch CS"
 	depends on HW_CUSTOM
 	range 0 44
-	default 41
+	default 16
 
 #####
 # Custom KEYS
