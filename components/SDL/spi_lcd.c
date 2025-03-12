@@ -26,6 +26,10 @@
 #include "esp_err.h"
 #include "esp_check.h"
 
+#if CONFIG_QEMU_LCD
+#include "esp_lcd_qemu_rgb.h"
+#endif
+
 #if 0
 #define PIN_NUM_MISO 25
 #define PIN_NUM_MOSI 23
@@ -51,6 +55,10 @@
 
 //You want this, especially at higher framerates. The 2nd buffer is allocated in iram anyway, so isn't really in the way.
 #define DOUBLE_BUFFER
+
+short screen_boarder = 0;
+
+#if !CONFIG_QEMU_LCD
 const int DUTY_MAX = 0x1fff;
 bool isBackLightIntialized = false;
 const int LCD_BACKLIGHT_ON_VALUE = 1;
@@ -127,7 +135,6 @@ static const ili_init_cmd_t ili_init_cmds[]={
 #endif
 
 static spi_device_handle_t spi;
-short screen_boarder = 0;
 
 //Send a command to the ILI9341. Uses spi_device_transmit, which waits until the transfer is complete.
 void ili_cmd(spi_device_handle_t spi, const uint8_t cmd)
@@ -318,7 +325,7 @@ void /*IRAM_ATTR*/ send_header_cleanup(spi_device_handle_t spi)
         //We could inspect rtrans now if we received any info back. The LCD is treated as write-only, though.
     }
 }
-
+#endif
 
 #ifndef DOUBLE_BUFFER
 volatile static uint16_t *currFbPtr=NULL;
@@ -334,10 +341,25 @@ SemaphoreHandle_t dispDoneSem = NULL;
 
 int16_t lcdpal[256];
 
+#if CONFIG_QEMU_LCD
+const esp_lcd_rgb_qemu_config_t lcd_config = {
+    320,
+    240,
+    RGB_QEMU_BPP_16
+};
+esp_lcd_panel_handle_t lcd_panel;
+#endif
+
 void /*IRAM_ATTR*/ displayTask(void *arg) {
-	int x, i;
-	int idx=0;
-	int inProgress=0;
+#if CONFIG_QEMU_LCD
+    SDL_LockDisplay();
+    esp_lcd_new_rgb_qemu(&lcd_config, &lcd_panel);
+    esp_lcd_rgb_qemu_get_frame_buffer(lcd_panel, (void **)&currFbPtr);
+    SDL_UnlockDisplay();
+#else
+    int x, i;
+    int idx=0;
+    int inProgress=0;
 	static uint16_t *dmamem[NO_SIM_TRANS];
 	spi_transaction_t trans[NO_SIM_TRANS];
 	spi_transaction_t *rtrans;
@@ -442,6 +464,7 @@ void /*IRAM_ATTR*/ displayTask(void *arg) {
 		}
         SDL_UnlockDisplay();
 	}
+#endif
 }
 
 #include    <xtensa/config/core.h>
