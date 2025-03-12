@@ -115,9 +115,9 @@ void init_video( void )
     main_window_tex_format->palette=NULL;
     main_window_tex_format->BitsPerPixel=16;
     main_window_tex_format->BytesPerPixel=2;
-    main_window_tex_format->Rshift=0;
+    main_window_tex_format->Rshift=11;
     main_window_tex_format->Gshift=5;
-    main_window_tex_format->Bshift=11;
+    main_window_tex_format->Bshift=0;
     main_window_tex_format->Ashift=0;
     main_window_tex_format->Rmask=0x1f<<main_window_tex_format->Rshift;
     main_window_tex_format->Gmask=0x3f<<main_window_tex_format->Gshift;
