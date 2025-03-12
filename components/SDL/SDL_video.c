@@ -193,22 +193,25 @@ void SDL_LockDisplay()
         if (!display_mutex) 
         {
             ESP_LOGI(SDL_TAG, "Couldn't create mutex.\n");
-            abort();
+            //abort();
+            return;
         }
     }
 
     if (!xSemaphoreTake(display_mutex, 60000 / portTICK_PERIOD_MS))
     {
         ESP_LOGI(SDL_TAG, "Timeout waiting for display lock.\n");
-        abort();
+        //abort();
     }
 }
 
 void SDL_UnlockDisplay()
 {
-    if (!display_mutex) 
-        abort();
+    if (!display_mutex)
+        return;
+        //abort();
     if (!xSemaphoreGive(display_mutex))
-        abort();
+        return;
+        //abort();
     //taskYIELD();
 }
