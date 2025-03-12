@@ -481,6 +481,9 @@ void spi_lcd_send(uint16_t *scr) {
 #else
 	currFbPtr=scr;
 #endif
+#if CONFIG_QEMU_LCD
+    esp_lcd_rgb_qemu_refresh(lcd_panel);
+#endif
 	xSemaphoreGive(dispSem);
 }
 
@@ -492,12 +495,18 @@ void IRAM_ATTR spi_lcd_send_boarder(uint16_t *scr, int boarder) {
 #else
 	currFbPtr=scr;
 #endif
+#if CONFIG_QEMU_LCD
+    esp_lcd_rgb_qemu_refresh(lcd_panel);
+#endif
 	xSemaphoreGive(dispSem);
 }
 
 void spi_lcd_clear() {
 #ifdef DOUBLE_BUFFER
 	memset(currFbPtr,0,(320*240/sizeof(currFbPtr)));
+#endif
+#if CONFIG_QEMU_LCD
+    esp_lcd_rgb_qemu_refresh(lcd_panel);
 #endif
 	xSemaphoreGive(dispSem);
 }
@@ -508,7 +517,6 @@ void spi_lcd_init() {
     //dispDoneSem=xSemaphoreCreateBinary();
 #ifdef DOUBLE_BUFFER
     screen_boarder = 0;
-#endif
 
 #if !CONFIG_QEMU_LCD
     currFbPtr=heap_caps_malloc(320*240, MALLOC_CAP_32BIT);
@@ -522,6 +530,7 @@ void spi_lcd_init() {
     SDL_UnlockDisplay();
 
     ESP_LOGI(SDL_TAG, "Display initialized.\n");
+#endif
 #endif
 #if !CONFIG_QEMU_LCD
 #if CONFIG_FREERTOS_UNICORE
