@@ -65,12 +65,14 @@ config HW_LCD_MISO_GPIO_CUST
 	int "LCD MISO pin"
 	depends on HW_CUSTOM
 	range 0 44
+	default 19 if IDF_TARGET_ESP32
 	default 13
 
 config HW_LCD_MOSI_GPIO_CUST
 	int "LCD MOSI pin"
 	depends on HW_CUSTOM
 	range 0 44
+	default 23 if IDF_TARGET_ESP32
 	default 11
 
 
@@ -78,24 +80,28 @@ config HW_LCD_CLK_GPIO_CUST
 	int "LCD CLK pin"
 	depends on HW_CUSTOM
 	range 0 44
+	default 18 if IDF_TARGET_ESP32
 	default 12
 
 config HW_LCD_CS_GPIO_CUST
 	int "LCD CS pin"
 	depends on HW_CUSTOM
 	range 0 44
+	default 5 if IDF_TARGET_ESP32
 	default 10
 
 config HW_LCD_DC_GPIO_CUST
 	int "LCD DC pin"
 	depends on HW_CUSTOM
 	range 0 44
+	default 22 if IDF_TARGET_ESP32
 	default 14
 
 config HW_LCD_RESET_GPIO_CUST
 	int "LCD RESET pin"
 	depends on HW_CUSTOM
 	range -1 44
+	default 21 if IDF_TARGET_ESP32
 	default 15
 
 config HW_LCD_BL_GPIO_CUST
@@ -111,24 +117,28 @@ config HW_SD_PIN_NUM_MISO_CUST
 	int "SD Card MISO"
 	depends on HW_CUSTOM
 	range 0 44
+	default 2 if IDF_TARGET_ESP32
 	default 17
 
 config HW_SD_PIN_NUM_MOSI_CUST
 	int "SD Card MOSI"
 	depends on HW_CUSTOM
 	range 0 44
+	default 13 if IDF_TARGET_ESP32
 	default 19
 
 config HW_SD_PIN_NUM_CLK_CUST
 	int "SD Card CLK"
 	depends on HW_CUSTOM
 	range 0 44
+	default 14 if IDF_TARGET_ESP32
 	default 20
 
 config HW_SD_PIN_NUM_CS_CUST
 	int "SD Card CS"
 	depends on HW_CUSTOM
 	range 0 44
+	default 15 if IDF_TARGET_ESP32
 	default 18
 
 #####
@@ -148,36 +158,42 @@ config HW_BUTTON_PIN_NUM_UP_CUST
 	int "UP Button"
 	depends on HW_CUSTOM
 	range 0 44
+	default 36 if IDF_TARGET_ESP32
 	default 1
 
 config HW_BUTTON_PIN_NUM_DOWN_CUST
 	int "DOWN Button"
 	depends on HW_CUSTOM
 	range 0 44
+	default 34 if IDF_TARGET_ESP32
 	default 2
 
 config HW_BUTTON_PIN_NUM_LEFT_CUST
 	int "LEFT Button"
 	depends on HW_CUSTOM
 	range 0 44
+	default 32 if IDF_TARGET_ESP32
 	default 3
 
 config HW_BUTTON_PIN_NUM_RIGHT_CUST
 	int "RIGHT Button"
 	depends on HW_CUSTOM
 	range 0 44
+	default 39 if IDF_TARGET_ESP32
 	default 4
 
 config HW_BUTTON_PIN_NUM_BUTTON1_CUST
 	int "BUTTON1 Button"
 	depends on HW_CUSTOM
 	range 0 44
+	default 33 if IDF_TARGET_ESP32
 	default 5
 
 config HW_BUTTON_PIN_NUM_BUTTON2_CUST
 	int "BUTTON2 Button"
 	depends on HW_CUSTOM
 	range 0 44
+	default 35 if IDF_TARGET_ESP32
 	default 6
 
 ####
@@ -215,18 +231,21 @@ config I2S_BCK_IO
 	int "I2S BC IO PIN"
 	depends on HW_CUSTOM
 	range 0 44
+	default 26 if IDF_TARGET_ESP32
 	default 7
 
 config I2S_WS_IO
 	int "I2S WS IO PIN"
 	depends on HW_CUSTOM
 	range 0 44
+	default 27 if IDF_TARGET_ESP32
 	default 8
 
 config I2S_DO_IO
 	int "I2S Data IO PIN"
 	depends on HW_CUSTOM
 	range 0 44
+	default 25 if IDF_TARGET_ESP32
 	default 9
 
 #####
