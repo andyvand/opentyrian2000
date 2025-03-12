@@ -227,7 +227,9 @@ int SDL_PollEvent(SDL_Event * event)
     uint16_t  strength[1];
     uint8_t count = 0;
 
+    SDL_LockDisplay();
     event->motion.state = esp_lcd_touch_get_coordinates(tp, x, y, strength, &count, 1) ? SDL_PRESSED : SDL_RELEASED;
+    SDL_UnlockDisplay();
     event->motion.type = event->motion.state == SDL_PRESSED ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP;
 
     if (event->motion.state == SDL_PRESSED)
@@ -332,6 +334,7 @@ void inputInit()
 
 #ifndef CONFIG_HW_ODROID_GO
 #if CONFIG_TOUCH_ENABLED
+    SDL_LockDisplay();
     ESP_ERROR_CHECK(esp_lcd_new_panel_io_spi((esp_lcd_spi_bus_handle_t)TFT_VSPI_HOST, &tp_io_config, &tp_io_handle));
 
     esp_lcd_touch_config_t tp_cfg = {
@@ -344,10 +347,11 @@ void inputInit()
              .mirror_x = 0,
              .mirror_y = 0,
          },
-     };
+    };
 
-     ESP_LOGI(SDL_TAG, "Initialize touch controller XPT2046");
-     ESP_ERROR_CHECK(esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &tp));
+    ESP_LOGI(SDL_TAG, "Initialize touch controller XPT2046");
+    ESP_ERROR_CHECK(esp_lcd_touch_new_spi_xpt2046(tp_io_handle, &tp_cfg, &tp));
+    SDL_UnlockDisplay();
 #endif
 #endif
 
