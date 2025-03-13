@@ -66,30 +66,70 @@ void JE_loadPals(void)
 
 void set_palette(Palette colors, unsigned int first_color, unsigned int last_color)
 {
+#ifdef WITH_SDL
+    SDL_Surface *const surface = SDL_GetVideoSurface();
+    const uint bpp = surface->format->BitsPerPixel;
+#endif
+
 	for (uint i = first_color; i <= last_color; ++i)
 	{
 		palette[i] = colors[i];
-#ifdef WITH_SDL3
-        rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#else
-		rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
+
+#ifdef WITH_SDL
+        if (bpp != 8)
+        {
 #endif
-		yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
+#ifdef WITH_SDL3
+            rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
+#else
+            rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
+#endif
+            yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
+#ifdef WITH_SDL
+        }
+#endif
 	}
+
+#ifdef WITH_SDL
+    if (bpp == 8)
+    {
+        SDL_SetColors(surface, palette, first_color, last_color - first_color + 1);
+    }
+#endif
 }
 
 void set_colors(SDL_Color color, unsigned int first_color, unsigned int last_color)
 {
+#ifdef WITH_SDL
+    SDL_Surface *const surface = SDL_GetVideoSurface();
+    const uint bpp = surface->format->BitsPerPixel;
+#endif
+
 	for (uint i = first_color; i <= last_color; ++i)
 	{
 		palette[i] = color;
-#ifdef WITH_SDL3
-        rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#else
-		rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
+
+#ifdef WITH_SDL
+        if (bpp != 8)
+        {
 #endif
-		yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
+#ifdef WITH_SDL3
+            rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
+#else
+            rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
+#endif
+            yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
+#ifdef WITH_SDL
+        }
+#endif
 	}
+
+#ifdef WITH_SDL
+    if (bpp == 8)
+    {
+        SDL_SetColors(surface, palette, first_color, last_color - first_color + 1);
+    }
+#endif
 }
 
 void init_step_fade_palette(int diff[256][3], Palette colors, unsigned int first_color, unsigned int last_color)
@@ -116,6 +156,11 @@ void step_fade_palette(int diff[256][3], int steps, unsigned int first_color, un
 {
 	assert(steps > 0);
 	
+#ifdef WITH_SDL
+    SDL_Surface *const surface = SDL_GetVideoSurface();
+    const uint bpp = surface->format->BitsPerPixel;
+#endif
+
 	for (unsigned int i = first_color; i <= last_color; i++)
 	{
 		const int delta[3] = { diff[i][0] / steps, diff[i][1] / steps, diff[i][2] / steps };
@@ -128,14 +173,28 @@ void step_fade_palette(int diff[256][3], int steps, unsigned int first_color, un
 		palette[i].g += delta[1];
 		palette[i].b += delta[2];
 
-#ifdef WITH_SDL3
-        rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#else
-		rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
+#ifdef WITH_SDL
+        if (bpp != 8)
+        {
 #endif
-
-		yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
+#ifdef WITH_SDL3
+            rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
+#else
+            rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
+#endif
+            
+            yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
+#ifdef WITH_SDL
+        }
+#endif
 	}
+
+#ifdef WITH_SDL
+    if (bpp == 8)
+    {
+        SDL_SetColors(surface, palette, 0, 256);
+    }
+#endif
 }
 
 void fade_palette(Palette colors, int steps, unsigned int first_color, unsigned int last_color)

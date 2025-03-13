@@ -124,9 +124,9 @@ void init_video( void )
     main_window_tex_format->Gmask=0x3f<<main_window_tex_format->Gshift;
     main_window_tex_format->Bmask=0x1f<<main_window_tex_format->Bshift;
     main_window_tex_format->Amask=0;
-    main_window_tex_format->Rloss=0;
-    main_window_tex_format->Gloss=0;
-    main_window_tex_format->Bloss=0;
+    main_window_tex_format->Rloss=2;
+    main_window_tex_format->Gloss=3;
+    main_window_tex_format->Bloss=2;
     main_window_tex_format->Aloss=0;
     main_window_tex_format->colorkey=0;
     main_window_tex_format->alpha=0;
@@ -246,9 +246,9 @@ bool init_scaler( unsigned int new_scaler, bool fullscreen )
         main_window_tex_format->Gmask=0x3f<<main_window_tex_format->Gshift;
         main_window_tex_format->Bmask=0x1f<<main_window_tex_format->Bshift;
         main_window_tex_format->Amask=0;
-        main_window_tex_format->Rloss=0;
-        main_window_tex_format->Gloss=0;
-        main_window_tex_format->Bloss=0;
+        main_window_tex_format->Rloss=2;
+        main_window_tex_format->Gloss=3;
+        main_window_tex_format->Bloss=2;
         main_window_tex_format->Aloss=0;
         main_window_tex_format->colorkey=0;
         main_window_tex_format->alpha=0;

@@ -30,12 +30,11 @@ MACOSX_DEPLOYMENT_TARGET = 10.14
 # CODESIGN = /usr/bin/codesign -f -s - -i com.AnV.Software.OpenTyrian2000
 CODESIGN = /usr/bin/codesign -f -s "Apple Development" -i com.AnV.Software.OpenTyrian2000
 
-CC = m68k-apple-macos-gcc
+CC = /usr/bin/clang
 INSTALL = /usr/bin/install
-PREFIX = /Users/andyvand/Downloads/Retro68/macbuild/toolchain
-RINCLUDES = $(PREFIX)/RIncludes
-REZFLAGS = -I$(RINCLUDES)
-REZ = Rez
+PKG_CONFIG = /usr/local/bin/pkg-config
+INSTALL_NAME_TOOL = /usr/bin/install_name_tool
+
 VCS_IDREV ?= `(git describe --tags || git rev-parse --short HEAD)`
 
 INSTALL_PROGRAM = $(INSTALL) -m 755
@@ -64,30 +63,31 @@ gamesdir ?= $(datadir)/games
 TARGET := opentyrian2000
 
 SRCS := $(wildcard src/*.c)
-OBJS := $(SRCS:src/%.c=obj/%.o)
+OBJS := $(SRCS:src/%.c=obj/%.o) obj/macos-bundle.o
 DEPS := $(SRCS:src/%.c=obj/%.d)
 
 ###
 
-EXTRA_CPPFLAGS += -DWITH_SDL -DWITH_SDL1
 
+EXTRA_CPPFLAGS += -DWITH_SDL -DWITH_SDL1 -I/Library/Frameworks/SDL.framework/Headers
 OPENTYRIAN_VERSION := $(VCS_IDREV)\
-
 EXTRA_CPPFLAGS += -DOPENTYRIAN_VERSION="$(OPENTYRIAN_VERSION)"
 
 ifeq ($(_DEBUG), 1)
 CPPFLAGS = -D_DEBUG=1 -UNDEBUG
-CFLAGS += -g3 -O0 $(EXTRA_CPPFLAGS) -Werror -pedantic -Wall -Wextra -Werror -D_DEBUG=1
+CFLAGS += -arch arm64 -arch x86_64 -g3 -O0 -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET) $(EXTRA_CPPFLAGS) -Werror -pedantic -Wall -Wextra -Werror -D_DEBUG=1
 else
 CPPFLAGS = -MMD -DNDEBUG
-CFLAGS = -g0 -Os $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra -Werror
+CFLAGS = -arch arm64 -arch x86_64 -g0 -O3 -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET) $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra -Werror
 endif
 
+LDFLAGS ?= -arch arm64 -arch x86_64 -mmacosx-version-min=10.14
+LDLIBS ?= -framework Foundation -lobjc
 libmidiconv_PC_PATH :=
 
-SDL_CPPFLAGS :=
-SDL_LDFLAGS := -Wl,--mac-single
-SDL_LDLIBS := -lSDL -lc
+SDL_CPPFLAGS := -I/Library/Frameworks/SDL.framework/Headersinclude/SDL3
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -F/Library/Frameworks -framework SDL
 
 ALL_CPPFLAGS = \
 	       -DTARGET_$(PLATFORM) \
@@ -106,20 +106,33 @@ ALL_LDLIBS = -lm \
 ###
 
 .PHONY : all
-all : $(TARGET)
+all : $(TARGET) $(TARGET).app
+
+$(TARGET).app: $(TARGET)
+	mkdir -p $@/Contents/MacOS
+	mkdir -p $@/Contents/Resources
+	iconutil --convert icns -o $@/Contents/Resources/opentyrian2000.icns opentyrian2000.iconset
+	$(INSTALL) PkgInfo Info.plist $@/Contents/
+	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
+	mkdir -p $@/Contents/Frameworks
+	cp -Rf /Library/Frameworks/SDL.framework $@/Contents/Frameworks
+	$(INSTALL_NAME_TOOL) -change /Library/Frameworks/SDL.framework/Versions/A/SDL @rpath/SDL.framework/Versions/A/SDL $@/Contents/MacOS/opentyrian2000
+	$(INSTALL) data/* $@/Contents/Resources/
+	$(CODESIGN) $@/Contents/Frameworks/*.framework
+	$(CODESIGN) --entitlements opentyrian2000.entitlements $@
 
 .PHONY : installdirs
 installdirs :
 	mkdir -p $(DESTDIR)$(man6dir)
 
 .PHONY : install
-install : $(TARGET) installers
-	cp -Rf $(TARGET) $(APPLICATIONS)/$(TARGET)
+install : $(TARGET) installdirs
+	cp -Rf $(TARGET).app $(APPLICATIONS)/$(TARGET).app
 	$(INSTALL_DATA) linux/man/opentyrian2000.6 $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
 
 .PHONY : uninstall
 uninstall :
-	rm -Rf /Applications/$(TARGET)
+	rm -Rf /Applications/$(TARGET).app
 	rm -f $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
 
 .PHONY : clean
@@ -127,14 +140,21 @@ clean :
 	rm -f $(OBJS)
 	rm -f $(DEPS)
 	rm -f $(TARGET)
-	rm -f $(TARGET).gdb
-	rm -f rez.output.rsrc
+	rm -Rf opentyrian2000.app
 
 $(TARGET) : $(OBJS)
 	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(ALL_LDLIBS)
+	$(INSTALL_NAME_TOOL) -add_rpath @executable_path/../Frameworks $@
 
 -include $(DEPS)
 
 obj/%.o : src/%.c
 	@mkdir -p "$(dir $@)"
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<
+
+obj/%.o : src/%.mm
+	@mkdir -p "$(dir $@)"
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<
+
+obj/macos-bundle.o : src/macos-bundle.mm
 	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<
