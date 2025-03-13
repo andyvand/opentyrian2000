@@ -208,71 +208,19 @@ bool init_scaler( unsigned int new_scaler, bool fullscreen )
     printf("initialized video: %dx%dx%d %s\n", w, h, bpp, fullscreen ? "fullscreen" : "windowed");
     
     scaler = new_scaler;
-    
+    main_window_tex_format = malloc(sizeof(*main_window_tex_format));
+    memcpy(main_window_tex_format, surface->format, sizeof(*main_window_tex_format));
+
     switch (bpp)
     {
     case 32:
         scaler_function = scalers[scaler].scaler32;
-        main_window_tex_format = malloc(sizeof(*main_window_tex_format));
-        main_window_tex_format->palette=NULL;
-        main_window_tex_format->BitsPerPixel=32;
-        main_window_tex_format->BytesPerPixel=4;
-        main_window_tex_format->Rshift=16;
-        main_window_tex_format->Gshift=8;
-        main_window_tex_format->Bshift=0;
-        main_window_tex_format->Ashift=0;
-        main_window_tex_format->Rmask=0xff<<main_window_tex_format->Rshift;
-        main_window_tex_format->Gmask=0xff<<main_window_tex_format->Gshift;
-        main_window_tex_format->Bmask=0xff<<main_window_tex_format->Bshift;
-        main_window_tex_format->Amask=0;
-        main_window_tex_format->Rloss=0;
-        main_window_tex_format->Gloss=0;
-        main_window_tex_format->Bloss=0;
-        main_window_tex_format->Aloss=8;
-        main_window_tex_format->colorkey=0;
-        main_window_tex_format->alpha=0;
         break;
     case 16:
         scaler_function = scalers[scaler].scaler16;
-        main_window_tex_format = malloc(sizeof(*main_window_tex_format));
-        main_window_tex_format->palette=NULL;
-        main_window_tex_format->BitsPerPixel=16;
-        main_window_tex_format->BytesPerPixel=2;
-        main_window_tex_format->Rshift=11;
-        main_window_tex_format->Gshift=5;
-        main_window_tex_format->Bshift=0;
-        main_window_tex_format->Ashift=0;
-        main_window_tex_format->Rmask=0x1f<<main_window_tex_format->Rshift;
-        main_window_tex_format->Gmask=0x3f<<main_window_tex_format->Gshift;
-        main_window_tex_format->Bmask=0x1f<<main_window_tex_format->Bshift;
-        main_window_tex_format->Amask=0;
-        main_window_tex_format->Rloss=2;
-        main_window_tex_format->Gloss=3;
-        main_window_tex_format->Bloss=2;
-        main_window_tex_format->Aloss=0;
-        main_window_tex_format->colorkey=0;
-        main_window_tex_format->alpha=0;
         break;
     default:
         scaler_function = NULL;
-        main_window_tex_format = malloc(sizeof(*main_window_tex_format));
-        main_window_tex_format->palette=NULL;
-        main_window_tex_format->BitsPerPixel=8;
-        main_window_tex_format->BytesPerPixel=1;
-        main_window_tex_format->Rshift=0;
-        main_window_tex_format->Gshift=0;
-        main_window_tex_format->Bshift=0;
-        main_window_tex_format->Ashift=0;
-        main_window_tex_format->Rmask=0;
-        main_window_tex_format->Gmask=0;
-        main_window_tex_format->Bmask=0;
-        main_window_tex_format->Amask=0;
-        main_window_tex_format->Rloss=0;
-        main_window_tex_format->Gloss=0;
-        main_window_tex_format->Bloss=0;
-        main_window_tex_format->Aloss=0;
-        main_window_tex_format->colorkey=0;
-        main_window_tex_format->alpha=0;
         break;
     }
     

@@ -53,7 +53,12 @@ Uint8 lastmouse_but;
 Sint32 lastmouse_x, lastmouse_y;
 JE_boolean mouse_pressed[4] = {false, false, false, false};
 Sint32 mouse_x, mouse_y;
+
+#ifdef WITH_SDL
+bool windowHasFocus = true;
+#else
 bool windowHasFocus = false;
+#endif
 
 #ifdef WITH_SDL3
 Uint8 keysactive[SDL_SCANCODE_COUNT] = { 0 };
@@ -159,7 +164,8 @@ void input_grab( bool enable )
     
     input_grab_enabled = enable || fullscreen_enabled;
     
-    SDL_ShowCursor(input_grab_enabled ? SDL_DISABLE : SDL_ENABLE);
+    SDL_ShowCursor(mouseRelativeEnabled ? SDL_DISABLE : SDL_ENABLE);
+
 #ifdef NDEBUG
     SDL_WM_GrabInput(input_grab_enabled ? SDL_GRAB_ON : SDL_GRAB_OFF);
 #endif
@@ -576,11 +582,8 @@ void service_SDL_events(JE_boolean clear_new)
                             myrel = mouse_y - player[0].y;
                         }
 
-                        if (ev.motion.state == SDL_PRESSED)
-                        {
-                            mouseWindowXRelative += mxrel;
-                            mouseWindowYRelative += myrel;
-                        }
+                        mouseWindowXRelative += mxrel;
+                        mouseWindowYRelative += myrel;
                     }
                     break;
 
