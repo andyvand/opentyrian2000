@@ -903,22 +903,28 @@ int main(int argc, char *argv[])
     _printf("I386\n");
 #elif defined(__x86_64__) || defined(_M_AMD64)
     _printf("X86_64\n");
-#elif defined(__ppc__) || defined(_M_PPC)
+#elif defined(__ia64__) || defined(_M_IA64)
+    _printf("IA64\n");
+#elif defined(__ppc__) || defined(powerpc) || defined(__powerpc) || defined(_M_PPC)
     _printf("PPC\n");
 #elif defined(__ppc64__) || defined(_M_PPC64)
     _printf("PPC64\n");
+#elif defined(__m68k__)
+    _printf("M680X0\n");
 #elif defined(__arm__) || defined(_M_ARM)
     _printf("ARM\n");
 #elif defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM64) || defined(_M_ARM64EC)
     _printf("ARM64\n");
-#elif defined(__riscv32)
-    _printf("RISCV32");
-#elif defined(__riscv64)
+#elif defined(__riscv64) || (__riscv_xlen == 64)
     _printf("RISCV64");
-#elif defined(__mips64__)
+#elif defined(__riscv32) || (__riscv_xlen == 32) || defined(__riscv)
+    _printf("RISCV32");
+#elif defined(__mips64__) || (defined(__mips__) && defined(__LP64__))
     _printf("MIPS64\n");
 #elif defined(__mips__)
     _printf("MIPS\n");
+#elif defined(__sparc__) || defined(__sparc)
+    _printf("SPARC");
 #elif defined(__XTENSA__)
     _printf("XTENSA\n");
 #else
