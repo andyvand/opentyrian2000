@@ -921,10 +921,18 @@ int main(int argc, char *argv[])
     _printf("RISCV32");
 #elif defined(__mips64__) || (defined(__mips__) && defined(__LP64__))
     _printf("MIPS64\n");
-#elif defined(__mips__)
+#elif defined(__mips__) || defined(__mips) || defined(__MIPS__)
     _printf("MIPS\n");
 #elif defined(__sparc__) || defined(__sparc)
-    _printf("SPARC");
+    _printf("SPARC\n");
+#elif defined(__alpha__) || defined(_M_ALPHA)
+    _printf("ALPHA\n");
+#elif defined(__sh__)
+    _printf("SUPERH\n");
+#elif defined(__hppa__) || defined(__HPPA__)
+    _printf("HPPA\n");
+#elif defined(__loongarch__)
+    _printf("LOONGARCH\n");
 #elif defined(__XTENSA__)
     _printf("XTENSA\n");
 #else
