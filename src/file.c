@@ -78,7 +78,7 @@ const char * data_dir(void)
         "app0:data/",
         ".",
     };
-#elif defined(WITH_SDL)
+#elif defined(WITH_SDL) && !defined(WITH_SDL1)
     const char *const dirs[] =
     {
         "/sd/data",
@@ -123,14 +123,12 @@ const char * data_dir(void)
     {
         custom_data_dir,
         "/sdcard/Android/tyriandata",
-        TYRIAN_DIR,
         ".",
     };
 #elif defined(__linux__)
     const char *const dirs[] =
     {
         custom_data_dir,
-        TYRIAN_DIR,
         "/usr/share/tyriandata",
         ".",
     };
@@ -138,7 +136,6 @@ const char * data_dir(void)
 	const char *const dirs[] =
 	{
 		custom_data_dir,
-		TYRIAN_DIR,
 		"data",
 		".",
 	};
@@ -167,7 +164,7 @@ const char * data_dir(void)
 	return dir;
 }
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
 bool init_SD = false;
 #endif
 
@@ -177,7 +174,7 @@ FILE * dir_fopen(const char *dir, const char *file, const char *mode)
 	char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
 	snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s/%s", dir, file);
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     if(init_SD == false)
     {
         SDL_InitSD();
@@ -192,7 +189,7 @@ FILE * dir_fopen(const char *dir, const char *file, const char *mode)
 #else
 	FILE *f = fopen(path, mode);
 #endif
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
 
@@ -258,7 +255,7 @@ bool dir_file_exists(const char *dir, const char *file)
 // returns end-of-file position
 long ftell_eof(FILE *f)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
 	long pos = ftell(f);
@@ -267,7 +264,7 @@ long ftell_eof(FILE *f)
 	long size = ftell(f);
 
 	fseek(f, pos, SEEK_SET);
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
 	return size;
@@ -275,11 +272,11 @@ long ftell_eof(FILE *f)
 
 long eftell(FILE *f)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
     long size = ftell(f);
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
 
@@ -288,11 +285,11 @@ long eftell(FILE *f)
 
 int efseek(FILE *f, long pos, int flag)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
     int retval = fseek(f, pos, flag);
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
     return retval;
@@ -300,11 +297,11 @@ int efseek(FILE *f, long pos, int flag)
 
 int efclose(FILE *f)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
     int retval = fclose(f);
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
     return retval;
@@ -315,7 +312,7 @@ int efclose(FILE *f)
 
 void fread_die(void *buffer, size_t size, size_t count, FILE *stream)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
 
@@ -332,14 +329,14 @@ void fread_die(void *buffer, size_t size, size_t count, FILE *stream)
     _fprintf(stderr, "fread_die - size=%llu.\n", (unsigned long long)result);
 #endif
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
 }
 
 void fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
 
@@ -356,7 +353,7 @@ void fwrite_die(const void *buffer, size_t size, size_t count, FILE *stream)
     _fprintf(stderr, "fwrite_die - size=%llu.\n", (unsigned long long)result);
 #endif
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
 }

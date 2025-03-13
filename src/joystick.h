@@ -21,6 +21,7 @@
 
 #include "opentyr.h"
 #include "config_file.h"
+#include "keyboard.h"
 
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>

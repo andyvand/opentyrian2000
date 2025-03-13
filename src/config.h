@@ -21,6 +21,7 @@
 
 #include "opentyr.h"
 #include "config_file.h"
+#include "keyboard.h"
 
 #ifdef WITH_SDL3
 #include <SDL3/SDL.h>
@@ -213,5 +214,10 @@ void JE_loadGame(JE_byte slot);
 
 void JE_encryptSaveTemp(void);
 void JE_decryptSaveTemp(void);
+
+#ifdef WITH_SDL1
+SDL_Scancode SDL_GetScancodeFromName(const char *name);
+const char *SDL_GetScancodeName(SDL_Scancode scancode);
+#endif
 
 #endif /* CONFIG_H */

@@ -227,6 +227,40 @@ JE_word editorLevel;   /*Initial value 800*/
 
 Config opentyrian_config;  // implicitly initialized
 
+#ifdef WITH_SDL1
+SDL_Scancode SDL_GetScancodeFromName(const char *name)
+{
+    int i;
+
+    if (!name || !*name) {
+        return SDL_SCANCODE_UNKNOWN;
+    }
+
+    i = atoi(name);
+
+    return (SDL_Scancode)i;
+}
+
+char name[32];
+
+const char *SDL_GetScancodeName(SDL_Scancode scancode)
+{
+    if (((int)scancode) < SDL_SCANCODE_UNKNOWN || scancode >= SDL_NUM_SCANCODES) {
+        return "";
+    }
+
+    snprintf(name, sizeof(name), "%d", (int)scancode);
+
+    const char *nameptr = (const char *)name;
+
+    if (nameptr[0]) {
+        return (const char *)nameptr;
+    }
+
+    return "";
+}
+#endif
+
 bool load_opentyrian_config(void)
 {
 	// defaults
@@ -359,6 +393,7 @@ bool save_opentyrian_config(void)
 		config_set_string_option(section, keySettingNames[i], keyName);
 	}
 
+#ifndef WITH_SDL1
 #ifndef TARGET_WIN32
 #if defined(VITA) || defined(PSP)
     sceIoMkdir(get_user_directory(), 0777);
@@ -367,6 +402,7 @@ bool save_opentyrian_config(void)
 #endif
 #else
 	mkdir(get_user_directory());
+#endif
 #endif
 
 	// Tyrian 2000 doesn't save mouse settings, so we do it ourselves
@@ -391,7 +427,9 @@ bool save_opentyrian_config(void)
 	config_write(config, file);
 	
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
+#ifndef WITH_SDL1
 	fsync(fileno(file));
+#endif
 #endif
 	efclose(file);
 	
@@ -800,7 +838,7 @@ const char * get_user_directory(void)
 	
 	if (strlen(user_dir) == 0)
 	{
-#if !defined(TARGET_WIN32)
+#if !defined(TARGET_WIN32) && !defined(WITH_SDL1)
 #if defined(ANDROID) || defined(__ANDROID__)
 		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
 #elif defined(VITA)
@@ -1205,11 +1243,13 @@ void JE_saveConfiguration(void)
 	saveTemp[SIZEOF_SAVEGAMETEMP - 5] = editorLevel;
 	
 	JE_encryptSaveTemp();
-	
-#ifndef TARGET_WIN32
+
+#ifndef WITH_SDL1
+#if !defined(TARGET_WIN32)
 	mkdir(get_user_directory(), 0700);
 #else
 	mkdir(get_user_directory());
+#endif
 #endif
 
 	f = dir_fopen_warn(get_user_directory(), "tyrian.sav", "wb");
@@ -1266,7 +1306,9 @@ void JE_saveConfiguration(void)
 		}
 
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
+#ifndef WITH_SDL1
 		fsync(fileno(f));
+#endif
 #endif
 		efclose(f);
 	}
@@ -1298,7 +1340,9 @@ void JE_saveConfiguration(void)
 		fwrite_u8_die(dosKeySettings, 8, f);
 		
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
+#ifndef WITH_SDL1
 		fsync(fileno(f));
+#endif
 #endif
 		efclose(f);
 	}

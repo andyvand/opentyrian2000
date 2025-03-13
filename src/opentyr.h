@@ -56,7 +56,7 @@
 #endif
 #endif
 
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
 //#define EXTATTR EXT_RAM_ATTR
 #define EXTATTR EXT_RAM_BSS_ATTR
 #define IRATTR IRAM_ATTR
@@ -76,7 +76,7 @@
 #define _fprintf fprintf
 #endif
 #else
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
 #include "esp_log.h"
 
 #define _printf(...) ESP_LOGI(opentyrian_str, __VA_ARGS__)

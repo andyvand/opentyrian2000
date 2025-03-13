@@ -342,7 +342,11 @@ void init_joysticks(void)
 #ifdef WITH_SDL3
             _fprintf(stdout, "joystick detected: %s ", SDL_GetJoystickName(joystick[j].handle));
 #else
+#ifdef WITH_SDL1
+            _fprintf(stdout, "joystick detected: %s ", SDL_JoystickName(j));
+#else
 			_fprintf(stdout, "joystick detected: %s ", SDL_JoystickName(joystick[j].handle));
+#endif
 #endif
 
 			_fprintf(stdout, "(%d axes, %d buttons, %d hats)\n",
@@ -512,7 +516,11 @@ bool load_joystick_assignments(Config *config, int j)
 #ifdef WITH_SDL3
 	ConfigSection *section = config_find_section(config, "joystick", SDL_GetJoystickName(joystick[j].handle));
 #else
+#ifdef WITH_SDL1
+    ConfigSection *section = config_find_section(config, "joystick", SDL_JoystickName(j));
+#else
     ConfigSection *section = config_find_section(config, "joystick", SDL_JoystickName(joystick[j].handle));
+#endif
 #endif
 
 	if (section == NULL)
@@ -551,9 +559,13 @@ bool save_joystick_assignments(Config *config, int j)
 #ifdef WITH_SDL3
     ConfigSection *section = config_find_or_add_section(config, "joystick", SDL_GetJoystickName(joystick[j].handle));
 #else
+#ifdef WITH_SDL1
+    ConfigSection *section = config_find_or_add_section(config, "joystick", SDL_JoystickName(j));
+#else
 	ConfigSection *section = config_find_or_add_section(config, "joystick", SDL_JoystickName(joystick[j].handle));
 #endif
-
+#endif
+    
 	if (section == NULL)
 		exit(EXIT_FAILURE);  // out of memory
 	

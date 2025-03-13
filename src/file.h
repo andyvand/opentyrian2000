@@ -60,11 +60,11 @@ static inline void fread_bool_die(bool *buffer, FILE *stream)
 // 8-bit fread
 static inline size_t fread_u8(Uint8 *buffer, size_t count, FILE *stream)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
 	size_t retval = fread(buffer, sizeof(Uint8), count, stream);
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
     return retval;
@@ -138,11 +138,11 @@ static inline void fwrite_bool_die(const bool *buffer, FILE *stream)
 // 8-bit fwrite
 static inline size_t fwrite_u8(const Uint8 *buffer, size_t count, FILE *stream)
 {
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_LockDisplay();
 #endif
 	size_t retval = fwrite(buffer, sizeof(Uint8), count, stream);
-#ifdef WITH_SDL
+#if defined(WITH_SDL) && !defined(WITH_SDL1)
     SDL_UnlockDisplay();
 #endif
     return retval;

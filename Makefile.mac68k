@@ -1,0 +1,143 @@
+# BUILD SETTINGS ###############################################################
+
+ifneq ($(filter Msys Cygwin, $(shell uname -o)), )
+    PLATFORM := WIN32
+    TYRIAN_DIR = "C:\\TYRIAN"
+else
+ifneq ($(filter Darwin, $(shell uname -o)), )
+   PLATFORM := MACOS
+   TYRIAN_DIR = "/Applications/OpenTyrian2000.app/Contents/MacOS"
+else
+    PLATFORM := UNIX
+    TYRIAN_DIR = "/usr/local/bin"
+endif
+endif
+
+################################################################################
+# see https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
+################################################################################
+
+SHELL = /bin/sh
+
+################################################################################
+# Mac OS X Deployment Target Version
+################################################################################
+MACOSX_DEPLOYMENT_TARGET = 10.14
+
+################################################################################
+# Signing executable (codesign)
+################################################################################
+# CODESIGN = /usr/bin/codesign -f -s - -i com.AnV.Software.OpenTyrian2000
+CODESIGN = /usr/bin/codesign -f -s "Apple Development" -i com.AnV.Software.OpenTyrian2000
+
+CC = m68k-apple-macos-gcc
+INSTALL = /usr/bin/install
+PREFIX = /Users/andyvand/Downloads/Retro68/macbuild/toolchain
+RINCLUDES = $(PREFIX)/RIncludes
+REZFLAGS = -I$(RINCLUDES)
+REZ = Rez
+VCS_IDREV ?= `(git describe --tags || git rev-parse --short HEAD)`
+
+INSTALL_PROGRAM = $(INSTALL) -m 755
+INSTALL_DATA = $(INSTALL) -m 644
+
+APPLICATIONS = /Applications
+prefix ?= /usr/local
+exec_prefix ?= $(prefix)
+
+bindir ?= $(exec_prefix)/bin
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+docdir ?= $(datarootdir)/doc/opentyrian2000
+mandir ?= $(datarootdir)/man
+man6dir ?= $(mandir)/man6
+man6ext ?= .6
+desktopdir ?= $(datarootdir)/applications
+icondir ?= $(datarootdir)/icons
+
+# see https://www.pathname.com/fhs/pub/fhs-2.3.html
+
+gamesdir ?= $(datadir)/games
+
+###
+
+TARGET := opentyrian2000
+
+SRCS := $(wildcard src/*.c)
+OBJS := $(SRCS:src/%.c=obj/%.o)
+DEPS := $(SRCS:src/%.c=obj/%.d)
+
+###
+
+EXTRA_CPPFLAGS += -DWITH_SDL -DWITH_SDL1
+
+OPENTYRIAN_VERSION := $(VCS_IDREV)\
+
+EXTRA_CPPFLAGS += -DOPENTYRIAN_VERSION="$(OPENTYRIAN_VERSION)"
+
+ifeq ($(_DEBUG), 1)
+CPPFLAGS = -D_DEBUG=1 -UNDEBUG
+CFLAGS += -g3 -O0 $(EXTRA_CPPFLAGS) -Werror -pedantic -Wall -Wextra -Werror -D_DEBUG=1
+else
+CPPFLAGS = -MMD -DNDEBUG
+CFLAGS = -g0 -Os $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra -Werror
+endif
+
+libmidiconv_PC_PATH :=
+
+SDL_CPPFLAGS :=
+SDL_LDFLAGS :=
+SDL_LDLIBS := -lSDL -lc
+
+ALL_CPPFLAGS = \
+	       -DTARGET_$(PLATFORM) \
+               -DTYRIAN_DIR='"$(TYRIAN_DIR)"' \
+               $(EXTRA_CPPFLAGS) \
+               $(SDL_CPPFLAGS) \
+               $(CPPFLAGS)
+ALL_CFLAGS = \
+             $(CFLAGS)
+ALL_LDFLAGS = $(SDL_LDFLAGS) \
+              $(LDFLAGS)
+ALL_LDLIBS = -lm \
+             $(SDL_LDLIBS) \
+             $(LDLIBS)
+
+###
+
+.PHONY : all
+all : $(TARGET).bin $(TARGET)
+
+.PHONY : installdirs
+installdirs :
+	mkdir -p $(DESTDIR)$(man6dir)
+
+.PHONY : install
+install : $(TARGET) installers
+	cp -Rf $(TARGET) $(APPLICATIONS)/$(TARGET)
+	$(INSTALL_DATA) linux/man/opentyrian2000.6 $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
+
+.PHONY : uninstall
+uninstall :
+	rm -Rf /Applications/$(TARGET)
+	rm -f $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
+
+.PHONY : clean
+clean :
+	rm -f $(OBJS)
+	rm -f $(DEPS)
+	rm -f $(TARGET)
+	rm -f $(TARGET).bin
+	rm -f rez.output.rsrc
+
+$(TARGET).bin : $(OBJS)
+	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(ALL_LDLIBS)
+
+$(TARGET) : $(TARGET).bin
+	MakePEF -o $@ $<
+
+-include $(DEPS)
+
+obj/%.o : src/%.c
+	@mkdir -p "$(dir $@)"
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<

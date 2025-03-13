@@ -42,7 +42,7 @@ extern const int font_ascii[256];
 extern JE_byte textGlowFont, textGlowBrightness;
 extern JE_boolean levelWarningDisplay;
 extern JE_byte levelWarningLines;
-extern char levelWarningText[12][61];
+extern char levelWarningText[12][1355];
 extern JE_boolean warningRed;
 extern JE_byte warningSoundDelay;
 extern JE_word armorShipDelay;

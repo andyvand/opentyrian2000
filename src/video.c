@@ -111,6 +111,7 @@ void init_video( void )
 
     SDL_WM_SetCaption("OpenTyrian 2000", NULL);
 
+#ifndef WITH_SDL1
     main_window_tex_format = malloc(sizeof(*main_window_tex_format));
     main_window_tex_format->palette=NULL;
     main_window_tex_format->BitsPerPixel=16;
@@ -129,22 +130,27 @@ void init_video( void )
     main_window_tex_format->Aloss=0;
     main_window_tex_format->colorkey=0;
     main_window_tex_format->alpha=0;
-
+#endif
 
     VGAScreen = VGAScreenSeg = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
     VGAScreen2 = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
     game_screen = SDL_CreateRGBSurface(SDL_SWSURFACE, vga_width, vga_height, 8, 0, 0, 0, 0);
+    
+#ifndef WITH_SDL1
     spi_lcd_clear();
+#endif
 
     SDL_FillRect(VGAScreen, NULL, 0);
 
-    /*if (!init_scaler(scaler, true) &&  // try desired scaler and desired fullscreen state
+#ifdef WITH_SDL1
+    if (!init_scaler(scaler, true) &&  // try desired scaler and desired fullscreen state
         !init_any_scaler(true) &&      // try any scaler in desired fullscreen state
         !init_any_scaler(!true))       // try any scaler in other fullscreen state
     {
         fprintf(stderr, "error: failed to initialize any supported video mode\n");
         exit(EXIT_FAILURE);
-    }*/
+    }
+#endif
 }
 
 int can_init_scaler( unsigned int new_scaler, bool fullscreen )
@@ -207,12 +213,66 @@ bool init_scaler( unsigned int new_scaler, bool fullscreen )
     {
     case 32:
         scaler_function = scalers[scaler].scaler32;
+        main_window_tex_format = malloc(sizeof(*main_window_tex_format));
+        main_window_tex_format->palette=NULL;
+        main_window_tex_format->BitsPerPixel=32;
+        main_window_tex_format->BytesPerPixel=4;
+        main_window_tex_format->Rshift=16;
+        main_window_tex_format->Gshift=8;
+        main_window_tex_format->Bshift=0;
+        main_window_tex_format->Ashift=0;
+        main_window_tex_format->Rmask=0xff<<main_window_tex_format->Rshift;
+        main_window_tex_format->Gmask=0xff<<main_window_tex_format->Gshift;
+        main_window_tex_format->Bmask=0xff<<main_window_tex_format->Bshift;
+        main_window_tex_format->Amask=0;
+        main_window_tex_format->Rloss=0;
+        main_window_tex_format->Gloss=0;
+        main_window_tex_format->Bloss=0;
+        main_window_tex_format->Aloss=8;
+        main_window_tex_format->colorkey=0;
+        main_window_tex_format->alpha=0;
         break;
     case 16:
         scaler_function = scalers[scaler].scaler16;
+        main_window_tex_format = malloc(sizeof(*main_window_tex_format));
+        main_window_tex_format->palette=NULL;
+        main_window_tex_format->BitsPerPixel=16;
+        main_window_tex_format->BytesPerPixel=2;
+        main_window_tex_format->Rshift=11;
+        main_window_tex_format->Gshift=5;
+        main_window_tex_format->Bshift=0;
+        main_window_tex_format->Ashift=0;
+        main_window_tex_format->Rmask=0x1f<<main_window_tex_format->Rshift;
+        main_window_tex_format->Gmask=0x3f<<main_window_tex_format->Gshift;
+        main_window_tex_format->Bmask=0x1f<<main_window_tex_format->Bshift;
+        main_window_tex_format->Amask=0;
+        main_window_tex_format->Rloss=0;
+        main_window_tex_format->Gloss=0;
+        main_window_tex_format->Bloss=0;
+        main_window_tex_format->Aloss=0;
+        main_window_tex_format->colorkey=0;
+        main_window_tex_format->alpha=0;
         break;
     default:
         scaler_function = NULL;
+        main_window_tex_format = malloc(sizeof(*main_window_tex_format));
+        main_window_tex_format->palette=NULL;
+        main_window_tex_format->BitsPerPixel=8;
+        main_window_tex_format->BytesPerPixel=1;
+        main_window_tex_format->Rshift=0;
+        main_window_tex_format->Gshift=0;
+        main_window_tex_format->Bshift=0;
+        main_window_tex_format->Ashift=0;
+        main_window_tex_format->Rmask=0;
+        main_window_tex_format->Gmask=0;
+        main_window_tex_format->Bmask=0;
+        main_window_tex_format->Amask=0;
+        main_window_tex_format->Rloss=0;
+        main_window_tex_format->Gloss=0;
+        main_window_tex_format->Bloss=0;
+        main_window_tex_format->Aloss=0;
+        main_window_tex_format->colorkey=0;
+        main_window_tex_format->alpha=0;
         break;
     }
     
@@ -270,7 +330,7 @@ void JE_showVGA( void ) { scale_and_flip(VGAScreen); }
 
 void scale_and_flip( SDL_Surface *src_surface )
 {
-/*
+#ifdef WITH_SDL1
     assert(src_surface->format->BitsPerPixel == 8);
     
     SDL_Surface *dst_surface = SDL_GetVideoSurface();
@@ -279,8 +339,9 @@ void scale_and_flip( SDL_Surface *src_surface )
     scaler_function(src_surface, dst_surface);
 
     SDL_Flip(dst_surface);
-*/
+#else
     SDL_Flip(src_surface);
+#endif
 }
 #else
 void init_video(void)
@@ -413,7 +474,11 @@ static void init_texture(void)
 {
 	assert(main_window_renderer != NULL);
 
+#ifdef WITH_SDL1
+    int bpp = main_window_tex_format->BitsPerPixel;
+#else
 	int bpp = 32; // TODOSDL2
+#endif
 
 #ifdef WITH_SDL3
     Uint32 format = bpp == 32 ? SDL_PIXELFORMAT_XRGB8888 : SDL_PIXELFORMAT_RGB565;

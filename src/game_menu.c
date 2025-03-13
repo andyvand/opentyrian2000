@@ -652,7 +652,7 @@ void JE_itemScreen(void)
 		{
 			if (twoPlayerMode)
 			{
-				char buf[50];
+				char buf[1355];
 
 				for (uint i = 0; i < 2; ++i)
 				{

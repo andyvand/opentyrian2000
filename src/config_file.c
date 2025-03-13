@@ -26,7 +26,15 @@
 #include "config_file.h"
 
 #include <assert.h>
+
+#ifndef WITH_SDL1
 #include <limits.h>
+#else
+#ifndef CHAR_BIT
+#define CHAR_BIT 8
+#endif
+#endif
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
@@ -927,7 +935,7 @@ bool config_parse(Config *config, FILE *file)
 	
 	free(buffer);
 	
-	return config;
+	return (bool)((long)(config) & 0xFF);
 }
 
 /* config writer */
