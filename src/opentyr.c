@@ -911,7 +911,9 @@ int main(int argc, char *argv[])
     _printf("ARM\n");
 #elif defined(__arm64__) || defined(__aarch64__) || defined(_M_ARM64) || defined(_M_ARM64EC)
     _printf("ARM64\n");
-#elif defined(__riscv64__)
+#elif defined(__riscv32)
+    _printf("RISCV32");
+#elif defined(__riscv64)
     _printf("RISCV64");
 #elif defined(__mips64__)
     _printf("MIPS64\n");
