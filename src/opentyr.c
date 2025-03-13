@@ -141,6 +141,7 @@ static const char * getDisplayPickerItem(size_t i, char *buffer, size_t bufferSi
 	return buffer;
 }
 
+#ifndef WITH_SDL
 static size_t getScalerPickerItemsCount(void)
 {
 	return (size_t)scalers_count;
@@ -152,6 +153,7 @@ static const char * getScalerPickerItem(size_t i, char *buffer, size_t bufferSiz
 
 	return scalers[i].name;
 }
+#endif
 
 static size_t getScalingModePickerItemsCount(void)
 {
@@ -201,7 +203,9 @@ void setupMenu(void)
 		MENU_ITEM_JUKEBOX,
 		MENU_ITEM_DESTRUCT,
 		MENU_ITEM_DISPLAY,
+#ifndef WITH_SDL
 		MENU_ITEM_SCALER,
+#endif
 		MENU_ITEM_SCALING_MODE,
 		MENU_ITEM_MUSIC_VOLUME,
 		MENU_ITEM_SOUND_VOLUME,
@@ -247,7 +251,9 @@ void setupMenu(void)
 			.header = "Graphics",
 			.items = {
 				{ MENU_ITEM_DISPLAY, "Display:", "Change the display mode.", getDisplayPickerItemsCount, getDisplayPickerItem },
+#ifndef WITH_SDL
 				{ MENU_ITEM_SCALER, "Scaler:", "Change the pixel art scaling algorithm.", getScalerPickerItemsCount, getScalerPickerItem },
+#endif
 				{ MENU_ITEM_SCALING_MODE, "Scaling Mode:", "Change the scaling mode.", getScalingModePickerItemsCount, getScalingModePickerItem },
 				{ MENU_ITEM_DONE, "Done", "Return to the previous menu.", NULL, NULL },
 				{ -1, NULL, NULL, NULL, NULL }
@@ -348,9 +354,11 @@ void setupMenu(void)
 				draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, value, normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
 				break;
 
+#ifndef WITH_SDL
 			case MENU_ITEM_SCALER:
 				draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, scalers[scaler].name, normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
 				break;
+#endif
 
 			case MENU_ITEM_SCALING_MODE:
 				draw_font_hv_shadow(VGAScreen, xMenuItemValue, y, scaling_mode_names[scaling_mode], normal_font, left_aligned, 15, -3 + (selected ? 2 : 0) + (disabled ? -4 : 0), false, 2);
@@ -473,7 +481,9 @@ void setupMenu(void)
 									switch (menuItems[*selectedMenuItemIndex].id)
 									{
 									case MENU_ITEM_DISPLAY:
+#ifndef WITH_SDL
 									case MENU_ITEM_SCALER:
+#endif
 									case MENU_ITEM_SCALING_MODE:
 									case MENU_ITEM_MUSIC_DEVICE:
 									{
@@ -668,6 +678,7 @@ void setupMenu(void)
 					pickerSelectedIndex = (size_t)(fullscreen_display + 1);
 					break;
 				}
+#ifndef WITH_SDL
 				case MENU_ITEM_SCALER:
 				{
 					JE_playSampleNum(S_CLICK);
@@ -676,6 +687,7 @@ void setupMenu(void)
 					pickerSelectedIndex = scaler;
 					break;
 				}
+#endif
 				case MENU_ITEM_SCALING_MODE:
 				{
 					JE_playSampleNum(S_CLICK);
@@ -827,7 +839,8 @@ void setupMenu(void)
 #endif
 					break;
 				}
-				case MENU_ITEM_SCALER:
+#ifndef WITH_SDL
+                case MENU_ITEM_SCALER:
 				{
 					if (pickerSelectedIndex != scaler)
 					{
@@ -840,6 +853,7 @@ void setupMenu(void)
 					}
 					break;
 				}
+#endif
 				case MENU_ITEM_SCALING_MODE:
 				{
 					scaling_mode = (ScalingMode)pickerSelectedIndex;
