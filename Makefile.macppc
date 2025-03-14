@@ -74,7 +74,7 @@ EXTRA_CPPFLAGS += -DWITH_SDL -DWITH_SDL1
 
 OPENTYRIAN_VERSION := $(VCS_IDREV)\
 
-EXTRA_CPPFLAGS += -DOPENTYRIAN_VERSION="$(OPENTYRIAN_VERSION)"
+EXTRA_CPPFLAGS += -DOPENTYRIAN_VERSION="$(OPENTYRIAN_VERSION)" -DSDL_main=main
 
 ifeq ($(_DEBUG), 1)
 CPPFLAGS = -D_DEBUG=1 -UNDEBUG
@@ -88,7 +88,7 @@ libmidiconv_PC_PATH :=
 
 SDL_CPPFLAGS :=
 SDL_LDFLAGS :=
-SDL_LDLIBS := -lSDL -lretrocrt -lc
+SDL_LDLIBS := -lSDL -lretrocrt -lRetroConsole -lc
 
 ALL_CPPFLAGS = \
 	       -DTARGET_$(PLATFORM) \
@@ -107,7 +107,7 @@ ALL_LDLIBS = -lm \
 ###
 
 .PHONY : all
-all : $(TARGET).code.bin $(TARGET).bin
+all : $(TARGET).bin $(TARGET)
 
 .PHONY : installdirs
 installdirs :
@@ -133,15 +133,12 @@ clean :
 	rm -f $(TARGET).APPL
 	rm -f rez.output.rsrc
 
-$(TARGET).code.bin : $(OBJS)
+$(TARGET).bin : $(OBJS)
 	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(ALL_LDLIBS)
 
-$(TARGET).bin $(TARGET).APPL $(TARGET).dsk: $(TARGET).code.bin
-	$(REZ) $(REZFLAGS) \
-		--copy "$(TARGET).code.bin" \
-		"$(RINCLUDES)/Retro68APPL.r" \
-		-t "APPL" -c "????" \
-		-o $(TARGET).bin --cc $(TARGET).APPL --cc $(TARGET).dsk
+$(TARGET): $(TARGET).bin
+	MakePEF -o $@.pef $<
+	mv $@.pef $@
 
 -include $(DEPS)
 

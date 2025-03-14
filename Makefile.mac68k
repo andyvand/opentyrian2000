@@ -77,17 +77,17 @@ EXTRA_CPPFLAGS += -DOPENTYRIAN_VERSION="$(OPENTYRIAN_VERSION)"
 
 ifeq ($(_DEBUG), 1)
 CPPFLAGS = -D_DEBUG=1 -UNDEBUG
-CFLAGS += -g3 -O0 $(EXTRA_CPPFLAGS) -Werror -pedantic -Wall -Wextra -Werror -D_DEBUG=1
+CFLAGS += -g3 -O0 $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra -Werror -D_DEBUG=1 -std=gnu99 -ffunction-sections -I/Users/andyvand/Downloads/Retro68/libretro -I/Users/andyvand/Downloads/Retro68/Console
 else
 CPPFLAGS = -MMD -DNDEBUG
-CFLAGS = -g0 -Os $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra -Werror
+CFLAGS = -g0 -Os $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra -Werror -std=gnu99 -ffunction-sections -I/Users/andyvand/Downloads/Retro68/libretro -I/Users/andyvand/Downloads/Retro68/Console
 endif
 
 libmidiconv_PC_PATH :=
 
 SDL_CPPFLAGS :=
-SDL_LDFLAGS := -Wl,--mac-single
-SDL_LDLIBS := -lSDL -lc
+SDL_LDFLAGS := -Wl,-gc-sections -Wl,--mac-strip-macsbug -L/Users/andyvand/Downloads/Retro68/macbuild/build-target/libretro
+SDL_LDLIBS := -lSDL -lc -lretrocrt -lRetroConsole
 
 ALL_CPPFLAGS = \
 	       -DTARGET_$(PLATFORM) \
@@ -128,10 +128,14 @@ clean :
 	rm -f $(DEPS)
 	rm -f $(TARGET)
 	rm -f $(TARGET).gdb
+	rm -f $(TARGET).dsk
+	rm -f $(TARGET).APPL
+	rm -f %$(TARGET).ad
 	rm -f rez.output.rsrc
 
 $(TARGET) : $(OBJS)
-	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(ALL_LDLIBS)
+	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@.bin $^ $(ALL_LDLIBS)
+	mv $(TARGET).bin $(TARGET)
 
 -include $(DEPS)
 

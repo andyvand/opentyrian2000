@@ -109,10 +109,6 @@
 #define init_scaler(a) init_scaler(a, true)
 #endif
 
-#ifdef WITH_SDL1
-#define SDL_main main
-#endif
-
 const char *opentyrian_str = "OpenTyrian " TYRIAN_VERSION;
 const char *opentyrian_version = OPENTYRIAN_VERSION;
 
