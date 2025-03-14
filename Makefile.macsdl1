@@ -82,12 +82,15 @@ CFLAGS = -arch arm64 -arch x86_64 -g0 -O3 -mmacosx-version-min=$(MACOSX_DEPLOYME
 endif
 
 LDFLAGS ?= -arch arm64 -arch x86_64 -mmacosx-version-min=10.14
-LDLIBS ?= -framework Foundation -lobjc
+LDLIBS ?= -framework Foundation -framework AppKit -lobjc
 libmidiconv_PC_PATH :=
 
-SDL_CPPFLAGS := -I/Library/Frameworks/SDL.framework/Headersinclude/SDL3
-    SDL_LDFLAGS :=
-    SDL_LDLIBS := -F/Library/Frameworks -framework SDL
+SDL_CPPFLAGS := -I/Library/Frameworks/SDL.framework/Headers
+SDL_LDFLAGS :=
+SDL_LDLIBS := -F/Library/Frameworks -framework SDL -lSDLmain
+
+SDL_CPPFLAGS += -DWITH_NETWORK -I/Library/Frameworks/SDL_net.framework/Headers
+SDL_LDLIBS += -framework SDL_net
 
 ALL_CPPFLAGS = \
 	       -DTARGET_$(PLATFORM) \
@@ -116,6 +119,7 @@ $(TARGET).app: $(TARGET)
 	$(INSTALL) $(TARGET) $@/Contents/MacOS/$(TARGET)
 	mkdir -p $@/Contents/Frameworks
 	cp -Rf /Library/Frameworks/SDL.framework $@/Contents/Frameworks
+	cp -Rf /Library/Frameworks/SDL_net.framework $@/Contents/Frameworks
 	$(INSTALL_NAME_TOOL) -change /Library/Frameworks/SDL.framework/Versions/A/SDL @rpath/SDL.framework/Versions/A/SDL $@/Contents/MacOS/opentyrian2000
 	$(INSTALL) data/* $@/Contents/Resources/
 	$(CODESIGN) $@/Contents/Frameworks/*.framework

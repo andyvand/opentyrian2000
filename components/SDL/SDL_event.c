@@ -212,6 +212,12 @@ int readOdroidXY(SDL_Event * event)
 }
 #endif
 
+#ifndef CONFIG_HW_ODROID_GO
+#if CONFIG_TOUCH_ENABLED
+bool was_pressed = false;
+#endif
+#endif
+
 int SDL_PollEvent(SDL_Event * event)
 {
 #ifndef CONFIG_HW_ODROID_GO
@@ -235,6 +241,7 @@ int SDL_PollEvent(SDL_Event * event)
 
     if (event->motion.state == SDL_PRESSED)
     {
+        was_pressed = true;
         event->motion.x = x[0];
         event->motion.y = y[0];
     }
@@ -260,13 +267,17 @@ int SDL_PollEvent(SDL_Event * event)
 
 #ifndef CONFIG_HW_ODROID_GO
 #if CONFIG_TOUCH_ENABLED
-    return 1;
-#else
-    return 0;
+    if ((was_pressed == true) && (event->motion.state == SDL_RELEASED)
+    {
+        was_pressed = false;
+        return 1;
+    } else if (event->motion.state == SDL_PRESSED) {
+        return 1;
+    }
 #endif
-#else
-    return 0;
 #endif
+
+    return 0;
 }
 
 #ifndef CONFIG_HW_ODROID_GO
