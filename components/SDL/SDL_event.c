@@ -267,7 +267,7 @@ int SDL_PollEvent(SDL_Event * event)
 
 #ifndef CONFIG_HW_ODROID_GO
 #if CONFIG_TOUCH_ENABLED
-    if ((was_pressed == true) && (event->motion.state == SDL_RELEASED)
+    if ((was_pressed == true) && (event->motion.state == SDL_RELEASED))
     {
         was_pressed = false;
         return 1;
