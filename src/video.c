@@ -143,9 +143,9 @@ void init_video( void )
     SDL_FillRect(VGAScreen, NULL, 0);
 
 #ifdef WITH_SDL1
-    if (!init_scaler(scaler, true) &&  // try desired scaler and desired fullscreen state
-        !init_any_scaler(true) &&      // try any scaler in desired fullscreen state
-        !init_any_scaler(!true))       // try any scaler in other fullscreen state
+    if (!init_scaler(scaler, false) &&  // try desired scaler and desired fullscreen state
+        !init_any_scaler(false) &&      // try any scaler in desired fullscreen state
+        !init_any_scaler(!false))       // try any scaler in other fullscreen state
     {
         fprintf(stderr, "error: failed to initialize any supported video mode\n");
         exit(EXIT_FAILURE);

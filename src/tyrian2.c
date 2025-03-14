@@ -54,6 +54,16 @@
 #include <string.h>
 #include <stdint.h>
 
+#ifdef WITH_SDL3
+#include <SDL3/SDL.h>
+#else
+#if defined(WITH_SDL)
+#include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
+#endif
+
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 #define snprintf sprintf_s
 #endif

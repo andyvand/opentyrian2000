@@ -63,11 +63,12 @@ add_application(opentyrian2000
     # by removing unused code (gc-sections)
     # and by removing macsbug function names on 68K
     # (don't do this when debugging...)
-set(CMAKE_C_FLAGS "-DWITH_SDL -DWITH_SDL1 $(CMAKE_C_FLAGS)")
 set_target_properties(opentyrian2000 PROPERTIES COMPILE_OPTIONS -ffunction-sections)
 if(CMAKE_SYSTEM_NAME MATCHES Retro68)
+    set(CMAKE_C_FLAGS "-DWITH_SDL -DWITH_SDL1 -D__MACOS__ -DM68K_SDL $(CMAKE_C_FLAGS)")
     set_target_properties(opentyrian2000 PROPERTIES LINK_FLAGS "-Wl,-gc-sections -Wl,--mac-strip-macsbug")
 else()
+    set(CMAKE_C_FLAGS "-DWITH_SDL -DWITH_SDL1 -D__MACOS__ -Dpowerc $(CMAKE_C_FLAGS)")
     set_target_properties(opentyrian2000 PROPERTIES LINK_FLAGS "-Wl,-gc-sections")
 endif()
 target_link_libraries(opentyrian2000 "-lSDL -lc -lm")
