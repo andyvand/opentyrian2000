@@ -161,7 +161,7 @@ int can_init_scaler( unsigned int new_scaler, bool fullscreen )
     int w = scalers[new_scaler].width,
         h = scalers[new_scaler].height;
     int flags = SDL_SWSURFACE | SDL_HWPALETTE | (fullscreen ? SDL_FULLSCREEN : 0);
-    
+
     // test each bitdepth
     for (uint bpp = 32; bpp > 0; bpp -= 8)
     {

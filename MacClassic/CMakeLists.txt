@@ -65,7 +65,7 @@ add_application(opentyrian2000
     # (don't do this when debugging...)
 set_target_properties(opentyrian2000 PROPERTIES COMPILE_OPTIONS -ffunction-sections)
 if(CMAKE_SYSTEM_NAME MATCHES Retro68)
-    set(CMAKE_C_FLAGS "-DWITH_SDL -DWITH_SDL1 -D__MACOS__ -DM68K_SDL $(CMAKE_C_FLAGS)")
+    set(CMAKE_C_FLAGS "-Os -fdata-sections -ffunction-sections -fipa-pta -DWITH_SDL -DWITH_SDL1 -D__MACOS__ -DM68K_SDL $(CMAKE_C_FLAGS)")
     set_target_properties(opentyrian2000 PROPERTIES LINK_FLAGS "-Wl,-gc-sections -Wl,--mac-strip-macsbug")
 else()
     set(CMAKE_C_FLAGS "-DWITH_SDL -DWITH_SDL1 -D__MACOS__ -Dpowerc $(CMAKE_C_FLAGS)")
