@@ -43,7 +43,7 @@ OpenTyrian2000 uses UDP port 1333 for multiplayer, but in most cases players
 will not need to open any ports because OpenTyrian2000 makes use of UDP hole
 punching.
 
-Note that Network play has been tested using both SDL2_net and SDL3_net.
+Note that Network play has been tested using SDL_net, SDL2_net and SDL3_net.
 
 == Links =======================================================================
 
@@ -75,8 +75,22 @@ esp-idf V5.4
 Under esp-idf directory do:
 ". ./export.sh"
 
+## Set up for esp32, esp32s2 and esp32s3
+"idf.py set-target esp32"
+"idf.py set-target esp32s2"
+"idf.py set-target esp32s3"
+
 ## Installation
 "idf.py menuconfig"
+Make sure that under Serial Flasher Config the flash size is at least 4MB for SD card builds and 16MB for LittleFS builds.
+Make sure PSRAM has been set up.
+Make that under Partition Table it is set to Custom Partition table CSV.
+Use partitions.csv for SD card builds.
+Use partitions_lfs.csv for LittleFS builds.
+
+For SD card builds comment out with a # the following:
+list(APPEND EXTRA_COMPONENT_DIRS "${CMAKE_SOURCE_DIR}/components/esp_littlefs")
+littlefs_create_partition_image(storage data FLASH_IN_PROJECT)
 
 ### LCD / SD Card
 Set up the pins used for your LCD and SD Card.
