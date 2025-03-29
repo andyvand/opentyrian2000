@@ -55,6 +55,10 @@
 #include "macos-bundle.h"
 #endif
 
+#ifdef WITH_SDL3_ESP
+#define CONFIG_LITTLEFS 1
+#endif
+
 /* Configuration Load/Save handler */
 
 const JE_byte cryptKey[10] = /* [1..10] */
@@ -117,8 +121,8 @@ static const char *const mouseSettingValues[] =
 	"change rear mode",
 };
 
-char defaultHighScoreNames[39][23]; /* [1..39] of string [22] */
-char defaultTeamNames[10][25]; /* [1..22] of string [24] */
+EXTATTR char defaultHighScoreNames[39][23]; /* [1..39] of string [22] */
+EXTATTR char defaultTeamNames[10][25]; /* [1..22] of string [24] */
 
 const JE_EditorItemAvailType initialItemAvail =
 {
@@ -218,10 +222,10 @@ JE_boolean pentiumMode;
 JE_byte    gameSpeed;
 JE_byte    processorType;  /* 1=386 2=486 3=Pentium Hyper */
 
-JE_SaveFilesType saveFiles; /*array[1..saveLevelnum] of savefiletype;*/
-JE_SaveGameTemp saveTemp;
+EXTATTR JE_SaveFilesType saveFiles; /*array[1..saveLevelnum] of savefiletype;*/
+EXTATTR JE_SaveGameTemp saveTemp;
 
-T2KHighScoreType t2kHighScores[20][3];
+EXTATTR T2KHighScoreType t2kHighScores[20][3];
 
 JE_word editorLevel;   /*Initial value 800*/
 
@@ -265,7 +269,7 @@ bool load_opentyrian_config(void)
 {
 	// defaults
 	fullscreen_display = -1;
-#ifdef VITA
+#if defined(VITA) || defined(WITH_SDL3_ESP)
     set_scaler_by_name("None");
 #else
 	set_scaler_by_name("Scale2x");
@@ -843,6 +847,12 @@ const char * get_user_directory(void)
 		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
 #elif defined(VITA)
         snprintf(user_dir, sizeof(user_dir), "ux0:data/opentyrian2000");
+#elif defined(WITH_SDL3_ESP)
+#if CONFIG_LITTLEFS
+        snprintf(user_dir, sizeof(user_dir), "/sd");
+#else
+        snprintf(user_dir, sizeof(user_dir), "/sd/data");
+#endif
 #elif defined(WITH_SDL)
 #if CONFIG_LITTLEFS
         snprintf(user_dir, sizeof(user_dir), "/sd");

@@ -63,7 +63,11 @@ SDL_FORCE_INLINE Uint32 SDLNet_Read32(const void *areap)
 #      ifdef WITH_SDL
 #          include <SDL_net.h>
 #      else
-#	       include "SDL2/SDL_net.h"
+#          ifdef WITH_SDL3_ESP
+#              include "SDL_net.h"
+#          else
+#	           include "SDL2/SDL_net.h"
+#          endif
 #      endif
 #   endif
 #endif

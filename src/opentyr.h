@@ -56,7 +56,9 @@
 #endif
 #endif
 
-#if defined(WITH_SDL) && !defined(WITH_SDL1)
+#if (defined(WITH_SDL) && !defined(WITH_SDL1)) || defined(WITH_SDL3_ESP)
+#include "esp_attr.h"
+
 //#define EXTATTR EXT_RAM_ATTR
 #define EXTATTR EXT_RAM_BSS_ATTR
 #define IRATTR IRAM_ATTR

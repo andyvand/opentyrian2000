@@ -1,4 +1,16 @@
-menu "WiFi Configuration"
+menu "Game Configuration"
+
+    config HW_ODROID_GO
+        bool "Hardware is ODroid Go"
+        default n
+        help
+            Configure building for ODroid Go.
+
+    config MOUNT_SD_CARD
+        bool "Use SD card instead of LittleFS"
+        default n
+        help
+            Use SD card for data files instead of LittleFS.
 
     config NETWORK_GAME 
         bool "Network game"

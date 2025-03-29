@@ -35,6 +35,7 @@ static void no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 
+static void no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void scale2x_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void scale3x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );

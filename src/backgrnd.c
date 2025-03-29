@@ -465,7 +465,7 @@ typedef struct
 
 #define MAX_STARS 100
 #define STARFIELD_HUE 0x90
-static StarfieldStar starfield_stars[MAX_STARS];
+static EXTATTR StarfieldStar starfield_stars[MAX_STARS];
 int starfield_speed;
 
 void initialize_starfield(void)

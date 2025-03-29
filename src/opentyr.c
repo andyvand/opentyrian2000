@@ -71,7 +71,11 @@
 #ifdef WITH_SDL
 #include <SDL_net.h>
 #else
+#ifdef WITH_SDL3_ESP
+#include <SDL_net.h>
+#else
 #include <SDL2/SDL_net.h>
+#endif
 #endif
 #endif
 #endif
@@ -1050,11 +1054,9 @@ int main(int argc, char *argv[])
 		_printf("initializing SDL audio...\n");
 
 		init_audio();
-
 		load_music();
-
 		loadSndFile(xmas);
-	}
+    }
 	else
 	{
 		_printf("audio disabled\n");
@@ -1078,10 +1080,10 @@ int main(int argc, char *argv[])
 #endif
 	}
 
-#ifdef NDEBUG
+//#ifdef NDEBUG
 	if (!isNetworkGame)
 		intro_logos();
-#endif
+//#endif
 
 	for (; ; )
 	{

@@ -60,6 +60,10 @@
 #include <android/asset_manager_jni.h>
 #endif
 
+#ifdef WITH_SDL3_ESP
+#include "bsp/esp-bsp.h"
+#endif
+
 const char *custom_data_dir = NULL;
 
 #ifndef TYRIAN_DIR
@@ -78,7 +82,7 @@ const char * data_dir(void)
         "app0:data/",
         ".",
     };
-#elif defined(WITH_SDL) && !defined(WITH_SDL1)
+#elif (defined(WITH_SDL) && !defined(WITH_SDL1)) || defined(WITH_SDL3_ESP)
     const char *const dirs[] =
     {
         "/sd/data",
@@ -164,7 +168,7 @@ const char * data_dir(void)
 	return dir;
 }
 
-#if defined(WITH_SDL) && !defined(WITH_SDL1)
+#if (defined(WITH_SDL) && !defined(WITH_SDL1)) || defined(WITH_SDL3_ESP)
 bool init_SD = false;
 #endif
 
@@ -182,6 +186,18 @@ FILE * dir_fopen(const char *dir, const char *file, const char *mode)
     }
 
     SDL_LockDisplay();
+#elif defined(WITH_SDL3_ESP)
+    if(init_SD == false)
+    {
+#if CONFIG_MOUNT_SD_CARD
+        if (bsp_sdcard_mount() == ESP_OK)
+#else /* CONFIG_MOUNT_LITTLEFS */
+        if (bsp_littlefs_mount() == ESP_OK)
+#endif
+        {
+            init_SD = true;
+        }
+    }
 #endif
 #if defined(_MSC_VER) && __STDC_WANT_SECURE_LIB__
 	FILE *f = NULL;

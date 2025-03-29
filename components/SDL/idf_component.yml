@@ -1,0 +1,80 @@
+## IDF Component Manager Manifest File
+description: Simple DirectMedia Layer (SDL) Version 3.2 (ESP-IDF wrapper on upstream SDL)
+license: Zlib
+url: https://www.libsdl.org/
+repository: https://github.com/georgik/SDL/tree/feature/esp-idf
+version: 3.2.5~1
+
+files:
+  exclude:
+    - ".github"
+    - "SDL/.git"
+    - "SDL/.wikiheaders-options"
+    - "SDL/Android.mk"
+    - "SDL/VisualC*/**"
+    - "SDL/Xcode/**"
+    - "SDL/android-project/**"
+    - "SDL/test/**"
+    - "SDL/build-scripts/**"
+    - "SDL/cmake/**"
+    - "SDL/docs/**"
+    - "SDL/examples/**"
+    - "SDL/wayland-protocols/**"
+    - "SDL/src/**/android/**"
+    - "SDL/src/**/cocoa/**"
+    - "SDL/src/**/directx/**"
+    - "SDL/src/video/dummy/**"
+    - "SDL/src/**/emscripten/**"
+    - "SDL/src/**/freebsd/**"
+    - "SDL/src/**/gdk/**"
+    - "SDL/src/**/haiku/**"
+    - "SDL/src/**/khronos/**"
+    - "SDL/src/**/kmsdrm/**"
+    - "SDL/src/**/linux/**"
+    - "SDL/src/**/macos/**"
+    - "SDL/src/**/n3ds/**"
+    - "SDL/src/**/ngage/**"
+    - "SDL/src/**/offscreen/**"
+    - "SDL/src/**/openbsd/**"
+    - "SDL/src/**/openvr/**"
+    - "SDL/src/**/ps2/**"
+    - "SDL/src/**/psp/**"
+    - "SDL/src/**/qnx/**"
+    - "SDL/src/**/raspberry/**"
+    - "SDL/src/**/riscos/**"
+    - "SDL/src/**/uikit/**"
+    - "SDL/src/**/unix/**"
+    - "SDL/src/**/vita/**"
+    - "SDL/src/**/vivante/**"
+    - "SDL/src/**/wayland/**"
+    - "SDL/src/**/windows/**"
+    - "SDL/src/**/x11/**"
+    - "SDL/src/gpu/**"
+    - "SDL/src/render/gpu/**"
+    - "SDL/src/render/metal/**"
+    - "SDL/src/render/direct3d11/**"
+    - "SDL/src/render/opengles2/**"
+    - "SDL/src/render/direct3d/**"
+    - "SDL/src/render/direct3d12/**"
+    - "SDL/src/render/vulkan/**"
+    - "SDL/src/render/vitagxm/**"
+    - "SDL/src/test/**"
+    - "SDL/src/hidapi/**"
+    - "SDL/src/video/sdlgenblit.pl"
+
+    # Disable huge files
+    - "SDL/include/SDL3/SDL_opengl_glext.h"
+    - "SDL/include/SDL3/SDL_opengles2_gl2ext.h"
+  include:
+    - "SDL/include/build_config/*.h" # Include build_config files from SDL
+    - "include/build_config/*.h" # Include build_config files from ESP-IDF
+    - "SDL/src/core/linux/SDL_dbus.h" # This file is hardcoded in src/SDL.c
+
+dependencies:
+  espressif/esp_lcd_touch_tt21100: "*"
+  ## Required IDF version
+  idf:
+    version: ">=5.4.0"
+
+examples:
+  - path: ../examples/snow

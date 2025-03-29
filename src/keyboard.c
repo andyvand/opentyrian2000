@@ -27,7 +27,7 @@
 #include "video_scale.h"
 #include "font.h"
 
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL) || defined(WITH_SDL3_ESP)
 #include "player.h"
 #include "network.h"
 #endif
@@ -178,7 +178,7 @@ void mouseSetRelative(SDL_Window *window, bool enable)
 void mouseSetRelative(bool enable)
 #endif
 {
-#if !defined(ANDROID) && !defined(__ANDROID__) && !defined(IOS) && !defined(VITA) && !defined(WITH_SDL)
+#if !defined(ANDROID) && !defined(__ANDROID__) && !defined(IOS) && !defined(VITA) && !defined(WITH_SDL) && !defined(WITH_SDL3_ESP)
 #ifdef WITH_SDL3
     SDL_SetWindowRelativeMouseMode(window, enable && windowHasFocus);
 #else
@@ -335,6 +335,57 @@ void service_SDL_events(JE_boolean clear_new)
 				return;
 
 #ifdef WITH_SDL3
+/*#ifdef WITH_SDL3_ESP
+            case SDL_EVENT_FINGER_UP:
+                mouseInactive = false;
+                mousedown = false;
+                mouse_pressed[0] = mousedown;
+                break;
+
+            case SDL_EVENT_FINGER_DOWN:
+                mouseInactive = false;
+
+                mx = (Sint32)ev.tfinger.x;
+                my = (Sint32)ev.tfinger.y;
+                mouse_x = mx;
+                mouse_y = my;
+
+                mapWindowPointToScreen(&mouse_x, &mouse_y);
+
+                if (mouseRelativeEnabled && windowHasFocus)
+                {
+                    if (isNetworkGame)
+                    {
+                        mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;
+                        myrel = mouse_y - player[thisPlayerNum ? thisPlayerNum - 1 : 0].y;
+                    } else if (twoPlayerMode) {
+                        mxrel = mouse_x - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].x;
+                        myrel = mouse_y - player[mousePlayerNumber ? mousePlayerNumber - 1 : 0].y;
+                    } else {
+                        mxrel = mouse_x - player[0].x;
+                        myrel = mouse_y - player[0].y;
+                    }
+
+                    mouseWindowXRelative += mxrel;
+                    mouseWindowYRelative += myrel;
+                }
+
+                if (mouse_x < 0 || mouse_x >= vga_width ||
+                    mouse_y < 0 || mouse_y >= vga_height ? true : false)
+                {
+                    SDL_ShowCursor();
+                } else {
+                    SDL_HideCursor();
+                }
+
+                newmouse = true;
+                lastmouse_but = ev.tfinger.pressure;
+                lastmouse_x = mx;
+                lastmouse_y = my;
+                mousedown = true;
+                mouse_pressed[0] = mousedown;
+                break;
+#endif*/
             case SDL_EVENT_MOUSE_MOTION:
                 mx = (Sint32)ev.motion.x;
                 my = (Sint32)ev.motion.y;
@@ -351,7 +402,7 @@ void service_SDL_events(JE_boolean clear_new)
 				if (mouseRelativeEnabled && windowHasFocus)
 				{
 #ifdef WITH_SDL3
-#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL)
+#if defined(ANDROID) || defined(__ANDROID__) || defined(IOS) || defined(VITA) || defined(WITH_SDL) || defined(WITH_SDL3_ESP)
                     if (isNetworkGame)
                     {
                         mxrel = mouse_x - player[thisPlayerNum ? thisPlayerNum - 1 : 0].x;

@@ -268,7 +268,7 @@ JE_word superEnemy254Jump;
 
 /*EnemyShotData*/
 JE_boolean fireButtonHeld;
-JE_boolean enemyShotAvail[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax] */
+EXTATTR JE_boolean enemyShotAvail[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax] */
 EXTATTR EnemyShotType enemyShot[ENEMY_SHOT_MAX]; /* [1..Enemyshotmax]  */
 
 /* Player Shot Data */
@@ -305,7 +305,7 @@ JE_integer explosionFollowAmountX, explosionFollowAmountY;
 rep_explosion_type rep_explosions[MAX_REPEATING_EXPLOSIONS]; /* [1..20] */
 
 /*SuperPixels*/
-superpixel_type superpixels[MAX_SUPERPIXELS]; /* [0..MaxSP] */
+EXTATTR superpixel_type superpixels[MAX_SUPERPIXELS]; /* [0..MaxSP] */
 unsigned int last_superpixel;
 
 /*Temporary Numbers*/

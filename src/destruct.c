@@ -494,7 +494,7 @@ static JE_boolean destructFirstTime;
 
 static struct destruct_config_s config = { 40, 20, 20, 40, 10, false, false, {true, false}, {true, false} };
 static struct destruct_player_s destruct_player[MAX_PLAYERS];
-static struct destruct_world_s  world;
+static EXTATTR struct destruct_world_s  world;
 static struct destruct_shot_s   * shotRec;
 static struct destruct_explo_s  * exploRec;
 

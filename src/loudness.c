@@ -440,7 +440,6 @@ bool init_audio(void)
 
 #ifdef WITH_SDL3
     SDL_ResumeAudioStreamDevice(auStream);
-
     SDL_ResumeAudioDevice(audioDevice); // unpause
 #else
 #ifdef WITH_SDL
@@ -457,7 +456,9 @@ bool restart_audio(void){
 	if (audio_disabled)
 		return false;
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
@@ -467,7 +468,9 @@ bool restart_audio(void){
 	unsigned int prev_song = song_playing;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
@@ -486,7 +489,7 @@ bool restart_audio(void){
 
 #ifdef WITH_SDL3
 #ifdef WITH_MIDI
-static void audioMixCallback(void *userdata, Uint8 *stream, int size)
+static void IRATTR audioMixCallback(void *userdata, Uint8 *stream, int size)
 {
     (void)userdata;
     Sint16 *const samples = (Sint16 *)stream;
@@ -551,28 +554,30 @@ static void audioMixCallback(void *userdata, Uint8 *stream, int size)
 }
 #endif
 
-static void audioCallback(void *userdata, SDL_AudioStream *SDLstream, int add_size, int size)
+static void IRATTR audioCallback(void *userdata, SDL_AudioStream *SDLstream, int add_size, int size)
 #else
 static void IRATTR audioCallback(void *userdata, Uint8 *stream, int size)
 #endif
 {
 #ifndef WITH_SDL3
     (void)size;
+#else
+    (void)add_size;
 #endif
     (void)userdata;
 
 #ifdef WITH_SDL3
-    Sint16 *const samples = SDL_malloc(add_size);
-
-    if (samples == NULL)
-    {
-        return;
-    }
+#ifdef WITH_SDL3_ESP
+    Sint16 samples[16];
+    const int samplesCount = sizeof(samples) / sizeof(Sint16);
+#else
+    Sint16 samples[256];
+    int samplesCount = sizeof(samples) / sizeof (Sint16);
+#endif
 #else
 	Sint16 *const samples = (Sint16 *)stream;
+    const int samplesCount = size / sizeof (Sint16);
 #endif
-
-	const int samplesCount = size / sizeof (Sint16);
 
 #ifndef WITH_SDL3
 #ifdef WITH_MIDI
@@ -638,106 +643,113 @@ static void IRATTR audioCallback(void *userdata, Uint8 *stream, int size)
 	}
 	else
 #endif
-#endif
-	if ((music_device == OPL) && !music_disabled && !music_stopped)
-	{
-		Sint16 *remaining = samples;
-		int remainingCount = samplesCount;
-		while (remainingCount > 0)
-		{
-			if (samplesUntilLdsUpdate == 0)
-			{
-				lds_update();
-
-				// The number of samples that should be produced per Loudness
-				// update is not an integer, but we can only produce an integer
-				// number of samples, so we accumulate the fractional samples
-				// until it amounts to a whole sample.
-				samplesUntilLdsUpdate += samplesPerLdsUpdate;
-				samplesUntilLdsUpdateFrac += samplesPerLdsUpdateFrac;
-				if (samplesUntilLdsUpdateFrac >= ldsUpdate2Rate)
-				{
-					samplesUntilLdsUpdate += 1;
-					samplesUntilLdsUpdateFrac -= ldsUpdate2Rate;
-				}
-			}
-
-			int count = MIN(samplesUntilLdsUpdate, remainingCount);
-
-			opl_update(remaining, count);
-
-			remaining += count;
-			remainingCount -= count;
-
-			samplesUntilLdsUpdate -= count;
-		}
-	}
-	else
-	{
-		for (int i = 0; i < samplesCount; ++i)
-			samples[i] = 0;
-	}
-
-	Sint32 musicVolumeFactor = volumeFactorTable[musicVolume];
-	musicVolumeFactor *= 2;  // OPL emulator is too quiet
-
-	if (samples_disabled && !music_disabled)
-	{
-		// Mix music
-		Sint16 *remaining = samples;
-		int remainingCount = samplesCount;
-		while (remainingCount > 0)
-		{
-			Sint32 sample = *remaining * musicVolumeFactor;
-
-			sample = FIXED_TO_INT(sample);
-			*remaining = MIN(MAX(INT16_MIN, sample), INT16_MAX);
-
-			remaining += 1;
-			remainingCount -= 1;
-		}
-	}
-	else if (!samples_disabled)
-	{
-		Sint32 sampleVolumeFactor = volumeFactorTable[sampleVolume];
-		Sint32 sampleVolumeFactors[CHANNEL_VOLUME_LEVELS];
-		for (int i = 0; i < CHANNEL_VOLUME_LEVELS; ++i)
-        {
-            sampleVolumeFactors[i] = sampleVolumeFactor * (i + 1) / CHANNEL_VOLUME_LEVELS;
-        }
-
-		// Mix music and channels
-		Sint16 *remaining = samples;
-		int remainingCount = samplesCount;
-		while (remainingCount > 0)
-        {
-            Sint32 sample = *remaining * musicVolumeFactor;
-
-            for (size_t i = 0; i < CHANNEL_COUNT; ++i)
-            {
-                if (channelSampleCount[i] > 0)
-                {
-                    sample += *channelSamples[i] * sampleVolumeFactors[channelVolume[i]];
-
-                    channelSamples[i] += 1;
-                    channelSampleCount[i] -= 1;
-                }
-            }
-
-            sample = FIXED_TO_INT(sample);
-            *remaining = MIN(MAX(INT16_MIN, sample), INT16_MAX);
-
-            remaining += 1;
-            remainingCount -= 1;
-        }
-    }
-
-#ifdef WITH_SDL3
-    SDL_PutAudioStreamData(SDLstream, samples, add_size);
-
-    if (samples != NULL)
+#else
+    while (size > 0)
     {
-        SDL_free(samples);
+#endif
+#ifndef WITH_SDL3_ESP
+        if ((int)(size / sizeof(Sint16)) < samplesCount)
+        {
+            samplesCount = size / sizeof(Sint16);
+        }
+#endif
+
+        if ((music_device == OPL) && !music_disabled && !music_stopped)
+        {
+            Sint16 *remaining = (Sint16 *)samples;
+            int remainingCount = samplesCount;
+            while (remainingCount > 0)
+            {
+                if (samplesUntilLdsUpdate == 0)
+                {
+                    lds_update();
+                    
+                    // The number of samples that should be produced per Loudness
+                    // update is not an integer, but we can only produce an integer
+                    // number of samples, so we accumulate the fractional samples
+                    // until it amounts to a whole sample.
+                    samplesUntilLdsUpdate += samplesPerLdsUpdate;
+                    samplesUntilLdsUpdateFrac += samplesPerLdsUpdateFrac;
+                    if (samplesUntilLdsUpdateFrac >= ldsUpdate2Rate)
+                    {
+                        samplesUntilLdsUpdate += 1;
+                        samplesUntilLdsUpdateFrac -= ldsUpdate2Rate;
+                    }
+                }
+                
+                int count = MIN(samplesUntilLdsUpdate, remainingCount);
+                
+                opl_update(remaining, count);
+                
+                remaining += count;
+                remainingCount -= count;
+                
+                samplesUntilLdsUpdate -= count;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < samplesCount; ++i)
+                samples[i] = 0;
+        }
+        
+        Sint32 musicVolumeFactor = volumeFactorTable[musicVolume];
+        musicVolumeFactor *= 2;  // OPL emulator is too quiet
+        
+        if (samples_disabled && !music_disabled)
+        {
+            // Mix music
+            Sint16 *remaining = (Sint16 *)samples;
+            int remainingCount = samplesCount;
+            while (remainingCount > 0)
+            {
+                Sint32 sample = *remaining * musicVolumeFactor;
+                
+                sample = FIXED_TO_INT(sample);
+                *remaining = MIN(MAX(INT16_MIN, sample), INT16_MAX);
+                
+                remaining += 1;
+                remainingCount -= 1;
+            }
+        }
+        else if (!samples_disabled)
+        {
+            Sint32 sampleVolumeFactor = volumeFactorTable[sampleVolume];
+            Sint32 sampleVolumeFactors[CHANNEL_VOLUME_LEVELS];
+            for (int i = 0; i < CHANNEL_VOLUME_LEVELS; ++i)
+            {
+                sampleVolumeFactors[i] = sampleVolumeFactor * (i + 1) / CHANNEL_VOLUME_LEVELS;
+            }
+            
+            // Mix music and channels
+            Sint16 *remaining = (Sint16 *)samples;
+            int remainingCount = samplesCount;
+            while (remainingCount > 0)
+            {
+                Sint32 sample = *remaining * musicVolumeFactor;
+                
+                for (size_t i = 0; i < CHANNEL_COUNT; ++i)
+                {
+                    if (channelSampleCount[i] > 0)
+                    {
+                        sample += *channelSamples[i] * sampleVolumeFactors[channelVolume[i]];
+                        
+                        channelSamples[i] += 1;
+                        channelSampleCount[i] -= 1;
+                    }
+                }
+                
+                sample = FIXED_TO_INT(sample);
+                *remaining = MIN(MAX(INT16_MIN, sample), INT16_MAX);
+                
+                remaining += 1;
+                remainingCount -= 1;
+            }
+        }
+        
+#ifdef WITH_SDL3
+        SDL_PutAudioStreamData(SDLstream, samples, samplesCount * sizeof(Sint16));
+        size -= samplesCount * sizeof(Sint16);
     }
 #endif
 }
@@ -844,7 +856,9 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 		}
 #endif
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
         SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 		SDL_LockAudioDevice(audioDevice);
@@ -866,7 +880,9 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 		song_playing = song_num;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
         SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 		SDL_UnlockAudioDevice(audioDevice);
@@ -883,7 +899,9 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 	}
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
@@ -895,7 +913,9 @@ void play_song(unsigned int song_num)  // FKA NortSong.playSong
 	music_stopped = false;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
@@ -911,7 +931,9 @@ void restart_song(void)  // FKA Player.selectSong(1)
 		return;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
@@ -937,7 +959,9 @@ void restart_song(void)  // FKA Player.selectSong(1)
 	music_stopped = false;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
@@ -953,7 +977,9 @@ void stop_song(void)  // FKA Player.selectSong(0)
 		return;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
@@ -973,7 +999,9 @@ void stop_song(void)  // FKA Player.selectSong(0)
 	music_stopped = true;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
@@ -989,7 +1017,9 @@ void fade_song(void)  // FKA Player.selectSong($C001)
 		return;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
@@ -1013,7 +1043,9 @@ void fade_song(void)  // FKA Player.selectSong($C001)
 	}
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
@@ -1029,7 +1061,9 @@ void set_volume(Uint8 musicVolume_, Uint8 sampleVolume_)  // FKA NortSong.setVol
 		return;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
     SDL_LockAudioDevice(audioDevice);
@@ -1042,7 +1076,9 @@ void set_volume(Uint8 musicVolume_, Uint8 sampleVolume_)  // FKA NortSong.setVol
 	sampleVolume = sampleVolume_;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);
@@ -1061,7 +1097,9 @@ void multiSamplePlay(const Sint16 *samples, size_t sampleCount, Uint8 chan, Uint
 		return;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_LockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_LockAudioDevice(audioDevice);
@@ -1075,7 +1113,9 @@ void multiSamplePlay(const Sint16 *samples, size_t sampleCount, Uint8 chan, Uint
 	channelVolume[chan] = vol;
 
 #ifdef WITH_SDL3
+#ifndef WITH_SDL3_ESP
     SDL_UnlockMutex(AudioDeviceLock);
+#endif
 #else
 #ifndef WITH_SDL
 	SDL_UnlockAudioDevice(audioDevice);

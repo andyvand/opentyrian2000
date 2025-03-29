@@ -59,19 +59,11 @@
 #define PARAMS NULL
 #endif
 
+static const char *TAG = "main";
+
 extern int main(int argc, const char *argv[]);
 
-void tyrianTask(void *pvParameters)
-{
-//    heap_caps_print_heap_info(MALLOC_CAP_SPIRAM);
-//    spi_lcd_init();
-
-    const char *argv[]={"opentyrian2000", PARAMS};
-    main(PARAMNUM, argv);
-}
-
 #if CONFIG_NETWORK_GAME
-static const char *TAG = "scan";
 static EventGroupHandle_t wifi_event_group;
 const static int CONNECTED_BIT = BIT0;
 
@@ -86,6 +78,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         ESP_LOGI(TAG, "SYSTEM_EVENT_STA_DISCONNECTED");
         ESP_ERROR_CHECK(esp_wifi_connect());
     } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+        xEventGroupSetBits(wifi_event_group, CONNECTED_BIT);
         ip_event_got_ip_t* event_ip = (ip_event_got_ip_t*) event_data;
         ESP_LOGI(TAG, "Got IP: " IPSTR, IP2STR(&event_ip->ip_info.ip));
     }
@@ -94,6 +87,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
 static void wifi_scan(void)
 {
     wifi_event_group = xEventGroupCreate();
+    ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
@@ -124,14 +118,24 @@ static void wifi_scan(void)
 }
 #endif
 
+void tyrianTask(void *pvParameters)
+{
+    const char *argv[]={"opentyrian2000", PARAMS};
+
+//    heap_caps_print_heap_info(MALLOC_CAP_SPIRAM);
+//    spi_lcd_init();
+    main(PARAMNUM, argv);
+}
+
 //extern "C"
 void app_main(void)
 {
     esp_log_level_set("*", ESP_LOG_INFO);
-
+    
 #if CONFIG_NETWORK_GAME
+    ESP_ERROR_CHECK(nvs_flash_init());
     wifi_scan();
 #endif
-
-	xTaskCreatePinnedToCore(&tyrianTask, "tyrianTask", 34000, NULL, 5, NULL, 0);
+    
+    xTaskCreatePinnedToCore(&tyrianTask, "tyrianTask", 73000, NULL, /*5*/2 | portPRIVILEGE_BIT, NULL, 0);
 }

@@ -25,7 +25,7 @@
 #include "opentyr.h"
 
 /* MAIN Weapons Data */
-EXTATTR JE_WeaponPortType weaponPort;
+JE_WeaponPortType weaponPort;
 EXTATTR JE_WeaponType     weapons[WEAP_NUM + 1]; /* [0..weapnum] */
 
 /* Items */
