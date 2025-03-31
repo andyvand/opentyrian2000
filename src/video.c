@@ -344,7 +344,15 @@ void init_video(void)
 #if defined(IOS) || defined(__3DS__)
     main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN);
 #else
+#ifdef CONFIG_IDF_TARGET
+#if CONFIG_BSP_DISPLAY_ROTATION_SWAP_XY
+    main_window = SDL_CreateWindow(opentyrian_str, CONFIG_BSP_DISPLAY_HEIGHT, CONFIG_BSP_DISPLAY_WIDTH, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
+#else
+    main_window = SDL_CreateWindow(opentyrian_str, CONFIG_BSP_DISPLAY_WIDTH, CONFIG_BSP_DISPLAY_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
+#endif
+#else
     main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
+#endif
 #endif
 #else
 #ifdef IOS
