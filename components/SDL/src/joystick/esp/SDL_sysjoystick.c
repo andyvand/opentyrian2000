@@ -241,7 +241,7 @@ static void UpdateESPPressedButtons(Uint64 timestamp, SDL_Joystick *joystick)
 #ifdef VERBOSE
             ESP_LOGI("SDL", "Button %d pressed\n", i);
 #endif
-            SDL_SendJoystickButton(timestamp, joystick, i, true);
+            SDL_SendJoystickButton(timestamp, joystick, i-4, true);
         }
     }
 }
@@ -254,7 +254,7 @@ static void UpdateESPReleasedButtons(Uint64 timestamp, SDL_Joystick *joystick)
     for (Uint8 i = 4; i < joystick->nbuttons; i++) {
 #endif
         if (!(1-gpio_get_level(button_gpio[i]))) {
-            SDL_SendJoystickButton(timestamp, joystick, i, false);
+            SDL_SendJoystickButton(timestamp, joystick, i-4, false);
         }
     }
 }
@@ -361,12 +361,12 @@ static bool ESP_JoystickGetGamepadMapping(int device_index, SDL_GamepadMapping *
         .back = { EMappingKind_Button, 3 },
         .start = { EMappingKind_Button, 4 },
 #else
-        .a = { EMappingKind_Button, 4 },
-        .b = { EMappingKind_Button, 5 },
-        .x = { EMappingKind_Button, 7 },
-        .y = { EMappingKind_Button, 9 },
-        .back = { EMappingKind_Button, 8 },
-        .start = { EMappingKind_Button, 6 },
+        .a = { EMappingKind_Button, 0 },
+        .b = { EMappingKind_Button, 1 },
+        .x = { EMappingKind_Button, 3 },
+        .y = { EMappingKind_Button, 5 },
+        .back = { EMappingKind_Button, 4 },
+        .start = { EMappingKind_Button, 2 },
 #endif
         .guide = { EMappingKind_None, 255 },
         .leftstick = { EMappingKind_None, 255 },
