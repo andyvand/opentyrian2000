@@ -30,7 +30,7 @@
 #define NB_BUTTONS 6
 #define NB_AXIS 2
 #else
-#define NB_BUTTONS 10
+#define NB_BUTTONS 8
 #define NB_AXIS 0
 #endif
 
@@ -90,10 +90,12 @@ static inline int Correct_Axis_Y(int X) {
 #define CONFIG_HW_BUTTON_PIN_NUM_RIGHT CONFIG_BSP_BUTTON_4_GPIO
 #define CONFIG_HW_BUTTON_PIN_NUM_BUTTON1 CONFIG_BSP_BUTTON_5_GPIO
 #define CONFIG_HW_BUTTON_PIN_NUM_BUTTON2 CONFIG_BSP_BUTTON_6_GPIO
-#define CONFIG_HW_BUTTON_PIN_NUM_MENU CONFIG_BSP_BUTTON_7_GPIO
-#define CONFIG_HW_BUTTON_PIN_NUM_START CONFIG_BSP_BUTTON_8_GPIO
-#define CONFIG_HW_BUTTON_PIN_NUM_SELECT CONFIG_BSP_BUTTON_9_GPIO
+#define CONFIG_HW_BUTTON_PIN_NUM_START CONFIG_BSP_BUTTON_7_GPIO
+#define CONFIG_HW_BUTTON_PIN_NUM_SELECT CONFIG_BSP_BUTTON_8_GPIO
+#if 0
+#define CONFIG_HW_BUTTON_PIN_NUM_MENU CONFIG_BSP_BUTTON_9_GPIO
 #define CONFIG_HW_BUTTON_PIN_NUM_VOL CONFIG_BSP_BUTTON_10_GPIO
+#endif
 #endif
 
 const int button_gpio[NB_BUTTONS] = {
@@ -112,9 +114,11 @@ const int button_gpio[NB_BUTTONS] = {
     CONFIG_HW_BUTTON_PIN_NUM_BUTTON1,
     CONFIG_HW_BUTTON_PIN_NUM_BUTTON2,
     CONFIG_HW_BUTTON_PIN_NUM_START,
-    CONFIG_HW_BUTTON_PIN_NUM_SELECT,
+    CONFIG_HW_BUTTON_PIN_NUM_SELECT
+#if 0
     CONFIG_HW_BUTTON_PIN_NUM_MENU,
     CONFIG_HW_BUTTON_PIN_NUM_VOL
+#endif
 #endif
 };
 
@@ -137,7 +141,7 @@ static void UpdateESPAxes(Uint64 timestamp, SDL_Joystick *joystick);
 static void IRAM_ATTR gpio_isr_handler(void* arg)
 {
     int gpio_num = (int)arg;
-    for (int i=0; i < 6; i++)
+    for (int i=0; i < NB_BUTTONS; i++)
     {
         if(button_gpio[i] == gpio_num)
         {
@@ -156,7 +160,7 @@ static bool ESP_JoystickInit(void)
     io_conf.intr_type = GPIO_INTR_ANYEDGE;
 
     //bit mask of the pins, use GPIO... here
-    for (int i=0; i < 6; i++)
+    for (int i=0; i < NB_BUTTONS; i++)
     {
         if(i==0)
         {
@@ -184,7 +188,7 @@ static bool ESP_JoystickInit(void)
     gpio_install_isr_service(ESP_INTR_FLAG_SHARED);
 
     //hook isr handler
-    for (int i=0; i < 6; i++)
+    for (int i=0; i < NB_BUTTONS; i++)
     {
         gpio_isr_handler_add(button_gpio[i], gpio_isr_handler, (void *)button_gpio[i]);
     }
@@ -363,9 +367,9 @@ static bool ESP_JoystickGetGamepadMapping(int device_index, SDL_GamepadMapping *
 #else
         .a = { EMappingKind_Button, 0 },
         .b = { EMappingKind_Button, 1 },
-        .x = { EMappingKind_Button, 3 },
-        .y = { EMappingKind_Button, 5 },
-        .back = { EMappingKind_Button, 4 },
+        .x = { EMappingKind_None, 255 },
+        .y = { EMappingKind_None, 255 },
+        .back = { EMappingKind_Button, 3 },
         .start = { EMappingKind_Button, 2 },
 #endif
         .guide = { EMappingKind_None, 255 },
