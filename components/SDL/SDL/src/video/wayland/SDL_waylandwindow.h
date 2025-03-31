@@ -118,6 +118,8 @@ struct SDL_WindowData
     struct frog_color_managed_surface *frog_color_managed_surface;
     struct wp_color_management_surface_feedback_v1 *wp_color_management_surface_feedback;
 
+    struct Wayland_ColorInfoState *color_info_state;
+
     SDL_AtomicInt swap_interval_ready;
 
     SDL_DisplayData **outputs;
@@ -128,7 +130,8 @@ struct SDL_WindowData
     char *app_id;
     double scale_factor;
 
-    struct Wayland_SHMBuffer icon;
+    struct Wayland_SHMBuffer *icon_buffers;
+    int icon_buffer_count;
 
     struct
     {

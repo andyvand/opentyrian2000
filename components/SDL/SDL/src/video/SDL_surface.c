@@ -24,6 +24,7 @@
 #include "SDL_video_c.h"
 #include "SDL_RLEaccel_c.h"
 #include "SDL_pixels_c.h"
+#include "SDL_stb_c.h"
 #include "SDL_yuv_c.h"
 #include "../render/SDL_sysrender.h"
 
@@ -2277,6 +2278,10 @@ bool SDL_ConvertPixelsAndColorspace(int width, int height,
         dst_colorspace = SDL_GetDefaultColorspaceForFormat(dst_format);
     }
 
+    if (src_format == SDL_PIXELFORMAT_MJPG) {
+        return SDL_ConvertPixels_STB(width, height, src_format, src_colorspace, src_properties, src, src_pitch, dst_format, dst_colorspace, dst_properties, dst, dst_pitch);
+    }
+
 #ifdef SDL_HAVE_YUV
     if (SDL_ISPIXELFORMAT_FOURCC(src_format) && SDL_ISPIXELFORMAT_FOURCC(dst_format)) {
         return SDL_ConvertPixels_YUV_to_YUV(width, height, src_format, src_colorspace, src_properties, src, src_pitch, dst_format, dst_colorspace, dst_properties, dst, dst_pitch);
@@ -2293,13 +2298,17 @@ bool SDL_ConvertPixelsAndColorspace(int width, int height,
 
     // Fast path for same format copy
     if (src_format == dst_format && src_colorspace == dst_colorspace) {
-        int i;
-        const int bpp = SDL_BYTESPERPIXEL(src_format);
-        width *= bpp;
-        for (i = height; i--;) {
-            SDL_memcpy(dst, src, width);
-            src = (const Uint8 *)src + src_pitch;
-            dst = (Uint8 *)dst + dst_pitch;
+        if (src_pitch == dst_pitch) {
+            SDL_memcpy(dst, src, height * src_pitch);
+        } else {
+            int i;
+            const int bpp = SDL_BYTESPERPIXEL(src_format);
+            width *= bpp;
+            for (i = height; i--;) {
+                SDL_memcpy(dst, src, width);
+                src = (const Uint8 *)src + src_pitch;
+                dst = (Uint8 *)dst + dst_pitch;
+            }
         }
         return true;
     }

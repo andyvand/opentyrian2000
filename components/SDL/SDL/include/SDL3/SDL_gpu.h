@@ -35,13 +35,14 @@
  * can render offscreen entirely, perhaps for image processing, and not use a
  * window at all.
  *
- * Next the app prepares static data (things that are created once and used
+ * Next, the app prepares static data (things that are created once and used
  * over and over). For example:
  *
  * - Shaders (programs that run on the GPU): use SDL_CreateGPUShader().
- * - Vertex buffers (arrays of geometry data) and other data rendering will
- *   need: use SDL_UploadToGPUBuffer().
- * - Textures (images): use SDL_UploadToGPUTexture().
+ * - Vertex buffers (arrays of geometry data) and other rendering data: use
+ *   SDL_CreateGPUBuffer() and SDL_UploadToGPUBuffer().
+ * - Textures (images): use SDL_CreateGPUTexture() and
+ *   SDL_UploadToGPUTexture().
  * - Samplers (how textures should be read from): use SDL_CreateGPUSampler().
  * - Render pipelines (precalculated rendering state): use
  *   SDL_CreateGPUGraphicsPipeline()
@@ -1495,6 +1496,9 @@ typedef struct SDL_GPUIndirectDispatchCommand
 /**
  * A structure specifying the parameters of a sampler.
  *
+ * Note that mip_lod_bias is a no-op for the Metal driver. For Metal, LOD bias
+ * must be applied via shader instead.
+ *
  * \since This function is available since SDL 3.2.0.
  *
  * \sa SDL_CreateGPUSampler
@@ -1540,14 +1544,14 @@ typedef struct SDL_GPUSamplerCreateInfo
  * \since This struct is available since SDL 3.2.0.
  *
  * \sa SDL_GPUVertexAttribute
- * \sa SDL_GPUVertexInputState
+ * \sa SDL_GPUVertexInputRate
  */
 typedef struct SDL_GPUVertexBufferDescription
 {
     Uint32 slot;                        /**< The binding slot of the vertex buffer. */
     Uint32 pitch;                       /**< The byte pitch between consecutive elements of the vertex buffer. */
     SDL_GPUVertexInputRate input_rate;  /**< Whether attribute addressing is a function of the vertex index or instance index. */
-    Uint32 instance_step_rate;          /**< The number of instances to draw using the same per-instance data before advancing in the instance buffer by one element. Ignored unless input_rate is SDL_GPU_VERTEXINPUTRATE_INSTANCE */
+    Uint32 instance_step_rate;          /**< Reserved for future use. Must be set to 0. */
 } SDL_GPUVertexBufferDescription;
 
 /**
@@ -1717,10 +1721,13 @@ typedef struct SDL_GPUTransferBufferCreateInfo
  * A structure specifying the parameters of the graphics pipeline rasterizer
  * state.
  *
- * NOTE: Some backend APIs (D3D11/12) will enable depth clamping even if
- * enable_depth_clip is true. If you rely on this clamp+clip behavior,
- * consider enabling depth clip and then manually clamping depth in your
- * fragment shaders on Metal and Vulkan.
+ * Note that SDL_GPU_FILLMODE_LINE is not supported on many Android devices.
+ * For those devices, the fill mode will automatically fall back to FILL.
+ *
+ * Also note that the D3D12 driver will enable depth clamping even if
+ * enable_depth_clip is true. If you need this clamp+clip behavior, consider
+ * enabling depth clip and then manually clamping depth in your fragment
+ * shaders on Metal and Vulkan.
  *
  * \since This struct is available since SDL 3.2.0.
  *
@@ -1751,8 +1758,8 @@ typedef struct SDL_GPURasterizerState
 typedef struct SDL_GPUMultisampleState
 {
     SDL_GPUSampleCount sample_count;  /**< The number of samples to be used in rasterization. */
-    Uint32 sample_mask;               /**< Determines which samples get updated in the render targets. Treated as 0xFFFFFFFF if enable_mask is false. */
-    bool enable_mask;             /**< Enables sample masking. */
+    Uint32 sample_mask;               /**< Reserved for future use. Must be set to 0. */
+    bool enable_mask;             /**< Reserved for future use. Must be set to false. */
     Uint8 padding1;
     Uint8 padding2;
     Uint8 padding3;

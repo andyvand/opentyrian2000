@@ -24,10 +24,6 @@
 
 #include "SDL_error_c.h"
 
-#if 1
-#include "esp_log.h"
-#endif
-
 bool SDL_SetError(SDL_PRINTF_FORMAT_STRING const char *fmt, ...)
 {
     va_list ap;
@@ -68,8 +64,8 @@ bool SDL_SetErrorV(SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap)
 // Enable this if you want to see all errors printed as they occur.
 // Note that there are many recoverable errors that may happen internally and
 // can be safely ignored if the public API doesn't return an error code.
-#if 1
-        ESP_LOGI("SDL", "%s", error->str);
+#if 0
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "%s", error->str);
 #endif
     }
 

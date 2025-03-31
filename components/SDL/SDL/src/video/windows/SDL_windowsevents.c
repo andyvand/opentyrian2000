@@ -317,6 +317,41 @@ static void WIN_CheckAsyncMouseRelease(Uint64 timestamp, SDL_WindowData *data)
     data->mouse_button_flags = (WPARAM)-1;
 }
 
+static void WIN_UpdateMouseCapture(void)
+{
+    SDL_Window *focusWindow = SDL_GetKeyboardFocus();
+
+    if (focusWindow && (focusWindow->flags & SDL_WINDOW_MOUSE_CAPTURE)) {
+        SDL_WindowData *data = focusWindow->internal;
+
+        if (!data->mouse_tracked) {
+            POINT cursorPos;
+
+            if (GetCursorPos(&cursorPos) && ScreenToClient(data->hwnd, &cursorPos)) {
+                bool swapButtons = GetSystemMetrics(SM_SWAPBUTTON) != 0;
+                SDL_MouseID mouseID = SDL_GLOBAL_MOUSE_ID;
+
+                SDL_SendMouseMotion(WIN_GetEventTimestamp(), data->window, mouseID, false, (float)cursorPos.x, (float)cursorPos.y);
+                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
+                                    !swapButtons ? SDL_BUTTON_LEFT : SDL_BUTTON_RIGHT,
+                                    (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0);
+                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
+                                    !swapButtons ? SDL_BUTTON_RIGHT : SDL_BUTTON_LEFT,
+                                    (GetAsyncKeyState(VK_RBUTTON) & 0x8000) != 0);
+                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
+                                    SDL_BUTTON_MIDDLE,
+                                    (GetAsyncKeyState(VK_MBUTTON) & 0x8000) != 0);
+                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
+                                    SDL_BUTTON_X1,
+                                    (GetAsyncKeyState(VK_XBUTTON1) & 0x8000) != 0);
+                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
+                                    SDL_BUTTON_X2,
+                                    (GetAsyncKeyState(VK_XBUTTON2) & 0x8000) != 0);
+            }
+        }
+    }
+}
+
 static void WIN_UpdateFocus(SDL_Window *window, bool expect_focus)
 {
     SDL_WindowData *data = window->internal;
@@ -861,31 +896,96 @@ static bool HasDeviceID(Uint32 deviceID, const Uint32 *list, int count)
 }
 
 #if !defined(SDL_PLATFORM_XBOXONE) && !defined(SDL_PLATFORM_XBOXSERIES)
-static void GetDeviceName(HDEVINFO devinfo, const char *instance, char *name, size_t len)
+static char *GetDeviceName(HANDLE hDevice, HDEVINFO devinfo, const char *instance, const char *default_name, bool hid_loaded)
 {
-    name[0] = '\0';
+    char *vendor_name = NULL;
+    char *product_name = NULL;
+    char *name = NULL;
 
-    SP_DEVINFO_DATA data;
-    SDL_zero(data);
-    data.cbSize = sizeof(data);
-    for (DWORD i = 0;; ++i) {
-        if (!SetupDiEnumDeviceInfo(devinfo, i, &data)) {
-            if (GetLastError() == ERROR_NO_MORE_ITEMS) {
-                break;
-            } else {
-                continue;
+    // These are 126 for USB, but can be longer for Bluetooth devices
+    WCHAR vend[256], prod[256];
+    vend[0] = 0;
+    prod[0] = 0;
+
+
+    HIDD_ATTRIBUTES attr;
+    attr.VendorID = 0;
+    attr.ProductID = 0;
+    attr.Size = sizeof(attr);
+
+    if (hid_loaded) {
+        char devName[MAX_PATH + 1];
+        UINT cap = sizeof(devName) - 1;
+        UINT len = GetRawInputDeviceInfoA(hDevice, RIDI_DEVICENAME, devName, &cap);
+        if (len != (UINT)-1) {
+            devName[len] = '\0';
+
+            // important: for devices with exclusive access mode as per
+            // https://learn.microsoft.com/en-us/windows-hardware/drivers/hid/top-level-collections-opened-by-windows-for-system-use
+            // they can only be opened with a desired access of none instead of generic read.
+            HANDLE hFile = CreateFileA(devName, 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+            if (hFile != INVALID_HANDLE_VALUE) {
+                SDL_HidD_GetAttributes(hFile, &attr);
+                SDL_HidD_GetManufacturerString(hFile, vend, sizeof(vend));
+                SDL_HidD_GetProductString(hFile, prod, sizeof(prod));
+                CloseHandle(hFile);
             }
         }
+    }
 
-        char DeviceInstanceId[64];
-        if (!SetupDiGetDeviceInstanceIdA(devinfo, &data, DeviceInstanceId, sizeof(DeviceInstanceId), NULL))
-            continue;
+    if (vend[0]) {
+        vendor_name = WIN_StringToUTF8W(vend);
+    }
 
-        if (SDL_strcasecmp(instance, DeviceInstanceId) == 0) {
-            SetupDiGetDeviceRegistryPropertyA(devinfo, &data, SPDRP_DEVICEDESC, NULL, (PBYTE)name, (DWORD)len, NULL);
-            return;
+    if (prod[0]) {
+        product_name = WIN_StringToUTF8W(prod);
+    } else {
+        SP_DEVINFO_DATA data;
+        SDL_zero(data);
+        data.cbSize = sizeof(data);
+        for (DWORD i = 0;; ++i) {
+            if (!SetupDiEnumDeviceInfo(devinfo, i, &data)) {
+                if (GetLastError() == ERROR_NO_MORE_ITEMS) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+
+            char DeviceInstanceId[64];
+            if (!SetupDiGetDeviceInstanceIdA(devinfo, &data, DeviceInstanceId, sizeof(DeviceInstanceId), NULL))
+                continue;
+
+            if (SDL_strcasecmp(instance, DeviceInstanceId) == 0) {
+                DWORD size = 0;
+                if (SetupDiGetDeviceRegistryPropertyW(devinfo, &data, SPDRP_DEVICEDESC, NULL, (PBYTE)prod, sizeof(prod), &size)) {
+                    // Make sure the device description is null terminated
+                    size /= sizeof(*prod);
+                    if (size >= SDL_arraysize(prod)) {
+                        // Truncated description...
+                        size = (SDL_arraysize(prod) - 1);
+                    }
+                    prod[size] = 0;
+
+                    if (attr.VendorID || attr.ProductID) {
+                        SDL_asprintf(&product_name, "%S (0x%.4x/0x%.4x)", prod, attr.VendorID, attr.ProductID);
+                    } else {
+                        product_name = WIN_StringToUTF8W(prod);
+                    }
+                }
+                break;
+            }
         }
     }
+
+    if (!product_name && (attr.VendorID || attr.ProductID)) {
+        SDL_asprintf(&product_name, "%s (0x%.4x/0x%.4x)", default_name, attr.VendorID, attr.ProductID);
+    }
+    name = SDL_CreateDeviceName(attr.VendorID, attr.ProductID, vendor_name, product_name, default_name);
+    SDL_free(vendor_name);
+    SDL_free(product_name);
+
+    return name;
 }
 
 void WIN_CheckKeyboardAndMouseHotplug(SDL_VideoDevice *_this, bool initial_check)
@@ -931,6 +1031,7 @@ void WIN_CheckKeyboardAndMouseHotplug(SDL_VideoDevice *_this, bool initial_check
     old_keyboards = SDL_GetKeyboards(&old_keyboard_count);
     old_mice = SDL_GetMice(&old_mouse_count);
 
+    bool hid_loaded = WIN_LoadHIDDLL();
     for (UINT i = 0; i < raw_device_count; i++) {
         RID_DEVICE_INFO rdi;
         char devName[MAX_PATH] = { 0 };
@@ -938,7 +1039,7 @@ void WIN_CheckKeyboardAndMouseHotplug(SDL_VideoDevice *_this, bool initial_check
         UINT nameSize = SDL_arraysize(devName);
         int vendor = 0, product = 0;
         DWORD dwType = raw_devices[i].dwType;
-        char *instance, *ptr, name[64];
+        char *instance, *ptr, *name;
 
         if (dwType != RIM_TYPEKEYBOARD && dwType != RIM_TYPEMOUSE) {
             continue;
@@ -976,8 +1077,9 @@ void WIN_CheckKeyboardAndMouseHotplug(SDL_VideoDevice *_this, bool initial_check
                 SDL_KeyboardID keyboardID = (Uint32)(uintptr_t)raw_devices[i].hDevice;
                 AddDeviceID(keyboardID, &new_keyboards, &new_keyboard_count);
                 if (!HasDeviceID(keyboardID, old_keyboards, old_keyboard_count)) {
-                    GetDeviceName(devinfo, instance, name, sizeof(name));
+                    name = GetDeviceName(raw_devices[i].hDevice, devinfo, instance, "Keyboard", hid_loaded);
                     SDL_AddKeyboard(keyboardID, name, send_event);
+                    SDL_free(name);
                 }
             }
             break;
@@ -986,14 +1088,18 @@ void WIN_CheckKeyboardAndMouseHotplug(SDL_VideoDevice *_this, bool initial_check
                 SDL_MouseID mouseID = (Uint32)(uintptr_t)raw_devices[i].hDevice;
                 AddDeviceID(mouseID, &new_mice, &new_mouse_count);
                 if (!HasDeviceID(mouseID, old_mice, old_mouse_count)) {
-                    GetDeviceName(devinfo, instance, name, sizeof(name));
+                    name = GetDeviceName(raw_devices[i].hDevice, devinfo, instance, "Mouse", hid_loaded);
                     SDL_AddMouse(mouseID, name, send_event);
+                    SDL_free(name);
                 }
             }
             break;
         default:
             break;
         }
+    }
+    if (hid_loaded) {
+        WIN_UnloadHIDDLL();
     }
 
     for (int i = old_keyboard_count; i--;) {
@@ -1318,6 +1424,8 @@ LRESULT CALLBACK WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
             if (TrackMouseEvent(&trackMouseEvent)) {
                 data->mouse_tracked = true;
             }
+
+            WIN_CheckAsyncMouseRelease(WIN_GetEventTimestamp(), data);
         }
 
         if (!data->videodata->raw_mouse_enabled) {
@@ -2325,43 +2433,6 @@ LRESULT CALLBACK WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
         return CallWindowProc(DefWindowProc, hwnd, msg, wParam, lParam);
     }
 }
-
-#if !defined(SDL_PLATFORM_XBOXONE) && !defined(SDL_PLATFORM_XBOXSERIES)
-static void WIN_UpdateMouseCapture(void)
-{
-    SDL_Window *focusWindow = SDL_GetKeyboardFocus();
-
-    if (focusWindow && (focusWindow->flags & SDL_WINDOW_MOUSE_CAPTURE)) {
-        SDL_WindowData *data = focusWindow->internal;
-
-        if (!data->mouse_tracked) {
-            POINT cursorPos;
-
-            if (GetCursorPos(&cursorPos) && ScreenToClient(data->hwnd, &cursorPos)) {
-                bool swapButtons = GetSystemMetrics(SM_SWAPBUTTON) != 0;
-                SDL_MouseID mouseID = SDL_GLOBAL_MOUSE_ID;
-
-                SDL_SendMouseMotion(WIN_GetEventTimestamp(), data->window, mouseID, false, (float)cursorPos.x, (float)cursorPos.y);
-                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
-                                    !swapButtons ? SDL_BUTTON_LEFT : SDL_BUTTON_RIGHT,
-                                    (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0);
-                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
-                                    !swapButtons ? SDL_BUTTON_RIGHT : SDL_BUTTON_LEFT,
-                                    (GetAsyncKeyState(VK_RBUTTON) & 0x8000) != 0);
-                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
-                                    SDL_BUTTON_MIDDLE,
-                                    (GetAsyncKeyState(VK_MBUTTON) & 0x8000) != 0);
-                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
-                                    SDL_BUTTON_X1,
-                                    (GetAsyncKeyState(VK_XBUTTON1) & 0x8000) != 0);
-                SDL_SendMouseButton(WIN_GetEventTimestamp(), data->window, mouseID,
-                                    SDL_BUTTON_X2,
-                                    (GetAsyncKeyState(VK_XBUTTON2) & 0x8000) != 0);
-            }
-        }
-    }
-}
-#endif // !defined(SDL_PLATFORM_XBOXONE) && !defined(SDL_PLATFORM_XBOXSERIES)
 
 int WIN_WaitEventTimeout(SDL_VideoDevice *_this, Sint64 timeoutNS)
 {

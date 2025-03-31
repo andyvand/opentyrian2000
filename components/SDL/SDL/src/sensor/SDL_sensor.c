@@ -139,7 +139,7 @@ bool SDL_InitSensors(void)
     SDL_sensors_initialized = true;
 
     status = false;
-    for (i = 0; i < (int)SDL_arraysize(SDL_sensor_drivers); ++i) {
+    for (i = 0; i < SDL_arraysize(SDL_sensor_drivers); ++i) {
         if (SDL_sensor_drivers[i]->Init()) {
             status = true;
         }
@@ -179,7 +179,7 @@ SDL_SensorID *SDL_GetSensors(int *count)
 
     SDL_LockSensors();
     {
-        for (i = 0; i < (int)SDL_arraysize(SDL_sensor_drivers); ++i) {
+        for (i = 0; i < SDL_arraysize(SDL_sensor_drivers); ++i) {
             total_sensors += SDL_sensor_drivers[i]->GetCount();
         }
 
@@ -189,7 +189,7 @@ SDL_SensorID *SDL_GetSensors(int *count)
                 *count = total_sensors;
             }
 
-            for (i = 0; i < (int)SDL_arraysize(SDL_sensor_drivers); ++i) {
+            for (i = 0; i < SDL_arraysize(SDL_sensor_drivers); ++i) {
                 num_sensors = SDL_sensor_drivers[i]->GetCount();
                 for (device_index = 0; device_index < num_sensors; ++device_index) {
                     SDL_assert(sensor_index < total_sensors);
@@ -220,7 +220,7 @@ static bool SDL_GetDriverAndSensorIndex(SDL_SensorID instance_id, SDL_SensorDriv
     int i, num_sensors, device_index;
 
     if (instance_id > 0) {
-        for (i = 0; i < (int)SDL_arraysize(SDL_sensor_drivers); ++i) {
+        for (i = 0; i < SDL_arraysize(SDL_sensor_drivers); ++i) {
             num_sensors = SDL_sensor_drivers[i]->GetCount();
             for (device_index = 0; device_index < num_sensors; ++device_index) {
                 SDL_SensorID sensor_id = SDL_sensor_drivers[i]->GetDeviceInstanceID(device_index);
@@ -546,7 +546,7 @@ void SDL_QuitSensors(void)
     }
 
     // Quit the sensor setup
-    for (i = 0; i < (int)SDL_arraysize(SDL_sensor_drivers); ++i) {
+    for (i = 0; i < SDL_arraysize(SDL_sensor_drivers); ++i) {
         SDL_sensor_drivers[i]->Quit();
     }
 
@@ -614,7 +614,7 @@ void SDL_UpdateSensors(void)
     /* this needs to happen AFTER walking the sensor list above, so that any
        dangling hardware data from removed devices can be free'd
      */
-    for (i = 0; i < (int)SDL_arraysize(SDL_sensor_drivers); ++i) {
+    for (i = 0; i < SDL_arraysize(SDL_sensor_drivers); ++i) {
         SDL_sensor_drivers[i]->Detect();
     }
 

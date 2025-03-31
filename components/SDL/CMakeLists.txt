@@ -16,6 +16,7 @@ idf_component_register(SRCS
                         "SDL/src/events/SDL_quit.c"
                         "SDL/src/events/SDL_touch.c"
                         "SDL/src/events/SDL_windowevents.c"
+                        "SDL/src/events/SDL_eventwatch.c"
                         "SDL/src/filesystem/SDL_filesystem.c"
                         "SDL/src/stdlib/SDL_iconv.c"
                         "SDL/src/stdlib/SDL_getenv.c"
@@ -98,7 +99,7 @@ idf_component_register(SRCS
                         "SDL/src/video/SDL_surface.c"
                         "SDL/src/video/SDL_yuv.c"
                         "SDL/src/video/yuv2rgb/yuv_rgb_std.c"
-
+                        "SDL/src/video/SDL_stb.c"
 
                         # Timer
                         # Copy of SDL/src/timer/unix/SDL_systimer.c

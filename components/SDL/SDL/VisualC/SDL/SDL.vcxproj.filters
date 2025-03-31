@@ -534,6 +534,9 @@
     <ClInclude Include="..\..\src\events\SDL_events_c.h">
       <Filter>events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\events\SDL_eventfilter_c.h">
+      <Filter>events</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\events\SDL_keyboard_c.h">
       <Filter>events</Filter>
     </ClInclude>
@@ -670,6 +673,9 @@
       <Filter>video</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\video\SDL_egl_c.h">
+      <Filter>video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\video\SDL_stb_c.h">
       <Filter>video</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\video\SDL_yuv_c.h">
@@ -1073,6 +1079,9 @@
     <ClCompile Include="..\..\src\events\SDL_events.c">
       <Filter>events</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\events\SDL_eventfilter.c">
+      <Filter>events</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\events\SDL_keyboard.c">
       <Filter>events</Filter>
     </ClCompile>
@@ -1290,6 +1299,9 @@
       <Filter>video</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\video\SDL_rect.c">
+      <Filter>video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\video\SDL_stb.c">
       <Filter>video</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\video\SDL_stretch.c">

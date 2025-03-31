@@ -121,14 +121,18 @@ static bool ESPAUDIO_PlayDevice(SDL_AudioDevice *device, const Uint8 *buffer, in
         /* Enable the TX channel */
         ESP_ERROR_CHECK(i2s_channel_enable(tx_chan));
 
-        /* Write i2s data */
-        if (i2s_channel_write(tx_chan, buffer, buflen, &w_bytes, 1000) != ESP_OK) {
-            ESP_LOGI("SDL", "Write Task: i2s write failed\n");
-            return false;
-        } else {
+        if ((buffer != NULL) && (buflen > 0))
+        {
+            /* Write i2s data */
+            if (i2s_channel_write(tx_chan, buffer, buflen, &w_bytes, 1000) != ESP_OK) {
+                ESP_LOGI("SDL", "Write Task: i2s write failed\n");
+                return false;
+            } else {
 #ifdef VERBOSE
-            ESP_LOGI("SDL", "Write Task: i2s write of %lu bytes done\n", w_bytes);
+                ESP_LOGI("SDL", "Write Task: i2s write of %lu bytes done\n", w_bytes);
 #endif
+            }
+
             vTaskDelay(pdMS_TO_TICKS(200));
         }
 
