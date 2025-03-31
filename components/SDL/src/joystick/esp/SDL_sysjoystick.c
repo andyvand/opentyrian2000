@@ -156,7 +156,7 @@ static bool ESP_JoystickInit(void)
     io_conf.intr_type = GPIO_INTR_ANYEDGE;
 
     //bit mask of the pins, use GPIO... here
-    for (int i=0; i < NB_BUTTONS; i++)
+    for (int i=0; i < 6; i++)
     {
         if(i==0)
         {
