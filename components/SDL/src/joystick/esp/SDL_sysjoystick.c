@@ -34,6 +34,8 @@
 #define NB_AXIS 0
 #endif
 
+#define VERBOSE 1
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
@@ -135,7 +137,7 @@ static void UpdateESPAxes(Uint64 timestamp, SDL_Joystick *joystick);
 static void IRAM_ATTR gpio_isr_handler(void* arg)
 {
     int gpio_num = (int)arg;
-    for (int i=0; i < NB_BUTTONS; i++)
+    for (int i=0; i < 6; i++)
     {
         if(button_gpio[i] == gpio_num)
         {
@@ -182,7 +184,7 @@ static bool ESP_JoystickInit(void)
     gpio_install_isr_service(ESP_INTR_FLAG_SHARED);
 
     //hook isr handler
-    for (int i=0; i < NB_BUTTONS; i++)
+    for (int i=0; i < 6; i++)
     {
         gpio_isr_handler_add(button_gpio[i], gpio_isr_handler, (void *)button_gpio[i]);
     }
