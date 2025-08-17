@@ -150,6 +150,7 @@ void init_video( void )
         !init_any_scaler(!false))       // try any scaler in other fullscreen state
     {
         fprintf(stderr, "error: failed to initialize any supported video mode\n");
+        while(1) SDL_Delay(1);
         exit(EXIT_FAILURE);
     }
 #endif
@@ -200,6 +201,7 @@ bool init_scaler( unsigned int new_scaler, bool fullscreen )
     if (surface == NULL)
     {
         fprintf(stderr, "error: failed to initialize %s video mode %dx%dx%d: %s\n", fullscreen ? "fullscreen" : "windowed", w, h, bpp, SDL_GetError());
+
         return false;
     }
     
@@ -208,7 +210,7 @@ bool init_scaler( unsigned int new_scaler, bool fullscreen )
     bpp = surface->format->BitsPerPixel;
     
     printf("initialized video: %dx%dx%d %s\n", w, h, bpp, fullscreen ? "fullscreen" : "windowed");
-    
+
     scaler = new_scaler;
     main_window_tex_format = malloc(sizeof(*main_window_tex_format));
     memcpy(main_window_tex_format, surface->format, sizeof(*main_window_tex_format));
@@ -297,7 +299,7 @@ void scale_and_flip( SDL_Surface *src_surface )
 void init_video(void)
 {
 #ifndef WITH_SDL3
-    if (SDL_WasInit(SDL_INIT_VIDEO))
+    if (SDL_WasInit(SDL_INIT_VIDEO) == -1)
         return;
 
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)

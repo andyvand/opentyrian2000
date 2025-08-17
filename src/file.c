@@ -98,11 +98,30 @@ const char * data_dir(void)
         "data",
         ".",
     };
+#elif defined(__NDS__)
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        "nitro:/",
+        ".",
+    };
 #elif defined(__3DS__)
     const char *const dirs[] =
     {
         custom_data_dir,
         "data",
+        ".",
+    };
+#elif defined(__OGC__)
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+#ifdef HW_RVL
+        "sd:/data",
+        "usb:/data",
+#endif
+        "carda:/data",
+        "dvd:",
         ".",
     };
 #elif defined(PSP)

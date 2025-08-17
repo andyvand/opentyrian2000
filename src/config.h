@@ -217,7 +217,10 @@ void JE_decryptSaveTemp(void);
 
 #ifdef WITH_SDL1
 SDL_Scancode SDL_GetScancodeFromName(const char *name);
+
+#ifndef __NDS__
 const char *SDL_GetScancodeName(SDL_Scancode scancode);
+#endif
 #endif
 
 #endif /* CONFIG_H */

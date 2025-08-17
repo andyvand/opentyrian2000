@@ -19,6 +19,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+#ifdef __NDS__
+#ifdef __clang__
+#define STBIRDEF static inline
+#endif
+
+#define STBIR_PROGRESS_REPORT stbir_progress
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#define STB_IMAGE_RESIZE_STATIC
+
+#include "../stb/stb_image_resize2.h"
+#endif
+
 #include "video_scale.h"
 
 #include "palette.h"
@@ -34,6 +47,9 @@ static void no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 
 static void nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+
+static void stb_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
+static void stb_16( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 
 static void no_scale( SDL_Surface *src_surface, SDL_Surface *dst_surface );
 static void scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface );
@@ -51,6 +67,8 @@ const struct Scalers scalers[] =
 {
 #if defined(TARGET_GP2X) || defined(TARGET_DINGUX)
     { 320,           240,            nn_16,      nn_32,      "None" },
+#elif defined(__NDS__)
+    { 256,           192,            stb_16,     stb_32,     "None"},
 #else
     { 1 * vga_width, 1 * vga_height, nn_16,      nn_32,      "None" },
     { 2 * vga_width, 2 * vga_height, nn_16,      nn_32,      "2x" },
@@ -138,7 +156,7 @@ void nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
         
         src = src_temp + src_pitch;
         dst = dst_temp + dst_pitch;
-        
+
         for (int z = scale; z > 1; z--)
         {
             memcpy(dst, dst_temp, dst_pitch);
@@ -151,12 +169,44 @@ void nn_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 #endif
 }
 
+#ifdef __NDS__
+void stb_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+{
+    Uint8 *src = src_surface->pixels, *src_temp,
+    *dst = (Uint8 *)malloc(320*200*4), *dst_temp;
+    int src_pitch = src_surface->pitch,
+    dst_pitch = 320*200*4;
+    const int dst_Bpp = 4;         // dst_surface->format->BytesPerPixel
+    
+    const int height = 320, // src_surface->h
+    width = 200;   // src_surface->w
+
+    src_temp = src;
+    dst_temp = dst;
+
+    for (int y = height; y > 0; y--)
+    {
+        for (int x = width; x > 0; x--)
+        {
+            *(Uint32 *)dst = rgb_palette[*src];
+            dst += dst_Bpp;
+        }
+
+        src++;
+    }
+
+    stbir_resize((const void *)dst_temp, 320, 200, 320 * 4, (void *)(dst_surface->pixels + (21 * 256 * 4)), 256, 150, 256 * 4, STBIR_RGB, STBIR_TYPE_UINT8, STBIR_EDGE_CLAMP, STBIR_FILTER_MITCHELL);
+
+    free(dst_temp);
+}
+#endif
+
 void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
     int src_pitch = src_surface->pitch,
-        dst_pitch = dst_surface->pitch;
+        dst_pitch = 320 * 4;
     const int dst_Bpp = 2;         // dst_surface->format->BytesPerPixel
     
     const int height = vga_height, // src_surface->h
@@ -194,12 +244,43 @@ void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
             dst += dst_pitch;
         }
     }
-    
+
 #ifdef VGA_CENTERED
     memset(dst, 0, blank);
 #endif
 }
 
+#ifdef __NDS__
+void stb_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+{
+    Uint8 *src = src_surface->pixels, *src_temp,
+          *dst = dst_surface->pixels, *dst_temp;
+    int src_pitch = src_surface->pitch,
+        dst_pitch = 320 * 2;
+    const int dst_Bpp = 2;         // dst_surface->format->BytesPerPixel
+    
+    const int height = 320, // src_surface->h
+              width = 200;   // src_surface->w
+    
+    src_temp = src;
+    dst_temp = dst;
+
+    for (int y = height; y > 0; y--)
+    {
+        for (int x = width; x > 0; x--)
+        {
+            *(Uint16 *)dst = rgb_palette[*src];
+            dst += dst_Bpp;
+
+            src++;
+        }
+    }
+
+    stbir_resize((const void *)dst_temp, 320, 200, 320 * 2, (void *)(dst_surface->pixels + (21 * 256 * 2)), 256, 150, 256 * 2, STBIR_RGB, STBIR_TYPE_UINT16, STBIR_EDGE_CLAMP, STBIR_FILTER_MITCHELL);
+
+    free(dst_temp);
+}
+#endif
 
 void scale2x_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 {

@@ -493,7 +493,7 @@ static void IRATTR audioMixCallback(void *userdata, Uint8 *stream, int size)
 {
     (void)userdata;
     Sint16 *const samples = (Sint16 *)stream;
-    const int samplesCount = size / sizeof (Sint16);
+    int samplesCount = size / sizeof (Sint16);
 
     if ((music_device & IS_MIDI_DEVICE) && !music_disabled && !music_stopped){
         if (Mix_PlayingMusic() == 0){
@@ -569,14 +569,14 @@ static void IRATTR audioCallback(void *userdata, Uint8 *stream, int size)
 #ifdef WITH_SDL3
 #ifdef WITH_SDL3_ESP
     Sint16 samples[16];
-    const int samplesCount = sizeof(samples) / sizeof(Sint16);
+    int samplesCount = sizeof(samples) / sizeof(Sint16);
 #else
     Sint16 samples[256];
     int samplesCount = sizeof(samples) / sizeof (Sint16);
 #endif
 #else
 	Sint16 *const samples = (Sint16 *)stream;
-    const int samplesCount = size / sizeof (Sint16);
+    int samplesCount = size / sizeof (Sint16);
 #endif
 
 #ifndef WITH_SDL3

@@ -247,6 +247,7 @@ SDL_Scancode SDL_GetScancodeFromName(const char *name)
 
 char name[32];
 
+#ifndef __NDS__
 const char *SDL_GetScancodeName(SDL_Scancode scancode)
 {
     if (((int)scancode) < SDL_SCANCODE_UNKNOWN || scancode >= SDL_NUM_SCANCODES) {
@@ -263,6 +264,7 @@ const char *SDL_GetScancodeName(SDL_Scancode scancode)
 
     return "";
 }
+#endif
 #endif
 
 bool load_opentyrian_config(void)
@@ -861,6 +863,14 @@ const char * get_user_directory(void)
 #endif
 #elif defined(PSP)
         snprintf(user_dir, sizeof(user_dir), "ms0:/PSP/GAME/opentyrian2000");
+#elif defined(__NDS__)
+        snprintf(user_dir, sizeof(user_dir), "nitro:/");
+#elif defined(__OGC__)
+#ifndef HW_RVL
+        snprintf(user_dir, sizeof(user_dir), "carda:/");
+#else
+        snprintf(user_dir, sizeof(user_dir), "sd:/");
+#endif
 #elif defined(__3DS__)
         snprintf(user_dir, sizeof(user_dir), ".");
 #elif defined(__APPLE__) && defined(__MACH__)

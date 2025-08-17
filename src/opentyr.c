@@ -875,6 +875,158 @@ void setupMenu(void)
 	}
 }
 
+#ifdef __NDS__
+#include <filesystem.h>
+#endif
+
+#ifdef __OGC__
+#ifdef HW_RVL
+#include <di/di.h>
+#else
+#include <gccore.h>
+#endif
+
+#include <fat.h>
+#include <sdcard/wiisd_io.h>
+#include <sdcard/gcsd.h>
+#include <ogc/dvd.h>
+#include <iso9660.h>
+#include <ogc/usbstorage.h>
+
+#ifdef HW_RVL
+    static DISC_INTERFACE* sd = &__io_wiisd;
+    static DISC_INTERFACE* usb = &__io_usbstorage;
+    static DISC_INTERFACE* dvd = &__io_wiidvd;
+#else
+    static DISC_INTERFACE* carda = &__io_gcsda;
+    static DISC_INTERFACE* cardb = &__io_gcsdb;
+    static DISC_INTERFACE* port2 = &__io_gcsd2;
+    static DISC_INTERFACE* dvd = &__io_gcdvd;
+#endif
+
+enum {
+    DEVICE_AUTO,
+    DEVICE_SD,
+    DEVICE_USB,
+    DEVICE_DVD,
+    DEVICE_SMB,
+    DEVICE_SD_SLOTA,
+    DEVICE_SD_SLOTB,
+    DEVICE_SD_PORT2,
+    DEVICE_SD_GCLOADER,
+};
+
+bool unmountRequired[9] = { false, false, false, false, false, false, false, false, false };
+bool isMounted[9] = { false, false, false, false, false, false, false, false, false };
+
+static bool MountFAT(int device, int silent)
+{
+    bool mounted = false;
+    int retry = 1;
+    char name[10], name2[10];
+    DISC_INTERFACE* disc = NULL;
+
+    switch(device)
+    {
+#ifdef HW_RVL
+        case DEVICE_SD:
+            sprintf(name, "sd");
+            sprintf(name2, "sd:");
+            disc = sd;
+            break;
+        case DEVICE_USB:
+            sprintf(name, "usb");
+            sprintf(name2, "usb:");
+            disc = usb;
+            break;
+#else
+        case DEVICE_SD_SLOTA:
+            sprintf(name, "carda");
+            sprintf(name2, "carda:");
+            disc = carda;
+            break;
+        case DEVICE_SD_SLOTB:
+            sprintf(name, "cardb");
+            sprintf(name2, "cardb:");
+            disc = cardb;
+            break;
+        case DEVICE_SD_PORT2:
+            sprintf(name, "port2");
+            sprintf(name2, "port2:");
+            disc = port2;
+            break;
+#endif
+        default:
+            return false; // unknown device
+    }
+
+    if(unmountRequired[device])
+    {
+        unmountRequired[device] = false;
+        fatUnmount(name2);
+        disc->shutdown();
+        isMounted[device] = false;
+    }
+
+    while(retry)
+    {
+        if(disc->startup() && fatMountSimple(name, disc))
+            mounted = true;
+
+        if(mounted || silent)
+            break;
+
+#ifdef HW_RVL
+        if(device == DEVICE_SD)
+            retry = 0;
+        else
+            retry = 0;
+#else
+        retry = 0;
+#endif
+    }
+
+    isMounted[device] = mounted;
+    return mounted;
+}
+
+static bool MountDVD(bool silent)
+{
+    bool mounted = false;
+    int retry = 1;
+
+    if(unmountRequired[DEVICE_DVD])
+    {
+        unmountRequired[DEVICE_DVD] = false;
+        ISO9660_Unmount("dvd:");
+    }
+
+    while(retry)
+    {
+        if(!dvd->isInserted())
+        {
+            if(silent)
+                break;
+
+            retry = 0;
+        }
+        else if(!ISO9660_Mount("dvd", dvd))
+        {
+            if(silent)
+                break;
+
+            retry = 0;
+        }
+        else
+        {
+            mounted = true;
+            break;
+        }
+    }
+    return mounted;
+}
+#endif
+
 #if defined(ANDROID) || defined(__ANDROID__)
 int SDL_main(int argc, char *argv[])
 {
@@ -886,6 +1038,19 @@ int main(int argc, char *argv[])
     SDL_version sdlver;
 #ifdef WITH_NETWORK
     const SDLNet_version *sdlnetver = NULL;
+#endif
+#endif
+
+#ifdef __NDS__
+    nitroFSInit(NULL);
+#elif defined(__OGC__)
+    MountDVD(true);
+
+#ifdef HW_RVL
+    MountFAT(DEVICE_SD, false);
+    MountFAT(DEVICE_USB, false);
+#else
+    MountFAT(DEVICE_SD_SLOTA, false);
 #endif
 #endif
 
@@ -1002,14 +1167,13 @@ int main(int argc, char *argv[])
 #endif
 	{
 		_printf("Failed to initialize SDL: %s\n", SDL_GetError());
+
 		return -1;
     }
 
 	// Note for this reorganization:
 	// Tyrian 2000 requires help text to be loaded before the configuration,
 	// because the default high score names are stored in help text
-
-
     JE_paramCheck(argc, (char **)argv);
 
 	if (!override_xmas) // arg handler may override
@@ -1026,12 +1190,12 @@ int main(int argc, char *argv[])
     init_keyboard();
     init_joysticks();
 
-	if (xmas && (!dir_file_exists(data_dir(), "tyrianc.shp") || !dir_file_exists(data_dir(), "voicesc.snd")))
+    if (xmas && (!dir_file_exists(data_dir(), "tyrianc.shp") || !dir_file_exists(data_dir(), "voicesc.snd")))
 	{
 		xmas = false;
 
 		_fprintf(stderr, "warning: Christmas is missing.\n");
-	}
+    }
 
     JE_loadPals();
     JE_loadMainShapeTables(xmas ? "tyrianc.shp" : "tyrian.shp");

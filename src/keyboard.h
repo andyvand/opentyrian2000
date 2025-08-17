@@ -48,8 +48,10 @@
 #define SDL_Keymod SDLMod
 #endif
 
+#ifndef __NDS__
 #ifndef SDL_NUM_SCANCODES
 #define SDL_NUM_SCANCODES SDLK_LAST
+#endif
 #endif
 
 #ifndef SDL_TEXTINPUTEVENT_TEXT_SIZE
