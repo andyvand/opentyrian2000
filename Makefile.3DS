@@ -29,9 +29,20 @@ include $(DEVKITARM)/3ds_rules
 #     - icon.png
 #     - <libnx folder>/default_icon.png
 #---------------------------------------------------------------------------------
-APP_TITLE	:=	Open Tyrian 2000 $(VERSION)
-APP_AUTHOR	:=	AnV Software
-APP_VERSION	:=	3.0.0
+APP_TITLE	     = OpenTyrian 2000 $(VERSION)
+APP_DESCRIPTION      = OpenTyrian 2000
+APP_AUTHOR           = AnV Software
+APP_VERSION	     = 3.0.0
+APP_PRODUCT_CODE     = OPENTYRIAN-3DS
+APP_UNIQUE_ID        = 0xBACB0
+APP_ICON             = ctr/assets/default.png
+APP_BANNER           = ctr/assets/opentyrian2000_banner.png
+APP_AUDIO            = ctr/assets/silent.wav
+APP_RSF              = ctr/tools/template.rsf
+APP_SYSTEM_MODE      = 64MB
+APP_SYSTEM_MODE_EXT  = 124MB
+APP_BIG_TEXT_SECTION = 0
+APP_USE_SVCHAX       = 0
 #---------------------------------------------------------------------------------
 TARGET		:=	opentyrian2000
 BUILD		:=	build
@@ -53,12 +64,42 @@ ASFLAGS		:=	-g $(ARCH)
 LDFLAGS		:=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 LIBS		:= -lSDL3 -lstdc++ -lctru -lm
 
+TARGET_CIA      := $(TARGET).cia
+
+ifeq ($(APP_BIG_TEXT_SECTION), 1)
+	APP_USE_SVCHAX = 1
+	LDFLAGS  += -Wl,--defsym,__ctr_patch_services=__service_ptr
+endif
+
+ifeq ($(strip $(CTRBANNERTOOL)),)
+	ifneq ($(findstring Linux,$(shell uname)),)
+		BANNERTOOL = ctr/tools/bannertool-linux
+	else ifneq ($(findstring Darwin,$(shell uname)),)
+		BANNERTOOL = ctr/tools/bannertool-mac
+	else
+		BANNERTOOL = ctr/tools/bannertool.exe
+	endif
+else
+	BANNERTOOL = $(CTRBANNERTOOL)
+endif
+
+ifeq ($(strip $(CTRMAKEROM)),)
+	ifneq ($(findstring Linux,$(shell uname)),)
+		MAKEROM    = ctr/tools/makerom-linux
+	else ifneq ($(findstring Darwin,$(shell uname)),)
+		MAKEROM    = ctr/tools/makerom-mac
+	else
+		MAKEROM    = ctr/tools/makerom.exe
+	endif
+else
+	MAKEROM = $(CTRMAKEROM)
+endif
+
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #--------------------------------------------------------------------------------
 LIBDIRS	:= $(PORTLIBS) $(CTRULIB)
-
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -82,6 +123,15 @@ PICAFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.v.pica)))
 SHLISTFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.shlist)))
 GFXFILES	:=	$(foreach dir,$(GRAPHICS),$(notdir $(wildcard $(dir)/*.t3s)))
 BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+
+MAKEROM_ARGS_COMMON = -rsf $(APP_RSF) -exefslogo -elf $(TARGET).elf -icon $(TARGET).icn -banner $(TARGET).bnr \
+	-DAPP_TITLE="$(APP_TITLE)" -DAPP_PRODUCT_CODE="$(APP_PRODUCT_CODE)" -DAPP_UNIQUE_ID=$(APP_UNIQUE_ID) \
+	-DAPP_SYSTEM_MODE=$(APP_SYSTEM_MODE) -DAPP_SYSTEM_MODE_EXT=$(APP_SYSTEM_MODE_EXT) \
+	-major "$(APP_VERSION_MAJOR)" -minor "$(APP_VERSION_MINOR)" -micro "$(APP_VERSION_MICRO)"
+
+ifneq ($(ROMFS),)
+    MAKEROM_ARGS_COMMON += -romfs "$(CURDIR)/$(ROMFS)"
+endif
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -157,8 +207,17 @@ endif
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
-all: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
+all: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES) $(TARGET).cia
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile.3DS
+
+$(TARGET).bnr: $(TARGET).elf $(APP_BANNER) $(APP_AUDIO)
+	$(BANNERTOOL) makebanner -i "$(APP_BANNER)" -a "$(APP_AUDIO)" -o $@
+
+$(TARGET).icn: $(TARGET).elf $(APP_ICON)
+	$(BANNERTOOL) makesmdh -s "$(APP_TITLE)" -l "$(APP_TITLE)" -p "$(APP_AUTHOR)" -i $(APP_ICON) -o $@
+
+$(TARGET).cia: $(TARGET).elf $(TARGET).bnr $(TARGET).icn $(APP_RSF)
+	$(MAKEROM) -f cia -o $@ $(MAKEROM_ARGS_COMMON) -DAPP_ENCRYPTED=false
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
@@ -177,7 +236,7 @@ endif
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(GFXBUILD)
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(TARGET).icn $(TARGET).cia  $(TARGET).bnr $(GFXBUILD)
 
 #---------------------------------------------------------------------------------
 $(GFXBUILD)/%.t3x	$(BUILD)/%.h	:	%.t3s
