@@ -61,7 +61,11 @@ bool xmas_prompt(void)
 	};
 	
 	if (shopSpriteSheet.data == NULL)
-		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);  // need mouse pointer sprites
+#else
+        JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 

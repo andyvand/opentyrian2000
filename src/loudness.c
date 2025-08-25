@@ -383,6 +383,15 @@ bool init_audio(void)
 		return false;
 	}
 
+#ifdef __PS2__
+    if (SDL_Init(SDL_INIT_AUDIO) == false)
+    {
+        _fprintf(stderr, "error: failed to initialize SDL audio: %s\n", SDL_GetError());
+        audio_disabled = true;
+        return false;
+    }
+#endif
+
 #ifndef WITH_SDL
 #ifndef WITH_SDL3
 	int allowedChanges = SDL_AUDIO_ALLOW_FREQUENCY_CHANGE;

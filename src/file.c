@@ -124,6 +124,16 @@ const char * data_dir(void)
         "dvd:",
         ".",
     };
+#elif defined(__PS2__)
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        "cdfs:/data",
+        "mc0:/data",
+        "mc1:/data",
+        "/data",
+        ".",
+    };
 #elif defined(PSP)
     const char *const dirs[] =
     {

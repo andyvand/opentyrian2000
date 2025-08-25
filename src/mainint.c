@@ -204,7 +204,11 @@ static bool helpSystemPage(Uint8 *topic, bool *restart);
 void JE_helpSystem(JE_byte startTopic)
 {
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	Uint8 topic = startTopic;
 
@@ -641,7 +645,11 @@ ulong JE_getCost(JE_byte itemType, JE_word itemNum)
 bool JE_loadScreen(void)
 {
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer and arrow sprites
+#endif
 
 	bool restart = true;
 
@@ -1131,7 +1139,11 @@ void JE_sortHighScores(void)
 void JE_highScoreScreen(void)
 {
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer and arrow sprites
+#endif
 
 	bool restart = true;
 
@@ -1568,7 +1580,11 @@ JE_boolean JE_inGameSetup(void)
 	const size_t helpIndexes[] = { 14, 14, 27, 28, 25, 26 };
 
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 
@@ -2055,7 +2071,11 @@ void JE_inGameHelp(void)
 void JE_highScoreCheck(void)
 {
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprite
+#endif
 
 	Sint32 temp_score;
 

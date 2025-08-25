@@ -861,6 +861,8 @@ const char * get_user_directory(void)
 #else
         snprintf(user_dir, sizeof(user_dir), "/sd/data");
 #endif
+#elif defined(__PS2__)
+        snprintf(user_dir, sizeof(user_dir), "mc0:/opentyrian2000");
 #elif defined(PSP)
         snprintf(user_dir, sizeof(user_dir), "ms0:/PSP/GAME/opentyrian2000");
 #elif defined(__NDS__)

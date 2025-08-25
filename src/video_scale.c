@@ -20,7 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifdef __NDS__
+#if defined(__NDS__) || defined(__PS2__)
 #ifdef __clang__
 #define STBIRDEF static inline
 #endif
@@ -68,7 +68,9 @@ const struct Scalers scalers[] =
 #if defined(TARGET_GP2X) || defined(TARGET_DINGUX)
     { 320,           240,            nn_16,      nn_32,      "None" },
 #elif defined(__NDS__)
-    { 256,           192,            stb_16,     stb_32,     "None"},
+    { 256,           192,            stb_16,     stb_32,     "None" },
+#elif defined(__PS2__)
+    { 320,           240,            nn_16,      nn_32,     "None" },
 #else
     { 1 * vga_width, 1 * vga_height, nn_16,      nn_32,      "None" },
     { 2 * vga_width, 2 * vga_height, nn_16,      nn_32,      "2x" },
@@ -199,6 +201,36 @@ void stb_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
 
     free(dst_temp);
 }
+#elif defined(__PS2__)
+void stb_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+{
+    Uint8 *src = src_surface->pixels, *src_temp,
+    *dst = (Uint8 *)malloc(320*200*4), *dst_temp;
+    int src_pitch = src_surface->pitch,
+    dst_pitch = 320*200*4;
+    const int dst_Bpp = 4;         // dst_surface->format->BytesPerPixel
+    
+    const int height = 320, // src_surface->h
+    width = 200;   // src_surface->w
+
+    src_temp = src;
+    dst_temp = dst;
+
+    for (int y = height; y > 0; y--)
+    {
+        for (int x = width; x > 0; x--)
+        {
+            *(Uint32 *)dst = rgb_palette[*src];
+            dst += dst_Bpp;
+        }
+
+        src++;
+    }
+
+    stbir_resize((const void *)dst_temp, 320, 200, 320 * 4, (void *)(dst_surface->pixels, 640, 448, 640 * 4, STBIR_RGB, STBIR_TYPE_UINT8, STBIR_EDGE_CLAMP, STBIR_FILTER_MITCHELL);
+
+    free(dst_temp);
+}
 #endif
 
 void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
@@ -277,6 +309,36 @@ void stb_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
     }
 
     stbir_resize((const void *)dst_temp, 320, 200, 320 * 2, (void *)(dst_surface->pixels + (21 * 256 * 2)), 256, 150, 256 * 2, STBIR_RGB, STBIR_TYPE_UINT16, STBIR_EDGE_CLAMP, STBIR_FILTER_MITCHELL);
+
+    free(dst_temp);
+}
+#elif defined(__PS2__)
+void stb_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
+{
+    Uint8 *src = src_surface->pixels, *src_temp,
+          *dst = dst_surface->pixels, *dst_temp;
+    int src_pitch = src_surface->pitch,
+        dst_pitch = 320 * 2;
+    const int dst_Bpp = 2;         // dst_surface->format->BytesPerPixel
+    
+    const int height = 320, // src_surface->h
+              width = 200;   // src_surface->w
+    
+    src_temp = src;
+    dst_temp = dst;
+
+    for (int y = height; y > 0; y--)
+    {
+        for (int x = width; x > 0; x--)
+        {
+            *(Uint16 *)dst = rgb_palette[*src];
+            dst += dst_Bpp;
+
+            src++;
+        }
+    }
+
+    stbir_resize((const void *)dst_temp, 320, 200, 320 * 2, (void *)(dst_surface->pixels, 640, 448, 640 * 2, STBIR_RGB, STBIR_TYPE_UINT16, STBIR_EDGE_CLAMP, STBIR_FILTER_MITCHELL);
 
     free(dst_temp);
 }

@@ -475,12 +475,24 @@ void IRATTR blit_sprite_dark(SDL_Surface *surface, int x, int y, unsigned int ta
 	}
 }
 
+#ifdef __CDROM__
+void JE_loadCompShapes(Sprite2_array *sprite2s, char s, char s2)
+#else
 void JE_loadCompShapes(Sprite2_array *sprite2s, char s)
+#endif
 {
 	free_sprite2s(sprite2s);
 
 	char buffer[20];
-	snprintf(buffer, sizeof(buffer), "newsh%c.shp", tolower((unsigned char)s));
+#ifdef __CDROM__
+    if (s2 == 0) {
+#endif
+        snprintf(buffer, sizeof(buffer), "newsh%c.shp", tolower((unsigned char)s));
+#ifdef __CDROM__
+    } else {
+        snprintf(buffer, sizeof(buffer), "newsh%c%c.shp", tolower((unsigned char)s), tolower((unsigned char)s2));
+    }
+#endif
 	FILE *f = dir_fopen_die(data_dir(), buffer, "rb");
 	
 	sprite2s->size = ftell_eof(f);

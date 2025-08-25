@@ -103,7 +103,7 @@
 #include <pspdebug.h>
 #endif
 
-#if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA) || defined(PSP) || defined(__3DS__)
+#if defined(IOS) || defined(WIN32) || defined(_WIN32) || defined(VITA) || defined(PSP) || defined(__3DS__) || defined(__PS2__) || defined(__OGC__)
 #ifdef WITH_SDL3
 #include <SDL3/SDL_main.h>
 #endif
@@ -274,7 +274,11 @@ void setupMenu(void)
 	char buffer[100];
 
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 
@@ -879,6 +883,17 @@ void setupMenu(void)
 #include <filesystem.h>
 #endif
 
+#ifdef __PS2__
+#include <sbv_patches.h>
+#include <sifrpc.h>
+#include <iopcontrol.h>
+#include <elf-loader.h>
+#include <ps2_all_drivers.h>
+#include <libpwroff.h>
+#include <ps2sdkapi.h>
+#include <debug.h>
+#endif
+
 #ifdef __OGC__
 #ifdef HW_RVL
 #include <di/di.h>
@@ -1043,6 +1058,19 @@ int main(int argc, char *argv[])
 
 #ifdef __NDS__
     nitroFSInit(NULL);
+#elif defined(__PS2__)
+   SifInitRpc(0);
+   while(!SifIopSync()){};
+   SifInitRpc(0);
+#ifdef DEBUG
+   init_scr();         //Initialize Screen
+#endif
+   sbv_patch_enable_lmb();
+   sbv_patch_disable_prefix_check();
+   init_fileXio_driver();
+   init_memcard_driver(true);
+   init_usb_driver();
+   init_cdfs_driver();
 #elif defined(__OGC__)
     MountDVD(true);
 

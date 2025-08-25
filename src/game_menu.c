@@ -163,7 +163,11 @@ void JE_itemScreen(void)
 	bool quit = false;
 
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');
+#endif
 
 	load_cubes();
 

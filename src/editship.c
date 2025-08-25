@@ -76,8 +76,12 @@ void JE_decryptShips(void)
 
 void JE_loadExtraShapes(void)
 {
+#ifdef __CDROM__
+    FILE *f = dir_fopen(get_user_directory(), "newshq.shp", "rb");
+#else
 	FILE *f = dir_fopen(get_user_directory(), "newsh$.shp", "rb");
-	
+#endif
+
 	if (f)
 	{
 		extraAvail = true;

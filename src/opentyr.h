@@ -73,6 +73,14 @@
 
 #define _printf pspDebugScreenPrintf
 #define _fprintf(X, ...) if ((X == stderr) || (X == stdout)) { pspDebugScreenPrintf(__VA_ARGS__); }  else { fprintf(X, __VA_ARGS__); }
+#elif defined(__PS2__)
+#ifdef DEBUG
+#define _printf scr_printf
+#define _fprintf(X, ...) if ((X == stderr) || (X == stdout)) { scr_printf(__VA_ARGS__); }  else { fprintf(X, __VA_ARGS__); }
+#else
+#define _printf printf
+#define _fprintf fprintf
+#endif
 #else
 #define _printf printf
 #define _fprintf fprintf

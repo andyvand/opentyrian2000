@@ -10,16 +10,16 @@ PROJECT_TITLE := OpenTyrian2000
 PROJECT_TITLEID := OPTIRYAN2000
 PROJECT := OpenTyrian2000
 
-LIBS = -lpthread -lSDL3 -lpatches  -lgskit  -ldmakit  -lps2_drivers
+LIBS = -lpthread -lSDL3 -lpatches  -lgskit  -ldmakit  -lps2_drivers -ldebug
 
 LDFLAGS = -march=r5900 -L${PS2SDK}/ee/lib -L${PS2DEV}/gsKit/lib -L${PS2SDK}/ports/lib -Wl,-zmax-page-size=128 -T${PS2SDK}/ee/startup/linkfile -G0
-CFLAGS  = -Wl,-q -Wall -O3 -DWITH_SDL3=1 -MMD -pedantic -Wall -Wextra \
+CFLAGS  = -Wl,-q -Wall -O3 -DWITH_SDL3=1 -D__CDROM__=1 -MMD -pedantic -Wall -Wextra \
 			-Dstrlcpy=strncpy -Dstrlcat=strncat \
 			-Wno-missing-field-initializers -Wno-unused-parameter \
 			-I${PS2SDK}/ee/include -I${PS2SDK}/common/include \
 			-I${PS2DEV}/gsKit/include -I${PS2SDK}/ports/include \
 			-D_EE -DPS2 -D__PS2__ -O2 -G0 -DTARGET_UNIX -std=c99 \
-			-I./src -I$(VITASDK)/arm-vita-eabi/include
+			-I./src -I$(PS2SDK)/ee/include
 #-DVDEBUG
 
 OBJS := src/animlib.o src/arg_parse.o src/backgrnd.o src/config.o src/config_file.o src/destruct.o src/editship.o src/episodes.o src/file.o src/font.o src/fonthand.o src/game_menu.o src/helptext.o src/joystick.o src/jukebox.o src/keyboard.o src/lds_play.o src/loudness.o src/lvllib.o src/lvlmast.o src/mainint.o src/menus.o src/mouse.o src/mtrand.o src/musmast.o src/network.o src/nortsong.o src/nortvars.o src/opentyr.o src/opl.o src/palette.o src/params.o src/pcxload.o src/pcxmast.o src/picload.o src/player.o src/shots.o src/sizebuf.o src/sndmast.o src/sprite.o src/starlib.o src/tyrian2.o src/varz.o src/vga256d.o src/vga_palette.o src/video.o src/video_scale.o src/video_scale_hqNx.o src/xmas.o

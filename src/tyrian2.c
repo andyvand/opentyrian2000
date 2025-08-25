@@ -805,7 +805,11 @@ start_level_first:
 	fade_palette(colors, 50, 0, 255);
 
 	if (explosionSpriteSheet.data == NULL)
-		JE_loadCompShapes(&explosionSpriteSheet, '6');
+#ifdef __CDROM__
+        JE_loadCompShapes(&explosionSpriteSheet, '6', 0);
+#else
+        JE_loadCompShapes(&explosionSpriteSheet, '6');
+#endif
 
 	/* MAPX will already be set correctly */
 	mapY = 300 - 8;
@@ -3369,7 +3373,11 @@ bool titleScreen(void)
 	};
 
 	if (shopSpriteSheet.data == NULL)
-		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);  // need mouse pointer sprites
+#else
+        JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 
@@ -4457,7 +4465,27 @@ void JE_eventSystem(void)
 					if (newEnemyShapeTables[i] > 0)
 					{
 						assert(newEnemyShapeTables[i] <= COUNTOF(shapeFile));
-						JE_loadCompShapes(&enemySpriteSheets[i], shapeFile[newEnemyShapeTables[i] - 1]);
+#ifdef __CDROM__
+                        if (shapeFile[newEnemyShapeTables[i] - 1] == '~') {
+                            JE_loadCompShapes(&enemySpriteSheets[i], 'w', 0);
+                        } else if (shapeFile[newEnemyShapeTables[i] - 1] == '$') {
+                            JE_loadCompShapes(&enemySpriteSheets[i], 'q', 0);
+                        } else if (shapeFile[newEnemyShapeTables[i] - 1] == '(') {
+                            JE_loadCompShapes(&enemySpriteSheets[i], 'x', 0);
+                        } else if (shapeFile[newEnemyShapeTables[i] - 1] == '#') {
+                            JE_loadCompShapes(&enemySpriteSheets[i], 'y', 0);
+                        } else if (shapeFile[newEnemyShapeTables[i] - 1] == '%') {
+                            JE_loadCompShapes(&enemySpriteSheets[i], 'z', 0);
+                        } else if (shapeFile[newEnemyShapeTables[i] - 1] == '\'') {
+                            JE_loadCompShapes(&enemySpriteSheets[i], 'z', '2');
+                        } else if (shapeFile[newEnemyShapeTables[i] - 1] == '^') {
+                            JE_loadCompShapes(&enemySpriteSheets[i], 'z', '1');
+                        } else {
+                            JE_loadCompShapes(&enemySpriteSheets[i], shapeFile[newEnemyShapeTables[i] - 1], 0);
+                        }
+#else
+                        JE_loadCompShapes(&enemySpriteSheets[i], shapeFile[newEnemyShapeTables[i] - 1]);
+#endif
 					}
 					else
 						free_sprite2s(&enemySpriteSheets[i]);

@@ -107,7 +107,7 @@ void init_video( void )
 
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
     {
-        fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
+        _fprintf(stderr, "error: failed to initialize SDL video: %s\n", SDL_GetError());
         exit(1);
     }
 
@@ -149,7 +149,7 @@ void init_video( void )
         !init_any_scaler(false) &&      // try any scaler in desired fullscreen state
         !init_any_scaler(!false))       // try any scaler in other fullscreen state
     {
-        fprintf(stderr, "error: failed to initialize any supported video mode\n");
+        _fprintf(stderr, "error: failed to initialize any supported video mode\n");
         while(1) SDL_Delay(1);
         exit(EXIT_FAILURE);
     }
@@ -200,7 +200,7 @@ bool init_scaler( unsigned int new_scaler, bool fullscreen )
     
     if (surface == NULL)
     {
-        fprintf(stderr, "error: failed to initialize %s video mode %dx%dx%d: %s\n", fullscreen ? "fullscreen" : "windowed", w, h, bpp, SDL_GetError());
+        _fprintf(stderr, "error: failed to initialize %s video mode %dx%dx%d: %s\n", fullscreen ? "fullscreen" : "windowed", w, h, bpp, SDL_GetError());
 
         return false;
     }
@@ -316,7 +316,9 @@ void init_video(void)
 
     if (SDL_WasInit(SDL_INIT_VIDEO) == false)
     {
-        return;
+        if (SDL_Init(SDL_INIT_VIDEO) == false) {
+            return;
+        }
     }
 #endif
 
@@ -437,13 +439,25 @@ static void init_texture(void)
 #ifdef WITH_SDL1
     int bpp = main_window_tex_format->BitsPerPixel;
 #else
+#ifdef __PS2__
+    int bpp = 16;
+#else
 	int bpp = 32; // TODOSDL2
+#endif
 #endif
 
 #ifdef WITH_SDL3
+#ifdef __PS2__
+    Uint32 format = bpp == 32 ? SDL_PIXELFORMAT_XRGB8888 : SDL_PIXELFORMAT_ABGR1555;
+#else
     Uint32 format = bpp == 32 ? SDL_PIXELFORMAT_XRGB8888 : SDL_PIXELFORMAT_RGB565;
+#endif
+#else
+#ifdef __PS2__
+    Uint32 format = bpp == 32 ? SDL_PIXELFORMAT_XRGB8888 : SDL_PIXELFORMAT_ABGR1555;
 #else
 	Uint32 format = bpp == 32 ? SDL_PIXELFORMAT_RGB888 : SDL_PIXELFORMAT_RGB565;
+#endif
 #endif
 
 	int scaler_w = scalers[scaler].width;

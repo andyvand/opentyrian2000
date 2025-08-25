@@ -122,7 +122,12 @@ extern Sprite2_array spriteSheet11;  // fka eShapes5
 extern Sprite2_array spriteSheet12;  // fka shapesW2
 extern Sprite2_array spriteSheetT2000; // fka shapesT2k
 
+#ifdef __CDROM__
+void JE_loadCompShapes(Sprite2_array *, char s, char s2);
+#else
 void JE_loadCompShapes(Sprite2_array *, char s);
+#endif
+
 void JE_loadCompShapesB(Sprite2_array *, FILE *f);
 
 void free_sprite2s(Sprite2_array *);

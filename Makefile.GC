@@ -25,7 +25,7 @@ INCLUDES	:=
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS	= -I/opt/devkitpro/portlibs/gamecube/include -I/opt/devkitpro/portlibs/gamecube/include/SDL -DWITH_SDL1=1 -DWITH_SDL=1 -D__OGC__=1 -g -O2 -Wall $(MACHDEP) $(INCLUDE)
+CFLAGS	= -I/opt/devkitpro/portlibs/gamecube/include -I/opt/devkitpro/portlibs/gamecube/include/SDL -DWITH_SDL1=1 -DWITH_SDL=1 -D__OGC__=1 -D__CDROM__=1 -g -O2 -Wall $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS)
 
 LDFLAGS	=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map

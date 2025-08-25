@@ -686,7 +686,11 @@ void JE_destructGame(void)
 	destructTempScreen = game_screen;
 	world.VGAScreen = VGAScreen;
 
+#ifdef __CDROM__
+    JE_loadCompShapes(&destructSpriteSheet, 'w', 0);
+#else
 	JE_loadCompShapes(&destructSpriteSheet, '~');
+#endif
 
 	fade_black(1);
 

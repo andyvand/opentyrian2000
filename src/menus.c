@@ -51,7 +51,11 @@ bool gameplaySelect(void)
 	};
 
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 
@@ -247,7 +251,11 @@ bool gameplaySelect(void)
 bool episodeSelect(void)
 {
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 
@@ -434,7 +442,11 @@ bool episodeSelect(void)
 bool difficultySelect(void)
 {
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 
@@ -682,7 +694,11 @@ bool difficultySelect(void)
 bool timedBattleSelect(void)
 {
 	if (shopSpriteSheet.data == NULL)
+#ifdef __CDROM__
+        JE_loadCompShapes(&shopSpriteSheet, '1', 0);
+#else
 		JE_loadCompShapes(&shopSpriteSheet, '1');  // need mouse pointer sprites
+#endif
 
 	bool restart = true;
 
