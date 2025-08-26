@@ -3001,9 +3001,11 @@ bool str_pop_int(char *str, int *val)
 
 void JE_operation(JE_byte slot)
 {
+#ifndef __PS2__
 	JE_byte flash;
-	char stemp[21];
 	char tempStr[51];
+#endif
+    char stemp[21];
 
 	if (!performSave)
 	{
@@ -3027,7 +3029,10 @@ void JE_operation(JE_byte slot)
 
 		JE_barShade(VGAScreen, 65, 55, 255, 155);
 
-#ifdef VITA
+#if defined(__PS2__)
+        if (JE_saveRequest(slot, stemp))
+            JE_saveGame(slot, stemp);
+#elif defined(VITA)
         char *str = keyboard_vita_get("Enter a name", 20);
         if(str != NULL) {
             JE_saveGame(slot, str);

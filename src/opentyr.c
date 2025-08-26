@@ -892,6 +892,7 @@ void setupMenu(void)
 #include <libpwroff.h>
 #include <ps2sdkapi.h>
 #include <debug.h>
+#include <audsrv.h>
 #endif
 
 #ifdef __OGC__
@@ -1059,14 +1060,9 @@ int main(int argc, char *argv[])
 #ifdef __NDS__
     nitroFSInit(NULL);
 #elif defined(__PS2__)
-   SifInitRpc(0);
-   while(!SifIopSync()){};
-   SifInitRpc(0);
 #ifdef DEBUG
    init_scr();         //Initialize Screen
 #endif
-   sbv_patch_enable_lmb();
-   sbv_patch_disable_prefix_check();
    init_fileXio_driver();
    init_memcard_driver(true);
    init_usb_driver();
@@ -1248,7 +1244,7 @@ int main(int argc, char *argv[])
 		init_audio();
 		load_music();
 		loadSndFile(xmas);
-    }
+	}
 	else
 	{
 		_printf("audio disabled\n");

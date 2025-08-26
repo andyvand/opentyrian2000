@@ -423,7 +423,6 @@ bool init_audio(void)
 #endif
     {
 #endif
-
 		_fprintf(stderr, "error: SDL failed to open audio device: %s\n", SDL_GetError());
 		audio_disabled = true;
 		return false;

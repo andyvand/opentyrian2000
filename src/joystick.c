@@ -220,8 +220,8 @@ void poll_joystick(int j)
 		joystick[j].action_pressed[d] = joystick[j].action[d] && (!old || repeat);
 		joystick[j].input_pressed |= joystick[j].action_pressed[d];
 	}
-	
-	joystick[j].confirm = joystick[j].action[0] || joystick[j].action[4];
+
+	joystick[j].confirm = joystick[j].action[0] || joystick[j].action[4];   
 	joystick[j].cancel = joystick[j].action[1] || joystick[j].action[5];
 	
 	// if new input, reset press-repeat delay
