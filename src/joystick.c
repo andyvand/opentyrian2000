@@ -431,7 +431,12 @@ void reset_joystick_assignments(int j)
 				joystick[j].assignment[a][1].x_axis = (a == 1 || a == 3);
 				joystick[j].assignment[a][1].negative_axis = (a == 0 || a == 3);
 			}
-#if defined(VITA) || defined(PSP) || defined(__PS2__)
+#if defined(__PS2__)
+            static const char remap[4] = { 4, 5, 6, 7 }; // maps to correct button (UP, RIGHT, DOWN, LEFT)
+
+            joystick[j].assignment[a][1].type = BUTTON;
+            joystick[j].assignment[a][1].num = remap[a];
+#elif defined(VITA) || defined(PSP)
             static const char remap[4] = { 8, 9, 6, 7 }; // maps to correct button (UP, RIGHT, DOWN, LEFT)
 
             joystick[j].assignment[a][1].type = BUTTON;
@@ -454,7 +459,25 @@ void reset_joystick_assignments(int j)
 #endif
 	}
 
-#if defined(VITA) || defined(PSP) || defined(__PS2__)
+#if defined(__PS2__)
+    joystick[j].assignment[4][0].type = BUTTON;
+    joystick[j].assignment[4][0].num = 14; // X (fire)
+
+    joystick[j].assignment[5][0].type = BUTTON;
+    joystick[j].assignment[5][0].num = 13; // O (change fire)
+
+    joystick[j].assignment[6][0].type = BUTTON;
+    joystick[j].assignment[6][0].num = 10; // L (left sidekick)
+
+    joystick[j].assignment[7][0].type = BUTTON;
+    joystick[j].assignment[7][0].num = 11; // R (right sidekick)
+
+    joystick[j].assignment[8][0].type = BUTTON;
+    joystick[j].assignment[8][0].num = 0; // SELECT (menu)
+
+    joystick[j].assignment[9][0].type = BUTTON;
+    joystick[j].assignment[9][0].num = 3; // START (pause)
+#elif defined(VITA) || defined(PSP)
     joystick[j].assignment[4][0].type = BUTTON;
     joystick[j].assignment[4][0].num = 2; // X (fire)
 

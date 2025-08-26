@@ -80,17 +80,9 @@ void set_palette(Palette colors, unsigned int first_color, unsigned int last_col
         {
 #endif
 #ifdef WITH_SDL3
-#ifdef __PS2__
-            rgb_palette[i] = 0x8000 | SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#else
             rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#endif
-#else
-#ifdef __PS2__
-            rgb_palette[i] = 0x8000 | SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
 #else
             rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
-#endif
 #endif
             yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
 #ifdef WITH_SDL
@@ -122,17 +114,9 @@ void set_colors(SDL_Color color, unsigned int first_color, unsigned int last_col
         {
 #endif
 #ifdef WITH_SDL3
-#ifdef __PS2__
-            rgb_palette[i] = 0x8000 | SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#else
             rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#endif
-#else
-#ifdef __PS2__
-            rgb_palette[i] = 0x8000 | SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
 #else
             rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
-#endif
 #endif
             yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
 #ifdef WITH_SDL
@@ -194,17 +178,9 @@ void step_fade_palette(int diff[256][3], int steps, unsigned int first_color, un
         {
 #endif
 #ifdef WITH_SDL3
-#ifdef __PS2__
-            rgb_palette[i] = 0x8000 | SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#else
             rgb_palette[i] = SDL_MapRGB(main_window_tex_format, SDL_GetSurfacePalette(SDL_GetWindowSurface(main_window)), palette[i].r, palette[i].g, palette[i].b);
-#endif
-#else
-#ifdef __PS2__
-            rgb_palette[i] = 0x8000 | SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
 #else
             rgb_palette[i] = SDL_MapRGB(main_window_tex_format, palette[i].r, palette[i].g, palette[i].b);
-#endif
 #endif
             
             yuv_palette[i] = rgb_to_yuv(palette[i].r, palette[i].g, palette[i].b);
