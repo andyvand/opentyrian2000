@@ -359,6 +359,7 @@ bool init_audio(void)
 	SDL_AudioSpec ask, got;
 
 	ask.freq = 11025 * OUTPUT_QUALITY;
+
 #ifdef WITH_SDL3
     ask.format = SDL_AUDIO_S16;
 #else

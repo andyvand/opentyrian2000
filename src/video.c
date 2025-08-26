@@ -345,7 +345,9 @@ void init_video(void)
 	// Create the window with a temporary initial size, hidden until we set up the
 	// scaler and find the true window size
 #ifdef WITH_SDL3
-#if defined(IOS) || defined(__3DS__)
+#if defined(__PS2__)
+    main_window = SDL_CreateWindow(opentyrian_str, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN);
+#elif defined(IOS) || defined(__3DS__)
     main_window = SDL_CreateWindow(opentyrian_str, vga_width, vga_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN);
 #else
 #ifdef CONFIG_IDF_TARGET

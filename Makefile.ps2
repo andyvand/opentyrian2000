@@ -14,7 +14,7 @@ LIBS = -lpthread -lSDL3 -lpatches  -lgskit  -ldmakit  -lps2_drivers -ldebug
 
 LDFLAGS = -march=r5900 -L${PS2SDK}/ee/lib -L${PS2DEV}/gsKit/lib -L${PS2SDK}/ports/lib -Wl,-zmax-page-size=128 -T${PS2SDK}/ee/startup/linkfile -G0
 CFLAGS  = -Wl,-q -Wall -O3 -DWITH_SDL3=1 -D__CDROM__=1 -MMD -pedantic -Wall -Wextra \
-			-Dstrlcpy=strncpy -Dstrlcat=strncat \
+			-Dstrlcpy=SDL_strlcpy -Dstrlcat=SDL_strlcat \
 			-Wno-missing-field-initializers -Wno-unused-parameter \
 			-I${PS2SDK}/ee/include -I${PS2SDK}/common/include \
 			-I${PS2DEV}/gsKit/include -I${PS2SDK}/ports/include \

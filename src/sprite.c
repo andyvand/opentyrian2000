@@ -486,10 +486,12 @@ void JE_loadCompShapes(Sprite2_array *sprite2s, char s)
 	char buffer[20];
 #ifdef __CDROM__
     if (s2 == 0) {
+        memset(buffer, 0, sizeof(buffer));
 #endif
         snprintf(buffer, sizeof(buffer), "newsh%c.shp", tolower((unsigned char)s));
 #ifdef __CDROM__
     } else {
+        memset(buffer, 0, sizeof(buffer));
         snprintf(buffer, sizeof(buffer), "newsh%c%c.shp", tolower((unsigned char)s), tolower((unsigned char)s2));
     }
 #endif

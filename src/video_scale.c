@@ -70,7 +70,8 @@ const struct Scalers scalers[] =
 #elif defined(__NDS__)
     { 256,           192,            stb_16,     stb_32,     "None" },
 #elif defined(__PS2__)
-    { 320,           240,            nn_16,      nn_32,     "None" },
+    { 320,           240,            nn_16,      nn_32,      "None" },
+    { 640,           448,            scale2x_16, scale2x_32, "Scale2x" },
 #else
     { 1 * vga_width, 1 * vga_height, nn_16,      nn_32,      "None" },
     { 2 * vga_width, 2 * vga_height, nn_16,      nn_32,      "2x" },
@@ -207,7 +208,7 @@ void stb_32( SDL_Surface *src_surface, SDL_Surface *dst_surface )
     Uint8 *src = src_surface->pixels, *src_temp,
     *dst = (Uint8 *)malloc(320*200*4), *dst_temp;
     int src_pitch = src_surface->pitch,
-    dst_pitch = 320*200*4;
+    dst_pitch = dst_surface->pitch;
     const int dst_Bpp = 4;         // dst_surface->format->BytesPerPixel
     
     const int height = 320, // src_surface->h
@@ -238,7 +239,7 @@ void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
     int src_pitch = src_surface->pitch,
-        dst_pitch = 320 * 4;
+        dst_pitch = dst_surface->pitch;
     const int dst_Bpp = 2;         // dst_surface->format->BytesPerPixel
     
     const int height = vga_height, // src_surface->h
@@ -261,7 +262,7 @@ void nn_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
         {
             for (int z = scale; z > 0; z--)
             {
-                *(Uint16 *)dst = rgb_palette[*src];
+                *(Uint16 *)dst = (Uint16)rgb_palette[*src];
                 dst += dst_Bpp;
             }
             src++;
@@ -288,7 +289,7 @@ void stb_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
     int src_pitch = src_surface->pitch,
-        dst_pitch = 320 * 2;
+        dst_pitch = dst_surface->pitch;
     const int dst_Bpp = 2;         // dst_surface->format->BytesPerPixel
     
     const int height = 320, // src_surface->h
@@ -318,7 +319,7 @@ void stb_16( SDL_Surface *src_surface, SDL_Surface *dst_surface )
     Uint8 *src = src_surface->pixels, *src_temp,
           *dst = dst_surface->pixels, *dst_temp;
     int src_pitch = src_surface->pitch,
-        dst_pitch = 320 * 2;
+        dst_pitch = dst_surface->pitch;
     const int dst_Bpp = 2;         // dst_surface->format->BytesPerPixel
     
     const int height = 320, // src_surface->h
