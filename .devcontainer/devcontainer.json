@@ -1,0 +1,18 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/python:3-3.12-bookworm",
+  "features": {
+    "ghcr.io/stu-bell/devcontainer-features/node:0": {},
+    "ghcr.io/devcontainers/features/sshd:1": {},
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "installGradle": "true"
+    }
+  },
+  "remoteEnv": {
+    "ANDROID_HOME": "/opt/android-sdk",
+    "ANDROID_SDK_ROOT": "/opt/android-sdk",
+    "ANDROID_NDK_HOME": "/opt/android-sdk/ndk/27.2.12479018",
+    "PATH": "${containerEnv:PATH}:/opt/android-sdk/cmdline-tools/latest/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/ndk/27.2.12479018"
+  },
+  "postCreateCommand": "bash .devcontainer/setup-android-sdk.sh && sudo apt-get update && sudo apt-get install -y wormhole && curl -LsSf https://astral.sh/uv/install.sh | sh"
+}

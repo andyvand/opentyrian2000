@@ -43,3 +43,6 @@ tyrian.sav
 
 # Doxygen output
 /doc/doxygen/
+android-project/app/build/
+android-project/.gradle/
+android-project/local.properties
