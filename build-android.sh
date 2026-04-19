@@ -2,18 +2,13 @@
 # build.sh — Android build script for OpenTyrian2000
 set -euo pipefail
 
-# ---------------------------------------------------------------------------
-# Defaults
-# ---------------------------------------------------------------------------
+
 PLATFORM="android"
 JOBS=$(nproc 2>/dev/null || sysctl -n hw.logicalcpu 2>/dev/null || echo 4)
-DEBUG=1               # debug by default (signed, sideloadable)
+DEBUG=1
 CLEAN=0
 VERBOSE=0
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 RED='\033[0;31m'; YELLOW='\033[1;33m'; GREEN='\033[0;32m'; RESET='\033[0m'
 info()  { echo -e "${GREEN}[build]${RESET} $*"; }
 warn()  { echo -e "${YELLOW}[warn]${RESET}  $*"; }
@@ -46,9 +41,6 @@ EOF
     exit 0
 }
 
-# ---------------------------------------------------------------------------
-# Argument parsing
-# ---------------------------------------------------------------------------
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -j)         JOBS="$2"; shift 2 ;;
@@ -61,9 +53,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# ---------------------------------------------------------------------------
-# Build: Android
-# ---------------------------------------------------------------------------
 build_android() {
     local android_dir="android-project"
     [[ -d "$android_dir" ]] || error "android-project/ directory not found"
@@ -113,10 +102,7 @@ build_android() {
     fi
 }
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-cd "$(dirname "$0")"   # ensure we run from the repo root
+cd "$(dirname "$0")"
 
 build_android
 
