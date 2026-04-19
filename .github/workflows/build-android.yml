@@ -79,7 +79,6 @@ jobs:
           ./gradlew assembleRelease --quiet
           apksigner sign \
             --ks ../keystore.jks \
-            --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
             --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
             --key-pass pass:${{ secrets.ALIAS_PASSWORD }} \
             --out app/build/outputs/apk/release/opentyrian2000-release.apk \
