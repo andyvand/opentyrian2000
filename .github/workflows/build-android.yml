@@ -105,8 +105,7 @@ jobs:
             -keystore ../keystore.jks \
             -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
             -keypass ${{ secrets.ALIAS_PASSWORD }} \
-            app/build/outputs/bundle/release/app-release.aab \
-            "${{ secrets.KEYSTORE_ALIAS }}"
+            app/build/outputs/bundle/release/app-release.aab uploadkey
           mv app/build/outputs/bundle/release/app-release.aab \
              app/build/outputs/bundle/release/opentyrian2000-release.aab
 
