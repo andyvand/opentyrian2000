@@ -1,6 +1,6 @@
 OpenTyrian2000
 ================================================================================
-
+ 
 OpenTyrian2000 is an open-source port of the DOS game Tyrian. It is a fork of
 OpenTyrian, with the end goal being to replicate the experience of Tyrian 2000
 as closely as possible.
@@ -12,13 +12,13 @@ to fight MicroSol and save the galaxy.
 Tyrian features a story mode, one- and two-player arcade modes, and networked
 multiplayer.
 
-== Additional Necessary Files ==================================================
+## Additional Necessary Files 
 
 OpenTyrian2000 requires the Tyrian 2000 data files, which have been released
 as freeware:
   https://www.camanis.net/tyrian/tyrian2000.zip
 
-== Keyboard Controls ===========================================================
+## Keyboard Controls
 
 alt-enter      -- toggle full-screen
 
@@ -27,7 +27,7 @@ space          -- fire weapons
 enter          -- toggle rear weapon mode
 ctrl/alt       -- fire left/right sidekick
 
-== Network Multiplayer =========================================================
+## Network Multiplayer
 
 Currently OpenTyrian2000 does not have an arena; as such, networked games must
 be initiated manually via the command line simultaneously by both players.
@@ -45,7 +45,7 @@ punching.
 
 Note that Network play has been tested using SDL_net, SDL2_net and SDL3_net.
 
-== Links =======================================================================
+## Links
 
 * For OpenTyrian2000
 project: https://github.com/andyvand/opentyrian2000
@@ -55,9 +55,35 @@ project: https://github.com/opentyrian/opentyrian
 irc:     ircs://irc.oftc.net/#opentyrian
 forums:  https://tyrian2k.proboards.com/board/5
 
-== ESP32 =======================================================================
+## Android Build Details
 
-## Requirements
+If you want to build the Android version of this, recommend opening this repo within Github Codespaces, [Devpod](https://devpod.sh/), or anything that 
+supports [Development Containers](https://containers.dev/) to automagically set up your environment.
+
+If that is not an option for whatever reason, the requirements are:
+
+* At least Java 17
+* Gradle 8.8.0 or greater
+* NDK version 27.2.12479018 or greater
+* Android SDK CLI tools 11076708 or greater
+* SDK and build tools Android 35
+* CMake 3.22+ 
+* SDK components installed via sdkmanager:
+  * platform-tools
+  * platforms;android-35
+  * build-tools;35.0.0
+* (NOTE: [Android Studio](https://developer.android.com/studio) can help set up a lot of this for you.)
+
+If setting up manually, you can mirror the container setup by running the equivalent `sdkmanager --install` commands shown in .devcontainer/setup-android-sdk.sh.
+
+However you set up your environment, after doing so, assuming you are on a Linux/Unix system, you can run build-android.sh at the root of this directory to
+build the app yourself! Note that this will generate an unsigned debug apk, which should be sufficent for personal use.
+
+You can also build the apk in Android Studio if you prefer that.
+
+## ESP32 Details
+
+### Requirements
 It requires:
  - An ESP32 WROVER 
  - An ILI9341 LCD - connected by SPI
@@ -65,22 +91,22 @@ It requires:
  - Amplifier and speaker
  - Some input buttons (Up/Down/Left/Right + two buttons)
 
-## Video
+### Video
 https://www.youtube.com/watch?v=UL5eTUv7SZE
 
-## Required esp-idf tools
+### Required esp-idf tools
 esp-idf V5.4
 
-## Set up esp-idf tools
+### Set up esp-idf tools
 Under esp-idf directory do:
 ". ./export.sh"
 
-## Set up for esp32, esp32s2 and esp32s3
+### Set up for esp32, esp32s2 and esp32s3
 "idf.py set-target esp32"
 "idf.py set-target esp32s2"
 "idf.py set-target esp32s3"
 
-## Installation
+### Installation
 "idf.py menuconfig"
 Make sure that under Serial Flasher Config the flash size is at least 4MB for SD card builds and 16MB for LittleFS builds.
 Make sure PSRAM has been set up.
