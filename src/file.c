@@ -152,9 +152,11 @@ const char * data_dir(void)
         ".",
     };
 #elif defined(ANDROID) || defined(__ANDROID__)
+    const char *android_internal = SDL_GetAndroidInternalStoragePath();
     const char *const dirs[] =
     {
         custom_data_dir,
+        android_internal,
         "/sdcard/Android/tyriandata",
         ".",
     };

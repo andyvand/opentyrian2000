@@ -846,7 +846,7 @@ const char * get_user_directory(void)
 	{
 #if !defined(TARGET_WIN32) && !defined(WITH_SDL1)
 #if defined(ANDROID) || defined(__ANDROID__)
-		snprintf(user_dir, sizeof(user_dir), "/sdcard/Android/tyriandata");
+		snprintf(user_dir, sizeof(user_dir), "%s", SDL_GetAndroidInternalStoragePath());
 #elif defined(VITA)
         snprintf(user_dir, sizeof(user_dir), "ux0:data/opentyrian2000");
 #elif defined(WITH_SDL3_ESP)

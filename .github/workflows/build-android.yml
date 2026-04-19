@@ -1,0 +1,118 @@
+name: Build Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+      output_type:
+        description: 'Output type (release only)'
+        required: true
+        default: 'apk'
+        type: choice
+        options:
+          - apk
+          - aab
+          - both
+
+jobs:
+  build:
+    name: Android ${{ inputs.build_type }} ${{ inputs.build_type == 'release' && inputs.output_type || '' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Install NDK and configure SDK
+        run: |
+          NDK_VERSION="27.2.12479018"
+          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+          "$SDKMANAGER" \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0" \
+            "ndk;${NDK_VERSION}"
+          echo "$ANDROID_SDK_ROOT/build-tools/35.0.0" >> "$GITHUB_PATH"
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > android-project/local.properties
+
+      - name: Make gradlew executable
+        run: chmod +x android-project/gradlew
+
+      - name: Decode keystore
+        if: inputs.build_type == 'release'
+        run: echo "${{ secrets.JKS_KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
+
+      # ── Debug ────────────────────────────────────────────────────────────
+
+      - name: Build debug APK
+        if: inputs.build_type == 'debug'
+        run: |
+          cd android-project
+          ./gradlew assembleDebug --quiet
+
+      - name: Upload debug APK
+        if: inputs.build_type == 'debug'
+        uses: actions/upload-artifact@v4
+        with:
+          name: opentyrian2000-debug
+          if-no-files-found: error
+          path: android-project/app/build/outputs/apk/debug/app-debug.apk
+
+      # ── Release APK ──────────────────────────────────────────────────────
+
+      - name: Build release APK
+        if: inputs.build_type == 'release' && (inputs.output_type == 'apk' || inputs.output_type == 'both')
+        run: |
+          cd android-project
+          ./gradlew assembleRelease --quiet
+          apksigner sign \
+            --ks ../keystore.jks \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.ALIAS_PASSWORD }} \
+            --out app/build/outputs/apk/release/opentyrian2000-release.apk \
+            app/build/outputs/apk/release/app-release-unsigned.apk
+          apksigner verify --verbose \
+            app/build/outputs/apk/release/opentyrian2000-release.apk
+
+      - name: Upload release APK
+        if: inputs.build_type == 'release' && (inputs.output_type == 'apk' || inputs.output_type == 'both')
+        uses: actions/upload-artifact@v4
+        with:
+          name: opentyrian2000-apk
+          if-no-files-found: error
+          path: android-project/app/build/outputs/apk/release/opentyrian2000-release.apk
+
+      # ── Release AAB ──────────────────────────────────────────────────────
+
+      - name: Build release AAB
+        if: inputs.build_type == 'release' && (inputs.output_type == 'aab' || inputs.output_type == 'both')
+        run: |
+          cd android-project
+          ./gradlew bundleRelease --quiet
+          jarsigner -verbose \
+            -keystore ../keystore.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.ALIAS_PASSWORD }} \
+            app/build/outputs/bundle/release/app-release.aab uploadkey
+          mv app/build/outputs/bundle/release/app-release.aab \
+             app/build/outputs/bundle/release/opentyrian2000-release.aab
+
+      - name: Upload release AAB
+        if: inputs.build_type == 'release' && (inputs.output_type == 'aab' || inputs.output_type == 'both')
+        uses: actions/upload-artifact@v4
+        with:
+          name: opentyrian2000-aab
+          if-no-files-found: error
+          path: android-project/app/build/outputs/bundle/release/opentyrian2000-release.aab
