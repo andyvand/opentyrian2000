@@ -1,0 +1,181 @@
+{
+  "info": {
+    "name": "arm64-v8a",
+    "bitness": 64,
+    "isDefault": true,
+    "isDeprecated": false,
+    "architecture": "arm64",
+    "triple": "aarch64-linux-android",
+    "llvmTriple": "aarch64-none-linux-android"
+  },
+  "cxxBuildFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/.cxx/Release/3f5i285h/arm64-v8a",
+  "soFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/cxx/Release/3f5i285h/obj/local/arm64-v8a",
+  "soRepublishFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/ndkBuild/release/obj/local/arm64-v8a",
+  "abiPlatformVersion": 21,
+  "variant": {
+    "buildSystemArgumentList": [
+      "APP_PLATFORM\u003dandroid-31"
+    ],
+    "cFlagsList": [],
+    "cppFlagsList": [],
+    "variantName": "release",
+    "isDebuggableEnabled": false,
+    "validAbiList": [
+      "armeabi-v7a",
+      "arm64-v8a",
+      "riscv64",
+      "x86",
+      "x86_64"
+    ],
+    "buildTargetSet": [],
+    "implicitBuildTargetSet": [],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "module": {
+      "cxxFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/.cxx",
+      "intermediatesBaseFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates",
+      "intermediatesFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/cxx",
+      "gradleModulePathName": ":app",
+      "moduleRootFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app",
+      "moduleBuildFile": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build.gradle",
+      "makeFile": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/jni/Android.mk",
+      "buildSystem": "NDK_BUILD",
+      "ndkFolder": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973",
+      "ndkFolderBeforeSymLinking": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973",
+      "ndkVersion": "27.0.12077973",
+      "ndkSupportedAbiList": [
+        "armeabi-v7a",
+        "arm64-v8a",
+        "riscv64",
+        "x86",
+        "x86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "armeabi-v7a",
+        "arm64-v8a",
+        "x86",
+        "x86_64"
+      ],
+      "ndkDefaultStl": "SYSTEM",
+      "ndkMetaPlatforms": {
+        "min": 21,
+        "max": 35,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29,
+          "R": 30,
+          "S": 31,
+          "Sv2": 32,
+          "Tiramisu": 33,
+          "UpsideDownCake": 34,
+          "VanillaIceCream": 35
+        }
+      },
+      "ndkMetaAbiList": [
+        {
+          "name": "armeabi-v7a",
+          "bitness": 32,
+          "isDefault": true,
+          "isDeprecated": false,
+          "architecture": "arm",
+          "triple": "arm-linux-androideabi",
+          "llvmTriple": "armv7-none-linux-androideabi"
+        },
+        {
+          "name": "arm64-v8a",
+          "bitness": 64,
+          "isDefault": true,
+          "isDeprecated": false,
+          "architecture": "arm64",
+          "triple": "aarch64-linux-android",
+          "llvmTriple": "aarch64-none-linux-android"
+        },
+        {
+          "name": "riscv64",
+          "bitness": 64,
+          "isDefault": false,
+          "isDeprecated": false,
+          "architecture": "riscv64",
+          "triple": "riscv64-linux-android",
+          "llvmTriple": "riscv64-none-linux-android"
+        },
+        {
+          "name": "x86",
+          "bitness": 32,
+          "isDefault": true,
+          "isDeprecated": false,
+          "architecture": "x86",
+          "triple": "i686-linux-android",
+          "llvmTriple": "i686-none-linux-android"
+        },
+        {
+          "name": "x86_64",
+          "bitness": 64,
+          "isDefault": true,
+          "isDeprecated": false,
+          "architecture": "x86_64",
+          "triple": "x86_64-linux-android",
+          "llvmTriple": "x86_64-none-linux-android"
+        }
+      ],
+      "cmakeToolchainFile": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973/build/cmake/android.toolchain.cmake",
+      "stlSharedObjectMap": {
+        "LIBCXX_SHARED": {
+          "armeabi-v7a": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
+          "arm64-v8a": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so",
+          "riscv64": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/riscv64-linux-android/libc++_shared.so",
+          "x86": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/i686-linux-android/libc++_shared.so",
+          "x86_64": "/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "SYSTEM": {}
+      },
+      "project": {
+        "rootBuildGradleFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project",
+        "sdkFolder": "/Users/andyvand/Library/Android/sdk",
+        "isBuildOnlyTargetAbiEnabled": true,
+        "isCmakeBuildCohabitationEnabled": false,
+        "isPrefabEnabled": false
+      },
+      "outputOptions": [],
+      "hasBuildTimeInformation": true
+    },
+    "prefabClassPaths": [],
+    "prefabPackages": [],
+    "prefabPackageConfigurations": [],
+    "stlType": "system",
+    "optimizationTag": "Release"
+  },
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "prefabFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/.cxx/Release/3f5i285h/prefab/arm64-v8a",
+  "isActiveAbi": true,
+  "fullConfigurationHash": "3f5i285h4h2a1gt1a4y6x1r4w6p1f5h425f3260r5k4z4s6v2e6w4o1x75n20",
+  "fullConfigurationHashKey": "# Values used to calculate the hash in this folder name.\n# Should not depend on the absolute path of the project itself.\n#   - AGP: 8.13.2.\n#   - $NDK is the path to NDK 27.0.12077973.\n#   - $PROJECT is the path to the parent folder of the root Gradle build file.\n#   - $ABI is the ABI to be built with. The specific value doesn\u0027t contribute to the value of the hash.\n#   - $HASH is the hash value computed from this text.\nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003d$PROJECT/app/jni/Android.mk\nNDK_APPLICATION_MK\u003d$PROJECT/app/jni/Application.mk\nAPP_ABI\u003d$ABI\nNDK_ALL_ABIS\u003d$ABI\nNDK_DEBUG\u003d0\nNDK_OUT\u003d$PROJECT/app/build/intermediates/cxx/Release/$HASH/obj\nNDK_LIBS_OUT\u003d$PROJECT/app/build/intermediates/cxx/Release/$HASH/lib\nAPP_PLATFORM\u003dandroid-31",
+  "configurationArguments": [
+    "NDK_PROJECT_PATH\u003dnull",
+    "APP_BUILD_SCRIPT\u003d/Users/andyvand/Downloads/opentyrian2000/android-project/app/jni/Android.mk",
+    "NDK_APPLICATION_MK\u003d/Users/andyvand/Downloads/opentyrian2000/android-project/app/jni/Application.mk",
+    "APP_ABI\u003darm64-v8a",
+    "NDK_ALL_ABIS\u003darm64-v8a",
+    "NDK_DEBUG\u003d0",
+    "NDK_OUT\u003d/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/cxx/Release/3f5i285h/obj",
+    "NDK_LIBS_OUT\u003d/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/cxx/Release/3f5i285h/lib",
+    "APP_PLATFORM\u003dandroid-31"
+  ],
+  "intermediatesParentFolder": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/cxx/Release/3f5i285h"
+}

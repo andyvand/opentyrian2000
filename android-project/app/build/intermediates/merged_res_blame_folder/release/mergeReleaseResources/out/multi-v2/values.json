@@ -1,0 +1,62 @@
+{
+    "logs": [
+        {
+            "outputFile": "org.libsdl.opentyrian.app-mergeReleaseResources-2:/values/values.xml",
+            "map": [
+                {
+                    "source": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "52",
+                        "endOffsets": "64"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "199",
+                        "endColumns": "52",
+                        "endOffsets": "247"
+                    }
+                },
+                {
+                    "source": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/res/values/colors.xml",
+                    "from": {
+                        "startLines": "4,2,3",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "153,55,102",
+                        "endColumns": "45,46,50",
+                        "endOffsets": "194,97,148"
+                    },
+                    "to": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,101,148",
+                        "endColumns": "45,46,50",
+                        "endOffsets": "96,143,194"
+                    }
+                },
+                {
+                    "source": "/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/res/values/styles.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "92",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "217"
+                    },
+                    "to": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "252",
+                        "endLines": "8",
+                        "endColumns": "12",
+                        "endOffsets": "342"
+                    }
+                }
+            ]
+        }
+    ]
+}

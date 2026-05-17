@@ -1,0 +1,123 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:2:1-112:12
+INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:2:1-112:12
+INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:2:1-112:12
+INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:2:1-112:12
+	package
+		INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml
+	android:versionName
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:4:5-30
+		INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:3:5-28
+		INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml
+	android:installLocation
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:5:5-35
+uses-permission#android.permission.MANAGE_EXTERNAL_STORAGE
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:8:5-82
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:8:22-79
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:9:5-80
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:9:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:10:5-81
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:10:22-78
+uses-feature#0x00020000
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:13:5-54
+	android:glEsVersion
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:13:19-51
+uses-feature#android.hardware.touchscreen
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:16:5-18:36
+	android:required
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:18:9-33
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:17:9-52
+uses-feature#android.hardware.bluetooth
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:21:5-23:36
+	android:required
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:23:9-33
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:22:9-50
+uses-feature#android.hardware.gamepad
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:24:5-26:36
+	android:required
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:26:9-33
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:25:9-48
+uses-feature#android.hardware.usb.host
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:27:5-29:36
+	android:required
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:29:9-33
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:28:9-49
+uses-feature#android.hardware.type.pc
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:32:5-34:36
+	android:required
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:34:9-33
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:33:9-48
+uses-permission#android.permission.VIBRATE
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:59:5-66
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:59:22-63
+application
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:75:5-110:19
+INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:75:5-110:19
+	android:extractNativeLibs
+		INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml
+	android:label
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:75:18-50
+	android:hardwareAccelerated
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:79:9-43
+	android:icon
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:76:9-43
+	android:allowBackup
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:77:9-35
+	android:theme
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:78:9-40
+activity#org.libsdl.opentyrian.OpentyrianActivity
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:85:9-109:20
+	android:label
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:86:13-45
+	android:launchMode
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:88:13-48
+	android:exported
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:91:13-36
+	android:configChanges
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:89:13-205
+	android:alwaysRetainTaskState
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:87:13-49
+	android:preferMinimalPostProcessing
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:90:13-55
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:85:19-52
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:93:13-96:29
+action#android.intent.action.MAIN
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:94:17-69
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:94:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:95:17-77
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:95:27-74
+intent-filter#action:name:android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:98:13-100:29
+action#android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:99:17-90
+	android:name
+		ADDED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:99:25-87
+uses-sdk
+INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml
+INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <string name="app_name">OpenTyrian 2000</string>
+    <style name="AppTheme" parent="android:Theme.NoTitleBar.Fullscreen">
+        
+    </style>
+</resources>

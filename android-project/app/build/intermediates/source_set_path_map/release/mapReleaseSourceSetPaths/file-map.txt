@@ -1,0 +1,8 @@
+org.libsdl.opentyrian.app-pngs-0 /Users/andyvand/Downloads/opentyrian2000/android-project/app/build/generated/res/pngs/release
+org.libsdl.opentyrian.app-resValues-1 /Users/andyvand/Downloads/opentyrian2000/android-project/app/build/generated/res/resValues/release
+org.libsdl.opentyrian.app-updated_navigation_xml-2 /Users/andyvand/Downloads/opentyrian2000/android-project/app/build/generated/updated_navigation_xml/release
+org.libsdl.opentyrian.app-packageReleaseResources-3 /Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/incremental/release/packageReleaseResources/merged.dir
+org.libsdl.opentyrian.app-packageReleaseResources-4 /Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/incremental/release/packageReleaseResources/stripped.dir
+org.libsdl.opentyrian.app-release-5 /Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/merged_res/release/mergeReleaseResources
+org.libsdl.opentyrian.app-main-6 /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/res
+org.libsdl.opentyrian.app-release-7 /Users/andyvand/Downloads/opentyrian2000/android-project/app/src/release/res

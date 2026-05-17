@@ -1,0 +1,172 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="org.libsdl.opentyrian"
+4    android:installLocation="auto"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="21"
+10        android:targetSdkVersion="35" />
+11
+12    <!-- Access external storage -->
+13    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+13-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:8:5-82
+13-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:8:22-79
+14    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+14-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:9:5-80
+14-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:9:22-77
+15    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+15-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:10:5-81
+15-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:10:22-78
+16
+17    <!-- OpenGL ES 2.0 -->
+18    <uses-feature android:glEsVersion="0x00020000" />
+18-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:13:5-54
+18-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:13:19-51
+19
+20    <!-- Touchscreen support -->
+21    <uses-feature
+21-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:16:5-18:36
+22        android:name="android.hardware.touchscreen"
+22-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:17:9-52
+23        android:required="false" />
+23-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:18:9-33
+24
+25    <!-- Game controller support -->
+26    <uses-feature
+26-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:21:5-23:36
+27        android:name="android.hardware.bluetooth"
+27-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:22:9-50
+28        android:required="false" />
+28-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:23:9-33
+29    <uses-feature
+29-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:24:5-26:36
+30        android:name="android.hardware.gamepad"
+30-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:25:9-48
+31        android:required="false" />
+31-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:26:9-33
+32    <uses-feature
+32-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:27:5-29:36
+33        android:name="android.hardware.usb.host"
+33-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:28:9-49
+34        android:required="false" />
+34-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:29:9-33
+35
+36    <!-- External mouse input events -->
+37    <uses-feature
+37-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:32:5-34:36
+38        android:name="android.hardware.type.pc"
+38-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:33:9-48
+39        android:required="false" />
+39-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:34:9-33
+40
+41    <!-- Audio recording support -->
+42    <!-- if you want to record audio, uncomment this. -->
+43    <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
+44    <!--
+45         <uses-feature
+46        android:name="android.hardware.microphone"
+47        android:required="false" />
+48    -->
+49
+50
+51    <!-- Camera support -->
+52    <!-- if you want to record video, uncomment this. -->
+53    <!--
+54    <uses-permission android:name="android.permission.CAMERA" />
+55    <uses-feature android:name="android.hardware.camera" />
+56    -->
+57
+58
+59    <!-- Allow downloading to the external storage on Android 5.1 and older -->
+60    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="22" /> -->
+61
+62
+63    <!-- Allow access to Bluetooth devices -->
+64    <!-- Currently this is just for Steam Controller support and requires setting SDL_HINT_JOYSTICK_HIDAPI_STEAM -->
+65    <!-- <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /> -->
+66    <!-- <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> -->
+67
+68
+69    <!-- Allow access to the vibrator -->
+70    <uses-permission android:name="android.permission.VIBRATE" />
+70-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:59:5-66
+70-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:59:22-63
+71
+72    <!-- Allow access to Internet -->
+73    <!-- if you want to connect to the network or internet, uncomment this. -->
+74<!--     <uses-permission android:name="android.permission.INTERNET" /> -->
+75    <!--
+76 Create a Java class extending SDLActivity and place it in a
+77         directory under app/src/main/java matching the package, e.g. app/src/main/java/com/gamemaker/game/MyGame.java
+78
+79         then replace "SDLActivity" with the name of your class (e.g. "MyGame")
+80         in the XML below.
+81
+82         An example Java class can be found in README-android.md
+83    -->
+84    <application
+84-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:75:5-110:19
+85        android:allowBackup="true"
+85-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:77:9-35
+86        android:extractNativeLibs="true"
+87        android:hardwareAccelerated="true"
+87-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:79:9-43
+88        android:icon="@mipmap/ic_launcher"
+88-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:76:9-43
+89        android:label="@string/app_name"
+89-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:75:18-50
+90        android:theme="@style/AppTheme" >
+90-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:78:9-40
+91
+92        <!--
+93        Example of setting SDL hints from AndroidManifest.xml:
+94        <meta-data android:name="SDL_ENV.SDL_ANDROID_TRAP_BACK_BUTTON" android:value="0"/>
+95        -->
+96
+97        <activity
+97-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:85:9-109:20
+98            android:name="org.libsdl.opentyrian.OpentyrianActivity"
+98-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:85:19-52
+99            android:alwaysRetainTaskState="true"
+99-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:87:13-49
+100            android:configChanges="layoutDirection|locale|grammaticalGender|fontScale|fontWeightAdjustment|orientation|uiMode|screenLayout|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+100-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:89:13-205
+101            android:exported="true"
+101-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:91:13-36
+102            android:label="@string/app_name"
+102-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:86:13-45
+103            android:launchMode="singleInstance"
+103-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:88:13-48
+104            android:preferMinimalPostProcessing="true" >
+104-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:90:13-55
+105            <intent-filter>
+105-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:93:13-96:29
+106                <action android:name="android.intent.action.MAIN" />
+106-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:94:17-69
+106-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:94:25-66
+107
+108                <category android:name="android.intent.category.LAUNCHER" />
+108-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:95:17-77
+108-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:95:27-74
+109            </intent-filter>
+110            <!-- Let Android know that we can handle some USB devices and should receive this event -->
+111            <intent-filter>
+111-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:98:13-100:29
+112                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+112-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:99:17-90
+112-->/Users/andyvand/Downloads/opentyrian2000/android-project/app/src/main/AndroidManifest.xml:99:25-87
+113            </intent-filter>
+114            <!-- Drop file event -->
+115            <!--
+116            <intent-filter>
+117                <action android:name="android.intent.action.VIEW" />
+118                <category android:name="android.intent.category.DEFAULT" />
+119                <data android:mimeType="*/*" />
+120            </intent-filter>
+121            -->
+122        </activity>
+123    </application>
+124
+125</manifest>

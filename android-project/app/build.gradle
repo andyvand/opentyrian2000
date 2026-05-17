@@ -51,9 +51,43 @@ android {
         }
 
     }
+
+    // Bundle Tyrian data files into the APK so they can be copied to the
+    // app's internal storage on first launch. Staged under a "data/"
+    // subdirectory so the Java loader can enumerate them as a group.
+    sourceSets.main {
+        assets.srcDirs += file("${buildDir}/generated/tyrianAssets").absolutePath
+    }
+    androidResources {
+        noCompress 'dat', 'shp', 'mus', 'snd', 'lvl', 'pic', 'cdt', 'cd1', 'cd2', 'cd3', 'cd4', 'cd5', 'sd2', '1', '2', '3', '4', '5'
+    }
     lint {
         abortOnError false
     }
+}
+
+// Stage the repo's top-level data/ directory into an APK assets subdir
+// (assets/data/...). Done via a Copy task so the build remains portable
+// (no filesystem symlinks required).
+tasks.register('stageTyrianData', Copy) {
+    description = "Stage Tyrian data files into assets/data/ for the APK."
+    from rootProject.file('../data')
+    into "${buildDir}/generated/tyrianAssets/data"
+}
+
+afterEvaluate {
+    tasks.matching { it.name.startsWith('merge') && it.name.endsWith('Assets') }
+        .configureEach { dependsOn stageTyrianData }
+    tasks.matching { it.name.startsWith('generate') && it.name.endsWith('Assets') }
+        .configureEach { dependsOn stageTyrianData }
+    tasks.matching { it.name.toLowerCase().contains('lint') }
+        .configureEach { dependsOn stageTyrianData }
+    tasks.matching { it.name.startsWith('package') && it.name.endsWith('Assets') }
+        .configureEach { dependsOn stageTyrianData }
+    tasks.matching { it.name.startsWith('compress') && it.name.endsWith('Assets') }
+        .configureEach { dependsOn stageTyrianData }
+    tasks.matching { it.name.startsWith('extractDeepLinks') }
+        .configureEach { dependsOn stageTyrianData }
 }
 
 dependencies {

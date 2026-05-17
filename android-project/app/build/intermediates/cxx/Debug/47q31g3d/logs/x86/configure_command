@@ -1,0 +1,14 @@
+/Users/andyvand/Library/Android/sdk/ndk/27.0.12077973/ndk-build \
+  NDK_PROJECT_PATH=null \
+  APP_BUILD_SCRIPT=/Users/andyvand/Downloads/opentyrian2000/android-project/app/jni/Android.mk \
+  NDK_APPLICATION_MK=/Users/andyvand/Downloads/opentyrian2000/android-project/app/jni/Application.mk \
+  APP_ABI=x86 \
+  NDK_ALL_ABIS=x86 \
+  NDK_DEBUG=1 \
+  NDK_OUT=/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/cxx/Debug/47q31g3d/obj \
+  NDK_LIBS_OUT=/Users/andyvand/Downloads/opentyrian2000/android-project/app/build/intermediates/cxx/Debug/47q31g3d/lib \
+  APP_PLATFORM=android-31 \
+  APP_SHORT_COMMANDS=false \
+  LOCAL_SHORT_COMMANDS=false \
+  -B \
+  -n
