@@ -1,0 +1,175 @@
+# BUILD SETTINGS ###############################################################
+
+PLATFORM := WIN32
+TYRIAN_DIR = C:\\TYRIAN
+
+WITH_SDL3 := true
+WITH_NETWORK := false
+WITH_MIDI := false
+
+################################################################################
+# see https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html
+################################################################################
+
+SHELL = /bin/sh
+
+HOSTCC = gcc
+CC = i686-pc-msdosdjgpp-gcc
+
+INSTALL = /usr/bin/install
+PKG_CONFIG = /usr/local/bin/pkg-config
+PKG_CONFIG_PATH=/usr/local/x86_64-w64-mingw32/lib/pkg-config
+
+VCS_IDREV ?= `(git describe --tags || git rev-parse --short HEAD)`
+
+INSTALL_PROGRAM = $(INSTALL) -m 755
+INSTALL_DATA = $(INSTALL) -m 644
+
+prefix ?= /usr/local/x86_64-w64-mingw32
+exec_prefix ?= $(prefix)
+
+bindir ?= $(exec_prefix)/bin
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+docdir ?= $(datarootdir)/doc/opentyrian2000
+mandir ?= $(datarootdir)/man
+man6dir ?= $(mandir)/man6
+man6ext ?= .6
+desktopdir ?= $(datarootdir)/applications
+icondir ?= $(datarootdir)/icons
+
+# see https://www.pathname.com/fhs/pub/fhs-2.3.html
+
+gamesdir ?= $(datadir)/games
+
+###
+
+TARGET := opentyrian2000
+
+SRCS := $(wildcard src/*.c)
+OBJS := $(SRCS:src/%.c=obj/%.o)
+DEPS := $(SRCS:src/%.c=obj/%.d)
+
+###
+
+ifeq ($(WITH_SDL3), true)
+    EXTRA_CPPFLAGS += -DWITH_SDL3
+endif
+
+ifeq ($(WITH_NETWORK), true)
+    EXTRA_CPPFLAGS += -DWITH_NETWORK
+endif
+
+ifeq ($(WITH_MIDI), true)
+    EXTRA_CPPFLAGS += -DWITH_MIDI
+endif
+
+ifeq ($(OS), linux)
+    EXTRA_CPPFLAGS += -DNO_NATIVE_MIDI
+endif
+
+OPENTYRIAN_VERSION := $(VCS_IDREV)\
+
+EXTRA_CPPFLAGS += -DOPENTYRIAN_VERSION="$(OPENTYRIAN_VERSION)"
+
+CPPFLAGS = -MMD -DNDEBUG=1
+CFLAGS = -g0 -O3 $(EXTRA_CPPFLAGS) -pedantic -Wall -Wextra
+LDFLAGS ?=
+LDLIBS ?= -L/usr/local/i686-pc-msdosdjgpp
+
+ifeq ($(WITH_NETWORK), true)
+ifeq ($(WITH_SDL3), true)
+    SDL_CPPFLAGS := -I/usr/local/i686-pc-msdosdjgpp/include
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -lSDL3 -lSDL3_net.dll -lm
+else
+    SDL_CPPFLAGS := -I/usr/local/i686-pc-msdosdjgpp/include
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -lSDL2 -lSDL2_net -lm
+endif
+else
+ifeq ($(WITH_SDL3), true)
+    SDL_CPPFLAGS := -I/usr/local/i686-pc-msdosdjgpp/include
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -lSDL3 -lm
+else
+    SDL_CPPFLAGS := -I/usr/local/i686-pc-msdosdjgpp/include
+    SDL_LDFLAGS :=
+    SDL_LDLIBS := -lSDL2 -lm
+endif
+endif
+
+ifeq ($(WITH_MIDI), true)
+ifeq ($(WITH_SDL3), true)
+    SDL_PACKAGES := SDL3_mixer
+    MIDIPROC_LIBS := midiproc
+else
+    SDL_PACKAGES := SDL2_mixer_ext
+    MIDIPROC_LIBS := midiproc fluidsynth
+endif
+endif
+
+ifeq ($(WITH_MIDI), true)
+ifeq ($(WITH_SDL3), true)
+    SDL_CPPFLAGS += -I/c/msys64/mingw32/include -I/c/msys64/mingw32/include/SDL3 -I/c/msys64/mingw32/include/midiproc
+    SDL_LDFLAGS :=
+    SDL_LDLIBS += -lmidiproc -lSDL3_mixer 
+else
+    SDL_CPPFLAGS += -I/c/msys64/mingw32/include -I/c/msys64/mingw32/include/SDL2 -I/c/msys64/mingw32/include/midiproc
+    SDL_LDFLAGS :=
+    SDL_LDLIBS += -lmidiproc -lSDL2_mixer_ext -lfluidsynth 
+endif
+endif
+
+# add stdc++ to the ldlibs if using midiproc
+ifneq ($(MIDIPROC_LIBS), )
+    SDL_LDLIBS += -lstdc++ -lsupc++
+endif
+
+ALL_CPPFLAGS = -DTARGET_$(PLATFORM) \
+               -DTYRIAN_DIR='"$(TYRIAN_DIR)"' \
+               $(EXTRA_CPPFLAGS) \
+               $(SDL_CPPFLAGS) \
+               $(CPPFLAGS)
+ALL_CFLAGS = $(CFLAGS)
+ALL_LDFLAGS = $(SDL_LDFLAGS) \
+              $(LDFLAGS)
+ALL_LDLIBS = -lm \
+             $(SDL_LDLIBS) \
+             $(LDLIBS)
+
+###
+
+.PHONY : all
+all : $(TARGET).exe
+
+.PHONY : installdirs
+installdirs :
+	mkdir -p $(DESTDIR)$(bindir)
+	mkdir -p $(DESTDIR)$(man6dir)
+
+.PHONY : install
+install : $(TARGET).exe installdirs
+	$(INSTALL_PROGRAM) $(TARGET).exe $(DESTDIR)$(bindir)/
+	$(INSTALL_DATA) linux/man/opentyrian2000.6 $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
+
+.PHONY : uninstall
+uninstall :
+	rm -f $(DESTDIR)$(bindir)/$(TARGET).exe
+	rm -f $(DESTDIR)$(man6dir)/opentyrian2000$(man6ext)
+
+.PHONY : clean
+clean :
+	rm -f $(OBJS)
+	rm -f $(DEPS)
+	rm -f $(TARGET).exe
+	rm -f obj/opentyrian2000.o
+
+$(TARGET).exe : $(OBJS)
+	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -o $@ $^ $(ALL_LDLIBS)
+
+-include $(DEPS)
+
+obj/%.o : src/%.c
+	@mkdir -p "$(dir $@)"
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c -o $@ $<

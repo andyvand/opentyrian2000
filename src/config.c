@@ -399,13 +399,11 @@ bool save_opentyrian_config(void)
 		config_set_string_option(section, keySettingNames[i], keyName);
 	}
 
-#ifndef WITH_SDL1
-#ifndef TARGET_WIN32
 #if defined(VITA) || defined(PSP)
     sceIoMkdir(get_user_directory(), 0777);
 #else
+#if defined(TARGET_WIN32) || defined(__DJGPP__)
 	mkdir(get_user_directory(), 0700);
-#endif
 #else
 	mkdir(get_user_directory());
 #endif
@@ -1267,7 +1265,7 @@ void JE_saveConfiguration(void)
 	JE_encryptSaveTemp();
 
 #ifndef WITH_SDL1
-#if !defined(TARGET_WIN32)
+#if defined(TARGET_WIN32) || defined(__DJGPP__)
 	mkdir(get_user_directory(), 0700);
 #else
 	mkdir(get_user_directory());
