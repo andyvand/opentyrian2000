@@ -1,0 +1,280 @@
+# OpenTyrian 2000 PumpkinOS port.
+#
+# Builds the game plus the PalmOS glue in pumpkinos/ into OpenTyrian.dlib,
+# wraps it together with the forms, the icon and the bundled Tyrian 2000
+# data files into OpenTyrian.prc with pilrc/prcbuild from the PumpkinOS
+# tree, and installs the PRC into the PumpkinOS VFS (vfs/app_install),
+# where it is deployed at next boot.
+#
+# Usage:
+#   make -f Makefile.pumpkinos PUMPKIN=/path/to/PumpkinOS   (default below)
+#
+# PUMPKIN must point at a PumpkinOS checkout that has already been built
+# (bin/libpumpkin, bin/libpit, tools/pilrc and tools/prcbuild must exist).
+
+PUMPKIN ?= ${HOME}/Downloads/PumpkinOS
+DATA_DIR ?= data
+
+PROGRAM = OpenTyrian
+APPNAME = OpenTyrian 2000
+APPID   = OTyr
+
+VCS_IDREV ?= $(shell (git describe --tags 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo v3.0.0))
+OPENTYRIAN_VERSION := $(VCS_IDREV)
+
+PORTDIR = pumpkinos
+GENDIR = $(PORTDIR)/gen
+# one object directory per target, so that host and DJGPP builds can coexist
+OBJDIR = obj_pumpkinos/$(OSNAME)-$(MACHINE)
+# build products (the installed copy goes to the PumpkinOS VFS)
+PRC = $(OBJDIR)/$(PROGRAM).prc
+DLIBFILE = $(OBJDIR)/$(PROGRAM).dlib
+
+ifeq ($(OSNAME),)
+OSNAME ?= $(shell uname -s)
+endif
+
+ifeq ($(MACHINE),)
+MACHINE ?= $(shell uname -m)
+endif
+
+# The SYS_* triple must match the one baked into $(PUMPKIN)/bin/libpumpkin:
+# at runtime the app's native code is loaded from the PRC resource
+# 'dlib' id = SYS_OS*64 + SYS_CPU*8 + SYS_SIZE.
+ifeq ($(OSNAME),msdosdjgpp)
+SYS_OS ?= 7
+else ifeq ($(OSNAME),Android)
+SYS_OS ?= 4
+else ifeq ($(OSNAME),Msys)
+SYS_OS ?= 2
+else
+SYS_OS ?= 1
+endif
+
+# mirror $(PUMPKIN)/src/common.mak: macOS reports 64-bit ARM as "arm64",
+# Linux as "aarch64"; only other arm* machines are 32-bit
+ifeq ($(MACHINE),arm64)
+SYS_CPU ?= 1
+SYS_SIZE ?= 2
+else ifeq ($(MACHINE),aarch64)
+SYS_CPU ?= 1
+SYS_SIZE ?= 2
+else ifeq ($(findstring arm,$(MACHINE)),arm)
+SYS_CPU ?= 1
+SYS_SIZE ?= 1
+else ifeq ($(MACHINE),x86_64)
+SYS_CPU ?= 2
+SYS_SIZE ?= 2
+else ifeq ($(MACHINE),i386)
+SYS_CPU ?= 2
+SYS_SIZE ?= 1
+else ifeq ($(MACHINE),i686)
+SYS_CPU ?= 2
+SYS_SIZE ?= 1
+else ifeq ($(MACHINE),riscv64)
+SYS_CPU ?= 3
+SYS_SIZE ?= 2
+else
+SYS_CPU ?= 3
+SYS_SIZE ?= 1
+endif
+
+SYS_ENDIAN ?= 1
+DLIBID := $(shell expr $(SYS_OS) \* 64 + $(SYS_CPU) \* 8 + $(SYS_SIZE))
+DLIB := $(shell printf "dlib%04x.bin" $(DLIBID))
+
+PILRC = $(PUMPKIN)/tools/pilrc -q -allowLargeRes
+PRCBUILD = $(PUMPKIN)/tools/prcbuild
+
+ifeq ($(OSNAME),Darwin)
+CC = clang -arch x86_64 -arch arm64 -mmacosx-version-min=10.14
+LINKFLAGS = -dynamiclib
+OSDEFS = -DDARWIN -D_DARWIN_C_SOURCE -Wno-invalid-pp-token -Wno-string-plus-int -Wno-typedef-redefinition
+else ifeq ($(OSNAME),Android)
+ifeq ($(NDK),)
+$(error You must define the NDK environment variable)
+endif
+SYS_OS = 4
+ifeq ($(MACHINE),i686)
+ANDROID_ARCH=--target=i686-none-linux-androideabi26
+else ifeq ($(MACHINE),x86_64)
+ANDROID_ARCH=--target=x86_64-none-linux-android26
+else ifeq ($(MACHINE),riscv64)
+ANDROID_ARCH=--target=riscv64-none-linux-android35
+else
+ifeq ($(BITS),32)
+ANDROID_ARCH=--target=armv7-none-linux-androideabi26 -march=armv7-a -mthumb
+else
+ANDROID_ARCH=--target=aarch64-none-linux-android26
+endif
+endif
+OSLDEFS=$(ANDROID_ARCH) --gcc-toolchain=$(NDK) --sysroot=$(NDK)/sysroot -fPIC -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libatomic.a -static-libstdc++ -Wl,--build-id -Wl,--fatal-warnings -Wl,--exclude-libs,libunwind.a -Wl,--no-undefined -Qunused-arguments
+EXTLIBS=-llog -latomic
+OSDEFS=$(ANDROID_ARCH) --gcc-toolchain=$(NDK) --sysroot=$(NDK)/sysroot -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -DANDROID
+CC=$(NDK)/bin/clang
+LINKFLAGS = -shared
+else ifeq ($(OSNAME),Msys)
+SYS_OS = 2
+ifeq ($(MACHINE),arm)
+CC = /usr/local/armv7-pc-mingw32/bin/clang
+AR = /usr/local/armv7-pc-mingw32/bin/llvm-ar
+else
+CC = $(MACHINE)-pc-mingw32-gcc
+AR = $(MACHINE)-pc-mingw32-ar
+endif
+OSDEFS = -DWINDOWS -Wno-format -Wno-attributes
+PRCFILE = $(shell printf '%.8s' $(PROGRAM)).prc
+LINKFLAGS = -shared
+else ifeq ($(OSNAME),msdosdjgpp)
+# MS-DOS: static library linked into pumpkinos.exe by src/msdos, the PRC
+# only carries the resources (see src/app.mak)
+SYS_OS = 7
+CC = i686-pc-msdosdjgpp-gcc
+AR = i686-pc-msdosdjgpp-ar
+OSDEFS = -DDOS -march=i586 -mtune=i586 -Wno-format -Wno-attributes
+INSTALL_DIR = app_inst
+PRCFILE = $(shell printf '%.8s' $(PROGRAM)).prc
+DXE3GEN := $(shell command -v i686-pc-msdosdjgpp-dxe3gen dxe3gen 2>/dev/null | head -n 1)
+ifeq ($(DXE3GEN),)
+DXE3GEN = $(OBJDIR)/dxe3gen
+DXE3GEN_DEP = $(OBJDIR)/dxe3gen
+endif
+else
+CC = gcc
+LINKFLAGS = -shared
+OSDEFS = -DLINUX
+EXTLIBS = -lm
+endif
+
+INSTALL_DIR ?= app_install
+PRCFILE ?= $(PROGRAM).prc
+
+PUMPDEFS = -DSYS_CPU=$(SYS_CPU) -DSYS_SIZE=$(SYS_SIZE) -DSYS_OS=$(SYS_OS) \
+           -DSYS_ENDIAN=$(SYS_ENDIAN) -DUNIX
+
+PALMOS = $(PUMPKIN)/src/PalmOS
+PUMPKIN_INCLUDES = -I$(PORTDIR) -I$(PUMPKIN)/src/libpit -I$(PUMPKIN)/src/libpumpkin -I$(PUMPKIN)/src/font \
+           -I$(PALMOS) -I$(PALMOS)/Core -I$(PALMOS)/Core/System -I$(PALMOS)/Dynamic \
+           -I$(PALMOS)/Core/UI -I$(PALMOS)/Libraries -I$(PALMOS)/Libraries/PalmOSGlue \
+           -I$(PALMOS)/Core/Hardware -I$(PALMOS)/Extensions/ExpansionMgr
+
+OPT ?= -O2
+ifeq ($(STATIC),1)
+PICFLAG =
+else ifeq ($(OSNAME),msdosdjgpp)
+PICFLAGS =
+else
+PICFLAG = -fPIC
+endif
+
+COMMONFLAGS = -std=gnu11 -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-unused-variable \
+              -Wno-unused-but-set-variable -Wno-multichar -fsigned-char $(PICFLAG) $(OPT) \
+              -D_GNU_SOURCE $(OSDEFS)
+
+# the game only sees the SDL2 compatibility headers (pumpkinos/SDL2) and
+# gets the stdio/exit redirections force-included
+GAMECFLAGS = $(COMMONFLAGS) -DPUMPKINOS -DTARGET_PUMPKINOS -DNDEBUG -DTYRIAN_DIR='"res:"' -DOPENTYRIAN_VERSION='"$(OPENTYRIAN_VERSION)"' \
+             -include $(PORTDIR)/pumpkin_compat.h -I$(PORTDIR) -Isrc
+# the glue only sees the PumpkinOS tree
+GLUECFLAGS = $(COMMONFLAGS) $(PUMPDEFS) $(PUMPKIN_INCLUDES)
+
+# original sources replaced by the port
+EXCLUDED_SRCS = src/video.c src/video_scale.c src/video_scale_hqNx.c src/video_vita.c \
+                src/file.c src/keyboard_vita.c
+
+GAME_SRCS = $(filter-out $(EXCLUDED_SRCS),$(wildcard src/*.c))
+SHIM_SRCS = $(PORTDIR)/sdl_shim.c $(PORTDIR)/tyr_video.c $(PORTDIR)/tyr_file.c
+ifeq ($(OSNAME),msdosdjgpp)
+# C library functions pumpkin.exe does not export to DXE3 modules
+SHIM_SRCS += $(PORTDIR)/dos_libc.c
+# the dlregsym() table of everything else the module imports, compiled into
+# pumpkin.exe by src/msdos ($(wildcard dxesyms*.c)); relink pumpkin.exe
+# after a change: make -C $(PUMPKIN)/src/msdos -f GNUMakefile OSNAME=msdosdjgpp MACHINE=i686
+DXESYMS = $(PUMPKIN)/src/msdos/dxesyms_tyrian.c
+endif
+GLUE_SRCS = $(PORTDIR)/pumpkin_app.c $(PORTDIR)/DllMain.c
+
+GAME_OBJS = $(patsubst src/%.c,$(OBJDIR)/game/%.o,$(GAME_SRCS))
+SHIM_OBJS = $(patsubst $(PORTDIR)/%.c,$(OBJDIR)/shim/%.o,$(SHIM_SRCS))
+GLUE_OBJS = $(patsubst $(PORTDIR)/%.c,$(OBJDIR)/glue/%.o,$(GLUE_SRCS))
+OBJS = $(GAME_OBJS) $(SHIM_OBJS) $(GLUE_OBJS)
+
+SHIM_HEADERS = $(PORTDIR)/SDL2/SDL.h $(PORTDIR)/SDL2/SDL_types.h $(PORTDIR)/SDL2/SDL_endian.h \
+               $(PORTDIR)/pumpkin_compat.h $(PORTDIR)/pumpkin_stdio.h $(PORTDIR)/pumpkin_glue.h
+
+DATA_FILES = $(wildcard $(DATA_DIR)/*)
+
+.PHONY: all clean
+
+all: $(PRC)
+
+$(GENDIR)/data.rcp $(GENDIR)/data_index.inc: $(PORTDIR)/gen_data.sh $(DATA_FILES)
+	@sh $(PORTDIR)/gen_data.sh $(DATA_DIR) $(GENDIR)
+
+$(OBJDIR)/game/%.o: src/%.c $(SHIM_HEADERS)
+	@mkdir -p $(dir $@)
+	@echo Compiling $<
+	@$(CC) $(GAMECFLAGS) -c -o $@ $<
+
+$(OBJDIR)/shim/%.o: $(PORTDIR)/%.c $(SHIM_HEADERS)
+	@mkdir -p $(dir $@)
+	@echo Compiling $<
+	@$(CC) $(GAMECFLAGS) -c -o $@ $<
+
+$(OBJDIR)/glue/%.o: $(PORTDIR)/%.c $(PORTDIR)/pumpkin_glue.h $(PORTDIR)/pumpkin_stdio.h $(PORTDIR)/resource.h $(GENDIR)/data_index.inc
+	@mkdir -p $(dir $@)
+	@echo Compiling $<
+	@$(CC) $(GLUECFLAGS) -c -o $@ $<
+
+
+$(DLIBFILE): $(OBJS)
+	@echo Linking $(PROGRAM).dlib
+ifeq ($(OSNAME),msdosdjgpp)
+	@$(DXE3GEN) -o $@ -U -E _PilotMain -D "OpenTyrian 2000" $(OBJS)
+	@test -f $@ || { echo "$(DXE3GEN) failed (it exits 0 when its link step fails)"; exit 1; }
+	@python3 -I $(PUMPKIN)/src/dxe3res.py -o $(DXESYMS) -n dxe_import_table_tyrian $@ && echo "Generated $(DXESYMS)"
+else
+	@$(CC) $(LINKFLAGS) $(OSLDEFS) -o $@ $(OBJS) -L$(PUMPKIN)/bin -lpumpkin -lpit $(EXTLIBS)
+endif
+ifeq ($(OSNAME),Darwin)
+	@# libpumpkin.dylib carries a relative install name; refer to it through
+	@# the rpath of the pumpkin executable instead, like libos does
+	@install_name_tool -change ../../bin/libpumpkin.dylib @rpath/libpumpkin.dylib $@
+	@install_name_tool -change ../../bin/libpit.dylib @rpath/libpit.dylib $@ 2>/dev/null || true
+	@codesign -f -s "Developer ID Application" $@ 2>/dev/null || codesign -f -s - $@
+endif
+
+$(PORTDIR)/res.flag: $(PORTDIR)/resource.rcp $(PORTDIR)/resource.h $(PORTDIR)/opentyrian.bmp $(GENDIR)/data.rcp
+	@echo Compiling resources
+	@rm -rf $(PORTDIR)/resources
+	@mkdir -p $(PORTDIR)/resources
+	@cd $(PORTDIR) && $(PILRC) resource.rcp resources
+	@touch $(PORTDIR)/res.flag
+
+ifeq ($(STATIC),1)
+APPLIB = $(PUMPKIN)/bin/lib$(PROGRAM).a
+
+$(APPLIB): $(OBJS)
+	@echo Creating lib$(PROGRAM).a
+	@rm -f $(APPLIB)
+	@$(AR) -cr $(APPLIB) $(OBJS)
+
+$(PRC): $(APPLIB) $(PORTDIR)/res.flag
+	@echo Building $(PROGRAM).prc
+	@$(PRCBUILD) -f $(PRC) -t appl -c $(APPID) -n "$(APPNAME)" $(PORTDIR)/resources/*
+	@echo Installing $(PRCFILE) into $(PUMPKIN)/vfs/$(INSTALL_DIR)
+	@mkdir -p $(PUMPKIN)/vfs/$(INSTALL_DIR)
+	@cp $(PRC) $(PUMPKIN)/vfs/$(INSTALL_DIR)/$(PRCFILE)
+else
+$(PRC): $(DLIBFILE) $(PORTDIR)/res.flag
+	@echo Building $(PROGRAM).prc
+	@cp $(DLIBFILE) $(OBJDIR)/$(DLIB)
+	@$(PRCBUILD) -f $(PRC) -t appl -c $(APPID) -n "$(APPNAME)" $(OBJDIR)/$(DLIB) $(PORTDIR)/resources/*
+	@rm -f $(OBJDIR)/$(DLIB)
+	@echo Installing $(PRCFILE) into $(PUMPKIN)/vfs/$(INSTALL_DIR)
+	@mkdir -p $(PUMPKIN)/vfs/$(INSTALL_DIR)
+	@cp $(PRC) $(PUMPKIN)/vfs/$(INSTALL_DIR)/$(PRCFILE)
+endif
+
+clean:
+	rm -rf $(OBJDIR) $(PORTDIR)/resources $(PORTDIR)/res.flag $(GENDIR) $(PROGRAM).dlib $(PROGRAM).prc $(DLIB) $(APPLIB) $(DXESYMS)

@@ -49,6 +49,194 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(PUMPKINOS) && defined(DOS)
+/*
+ * powf() for the PumpkinOS DJGPP (MS-DOS) build.
+ *
+ * Self-contained single precision power function: it only uses integer
+ * and double arithmetic, no other math library function and no tables,
+ * so it does not pull anything else in. The result is computed in double
+ * precision as exp(y * ln|x|) with the IEEE 754 special cases of C99
+ * powf(), which is far more accurate than the float result needs.
+ */
+#include <stdint.h>
+
+typedef union
+{
+	float f;
+	uint32_t u;
+} tyr_float_bits;
+
+typedef union
+{
+	double d;
+	uint64_t u;
+} tyr_double_bits;
+
+static float tyr_powf_make(uint32_t bits)
+{
+	tyr_float_bits b;
+	b.u = bits;
+	return b.f;
+}
+
+/* 2^n as a double for integer n (no overflow checks: |n| < 1000) */
+static double tyr_powf_exp2i(int n)
+{
+	tyr_double_bits b;
+
+	if (n > 1023)
+		n = 1023;
+	if (n < -1022)
+	{
+		/* keep it normal; the caller splits larger shifts */
+		n = -1022;
+	}
+	b.u = (uint64_t)(n + 1023) << 52;
+	return b.d;
+}
+
+/* is the float with these bits an integer? 0: no, 1: odd, 2: even */
+static int tyr_powf_checkint(uint32_t iy)
+{
+	int e = (int)((iy >> 23) & 0xFF);
+
+	if (e < 0x7F)
+		return 0;
+	if (e > 0x7F + 23)
+		return 2;
+	if (iy & ((1u << (0x7F + 23 - e)) - 1))
+		return 0;
+	if (iy & (1u << (0x7F + 23 - e)))
+		return 1;
+	return 2;
+}
+
+float powf(float x, float y)
+{
+	static const double ln2 = 0.69314718055994530942;
+	static const uint32_t inf_bits = 0x7F800000u;
+	static const uint32_t nan_bits = 0x7FC00000u;
+
+	tyr_float_bits xb, yb;
+	uint32_t ix, iy, ax, ay;
+	int negate = 0;
+	int e, n, i;
+	double m, s, s2, logm, lnx, z, r, term, sum, result;
+
+	xb.f = x;
+	yb.f = y;
+	ix = xb.u;
+	iy = yb.u;
+	ax = ix & 0x7FFFFFFFu;
+	ay = iy & 0x7FFFFFFFu;
+
+	/* y == 0 or x == 1: 1 (even for NaN, as C99 requires) */
+	if (ay == 0 || ix == 0x3F800000u)
+		return 1.0f;
+
+	/* NaN in */
+	if (ax > inf_bits || ay > inf_bits)
+		return x + y;
+
+	/* y infinite */
+	if (ay == inf_bits)
+	{
+		if (ax == 0x3F800000u)
+			return 1.0f;                  /* (-1)^(+-inf) == 1 */
+		if ((ax < 0x3F800000u) == !(iy & 0x80000000u))
+			return 0.0f;                  /* |x| < 1, y == +inf or |x| > 1, y == -inf */
+		return tyr_powf_make(inf_bits);
+	}
+
+	/* x zero or infinite */
+	if (ax == 0 || ax == inf_bits)
+	{
+		int yodd = tyr_powf_checkint(iy) == 1;
+		uint32_t sign = (ix & 0x80000000u) && yodd ? 0x80000000u : 0;
+
+		if ((ax == 0) == !(iy & 0x80000000u))
+			return tyr_powf_make(sign);   /* 0^y (y > 0) or inf^y (y < 0): +-0 */
+		return tyr_powf_make(sign | inf_bits);
+	}
+
+	/* negative finite x: only integer y is defined */
+	if (ix & 0x80000000u)
+	{
+		int yint = tyr_powf_checkint(iy);
+
+		if (yint == 0)
+			return tyr_powf_make(nan_bits);
+		negate = (yint == 1);
+	}
+
+	/* decompose |x| = m * 2^e with m in [sqrt(1/2), sqrt(2)) */
+	e = (int)(ax >> 23);
+	if (e == 0)
+	{
+		/* subnormal: scale up by 2^23 */
+		xb.u = ax;
+		xb.f *= 8388608.0f;
+		ax = xb.u;
+		e = (int)(ax >> 23) - 23;
+	}
+	e -= 127;
+	xb.u = (ax & 0x007FFFFFu) | 0x3F800000u;
+	m = (double)xb.f;
+	if (m > 1.41421356237309504880)
+	{
+		m *= 0.5;
+		e += 1;
+	}
+
+	/* ln(m) = 2 * atanh(s), s = (m - 1) / (m + 1), |s| < 0.1716 */
+	s = (m - 1.0) / (m + 1.0);
+	s2 = s * s;
+	logm = 0.0;
+	for (i = 17; i >= 1; i -= 2)
+		logm = logm * s2 + 1.0 / (double)i;
+	logm *= 2.0 * s;
+
+	lnx = (double)e * ln2 + logm;
+	z = (double)y * lnx;
+
+	/* overflow / underflow of the float result */
+	if (z > 88.8)
+		return tyr_powf_make((negate ? 0x80000000u : 0) | inf_bits);
+	if (z < -104.0)
+		return tyr_powf_make(negate ? 0x80000000u : 0);
+
+	/* exp(z) = 2^n * exp(r), |r| <= ln2 / 2 */
+	n = (int)(z / ln2 + (z >= 0 ? 0.5 : -0.5));
+	r = z - (double)n * ln2;
+	sum = 1.0;
+	term = 1.0;
+	for (i = 1; i <= 13; i++)
+	{
+		term *= r / (double)i;
+		sum += term;
+	}
+
+	/* scale, splitting the shift so that intermediate values stay normal
+	   (the float conversion then produces the subnormal result if any) */
+	if (n < -1000)
+	{
+		result = sum * tyr_powf_exp2i(-1000) * tyr_powf_exp2i(n + 1000);
+	}
+	else if (n > 1000)
+	{
+		result = sum * tyr_powf_exp2i(1000) * tyr_powf_exp2i(n - 1000);
+	}
+	else
+	{
+		result = sum * tyr_powf_exp2i(n);
+	}
+
+	return negate ? (float)-result : (float)result;
+}
+#endif /* PUMPKINOS && DOS */
+
+
 #define OUTPUT_QUALITY 4  // 44.1 kHz
 
 int audioSampleRate = 0;

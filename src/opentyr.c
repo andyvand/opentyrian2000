@@ -1046,6 +1046,9 @@ static bool MountDVD(bool silent)
 #if defined(ANDROID) || defined(__ANDROID__)
 int SDL_main(int argc, char *argv[])
 {
+#elif defined(PUMPKINOS)
+int tyrian_main(int argc, char *argv[])
+{
 #else
 int main(int argc, char *argv[])
 {
@@ -1093,7 +1096,7 @@ int main(int argc, char *argv[])
 #endif
 #endif
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if defined(__APPLE__) && defined(__MACH__) && !defined(PUMPKINOS)
     _printf("\nWelcome to... >> %s v%s <<\n\n", getBundleName(), getBundleVersion());
 
     _printf("Identifier: %s\n", getBundleID());
@@ -1146,7 +1149,7 @@ int main(int argc, char *argv[])
     _printf("Unknown\n");
 #endif
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if defined(__APPLE__) && defined(__MACH__) && !defined(PUMPKINOS)
     _printf("Minimum OS version: %s\n", getMinimumOS());
 #endif
 
@@ -1172,7 +1175,7 @@ int main(int argc, char *argv[])
 
     _printf("\n");
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if defined(__APPLE__) && defined(__MACH__) && !defined(PUMPKINOS)
     _printf("%s\n\n", getCopyRight());
 #else
 	_printf("Copyright (C) 2022-2025 The OpenTyrian Development Team\n");

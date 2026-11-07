@@ -55,6 +55,10 @@
 #include "macos-bundle.h"
 #endif
 
+#ifdef PUMPKINOS
+#include "pumpkin_glue.h"
+#endif
+
 #ifdef WITH_SDL3_ESP
 #define CONFIG_LITTLEFS 1
 #endif
@@ -873,6 +877,8 @@ const char * get_user_directory(void)
 #endif
 #elif defined(__3DS__)
         snprintf(user_dir, sizeof(user_dir), ".");
+#elif defined(PUMPKINOS)
+        snprintf(user_dir, sizeof(user_dir), "%s", pk_user_dir());
 #elif defined(__APPLE__) && defined(__MACH__)
         snprintf(user_dir, sizeof(user_dir), "%s", getHomeDir());
 #else
