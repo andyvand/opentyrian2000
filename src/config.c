@@ -406,7 +406,9 @@ bool save_opentyrian_config(void)
 #if defined(VITA) || defined(PSP)
     sceIoMkdir(get_user_directory(), 0777);
 #else
-#if defined(TARGET_WIN32) || defined(__DJGPP__)
+#if defined(SDL_PLATFORM_MACOSCLASSIC)
+	// SDL_GetPrefPath() already created the folder
+#elif defined(TARGET_WIN32) || defined(__DJGPP__)
 	mkdir(get_user_directory(), 0700);
 #else
 	mkdir(get_user_directory());
@@ -435,7 +437,7 @@ bool save_opentyrian_config(void)
 	config_write(config, file);
 	
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
-#ifndef WITH_SDL1
+#if !defined(WITH_SDL1) && !defined(SDL_PLATFORM_MACOSCLASSIC)
 	fsync(fileno(file));
 #endif
 #endif
@@ -879,6 +881,18 @@ const char * get_user_directory(void)
         snprintf(user_dir, sizeof(user_dir), ".");
 #elif defined(PUMPKINOS)
         snprintf(user_dir, sizeof(user_dir), "%s", pk_user_dir());
+#elif defined(SDL_PLATFORM_MACOSCLASSIC)
+        // "Disk:System Folder:Preferences:OpenTyrian2000:" (created by SDL)
+        char *pref_dir = SDL_GetPrefPath(NULL, "OpenTyrian2000");
+        if (pref_dir != NULL)
+        {
+            snprintf(user_dir, sizeof(user_dir), "%s", pref_dir);
+            SDL_free(pref_dir);
+        }
+        else
+        {
+            strlcpy(user_dir, ":", 2);
+        }
 #elif defined(__APPLE__) && defined(__MACH__)
         snprintf(user_dir, sizeof(user_dir), "%s", getHomeDir());
 #else
@@ -1271,7 +1285,9 @@ void JE_saveConfiguration(void)
 	JE_encryptSaveTemp();
 
 #ifndef WITH_SDL1
-#if defined(TARGET_WIN32) || defined(__DJGPP__)
+#if defined(SDL_PLATFORM_MACOSCLASSIC)
+	// SDL_GetPrefPath() already created the folder
+#elif defined(TARGET_WIN32) || defined(__DJGPP__)
 	mkdir(get_user_directory(), 0700);
 #else
 	mkdir(get_user_directory());
@@ -1332,7 +1348,7 @@ void JE_saveConfiguration(void)
 		}
 
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
-#ifndef WITH_SDL1
+#if !defined(WITH_SDL1) && !defined(SDL_PLATFORM_MACOSCLASSIC)
 		fsync(fileno(f));
 #endif
 #endif
@@ -1366,7 +1382,7 @@ void JE_saveConfiguration(void)
 		fwrite_u8_die(dosKeySettings, 8, f);
 		
 #if _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _POSIX_SOURCE
-#ifndef WITH_SDL1
+#if !defined(WITH_SDL1) && !defined(SDL_PLATFORM_MACOSCLASSIC)
 		fsync(fileno(f));
 #endif
 #endif

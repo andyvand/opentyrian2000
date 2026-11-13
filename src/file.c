@@ -143,6 +143,23 @@ const char * data_dir(void)
         "/data",
         ".",
     };
+#elif defined(SDL_PLATFORM_MACOSCLASSIC)
+    // Retro68: fopen() takes HFS paths ("Disk:Folder:file"). A path without
+    // a colon names a volume, so relative directories must start with ':'.
+    static char app_data_dir[512];
+    const char *app_dir = SDL_GetBasePath();  // "Disk:Folder:", owned by SDL
+
+    if (app_dir != NULL && app_data_dir[0] == '\0')
+        snprintf(app_data_dir, sizeof(app_data_dir), "%sdata", app_dir);
+
+    const char *const dirs[] =
+    {
+        custom_data_dir,
+        app_dir != NULL ? app_data_dir : NULL,
+        app_dir,
+        ":data",
+        ":",
+    };
 #elif defined(__APPLE__) & defined(__MACH__)
     const char *const dirs[] =
     {
@@ -205,7 +222,14 @@ bool init_SD = false;
 FILE * dir_fopen(const char *dir, const char *file, const char *mode)
 {
 	char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
+#ifdef SDL_PLATFORM_MACOSCLASSIC
+	// HFS separator is ':'; "Dir::file" would mean the parent of Dir.
+	const size_t dir_len = strlen(dir);
+	snprintf(path, (dir_len + 1 + strlen(file) + 1), "%s%s%s", dir,
+	         (dir_len > 0 && dir[dir_len - 1] == ':') ? "" : ":", file);
+#else
 	snprintf(path, (strlen(dir) + 1 + strlen(file) + 1), "%s/%s", dir, file);
+#endif
 
 #if defined(WITH_SDL) && !defined(WITH_SDL1)
     if(init_SD == false)

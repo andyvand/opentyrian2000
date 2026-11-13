@@ -1,0 +1,164 @@
+# OpenTyrian2000 for classic Mac OS (System 7 - Mac OS 9) with Retro68 + SDL3
+#
+#   make -f Makefile.retro68 ARCH=m68k          68k application (default)
+#   make -f Makefile.retro68 ARCH=ppc           PowerPC (CFM/PEF) application
+#   make -f Makefile.retro68 ARCH=m68k disk     + HFS disk image with data/
+#   make -f Makefile.retro68 all-archs          both applications
+#
+# Options:
+#   RETRO68     = /opt/retro68     toolchain prefix (SDL3 lives in the per-CPU
+#                                  <prefix>/<triple>/{include,lib})
+#   SDL3_PREFIX = <prefix>/<triple> where SDL3's include/ and lib/ are
+#   M68K_CPU    = 68000            68000 (any 68k Mac), 68020 or 68040; the
+#                                  latter two use the FPU (68881/68882/040)
+#   DATA_DIR    = data             Tyrian data files copied by `make disk`
+#   DISK_SIZE   = 24               disk image size in MB
+#   _DEBUG      = 1                debug build
+#   MACCLASSIC_LOG = 1             write stdout/stderr to "OpenTyrian2000 log"
+#                                  in the application's folder
+#
+# Outputs, in build-retro68/<arch>/:
+#   opentyrian2000.bin   MacBinary (keeps the resource fork when copied around)
+#   opentyrian2000.dsk   HFS image with just the application
+#   opentyrian2000.APPL  plain data fork (+ .rsrc/%.ad sidecars for Basilisk/
+#                        SheepShaver/netatalk)
+#   opentyrian2000-data.dsk (`make disk`) HFS image with the app and a data folder
+#
+# The game looks for its data in "<app folder>:data:", then "<app folder>:",
+# and keeps its settings and saves in "System Folder:Preferences:OpenTyrian2000:".
+
+ARCH ?= m68k
+RETRO68 ?= /opt/retro68
+M68K_CPU ?= 68000
+DATA_DIR ?= data
+DISK_SIZE ?= 24
+
+# Memory partition (SIZE resource), in KB
+PREFERRED_SIZE_KB ?= 16384
+MINIMUM_SIZE_KB ?= 8192
+
+ifeq ($(ARCH), m68k)
+    TRIPLE := m68k-apple-macos
+    ARCH_CFLAGS := -mcpu=$(M68K_CPU)
+    ARCH_LDFLAGS := -Wl,--mac-strip-macsbug
+    ifneq ($(M68K_CPU), 68000)
+        BUILD_DIR := build-retro68/m68k-$(M68K_CPU)
+    endif
+else ifeq ($(ARCH), ppc)
+    TRIPLE := powerpc-apple-macos
+    ARCH_CFLAGS :=
+    ARCH_LDFLAGS :=
+    REZ_ARCH_FLAGS := -DOPENTYRIAN_PPC=1
+else
+    $(error ARCH must be m68k or ppc)
+endif
+
+BUILD_DIR ?= build-retro68/$(ARCH)
+
+BIN := $(RETRO68)/bin
+CC := $(BIN)/$(TRIPLE)-gcc
+REZ := $(BIN)/Rez
+MAKEPEF := $(BIN)/MakePEF
+HFORMAT := $(BIN)/hformat
+HMOUNT := $(BIN)/hmount
+HMKDIR := $(BIN)/hmkdir
+HCOPY := $(BIN)/hcopy
+HUMOUNT := $(BIN)/humount
+RINCLUDES := $(RETRO68)/RIncludes
+SYSROOT := $(RETRO68)/$(TRIPLE)
+SDL3_PREFIX ?= $(SYSROOT)
+
+TARGET := opentyrian2000
+VCS_IDREV ?= $(shell git describe --tags 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo unknown)
+
+SRCS := $(wildcard src/*.c) MacClassic/macclassic_init.c
+OBJS := $(patsubst %.c,$(BUILD_DIR)/obj/%.o,$(SRCS))
+DEPS := $(OBJS:.o=.d)
+
+CPPFLAGS := -MMD -MP \
+            -DWITH_SDL3 \
+            -DOPENTYRIAN_VERSION='"$(VCS_IDREV)"' \
+            -I$(SDL3_PREFIX)/include
+CFLAGS := -std=gnu99 -ffunction-sections -fdata-sections \
+          -Wall -Wextra -Wno-implicit-fallthrough -Wno-format-truncation \
+          $(ARCH_CFLAGS)
+ifeq ($(MACCLASSIC_LOG), 1)
+    CPPFLAGS += -DMACCLASSIC_LOG
+endif
+ifeq ($(_DEBUG), 1)
+    CPPFLAGS += -D_DEBUG=1
+    CFLAGS += -g -O1
+else
+    CPPFLAGS += -DNDEBUG
+    CFLAGS += -O2
+endif
+
+LDFLAGS := -Wl,-gc-sections $(ARCH_LDFLAGS) -L$(SDL3_PREFIX)/lib
+LDLIBS := -lSDL3 -lm
+ifeq ($(ARCH), ppc)
+    LDLIBS += -lInterfaceLib
+endif
+
+REZFLAGS := -I$(RINCLUDES) $(REZ_ARCH_FLAGS) \
+            -DPREFERRED_SIZE='$(PREFERRED_SIZE_KB) * 1024' \
+            -DMINIMUM_SIZE='$(MINIMUM_SIZE_KB) * 1024' \
+            -t APPL -c '????'
+
+OUT := $(BUILD_DIR)/$(TARGET)
+
+.PHONY: all disk all-archs clean distclean
+all: $(OUT).bin
+
+all-archs:
+	$(MAKE) -f Makefile.retro68 ARCH=m68k
+	$(MAKE) -f Makefile.retro68 ARCH=ppc
+
+$(BUILD_DIR)/obj/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+
+ifeq ($(ARCH), m68k)
+# Elf2Mac (run by the linker) turns the ELF into CODE resources
+$(OUT).code.bin: $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+$(OUT).bin: $(OUT).code.bin MacClassic/opentyrian2000.r
+	$(REZ) $(REZFLAGS) MacClassic/opentyrian2000.r \
+	    --copy $(OUT).code.bin \
+	    -o $@ --cc $(OUT).dsk --cc $(OUT).APPL --cc $(BUILD_DIR)/%$(TARGET).ad
+else
+$(OUT).xcoff: $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+$(OUT).pef: $(OUT).xcoff
+	$(MAKEPEF) $< -o $@
+
+$(OUT).bin: $(OUT).pef MacClassic/opentyrian2000.r
+	$(REZ) $(REZFLAGS) MacClassic/opentyrian2000.r \
+	    --data $(OUT).pef \
+	    -o $@ --cc $(OUT).dsk --cc $(OUT).APPL --cc $(BUILD_DIR)/%$(TARGET).ad
+endif
+
+# HFS disk image (for Basilisk II, SheepShaver, QEMU, Mini vMac, real Macs)
+# holding the application and the game data.
+DISK := $(BUILD_DIR)/$(TARGET)-data.dsk
+disk: $(DISK)
+
+$(DISK): $(OUT).bin
+	@test -f "$(DATA_DIR)/tyrian1.lvl" || { echo "error: no Tyrian data in '$(DATA_DIR)' (set DATA_DIR=...)"; exit 1; }
+	rm -f $@
+	dd if=/dev/zero of=$@ bs=1048576 count=$(DISK_SIZE) 2>/dev/null
+	$(HFORMAT) -l OpenTyrian2000 $@ >/dev/null
+	$(HMOUNT) $@ >/dev/null
+	$(HCOPY) -m $(OUT).bin ':OpenTyrian2000'
+	$(HMKDIR) ':data'
+	for f in "$(DATA_DIR)"/*; do $(HCOPY) -r "$$f" ":data:$$(basename "$$f")" || exit 1; done
+	$(HUMOUNT)
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+distclean:
+	rm -rf build-retro68
+
+-include $(DEPS)

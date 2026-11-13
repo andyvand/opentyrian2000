@@ -237,7 +237,11 @@ float powf(float x, float y)
 #endif /* PUMPKINOS && DOS */
 
 
+#if defined(SDL_PLATFORM_MACOSCLASSIC) && defined(__m68k__)
+#define OUTPUT_QUALITY 2  // 22.05 kHz: OPL synthesis is costly on a 68k Mac
+#else
 #define OUTPUT_QUALITY 4  // 44.1 kHz
+#endif
 
 int audioSampleRate = 0;
 
@@ -592,8 +596,11 @@ bool init_audio(void)
 
 #ifdef WITH_SDL3
     auStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &ask, audioCallback, NULL);
-    audioDevice = SDL_GetAudioStreamDevice(auStream);
-    SDL_GetAudioStreamFormat(auStream, &ask, &got);
+    if (auStream != NULL)  // otherwise keep SDL_GetError() from the open
+    {
+        audioDevice = SDL_GetAudioStreamDevice(auStream);
+        SDL_GetAudioStreamFormat(auStream, &ask, &got);
+    }
 
     if ((auStream == NULL) || (audioDevice == 0))
     {
